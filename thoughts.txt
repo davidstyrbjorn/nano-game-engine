@@ -1,0 +1,13 @@
+core:
+graphics/renderer
+ecs_system
+math
+
+engine: -> core
+runtime_loop
+loading_levels
+
+editor:
+manage_project
+editing_levels
+saving_levels
