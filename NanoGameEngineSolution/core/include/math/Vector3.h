@@ -37,6 +37,7 @@ namespace nano { namespace math {
 		Vector3 operator+(const Vector3 rhs);
 		Vector3 operator-(const Vector3 rhs);
 		Vector3 operator*(const float scalar);
+		Vector3 operator/(const float scalar);
 		Vector3 operator=(const Vector3& rhs);
 		Vector3& operator+=(const Vector3& rhs);
 		Vector3& operator-=(const Vector3& rhs);

@@ -1,4 +1,4 @@
-#include"../include/grapics/Window.h"
+#include"../include/graphics/Window.h"
 
 #include"../include/math/Vector2.h"
 
@@ -14,6 +14,8 @@ namespace nano { namespace graphics {
 
 		m_glfwWindow = glfwCreateWindow(a_windowSize.x, a_windowSize.y, a_windowCaption.c_str(), nullptr, nullptr);
 		glfwMakeContextCurrent(m_glfwWindow);
+
+		glViewport(0, 0, a_windowSize.x, a_windowSize.y);
 	}
 
 	Window::~Window()

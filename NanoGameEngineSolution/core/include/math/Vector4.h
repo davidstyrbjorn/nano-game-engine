@@ -21,9 +21,6 @@ namespace nano { namespace math {
 
 		// Getters
 		const float GetMagnitude() const;
-		const Vector4& Normalized() const;
-		//const Vector4& Dot() const;
-		//const Vector4& Cross() const;
 
 		// Public static methods 
 		inline static Vector4 Right() { return Vector4(1, 0, 0, 0); }

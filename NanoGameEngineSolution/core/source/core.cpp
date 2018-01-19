@@ -1,4 +1,4 @@
-#include "..\include\core.h"
+#include "..\include\Core.h"
 
 namespace nano {
 
@@ -11,7 +11,5 @@ namespace nano {
 		}
 		return _instance;
 	}
-
-
 
 }

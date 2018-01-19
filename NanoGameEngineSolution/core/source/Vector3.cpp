@@ -25,6 +25,14 @@ namespace nano { namespace math {
 		return sqrt(powf(this->x, 2) + powf(this->y, 2) + powf(this->z, 2));
 	}
 
+	const Vector3 & Vector3::Normalized() const
+	{
+		math::Vector3 normalizedVector;
+		math::Vector3 vector = *this;
+		normalizedVector = (vector / this->GetMagnitude());
+		return normalizedVector;
+	}
+
 	// Operator overloading methods
 	Vector3 Vector3::operator+(const Vector3 rhs)
 	{
@@ -39,6 +47,11 @@ namespace nano { namespace math {
 	Vector3 Vector3::operator*(const float scalar)
 	{
 		return Vector3(this->x * scalar, this->y * scalar, this->z * scalar);
+	}
+
+	Vector3 Vector3::operator/(const float scalar)
+	{
+		return Vector3(this->x / scalar, this->y / scalar, this->z / scalar);
 	}
 
 	bool Vector3::operator>(const Vector3 & rhs)

@@ -19,8 +19,9 @@ namespace nano { namespace math {
 
 		// Getters
 		const float GetMagnitude() const;
+		const float GetAngle(const Vector2& a_other); // In radians
 		const Vector2& Normalized() const;
-		const Vector2& Dot() const;
+		const float Dot(const math::Vector2& a_other) const;
 		const Vector2& Cross() const;
 
 		// Public static methods 
@@ -34,6 +35,7 @@ namespace nano { namespace math {
 		Vector2 operator+(const Vector2 rhs);
 		Vector2 operator-(const Vector2 rhs);
 		Vector2 operator*(const float scalar);
+		Vector2 operator/(const float scalar);
 		Vector2 operator=(const Vector2& rhs);
 		Vector2& operator+=(const Vector2& rhs);
 		Vector2& operator-=(const Vector2& rhs);
