@@ -121,6 +121,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="source\Input.cpp" />
     <ClCompile Include="source\Matrix4x4.cpp" />
     <ClCompile Include="source\Shader.cpp" />
     <ClCompile Include="main.cpp" />
@@ -132,8 +133,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Core.h" />
+    <ClInclude Include="include\ecs\Entity.h" />
+    <ClInclude Include="include\ecs\BasicEntityManager.h" />
     <ClInclude Include="include\graphics\Shader.h" />
     <ClInclude Include="include\graphics\Window.h" />
+    <ClInclude Include="include\Input.h" />
     <ClInclude Include="include\math\MathInclude.h" />
     <ClInclude Include="include\math\Matrix4x4.h" />
     <ClInclude Include="include\math\Vector2.h" />

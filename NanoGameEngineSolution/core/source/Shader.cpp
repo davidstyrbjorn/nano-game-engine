@@ -23,6 +23,7 @@ Shader::Shader(std::string a_vertexShaderPath, std::string a_fragmentShaderPath)
 	std::fstream fragmentFile(a_fragmentShaderPath, std::fstream::in | std::fstream::out | std::fstream::app);
 	if (!vertexFile.is_open() || !fragmentFile.is_open()) {
 		// @ Throw error file is not open
+		std::cout << "Could not open either fragment or vertex shader at given path" << std::endl;
 	}
 
 	// Get content from vertex shader file

@@ -19,7 +19,6 @@ namespace nano { namespace math {
 
 		/* Projection matrix */
 		static Matrix4x4 Orthographic(float left, float right, float bottom, float top, float near, float far);
-
 	};
 
 	}

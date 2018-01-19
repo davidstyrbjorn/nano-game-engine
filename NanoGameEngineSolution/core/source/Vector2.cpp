@@ -45,11 +45,6 @@ namespace nano { namespace math {
 		return result;
 	}
 
-	const Vector2 & Vector2::Cross() const
-	{
-		return math::Vector2(-1, -1);
-	}
-
 	// Operator overloading methods
 	Vector2 Vector2::operator+(const Vector2 rhs)
 	{
