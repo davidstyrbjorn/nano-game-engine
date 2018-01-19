@@ -121,7 +121,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="include\math\Matrix4x4.cpp" />
+    <ClCompile Include="source\Matrix4x4.cpp" />
     <ClCompile Include="source\Shader.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="source\Core.cpp" />

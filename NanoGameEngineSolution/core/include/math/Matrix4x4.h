@@ -15,10 +15,7 @@ namespace nano { namespace math {
 		static Matrix4x4 Rotation(float angle, const Vector3& axis);
 		static Matrix4x4 Scale(const Vector3& scale);
 		static Matrix4x4 Identity();
-
 		Matrix4x4& Multiply(const Matrix4x4& other);
-		friend Matrix4x4 operator*(Matrix4x4 left, const Matrix4x4& right);
-		Matrix4x4& operator*=(const Matrix4x4& other);
 
 		/* Projection matrix */
 		static Matrix4x4 Orthographic(float left, float right, float bottom, float top, float near, float far);

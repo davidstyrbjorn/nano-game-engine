@@ -8,6 +8,7 @@ namespace nano {
 		class Vector2;
 		class Vector3;
 		class Vector4;
+		class Matrix4x4;
 	}
 }
 
@@ -36,6 +37,7 @@ namespace nano { namespace graphics {
 		void SetUniform2f(const char* a_name, const math::Vector2 &a_vec2);
 		void SetUniform3f(const char* a_name, const math::Vector3 &a_vec3);
 		void SetUniform4f(const char* a_name, const math::Vector4 &a_vec4);
+		void SetUniformMat4f(const char* a_name, const math::Matrix4x4 &a_matrix);
 
 		float GetUniform1f(const char* a_name);
 		math::Vector2& GetUniform2f(const char* a_name);

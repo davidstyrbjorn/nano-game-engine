@@ -5,7 +5,7 @@
 
 #include"include\graphics\Shader.h"
 #include"include\graphics\Window.h"
-#include"include/math/Vector2.h"
+#include"include/math/MathInclude.h"
 
 int main()
 {
@@ -16,13 +16,14 @@ int main()
 	glewExperimental = true;
 	
 	float vertex_data[] = {
-		-1.0f, -1.0f,
-		1.0f, -1.0f,
-		1.0f, 1.0f
+		0, 0,
+		0, 300,
+		300, 300
 	};
 
 	nano::graphics::Shader* shader = new nano::graphics::Shader(std::string("C:\\NanoGameEngine_folder\\vertex.txt"), std::string("C:\\NanoGameEngine_folder\\fragment.txt"));
 	shader->Bind();
+	shader->SetUniformMat4f("projection_matrix", nano::math::Matrix4x4::Orthographic(0, 500, 500, 0, -1, 1));
 
 	GLuint vbo;
 	

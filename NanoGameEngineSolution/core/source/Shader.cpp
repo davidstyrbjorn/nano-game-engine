@@ -81,7 +81,6 @@ void Shader::CompileShader()
 	// Create and compile the shaders using the m_vertexShaderData and m_fragmentShaderData
 	GLuint m_vertexShader = glCreateShader(GL_VERTEX_SHADER);
 	const char* vertexSource = m_vertexShaderData.c_str();
-	printf(vertexSource);
 	glShaderSource(m_vertexShader, 1, &vertexSource, 0);
 	glCompileShader(m_vertexShader);
 	didCompile(m_vertexShader);
@@ -132,6 +131,11 @@ void Shader::SetUniform3f(const char * a_name, const math::Vector3 & a_vec3)
 void Shader::SetUniform4f(const char * a_name, const math::Vector4 & a_vec4)
 {
 	glUniform4f(getUniformLocation(a_name), a_vec4.x, a_vec4.y, a_vec4.z, a_vec4.w);
+}
+
+void Shader::SetUniformMat4f(const char * a_name, const math::Matrix4x4 & a_matrix)
+{
+	glUniformMatrix4fv(getUniformLocation(a_name), 1, false, a_matrix.elements);
 }
 
 float Shader::GetUniform1f(const char * a_name)
