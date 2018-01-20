@@ -37,18 +37,4 @@ typedef ptrdiff_t GLsizeiptr;
 #define DEG2RADS PI/180
 #define RADS2DEG 180/PI
 
-// Class that both the editor and engine will instantiate, data not shared but both utilize the data and members
-// Singleton class
-class Core {
-private:
-	Core() {}
-	static Core* _instance;
-
-	float m_targetFPS;
-
-public:
-	// Singleton connection
-	static Core* Instance();
-};
-
 }

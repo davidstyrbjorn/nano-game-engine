@@ -24,6 +24,7 @@ namespace nano {
 	void Input::SetCallbacks()
 	{
 		glfwSetKeyCallback(glfwGetCurrentContext(), key_callback);
+		glfwSetMouseButtonCallback(glfwGetCurrentContext(), mouse_button_callback);
 	}
 
 	void Input::FlushEvents()
@@ -36,7 +37,25 @@ namespace nano {
 		if (action == GLFW_PRESS || action == GLFW_REPEAT) {
 			Event _event;
 			_event.key = key;
-			_event.type = static_cast<EventType>(action);
+			if (action == GLFW_PRESS)
+				_event.type = EventType::KEY_PRESSED;
+			else if (action == GLFW_REPEAT)
+				_event.type = EventType::KEY_HOLD;
+
+			Input* _temp = Input::Instance();
+			_temp->m_eventQueue.push_back(_event);
+		}
+	}
+
+	void mouse_button_callback(GLFWwindow * window, int button, int action, int mods)
+	{
+		if (action == GLFW_PRESS || action == GLFW_REPEAT) {
+			Event _event;
+			_event.key = button;
+			if (action == GLFW_PRESS)
+				_event.type = EventType::MOUSE_PRESSED;
+			else if (action == GLFW_REPEAT)
+				_event.type = EventType::MOUSE_HOLD;
 
 			Input* _temp = Input::Instance();
 			_temp->m_eventQueue.push_back(_event);

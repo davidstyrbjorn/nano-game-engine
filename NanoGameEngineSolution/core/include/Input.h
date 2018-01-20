@@ -7,8 +7,10 @@ struct GLFWwindow;
 namespace nano {
 
 	enum EventType {
-		KEY_DOWN = 1,
-		KEY_HOLD = 2
+		KEY_PRESSED,
+		KEY_HOLD, 
+		MOUSE_PRESSED,
+		MOUSE_HOLD
 	};
 
 	struct Event {
@@ -42,6 +44,7 @@ namespace nano {
 
 		// GLFW callback functions
 		friend static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
+		friend static void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
 	};
 	
 }

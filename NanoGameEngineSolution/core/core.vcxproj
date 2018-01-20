@@ -77,11 +77,11 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)\dependencies\glfw\include;$(SolutionDir)\dependencies\glew\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\dependencies\glfw\include;$(SolutionDir)\dependencies\glew\include;$(SolutionDir)\dependencies\OpenAL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>$(SolutionDir)\dependencies\glfw\lib-vc2015\;$(SolutionDir)\dependencies\glew\lib\Release\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glew32s.lib;opengl32.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\dependencies\glfw\lib-vc2015\;$(SolutionDir)\dependencies\glew\lib\Release\Win32;D:\NanoGameEngine\NanoGameEngine\NanoGameEngineSolution\dependencies\OpenAL\libs\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glew32s.lib;opengl32.lib;glfw3.lib;OpenAL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -98,13 +98,13 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)\dependencies\glfw\include;$(SolutionDir)\dependencies\glew\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\dependencies\glfw\include;$(SolutionDir)\dependencies\glew\include;$(SolutionDir)\dependencies\OpenAL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(SolutionDir)\dependencies\glfw\lib-vc2015\;$(SolutionDir)\dependencies\glew\lib\Release\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glew32s.lib;opengl32.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\dependencies\glfw\lib-vc2015\;$(SolutionDir)\dependencies\glew\lib\Release\Win32;D:\NanoGameEngine\NanoGameEngine\NanoGameEngineSolution\dependencies\OpenAL\libs\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glew32s.lib;opengl32.lib;glfw3.lib;OpenAL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -121,6 +121,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="source\Clock.cpp" />
+    <ClCompile Include="source\Random.cpp" />
+    <ClCompile Include="source\SoundComponent.cpp" />
+    <ClCompile Include="source\SoundSource.cpp" />
     <ClCompile Include="source\TriangleComponent.cpp" />
     <ClCompile Include="source\IndexBuffer.cpp" />
     <ClCompile Include="source\BasicEntityManager.cpp" />
@@ -143,9 +147,11 @@
     <ClCompile Include="source\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\Clock.h" />
     <ClInclude Include="include\Core.h" />
     <ClInclude Include="include\ecs\Component.h" />
     <ClInclude Include="include\ecs\components\RectangleComponent.h" />
+    <ClInclude Include="include\ecs\components\SoundComponent.h" />
     <ClInclude Include="include\ecs\components\TransformComponent.h" />
     <ClInclude Include="include\ecs\components\TriangleComponent.h" />
     <ClInclude Include="include\ecs\ECS.h" />
@@ -157,6 +163,7 @@
     <ClInclude Include="include\graphics\Vertex.h" />
     <ClInclude Include="include\graphics\Window.h" />
     <ClInclude Include="include\Input.h" />
+    <ClInclude Include="include\InputDefinitions.h" />
     <ClInclude Include="include\math\MathInclude.h" />
     <ClInclude Include="include\math\Matrix4x4.h" />
     <ClInclude Include="include\math\Vector2.h" />
@@ -167,6 +174,11 @@
     <ClInclude Include="include\opengl\NanoOpenGLBase.h" />
     <ClInclude Include="include\opengl\VertexArrayObject.h" />
     <ClInclude Include="include\opengl\VertexBuffer.h" />
+    <ClInclude Include="include\Random.h" />
+    <ClInclude Include="include\sound\SoundBuffer.h" />
+    <ClInclude Include="include\sound\NanoOpenAL.h" />
+    <ClInclude Include="include\sound\SoundSource.h" />
+    <ClInclude Include="source\SoundBuffer.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

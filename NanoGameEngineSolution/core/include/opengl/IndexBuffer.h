@@ -11,13 +11,13 @@ namespace nano { namespace opengl {
 
 	public:
 		// Creates the index buffer
-		IndexBuffer(const int* a_data, size_t a_dataSize);
+		IndexBuffer(GLuint* a_data, size_t a_dataSize);
 
 		// Deletes the index buffer
 		~IndexBuffer();
 
 		// Sets the data of the Index buffer
-		void SetData(const int* a_data, size_t a_dataSize);
+		void SetData(GLuint* a_data, size_t a_dataSize);
 
 		// Binds index buffer
 		void Bind() override;

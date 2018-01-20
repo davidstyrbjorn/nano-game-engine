@@ -11,13 +11,14 @@ namespace nano { namespace ecs {
 	class RectangleComponent : public graphics::Renderable, public Component
 	{
 	public:
+		// Inits the neccesary data
+		void Start() override;
+
 		// Empty constructor
-		RectangleComponent() : Renderable(math::Vector2(0,0), math::Vector4(0,0,0,0)) 
-		{ }
+		RectangleComponent();
 
 		// Constructor with arguments
-		RectangleComponent(const math::Vector2& a_size, const math::Vector4& a_color) : Renderable(a_size, a_color)
-		{ }
+		RectangleComponent(const math::Vector2& a_size, const math::Vector4& a_color);
 
 		// Override for the renderer 
 		int GetVertexCount() override { return 4; }

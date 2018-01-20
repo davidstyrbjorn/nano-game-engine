@@ -10,16 +10,21 @@
 #define TRIANGLE_SIZE 3*VERTEX_SIZE
 #define TRIANGLE_BUFFER_SIZE TRIANGLE_SIZE * MAX_PRIMITIVES
 
+#define QUAD_SIZE 4*VERTEX_SIZE
+#define QUAD_BUFFER_SIZE QUAD_SIZE * MAX_PRIMITIVES
+#define INDICES_COUNT MAX_PRIMITIVES*6
+
 namespace nano { namespace graphics { 
 
 	class Renderable;
 
 	class SimpleRenderer {
 	private:
-		opengl::VertexBuffer *m_triangleVBO;
-		opengl::VertexArrayObject *m_triangleVAO;
+		opengl::VertexBuffer *m_triangleVBO, *m_quadVBO;
+		opengl::VertexArrayObject *m_triangleVAO, *m_quadVAO;
+		opengl::IndexBuffer *m_quadIBO;
 
-		int m_triangleCount;
+		int m_triangleCount, m_quadCount;
 
 	public:
 		// Default Constructor

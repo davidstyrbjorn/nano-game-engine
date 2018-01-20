@@ -14,9 +14,6 @@ namespace nano { namespace graphics {
 		math::Vector2 m_size;
 		math::Vector4 m_color;
 		ecs::Transform* m_transform;
-
-		int m_vertexCount;
-
 	public:
 		// Default constructor
 		Renderable();
