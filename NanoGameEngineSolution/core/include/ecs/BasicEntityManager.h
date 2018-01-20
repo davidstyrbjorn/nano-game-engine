@@ -13,14 +13,29 @@ namespace nano { namespace ecs {
 
 	public:
 		//////////
+		// \brief Empty Constructor
+		//
+		BasicEntityManager() { }
+
+		//////////
+		// \brief Destructor frees/deletes all the entity pointers inside the managed list
+		//
+		virtual ~BasicEntityManager();
+
+		//////////
+		// \brief Adds a entity to be managed by the entity manager
+		//  
+		void AddNewEntity(Entity* a_entityToAdd);
+
+		//////////
 		// \brief Implementation class will override this to start the managed entities
 		// \brief Engine will override this to start the entities while editor will not
-		virtual void Start();
+		virtual void Start() { }
 
 		//////////
 		// \brief Implementation class will override this to update the managed entities
 		// \brief Engine will override this to update entities run time while editor will not
-		virtual void Update();
+		virtual void Update() { } 
 	};
 	
 } }

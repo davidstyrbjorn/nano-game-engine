@@ -10,11 +10,14 @@
 #include"include\math\MathInclude.h"
 #include"include\Input.h"
 
-#include<Windows.h>
+#include"include\ecs\Component.h"
+#include"include\ecs\test.h"
+#include"include\ecs\Entity.h"
+
+using namespace nano;
 
 int main()
 {
-
 	nano::graphics::Window window(nano::math::Vector2(500, 500), "Save it");
 
 	glewInit();
@@ -41,14 +44,26 @@ int main()
 	nano::Input *inputObject = nano::Input::Instance();
 	inputObject->SetCallbacks();
 
+	ecs::Entity* entity = new ecs::Entity("test");
+	std::cout << entity->GetID() << std::endl;
+	entity->AddComponent(new ecs::TestComponent());
+
+	entity->Start();
 	while (window.IsOpen()) 
 	{
 		window.Clear();
 
 		// Process events
-		for (nano::Event _event : inputObject->GetEvents()) {
+		for (nano::Event _event : inputObject->GetEvents()) 
+			if (_event.type == nano::EventType::KEY_DOWN) 
+				if (_event.key == GLFW_KEY_SPACE) 
+					if(entity->GetComponent<ecs::TestComponent>() != nullptr)
+						entity->GetComponent<ecs::TestComponent>()->SetState(ecs::ECSStates::DESTROYED);
 
-		}
+		// Omg this if-stack is amazing
+
+		// Test update entities
+		entity->Update();
 
 		shader->Bind();
 		glBindBuffer(GL_ARRAY_BUFFER, vbo);

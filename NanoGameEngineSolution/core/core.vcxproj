@@ -121,6 +121,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="source\BasicEntityManager.cpp" />
+    <ClCompile Include="source\Component.cpp" />
+    <ClCompile Include="source\Entity.cpp" />
     <ClCompile Include="source\Input.cpp" />
     <ClCompile Include="source\Matrix4x4.cpp" />
     <ClCompile Include="source\Shader.cpp" />
@@ -133,8 +136,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Core.h" />
+    <ClInclude Include="include\ecs\Component.h" />
+    <ClInclude Include="include\ecs\ECS.h" />
     <ClInclude Include="include\ecs\Entity.h" />
     <ClInclude Include="include\ecs\BasicEntityManager.h" />
+    <ClInclude Include="include\ecs\test.h" />
     <ClInclude Include="include\graphics\Shader.h" />
     <ClInclude Include="include\graphics\Window.h" />
     <ClInclude Include="include\Input.h" />

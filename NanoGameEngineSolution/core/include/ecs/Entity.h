@@ -1,19 +1,19 @@
 #pragma once
 
 #include<string>
+#include<vector>
+#include"ECS.h"
 
 namespace nano { namespace ecs {
-	
-	enum EntityState {
-		DISABLED = 0x0,
-		ACTIVE = 0x1,
-		DESTROYED = 0x2
-	};
+
+	class Component;
 
 	class Entity {
 	private:
 		std::string m_id;
-		EntityState m_state;
+		ECSStates m_state = ECSStates::ACTIVE;
+
+		std::vector<Component*> m_componentsBag;
 
 	public:
 		// Default constrcutor
@@ -30,19 +30,46 @@ namespace nano { namespace ecs {
 
 	public:
 		//////////
+		// Component Methods
+		//////////
+
+		//////////
+		// \brief Pushes back component into components bag/list
+		//
+		void AddComponent(Component* a_componentToAdd);
+
+		//////////
+		// \brief Returns the component of type ComponentType if it exists in the components bag/list
+		//
+		template<typename ComponentType>
+		ComponentType* GetComponent() {
+			static std::string _componentName = typeid(ComponentType).name(); // Unique for each version of this methods
+			for (int i = 0; i < m_componentsBag.size(); i++) {
+				if (_componentName == typeid(*m_componentsBag[i]).name()) {
+					return dynamic_cast<ComponentType*>(m_componentsBag[i]);
+				}
+			}
+		}
+
+		//////////
+		// Behavioural Methods
+		//////////
+		void Start();
+		void Update();
+
+		//////////
 		// Member getters
 		//////////
 
 		//////////
 		// \brief Returns a string copy of the entities ID handle
 		//
-		inline std::string GetID();
+		inline std::string GetID() { return m_id; }
 
 		//////////
 		// \brief Returns a integer representation of the entities state
 		//
-		inline int GetState();
-
+		int GetState();
 
 		//////////
 		// Member setters
