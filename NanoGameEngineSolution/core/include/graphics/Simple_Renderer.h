@@ -8,7 +8,7 @@
 #define VERTEX_SIZE sizeof(nano::graphics::Vertex)
 
 #define TRIANGLE_SIZE 3*VERTEX_SIZE
-#define TRIANGLE_BUFFER_SIZE
+#define TRIANGLE_BUFFER_SIZE TRIANGLE_SIZE * MAX_PRIMITIVES
 
 namespace nano { namespace graphics { 
 
@@ -16,13 +16,19 @@ namespace nano { namespace graphics {
 
 	class SimpleRenderer {
 	private:
-		std::deque<Renderable*> m_renderList;
 		opengl::VertexBuffer *m_triangleVBO;
 		opengl::VertexArrayObject *m_triangleVAO;
+
+		int m_triangleCount;
 
 	public:
 		// Default Constructor
 		SimpleRenderer();
+
+		//////////
+		// \brief Called at begining of each render frame
+		//
+		void Begin();
 
 		//////////
 		// \brief Pushes back a_renderable to the render list

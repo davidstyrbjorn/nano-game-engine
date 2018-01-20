@@ -2,7 +2,25 @@
 
 #include"../include/ecs/Component.h"
 
-namespace nano { namespace ecs { 
+namespace nano { namespace ecs {
+
+	Entity::Entity()
+	{
+		m_id = "unnamed";
+		m_transform = new ecs::Transform();
+	}
+
+	Entity::Entity(const std::string & a_id)
+	{
+		m_id = a_id;
+		m_transform = new ecs::Transform();
+	}
+
+	Entity::Entity(const char * a_id)
+	{
+		m_id = a_id;
+		m_transform = new ecs::Transform();
+	}
 
 	Entity::~Entity()
 	{

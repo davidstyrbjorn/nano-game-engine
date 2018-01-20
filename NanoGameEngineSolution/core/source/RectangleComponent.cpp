@@ -2,8 +2,6 @@
 
 namespace nano { namespace ecs {
 
-
-
-
+	
 	
 } }

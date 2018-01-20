@@ -18,17 +18,17 @@ namespace nano { namespace ecs {
 
 	public:
 		// Every entity has a transform component
-		Transform transform;
+		Transform *m_transform;
 
 	public:
 		// Default constrcutor
-		Entity() : m_id("unnamed") { }
+		Entity();
 
 		// Constructor (string argument)
-		Entity(const std::string &a_id) : m_id(a_id) { }
+		Entity(const std::string &a_id);
 
 		// Constructor (char* argument)
-		Entity(const char* a_id) : m_id(a_id) { }
+		Entity(const char* a_id);
 
 		// Destructor
 		~Entity();
