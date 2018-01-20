@@ -5,14 +5,23 @@
 
 #include<GLFW\glfw3.h>
 
+// Math and graphics
 #include"include\graphics\Shader.h"
 #include"include\graphics\Window.h"
 #include"include\math\MathInclude.h"
 #include"include\Input.h"
+#include"include\graphics\Simple_Renderer.h"
 
-#include"include\ecs\Component.h"
-#include"include\ecs\test.h"
+// ECS
 #include"include\ecs\Entity.h"
+#include"include\ecs\components\RectangleComponent.h"
+#include"include\ecs\components\TriangleComponent.h"
+
+// OpenGL
+#include"include\opengl\NanoOpenGL.h"
+#include"include\opengl\IndexBuffer.h"
+#include"include\opengl\VertexArrayObject.h"
+#include"include\opengl\VertexBuffer.h"
 
 using namespace nano;
 
@@ -28,25 +37,40 @@ int main()
 	shader->Bind();
 	shader->SetUniformMat4f("projection_matrix", nano::math::Matrix4x4::Orthographic(0, 500, 500, 0, -1, 1));
 	
-	// Triangle render test
-	float vertex_data[] = {
-		0, 0,
-		0, 300,
-		300, 300
+	opengl::VertexArrayObject VAO;
+	VAO.Bind();
+	
+	// Triangl test
+	struct Vertex {
+		math::Vector2 pos;
+		math::Vector3 color;
 	};
-	GLuint vbo;
-	glGenBuffers(1, &vbo);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertex_data), vertex_data, GL_STATIC_DRAW);
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 0, (GLvoid*)0);
+	Vertex triangle1[] = {
+		{ math::Vector2(0,0),     math::Vector3(1,0,0) },
+		{ math::Vector2(0,300),   math::Vector3(0,1,0) },
+		{ math::Vector2(300,300), math::Vector3(0,0,1) },
+	};
+	
+	opengl::VertexBuffer VBO;
+	VBO.SetData((float*)&triangle1, sizeof(triangle1), GL_STATIC_DRAW);
+	VBO.Bind();
+
+	VAO.EnableVertexAttribArray(0);
+	VAO.EnableVertexAttribArray(1);
+	VAO.SetVertexAttribPointer(0, 2, GL_FLOAT, sizeof(Vertex), nullptr);
+	VAO.SetVertexAttribPointer(1, 3, GL_FLOAT, sizeof(Vertex), (void*)offsetof(Vertex, color));
+	VAO.Unbind();
+
+	//////////////////////////////////////////////
+
+	graphics::SimpleRenderer renderer;
 
 	nano::Input *inputObject = nano::Input::Instance();
 	inputObject->SetCallbacks();
 
 	ecs::Entity* entity = new ecs::Entity("test");
 	std::cout << entity->GetID() << std::endl;
-	entity->AddComponent(new ecs::TestComponent());
+	entity->AddComponent(new ecs::TriangleComponent(math::Vector2(100, 100), math::Vector4(1, 0, 0, 1)));
 
 	entity->Start();
 	while (window.IsOpen()) 
@@ -54,26 +78,19 @@ int main()
 		window.Clear();
 
 		// Process events
-		for (nano::Event _event : inputObject->GetEvents()) 
-			if (_event.type == nano::EventType::KEY_DOWN) 
-				if (_event.key == GLFW_KEY_SPACE) 
-					if(entity->GetComponent<ecs::TestComponent>() != nullptr)
-						entity->GetComponent<ecs::TestComponent>()->SetState(ecs::ECSStates::DESTROYED);
+		for (nano::Event _event : inputObject->GetEvents())
+			if (_event.type == nano::EventType::KEY_DOWN)
+				if (_event.key == GLFW_KEY_SPACE)
+					std::cout << "space bar" << std::endl;
 
-		// Omg this if-stack is amazing
-
-		// Test update entities
+		// Manual Upate
 		entity->Update();
 
-		shader->Bind();
-		glBindBuffer(GL_ARRAY_BUFFER, vbo);
-		
-		glDrawArrays(GL_TRIANGLES, 0, 3);
-		
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
-		shader->Unbind();
+		renderer.Submit(entity->GetComponent<ecs::TriangleComponent>());
 
+		renderer.Flush();
 		inputObject->FlushEvents();
+
 		window.Display();
 	}
 

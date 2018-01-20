@@ -29,6 +29,8 @@ typedef float GLclampf;
 typedef double GLdouble;
 typedef double GLclampd;
 typedef void GLvoid;
+typedef ptrdiff_t GLintptr;
+typedef ptrdiff_t GLsizeiptr;
 
 // Nano macros
 #define PI 3.14159265359

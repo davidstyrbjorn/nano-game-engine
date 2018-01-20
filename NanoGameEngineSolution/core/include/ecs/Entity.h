@@ -3,6 +3,7 @@
 #include<string>
 #include<vector>
 #include"ECS.h"
+#include"components\TransformComponent.h"
 
 namespace nano { namespace ecs {
 
@@ -14,6 +15,10 @@ namespace nano { namespace ecs {
 		ECSStates m_state = ECSStates::ACTIVE;
 
 		std::vector<Component*> m_componentsBag;
+
+	public:
+		// Every entity has a transform component
+		Transform transform;
 
 	public:
 		// Default constrcutor

@@ -121,27 +121,39 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="source\IndexBuffer.cpp" />
     <ClCompile Include="source\BasicEntityManager.cpp" />
     <ClCompile Include="source\Component.cpp" />
     <ClCompile Include="source\Entity.cpp" />
     <ClCompile Include="source\Input.cpp" />
     <ClCompile Include="source\Matrix4x4.cpp" />
+    <ClCompile Include="source\RectangleComponent.cpp" />
+    <ClCompile Include="source\Renderable.cpp" />
     <ClCompile Include="source\Shader.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="source\Core.cpp" />
+    <ClCompile Include="source\Simple_Renderer.cpp" />
+    <ClCompile Include="source\TransformComponent.cpp" />
     <ClCompile Include="source\Vector2.cpp" />
     <ClCompile Include="source\Vector3.cpp" />
     <ClCompile Include="source\Vector4.cpp" />
+    <ClCompile Include="source\VertexArrayObject.cpp" />
+    <ClCompile Include="source\VertexBuffer.cpp" />
     <ClCompile Include="source\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Core.h" />
     <ClInclude Include="include\ecs\Component.h" />
+    <ClInclude Include="include\ecs\components\RectangleComponent.h" />
+    <ClInclude Include="include\ecs\components\TransformComponent.h" />
+    <ClInclude Include="include\ecs\components\TriangleComponent.h" />
     <ClInclude Include="include\ecs\ECS.h" />
     <ClInclude Include="include\ecs\Entity.h" />
     <ClInclude Include="include\ecs\BasicEntityManager.h" />
-    <ClInclude Include="include\ecs\test.h" />
+    <ClInclude Include="include\graphics\Renderable.h" />
     <ClInclude Include="include\graphics\Shader.h" />
+    <ClInclude Include="include\graphics\Simple_Renderer.h" />
+    <ClInclude Include="include\graphics\Vertex.h" />
     <ClInclude Include="include\graphics\Window.h" />
     <ClInclude Include="include\Input.h" />
     <ClInclude Include="include\math\MathInclude.h" />
@@ -149,6 +161,11 @@
     <ClInclude Include="include\math\Vector2.h" />
     <ClInclude Include="include\math\Vector3.h" />
     <ClInclude Include="include\math\Vector4.h" />
+    <ClInclude Include="include\opengl\IndexBuffer.h" />
+    <ClInclude Include="include\opengl\NanoOpenGL.h" />
+    <ClInclude Include="include\opengl\NanoOpenGLBase.h" />
+    <ClInclude Include="include\opengl\VertexArrayObject.h" />
+    <ClInclude Include="include\opengl\VertexBuffer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
