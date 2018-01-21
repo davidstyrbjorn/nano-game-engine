@@ -17,18 +17,25 @@
 namespace nano { namespace graphics { 
 
 	class Renderable;
+	class Shader;
+	class OrthographicCamera;
 
 	class SimpleRenderer {
 	private:
 		opengl::VertexBuffer *m_triangleVBO, *m_quadVBO;
 		opengl::VertexArrayObject *m_triangleVAO, *m_quadVAO;
 		opengl::IndexBuffer *m_quadIBO;
+		Shader *m_shader;
 
 		int m_triangleCount, m_quadCount;
 
 	public:
+		OrthographicCamera *m_camera;
 		// Default Constructor
 		SimpleRenderer();
+
+		// Destructor
+		~SimpleRenderer();
 
 		//////////
 		// \brief Called at begining of each render frame
@@ -44,6 +51,11 @@ namespace nano { namespace graphics {
 		// \brief Goes through and renders each primitive inside a_renderableList
 		//
 		void Flush();
+
+		//////////
+		// \brief Returns the render camera
+		//
+		OrthographicCamera *GetCamera();
 	};
 
 } } 

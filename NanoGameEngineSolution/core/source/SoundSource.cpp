@@ -5,7 +5,7 @@
 
 #include<iostream>
 
-namespace nano { namespace sound {
+namespace nano { namespace openal {
 
 	SoundSource::SoundSource(ALuint a_buffer)
 	{
@@ -70,10 +70,8 @@ namespace nano { namespace sound {
 
 	void SoundSource::Play()
 	{
-		if (m_soundState != SoundState::PLAYING) {
-			alSourcePlay(m_source);
-			m_soundState = SoundState::PLAYING;
-		}
+		alSourcePlay(m_source);
+		m_soundState = SoundState::PLAYING;
 	}
 
 	void SoundSource::Pause()

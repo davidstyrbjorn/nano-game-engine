@@ -1,6 +1,10 @@
 #include"../include/graphics/Simple_Renderer.h"
 
 #include"../include/graphics/Renderable.h"
+#include"../include/graphics/Shader.h"
+#include"../include/CoreConfig.h"
+#include"../include/math/Matrix4x4.h"
+#include"../include/graphics/Camera.h"
 
 #define GLEW_STATIC
 #include"GL\glew.h"
@@ -11,6 +15,18 @@ namespace nano { namespace graphics {
 
 	SimpleRenderer::SimpleRenderer()
 	{
+		// Initalize GLEW
+		glewInit();
+
+		// Create shader
+		CoreConfig* c = CoreConfig::Instance();
+		m_shader = new Shader(c->GetShaderPaths()[0], c->GetShaderPaths()[1]);
+		m_shader->Bind();
+		m_shader->SetUniformMat4f("projection_matrix", math::Matrix4x4::Orthographic(0, c->GetWindowSize().x, c->GetWindowSize().y, 0, -1, 1));
+
+		m_camera = new OrthographicCamera();
+		//m_shader->SetUniformMat4f("view_matrix", m_camera->GetViewMatrix());
+
 		// Triangle
 		m_triangleVAO = new opengl::VertexArrayObject();
 		m_triangleVAO->Bind();
@@ -53,6 +69,18 @@ namespace nano { namespace graphics {
 		m_quadIBO = new opengl::IndexBuffer(m_indices, sizeof(m_indices));
 		
 		m_quadVAO->Unbind();
+	}
+
+	SimpleRenderer::~SimpleRenderer()
+	{
+		delete m_quadIBO;
+		delete m_quadVBO;
+		delete m_quadVAO;
+
+		delete m_triangleVBO;
+		delete m_triangleVAO;
+
+		delete m_shader;
 	}
 
 	void SimpleRenderer::Begin()
@@ -115,6 +143,10 @@ namespace nano { namespace graphics {
 
 	void SimpleRenderer::Flush()
 	{
+		m_shader->Bind();
+
+		m_shader->SetUniformMat4f("view_matrix", m_camera->GetViewMatrix());
+		
 		if (m_triangleCount != 0) {
 			m_triangleVAO->Bind();
 			m_triangleVBO->Bind();
@@ -135,6 +167,12 @@ namespace nano { namespace graphics {
 			m_quadIBO->Unbind();
 			m_quadVBO->Unbind();
 		}
+		m_shader->Unbind();
+	}
+
+	OrthographicCamera * SimpleRenderer::GetCamera()
+	{
+		return m_camera;
 	}
 	
 } }

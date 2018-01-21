@@ -32,8 +32,16 @@ namespace nano {
 		m_eventQueue.clear();
 	}
 
+	bool Input::IsKeyDown(int a_key)
+	{
+		return m_keysDown[a_key];
+	}
+
 	void key_callback(GLFWwindow * window, int key, int scancode, int action, int mods)
 	{
+		Input* _temp = Input::Instance();
+		_temp->m_keysDown[key] = action != GLFW_RELEASE;
+
 		if (action == GLFW_PRESS || action == GLFW_REPEAT) {
 			Event _event;
 			_event.key = key;
@@ -42,7 +50,6 @@ namespace nano {
 			else if (action == GLFW_REPEAT)
 				_event.type = EventType::KEY_HOLD;
 
-			Input* _temp = Input::Instance();
 			_temp->m_eventQueue.push_back(_event);
 		}
 	}

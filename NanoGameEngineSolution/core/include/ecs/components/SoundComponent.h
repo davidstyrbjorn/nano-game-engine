@@ -1,24 +1,26 @@
 #pragma once
 
 #include"../Component.h"
-#include<string>
 
-//#include"../../sound/SoundBuffer.h"
-//#include"../../sound/SoundSource.h"
-//#include"../../sound/NanoOpenAL.h"
+namespace nano {
+	namespace openal {
+		class SoundSource;
+		class SoundBuffer;
+	}
+}
 
 namespace nano { namespace ecs { 
 
 	class SoundComponent : public Component {
 	private:
-		//sound::SoundSource *m_source;
-		//sound::SoundBuffer *m_buffer;
+		openal::SoundSource *m_source;
+		openal::SoundBuffer *m_buffer;
 		
 	public:
 		// Compiler with path to sound to load
 		SoundComponent(const char* a_soundFilePath);
 
-		//const sound::SoundSource &GetSource();
+		openal::SoundSource *GetSource();
 	};
 
 } }

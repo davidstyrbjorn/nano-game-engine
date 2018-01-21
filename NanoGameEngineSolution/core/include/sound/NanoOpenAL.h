@@ -6,9 +6,6 @@
 #define AL_FORMAT_STEREO8                         0x1102
 #define AL_FORMAT_STEREO16                        0x1103
 
-#include"SoundBuffer.h"
-#include"SoundSource.h"
-
 #include<fstream>
 #include<iostream>
 

@@ -24,7 +24,10 @@ namespace nano { namespace ecs {
 
 	Entity::~Entity()
 	{
-
+		for (std::vector<Component*>::iterator it = m_componentsBag.begin(); it != m_componentsBag.end(); ++it) {
+			delete (*it);
+		}
+		m_componentsBag.clear();
 	}
 
 	void Entity::AddComponent(Component * a_componentToAdd)

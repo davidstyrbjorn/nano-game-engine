@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.26430.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "core", "core\core.vcxproj", "{57DEFDF5-7686-4066-B2E4-E0A144483896}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "editor", "editor\editor.vcxproj", "{67093C11-BCC7-453D-B45C-F7D308138DD0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -21,6 +23,14 @@ Global
 		{57DEFDF5-7686-4066-B2E4-E0A144483896}.Release|x64.Build.0 = Release|x64
 		{57DEFDF5-7686-4066-B2E4-E0A144483896}.Release|x86.ActiveCfg = Release|Win32
 		{57DEFDF5-7686-4066-B2E4-E0A144483896}.Release|x86.Build.0 = Release|Win32
+		{67093C11-BCC7-453D-B45C-F7D308138DD0}.Debug|x64.ActiveCfg = Debug|x64
+		{67093C11-BCC7-453D-B45C-F7D308138DD0}.Debug|x64.Build.0 = Debug|x64
+		{67093C11-BCC7-453D-B45C-F7D308138DD0}.Debug|x86.ActiveCfg = Debug|Win32
+		{67093C11-BCC7-453D-B45C-F7D308138DD0}.Debug|x86.Build.0 = Debug|Win32
+		{67093C11-BCC7-453D-B45C-F7D308138DD0}.Release|x64.ActiveCfg = Release|x64
+		{67093C11-BCC7-453D-B45C-F7D308138DD0}.Release|x64.Build.0 = Release|x64
+		{67093C11-BCC7-453D-B45C-F7D308138DD0}.Release|x86.ActiveCfg = Release|Win32
+		{67093C11-BCC7-453D-B45C-F7D308138DD0}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

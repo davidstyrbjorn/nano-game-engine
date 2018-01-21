@@ -1,8 +1,8 @@
 #pragma once
 
-namespace nano { namespace math {
+#include"Vector3.h"
 
-	class Vector3;
+namespace nano { namespace math {
 
 	class Matrix4x4 {
 	public:

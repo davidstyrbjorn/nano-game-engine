@@ -21,6 +21,7 @@ namespace nano {
 	class Input {
 	private:
 		std::deque<Event> m_eventQueue;
+		int m_keysDown[364];
 
 	private:
 		// Singleton
@@ -41,6 +42,9 @@ namespace nano {
 
 		// Flushes all the current events inside the event system
 		void FlushEvents();
+
+		// Use this when getting input for key hold for gameplay stuff
+		bool IsKeyDown(int a_key);
 
 		// GLFW callback functions
 		friend static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);

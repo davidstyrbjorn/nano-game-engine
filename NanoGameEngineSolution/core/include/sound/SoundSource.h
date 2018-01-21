@@ -4,10 +4,12 @@
 typedef unsigned int ALuint;
 
 namespace nano {
+
 	namespace math {
 		class Vector3;
-}
-namespace sound { 
+	}
+
+namespace openal { 
 
 	enum SoundState {
 		PLAYING,

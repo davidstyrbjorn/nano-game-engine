@@ -26,13 +26,13 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v141</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -70,7 +70,10 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>$(SolutionDir)$(ProjectName)\Builds\</OutDir>
+    <OutDir>$(SolutionDir)$(ProjectName)\Builds\Debug\</OutDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)$(ProjectName)\Builds\Release\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -83,6 +86,10 @@
       <AdditionalLibraryDirectories>$(SolutionDir)\dependencies\glfw\lib-vc2015\;$(SolutionDir)\dependencies\glew\lib\Release\Win32;D:\NanoGameEngine\NanoGameEngine\NanoGameEngineSolution\dependencies\OpenAL\libs\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>glew32s.lib;opengl32.lib;glfw3.lib;OpenAL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <Lib>
+      <AdditionalLibraryDirectories>D:\NanoGameEngine\NanoGameEngine\NanoGameEngineSolution\dependencies\glew\lib\Release\Win32;D:\NanoGameEngine\NanoGameEngine\NanoGameEngineSolution\dependencies\glfw\lib-vc2015;D:\NanoGameEngine\NanoGameEngine\NanoGameEngineSolution\dependencies\OpenAL\libs\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;OpenAL32.lib;glew32s.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -106,6 +113,10 @@
       <AdditionalLibraryDirectories>$(SolutionDir)\dependencies\glfw\lib-vc2015\;$(SolutionDir)\dependencies\glew\lib\Release\Win32;D:\NanoGameEngine\NanoGameEngine\NanoGameEngineSolution\dependencies\OpenAL\libs\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>glew32s.lib;opengl32.lib;glfw3.lib;OpenAL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <Lib>
+      <AdditionalLibraryDirectories>D:\NanoGameEngine\NanoGameEngine\NanoGameEngineSolution\dependencies\glew\lib\Release\Win32;D:\NanoGameEngine\NanoGameEngine\NanoGameEngineSolution\dependencies\glfw\lib-vc2015;D:\NanoGameEngine\NanoGameEngine\NanoGameEngineSolution\dependencies\OpenAL\libs\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opengl32.lib;OpenAL32.lib;glew32s.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -121,10 +132,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="include\sound\SoundBuffer.cpp" />
+    <ClCompile Include="source\CoreConfig.cpp" />
+    <ClCompile Include="include\ecs\components\SoundComponent.cpp" />
+    <ClCompile Include="source\Camera.cpp" />
     <ClCompile Include="source\Clock.cpp" />
+    <ClCompile Include="source\CoreEntryPoint.cpp" />
     <ClCompile Include="source\Random.cpp" />
-    <ClCompile Include="source\SoundComponent.cpp" />
+    <ClCompile Include="source\SoundBuffer.cpp" />
+    <ClCompile Include="source\SoundContextDevice.cpp" />
     <ClCompile Include="source\SoundSource.cpp" />
     <ClCompile Include="source\TriangleComponent.cpp" />
     <ClCompile Include="source\IndexBuffer.cpp" />
@@ -136,7 +151,10 @@
     <ClCompile Include="source\RectangleComponent.cpp" />
     <ClCompile Include="source\Renderable.cpp" />
     <ClCompile Include="source\Shader.cpp" />
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="main.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="source\Core.cpp" />
     <ClCompile Include="source\Simple_Renderer.cpp" />
     <ClCompile Include="source\TransformComponent.cpp" />
@@ -150,6 +168,7 @@
   <ItemGroup>
     <ClInclude Include="include\Clock.h" />
     <ClInclude Include="include\Core.h" />
+    <ClInclude Include="include\CoreConfig.h" />
     <ClInclude Include="include\ecs\Component.h" />
     <ClInclude Include="include\ecs\components\RectangleComponent.h" />
     <ClInclude Include="include\ecs\components\SoundComponent.h" />
@@ -158,6 +177,8 @@
     <ClInclude Include="include\ecs\ECS.h" />
     <ClInclude Include="include\ecs\Entity.h" />
     <ClInclude Include="include\ecs\BasicEntityManager.h" />
+    <ClInclude Include="include\graphics\Camera.h" />
+    <ClInclude Include="include\graphics\GraphicsInclude.h" />
     <ClInclude Include="include\graphics\Renderable.h" />
     <ClInclude Include="include\graphics\Shader.h" />
     <ClInclude Include="include\graphics\Simple_Renderer.h" />
@@ -178,7 +199,9 @@
     <ClInclude Include="include\Random.h" />
     <ClInclude Include="include\sound\SoundBuffer.h" />
     <ClInclude Include="include\sound\NanoOpenAL.h" />
+    <ClInclude Include="include\sound\SoundContextDevice.h" />
     <ClInclude Include="include\sound\SoundSource.h" />
+    <ClInclude Include="include\CoreEntryPoint.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

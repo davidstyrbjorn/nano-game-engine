@@ -1,6 +1,6 @@
 #pragma once
 
-namespace nano { namespace sound { 
+namespace nano { namespace openal { 
 
 	class SoundBuffer {
 	private:

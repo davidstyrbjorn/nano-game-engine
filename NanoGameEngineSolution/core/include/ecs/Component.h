@@ -11,6 +11,8 @@ namespace nano { namespace ecs {
 		Entity* m_owner;
 
 	public:
+		virtual ~Component() { }
+
 		//////////
 		// \brief Start called by entity owner
 		//

@@ -5,6 +5,7 @@
 
 #include<GLFW\glfw3.h>
 
+// OpenAL
 #include<al.h>
 #include<alc.h>
 
@@ -20,6 +21,7 @@
 #include"include\ecs\Entity.h"
 #include"include\ecs\components\RectangleComponent.h"
 #include"include\ecs\components\TriangleComponent.h"
+#include"include\ecs\components\SoundComponent.h"
 
 // OpenGL
 #include"include\opengl\NanoOpenGL.h"
@@ -30,26 +32,27 @@
 // Sound
 #include"include\sound\SoundBuffer.h"
 #include"include\sound\SoundSource.h"
-#include"include\sound\NanoOpenAL.h"
+#include"include\sound\SoundContextDevice.h"
 
 // Other
 #include"include\Random.h"
 #include"include\Clock.h"
+#include"include\CoreConfig.h"
 
 using namespace nano;
 
 int main()
 {
+	CoreConfig::Instance()->SetShaderPaths("../../vertex.txt", "../../fragment.txt");
+
 	nano::graphics::Window window(nano::math::Vector2(800, 600), "Save it");
 
 	glewInit();
-	glewExperimental = true;
 	
-	// Testing the shader
-	nano::graphics::Shader* shader = new nano::graphics::Shader(std::string("D:\\NanoGameEngine\\NanoGameEngine\\vertex.txt"), std::string("D:\\NanoGameEngine\\NanoGameEngine\\fragment.txt"));
-	shader->Bind();
-	shader->SetUniformMat4f("projection_matrix", nano::math::Matrix4x4::Orthographic(0, 800, 600, 0, -1, 1));
-	
+	openal::ContextDevice contextDevice;
+	contextDevice.CreateDevice();
+	contextDevice.CreateContext();
+
 	graphics::SimpleRenderer renderer;
 
 	nano::Input *inputObject = nano::Input::Instance();
@@ -60,22 +63,11 @@ int main()
 
 	ecs::Entity* entity2 = new ecs::Entity("test2");
 	entity2->AddComponent(new ecs::RectangleComponent(math::Vector2(50, 50), math::Vector4(0, 0, 1, 1)));
+	entity2->AddComponent(new ecs::SoundComponent("D:\\temp\\sound.wav"));
 
 	ecs::Entity *entity3 = new ecs::Entity("test3");
 	entity3->AddComponent(new ecs::RectangleComponent(math::Vector2(200, 100), math::Vector4(1, 0.5, 0.5, 1)));
 	entity3->m_transform->position = math::Vector2(400, 400);
-
-	ALCdevice *device = alcOpenDevice(nullptr);
-	ALCcontext *context = alcCreateContext(device, nullptr);
-	alcMakeContextCurrent(context);
-
-	// Loading .wav file
-	int format, size, sampleRate, channel, bps;
-	char* data = loadWAV("D:\\temp\\sound.wav", channel, sampleRate, bps, size, format);
-
-	sound::SoundBuffer* buffer = new sound::SoundBuffer();
-	buffer->SetData(format, data, size, sampleRate);
-	sound::SoundSource* source = new sound::SoundSource(buffer->GetBufferId());
 
 	entity3->Start();
 	entity2->Start();
@@ -89,16 +81,18 @@ int main()
 		for (nano::Event _event : inputObject->GetEvents()) {
 			if (_event.type == EventType::MOUSE_PRESSED) {
 				if (_event.key == NANO_MOUSE_BUTTON_RIGHT) {
-					source->Play();
+					entity2->GetComponent<ecs::SoundComponent>()->GetSource()->Play();
 				}
 			}
-			if (_event.type == nano::EventType::KEY_PRESSED) {
-				if (_event.key == NANO_KEY_D) 
-					entity->m_transform->position = math::Vector2(entity->m_transform->position.x + 20, 0);
-				if(_event.key == NANO_KEY_A)					
-					entity->m_transform->position = math::Vector2(entity->m_transform->position.x - 20, 0);
-			}
 		}
+		if (inputObject->IsKeyDown(NANO_KEY_D))
+			renderer.m_camera->Translate(math::Vector2(1.5f, 0));
+		if (inputObject->IsKeyDown(NANO_KEY_A))
+			renderer.m_camera->Translate(math::Vector2(-1.5f, 0));
+		if (inputObject->IsKeyDown(NANO_KEY_W))
+			renderer.m_camera->Translate(math::Vector2(0, -1.5f));
+		if (inputObject->IsKeyDown(NANO_KEY_S))
+			renderer.m_camera->Translate(math::Vector2(0, 1.5f));
 
 		// Manual Upate
 		entity->Update();
@@ -114,6 +108,10 @@ int main()
 
 		window.Display();
 	}
+
+	delete entity;
+	delete entity2;
+	delete entity3;
 
 	return 0;
 }

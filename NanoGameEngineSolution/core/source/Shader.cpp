@@ -42,14 +42,6 @@ Shader::Shader(std::string a_vertexShaderPath, std::string a_fragmentShaderPath)
 	CompileShader();
 }
 
-Shader::Shader(const char * a_vertexData, const char * a_fragmentData)
-{
-	m_vertexShaderData = std::string(a_vertexData);
-	m_fragmentShaderData = std::string(a_fragmentData);
-
-	CompileShader();
-}
-
 bool Shader::didCompile(GLuint a_shader)
 {
 	GLint _didCompile;

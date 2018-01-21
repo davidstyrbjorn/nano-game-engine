@@ -1,6 +1,7 @@
 #include"../include/graphics/Window.h"
 
 #include"../include/math/Vector2.h"
+#include"../include/CoreConfig.h"
 
 #include<GLFW\glfw3.h>
 
@@ -8,6 +9,8 @@ namespace nano { namespace graphics {
 
 	Window::Window(const math::Vector2 & a_windowSize, const std::string & a_windowCaption)
 	{
+		CoreConfig::Instance()->SetWindowSize(a_windowSize);
+
 		// Init glfw
 		if (!glfwInit())
 			std::cout << "GLFW init error" << std::endl;
@@ -20,6 +23,7 @@ namespace nano { namespace graphics {
 
 	Window::~Window()
 	{
+
 		glfwDestroyWindow(m_glfwWindow);
 	}
 

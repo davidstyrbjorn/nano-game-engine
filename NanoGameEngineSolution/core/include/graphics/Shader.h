@@ -22,9 +22,6 @@ namespace nano { namespace graphics {
 		// Constructor with path to shader file
 		Shader(std::string a_vertexShaderPath, std::string a_fragmentShaderPath);
 
-		// Constructor with the actual char* data
-		Shader(const char* a_vertexData, const char* a_fragmentData);
-
 		// Compiles the shader
 		void CompileShader();
 
