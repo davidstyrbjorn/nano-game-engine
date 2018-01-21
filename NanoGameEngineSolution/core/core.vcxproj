@@ -121,6 +121,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="include\sound\SoundBuffer.cpp" />
     <ClCompile Include="source\Clock.cpp" />
     <ClCompile Include="source\Random.cpp" />
     <ClCompile Include="source\SoundComponent.cpp" />
@@ -178,7 +179,6 @@
     <ClInclude Include="include\sound\SoundBuffer.h" />
     <ClInclude Include="include\sound\NanoOpenAL.h" />
     <ClInclude Include="include\sound\SoundSource.h" />
-    <ClInclude Include="source\SoundBuffer.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

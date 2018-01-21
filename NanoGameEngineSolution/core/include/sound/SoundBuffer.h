@@ -1,26 +1,23 @@
 #pragma once
 
-/** unsigned 32-bit integer */
-typedef unsigned int ALuint;
-
 namespace nano { namespace sound { 
 
 	class SoundBuffer {
 	private:
-		ALuint buffer;
-
+		unsigned int buffer;
+	
 	public:
 		// Constructor
 		SoundBuffer();
 		
 		// Destructor 
 		~SoundBuffer();
-
+		
 		// Sets the sound buffers data 
-		void setData(int a_format, char* a_data, int a_size, int a_sampleRate);
-
+		void SetData(int a_format, char* a_data, int a_size, int a_sampleRate);
+		
 		// Returns sound buffer
-		ALuint getBufferId() const { return buffer; }
+		unsigned int GetBufferId() const { return buffer; }
 	};
 
 } } 

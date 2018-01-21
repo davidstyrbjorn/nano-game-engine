@@ -27,6 +27,11 @@
 #include"include\opengl\VertexArrayObject.h"
 #include"include\opengl\VertexBuffer.h"
 
+// Sound
+#include"include\sound\SoundBuffer.h"
+#include"include\sound\SoundSource.h"
+#include"include\sound\NanoOpenAL.h"
+
 // Other
 #include"include\Random.h"
 #include"include\Clock.h"
@@ -60,6 +65,18 @@ int main()
 	entity3->AddComponent(new ecs::RectangleComponent(math::Vector2(200, 100), math::Vector4(1, 0.5, 0.5, 1)));
 	entity3->m_transform->position = math::Vector2(400, 400);
 
+	ALCdevice *device = alcOpenDevice(nullptr);
+	ALCcontext *context = alcCreateContext(device, nullptr);
+	alcMakeContextCurrent(context);
+
+	// Loading .wav file
+	int format, size, sampleRate, channel, bps;
+	char* data = loadWAV("D:\\temp\\sound.wav", channel, sampleRate, bps, size, format);
+
+	sound::SoundBuffer* buffer = new sound::SoundBuffer();
+	buffer->SetData(format, data, size, sampleRate);
+	sound::SoundSource* source = new sound::SoundSource(buffer->GetBufferId());
+
 	entity3->Start();
 	entity2->Start();
 	entity->Start();
@@ -72,7 +89,7 @@ int main()
 		for (nano::Event _event : inputObject->GetEvents()) {
 			if (_event.type == EventType::MOUSE_PRESSED) {
 				if (_event.key == NANO_MOUSE_BUTTON_RIGHT) {
-					std::cout << "Be Right Back" << std::endl;
+					source->Play();
 				}
 			}
 			if (_event.type == nano::EventType::KEY_PRESSED) {

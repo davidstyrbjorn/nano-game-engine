@@ -1,10 +1,9 @@
 #pragma once
 
 #include"ECS.h"
+#include"Entity.h"
 
 namespace nano { namespace ecs { 
-
-	class Entity;
 
 	class Component {
 	protected:
