@@ -126,11 +126,13 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="source\EditorCore.cpp" />
+    <ClCompile Include="source\EntityManagerSystem.cpp" />
     <ClCompile Include="source\WindowSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\EditorCore.h" />
     <ClInclude Include="include\systems\EditorSystem.h" />
+    <ClInclude Include="include\systems\EntityManagerSystem.h" />
     <ClInclude Include="include\systems\WindowSystem.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

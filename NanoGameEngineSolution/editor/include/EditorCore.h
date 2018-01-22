@@ -6,6 +6,7 @@
 
 // Editor classes
 #include"systems\WindowSystem.h"
+#include"systems\EntityManagerSystem.h"
 
 namespace nano { namespace editor { 
 
@@ -13,6 +14,7 @@ namespace nano { namespace editor {
 	private:
 		// Editor systems 
 		WindowSystem *m_windowSystem;
+		EntityManagerSystem *m_entityManagerSystem;
 
 	public:
 		// Default constructor

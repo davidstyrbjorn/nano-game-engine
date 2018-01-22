@@ -4,6 +4,7 @@
 #include<vector>
 #include"ECS.h"
 #include"components\TransformComponent.h"
+#include"../graphics/Renderable.h"
 
 namespace nano { namespace ecs {
 

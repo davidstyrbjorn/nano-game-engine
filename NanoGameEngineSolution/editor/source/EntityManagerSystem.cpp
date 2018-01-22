@@ -1,0 +1,49 @@
+#pragma once
+
+#include"../include/systems/EntityManagerSystem.h"
+
+namespace nano { namespace editor {
+
+	EntityManagerSystem* EntityManagerSystem::_instance = nullptr;
+	EntityManagerSystem* EntityManagerSystem::Instance()
+	{
+		if (_instance == nullptr)
+			_instance = new EntityManagerSystem();
+		return _instance;
+	}
+
+	void EntityManagerSystem::AddNewEntity(ecs::Entity * a_entityToAdd)
+	{
+		m_entityList.push_back(a_entityToAdd);
+	}
+
+	std::vector<ecs::Entity*>& EntityManagerSystem::GetEntityList()
+	{
+		return m_entityList;
+	}
+
+	void EntityManagerSystem::Start()
+	{
+		for (ecs::Entity* entity : m_entityList) {
+			entity->Start();
+		}
+	}
+
+	void EntityManagerSystem::Update()
+	{
+		// Presumebly call update on all the entities
+		for (ecs::Entity *entity : m_entityList) {
+			entity->Update();
+			std::cout << "called update on " << entity->GetID() << std::endl;
+		}
+	}
+
+	void EntityManagerSystem::Quit()
+	{
+		for (std::vector<ecs::Entity*>::iterator _it = m_entityList.begin(); _it != m_entityList.end(); ++_it) {
+			delete (*_it);
+		}
+		m_entityList.clear();
+	}
+
+} }
