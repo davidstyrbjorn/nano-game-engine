@@ -22,6 +22,16 @@ namespace nano {
 		return s_windowSize;
 	}
 
+	void CoreConfig::SetBackgroundColor(const math::Vector3 & a_color)
+	{
+		s_backgroundColor = a_color;
+	}
+
+	const math::Vector3 CoreConfig::GetBackgroundColor()
+	{
+		return s_backgroundColor;
+	}
+
 	void CoreConfig::SetShaderPaths(std::string a_vertex, std::string a_fragment)
 	{
 		m_vertexShaderPath = a_vertex;

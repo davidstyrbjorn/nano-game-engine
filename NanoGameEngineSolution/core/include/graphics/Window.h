@@ -8,6 +8,7 @@ namespace nano {
 	namespace math {
 		class Vector2;
 	}
+	class CoreConfig;
 }
 
 namespace nano { namespace graphics { 
@@ -27,10 +28,13 @@ namespace nano { namespace graphics {
 
 		// Public methods (getters)
 		const bool IsOpen();
-		const math::Vector2& GetWindowSize();
 		const GLFWwindow* GetGLFWwindow();
 
-	protected:
+		// GLFW callbacks
+		static friend void window_size_callback(GLFWwindow* window, int width, int height);
+
+	private:
+		CoreConfig *config;
 		GLFWwindow *m_glfwWindow;
 	};
 

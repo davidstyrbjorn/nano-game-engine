@@ -30,12 +30,12 @@ namespace nano { namespace ecs {
 		//////////
 		// \brief Implementation class will override this to start the managed entities
 		// \brief Engine will override this to start the entities while editor will not
-		virtual void Start() { }
+		//virtual void Start() { }
 
 		//////////
 		// \brief Implementation class will override this to update the managed entities
 		// \brief Engine will override this to update entities run time while editor will not
-		virtual void Update() { } 
+		//virtual void Update() { } 
 	};
 	
 } }

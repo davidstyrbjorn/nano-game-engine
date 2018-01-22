@@ -1,6 +1,7 @@
 #pragma once
 
-#include"math/Vector2.h"
+#include"math\Vector2.h"
+#include"math\Vector3.h"
 #include"graphics\Camera.h"
 
 #include<string>
@@ -22,6 +23,7 @@ namespace nano {
 	private:
 		// Window
 		math::Vector2 s_windowSize;
+		math::Vector3 s_backgroundColor = math::Vector3(0.2f, 0.2f, 0.2f);
 
 		// Renderer
 		std::string m_vertexShaderPath, m_fragmentShaderPath;
@@ -30,6 +32,8 @@ namespace nano {
 		// Window
 		void SetWindowSize(const math::Vector2& a_windowSize);
 		const math::Vector2 GetWindowSize();
+		void SetBackgroundColor(const math::Vector3& a_color);
+		const math::Vector3 GetBackgroundColor();
 		
 		// Renderer
 		void SetShaderPaths(std::string a_vertex, std::string a_fragment);

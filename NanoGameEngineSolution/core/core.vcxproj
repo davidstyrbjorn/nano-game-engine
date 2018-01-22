@@ -136,7 +136,6 @@
     <ClCompile Include="include\ecs\components\SoundComponent.cpp" />
     <ClCompile Include="source\Camera.cpp" />
     <ClCompile Include="source\Clock.cpp" />
-    <ClCompile Include="source\CoreEntryPoint.cpp" />
     <ClCompile Include="source\Random.cpp" />
     <ClCompile Include="source\SoundBuffer.cpp" />
     <ClCompile Include="source\SoundContextDevice.cpp" />
@@ -201,7 +200,6 @@
     <ClInclude Include="include\sound\NanoOpenAL.h" />
     <ClInclude Include="include\sound\SoundContextDevice.h" />
     <ClInclude Include="include\sound\SoundSource.h" />
-    <ClInclude Include="include\CoreEntryPoint.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

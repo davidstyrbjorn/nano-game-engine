@@ -1,29 +1,28 @@
 #pragma once
 
-// Base
-#include<CoreEntryPoint.h>
-
 // Classes from core
 #include<graphics\GraphicsInclude.h>
+#include<math\MathInclude.h>
 
 // Editor classes
-#include"graphics\EditorWindow.h"
+#include"systems\WindowSystem.h"
 
 namespace nano { namespace editor { 
 
-	class EditorEntryPoint : public CoreEntryPoint {
+	class EditorCore {
 	private:
-		EditorWindow *m_window;
+		// Editor systems 
+		WindowSystem *m_windowSystem;
 
 	public:
 		// Default constructor
-		EditorEntryPoint();
+		EditorCore();
 
 		// Destructor
-		~EditorEntryPoint();
+		~EditorCore();
 
 		// Initialize the editor
-		void EditorInit();
+		void Init();
 
 		// Main editor loop this is the root of the program
 		void MainLoop();

@@ -1,8 +1,8 @@
-#include"include/EditorEntryPoint.h"
+#include"include/EditorCore.h"
 
 int main()
 {
-	nano::editor::EditorEntryPoint *editor = new nano::editor::EditorEntryPoint();
+	nano::editor::EditorCore* editor = new nano::editor::EditorCore();
 
 	delete editor;
 
