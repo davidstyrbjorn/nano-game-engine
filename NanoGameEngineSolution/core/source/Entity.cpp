@@ -39,9 +39,8 @@ namespace nano { namespace ecs {
 
 		// Check if a_componentToAdd was a renderable component
 		if (dynamic_cast<graphics::Renderable*>(a_componentToAdd) != nullptr) {
-			// It was wow
+			// It was wow! set our renderable component pointer to this 
 			m_renderableComponent = dynamic_cast<graphics::Renderable*>(a_componentToAdd);
-			std::cout << "Added renderable" << std::endl;
 		}
 
 		return a_componentToAdd;

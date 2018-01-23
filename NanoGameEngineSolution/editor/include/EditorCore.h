@@ -3,11 +3,14 @@
 // Classes from core
 #include<graphics\GraphicsInclude.h>
 #include<math\MathInclude.h>
+#include<CoreConfig.h>
+#include<Clock.h>
 
 // Editor classes
 #include"systems\WindowSystem.h"
 #include"systems\EntityManagerSystem.h"
 #include"systems\RendererSystem.h"
+#include"systems\EditorWidgetSystem.h"
 
 namespace nano { namespace editor { 
 
@@ -17,6 +20,11 @@ namespace nano { namespace editor {
 		WindowSystem *m_windowSystem;
 		EntityManagerSystem *m_entityManagerSystem;
 		RendererSystem *m_rendererSystem;
+		EditorWidgetSystem *m_editorWidgetSystem;
+		CoreConfig *m_config;
+
+		// Other
+		Clock m_fpsClock;
 
 	public:
 		// Default constructor

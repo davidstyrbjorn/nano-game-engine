@@ -33,6 +33,7 @@ namespace nano { namespace editor {
 		// Entity handling
 		void AddNewEntity(ecs::Entity* a_entityToAdd);
 		std::vector<ecs::Entity*> &GetEntityList();
+		std::vector<ecs::Entity*> GetEntityListCopy();
 
 		// EditorSystem base class
 		void Start() override;

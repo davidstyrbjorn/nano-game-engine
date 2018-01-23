@@ -11,21 +11,21 @@ namespace nano { namespace graphics {
 
 	Window::Window(const math::Vector2 & a_windowSize, const std::string & a_windowCaption)
 	{
-		CoreConfig::Instance()->SetWindowSize(a_windowSize);
 
 		// Init glfw
 		if (!glfwInit())
 			std::cout << "GLFW init error" << std::endl;
-
 		m_glfwWindow = glfwCreateWindow(a_windowSize.x, a_windowSize.y, a_windowCaption.c_str(), nullptr, nullptr);
 		glfwMakeContextCurrent(m_glfwWindow);
 
 		// Callbacks
 		glfwSetWindowSizeCallback(m_glfwWindow, window_size_callback);
 
+		glfwSwapInterval(0); // @ what does this do vs not doing it?
 		glViewport(0, 0, a_windowSize.x, a_windowSize.y);
-
+		
 		config = CoreConfig::Instance();
+		config->SetWindowSize(a_windowSize);
 	}
 
 	Window::~Window()

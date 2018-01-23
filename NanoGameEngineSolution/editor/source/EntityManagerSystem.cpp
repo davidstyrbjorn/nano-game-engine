@@ -22,6 +22,12 @@ namespace nano { namespace editor {
 		return m_entityList;
 	}
 
+	std::vector<ecs::Entity*> EntityManagerSystem::GetEntityListCopy()
+	{
+		std::vector<ecs::Entity*> _list = m_entityList;
+		return _list;
+	}
+
 	void EntityManagerSystem::Start()
 	{
 		for (ecs::Entity* entity : m_entityList) {

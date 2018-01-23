@@ -8,6 +8,11 @@
 
 #include<graphics\GraphicsInclude.h>
 
+#include"../include/DearImGui/imgui.h"
+#include"../include/DearImGui/imgui_glfw.h"
+
+#include<GLFW\glfw3.h>
+
 namespace nano { namespace editor { 
 
 	EditorCore::~EditorCore()
@@ -15,6 +20,7 @@ namespace nano { namespace editor {
 		// Call Quit on every system
 		m_windowSystem->Quit();
 		m_entityManagerSystem->Quit();
+		m_editorWidgetSystem->Quit();
 	}
 
 	EditorCore::EditorCore()
@@ -24,9 +30,12 @@ namespace nano { namespace editor {
 
 	void EditorCore::Init()
 	{
-		// Start every system
+		m_config = CoreConfig::Instance();
+		m_config->SetShaderPaths("../../vertex.txt", "../../fragment.txt");
 
-		// Window System
+		// Start every editor system
+
+		// Window System (1200 by 800)
 		m_windowSystem = WindowSystem::Instance();
 		m_windowSystem->Start();
 
@@ -38,12 +47,20 @@ namespace nano { namespace editor {
 		m_rendererSystem = RendererSystem::Instance();
 		m_rendererSystem->Start();
 
+		// Editor Widget System
+		m_editorWidgetSystem = EditorWidgetSystem::Instance();
+		m_editorWidgetSystem->Start();
+
+		/////////////////////////////////////////////////////////////////////
+
 		// Test
 		//ecs::Entity* testEntity = new ecs::Entity();
 		//testEntity->Start();
-		//testEntity->AddComponent(new ecs::RectangleComponent(math::Vector2(20, 20), math::Vector4(1, 1, 1, 1)))->Start();
+		//testEntity->AddComponent(new ecs::RectangleComponent(math::Vector2(100, 100), math::Vector4(0.4, 0.1, 0.9, 1)))->Start();
 		//
 		//m_entityManagerSystem->AddNewEntity(testEntity);
+
+		/////////////////////////////////////////////////////////////////////
 
 		// Start the main loop method
 		this->MainLoop();
@@ -61,8 +78,13 @@ namespace nano { namespace editor {
 
 			// Rendering
 			m_rendererSystem->GetSimpleRenderer().Begin();
+			m_editorWidgetSystem->Begin();
+
 			m_rendererSystem->Update();
+			m_editorWidgetSystem->Update();
+
 			m_rendererSystem->GetSimpleRenderer().Flush(); 
+			m_editorWidgetSystem->Flush();
 
 			// Update the entity manager system
 			m_entityManagerSystem->Update();

@@ -7,6 +7,9 @@ namespace nano {
 	namespace graphics {
 		class SimpleRenderer;
 	}
+	namespace editor {
+		class EntityManagerSystem;
+	}
 }
 
 namespace nano { namespace editor { 
@@ -14,7 +17,7 @@ namespace nano { namespace editor {
 	class RendererSystem : public EditorSystem {
 	private:
 		// Private constructor (singleton)
-		RendererSystem();
+		RendererSystem() { }
 		
 		// The one sole instance
 		static RendererSystem* _instance;
@@ -25,6 +28,7 @@ namespace nano { namespace editor {
 
 	private:
 		graphics::SimpleRenderer* m_renderer;
+		EntityManagerSystem* m_entityManager;
 
 	public:
 		// EditorSystem base class

@@ -2,6 +2,8 @@
 
 #include<graphics\GraphicsInclude.h>
 
+#include"../include/systems/EntityManagerSystem.h"
+
 namespace nano { namespace editor { 
 
 	RendererSystem* RendererSystem::_instance = nullptr;
@@ -14,12 +16,22 @@ namespace nano { namespace editor {
 
 	void RendererSystem::Start()
 	{
+		// Create the renderer (from core)
 		m_renderer = new graphics::SimpleRenderer();
+	
+		// Get the entity manager
+		m_entityManager = EntityManagerSystem::Instance();
 	}
 
 	void RendererSystem::Update()
 	{
 		// Submit every entity to be rendered from the entity manager system here!
+		std::vector<ecs::Entity*> entityList = m_entityManager->GetEntityListCopy();
+		for (ecs::Entity* entity : entityList) {
+			if (entity->GetRenderableComponent() != nullptr) {
+				m_renderer->Submit(entity->GetRenderableComponent());
+			}
+		}
 	}
 
 	void RendererSystem::Quit()
