@@ -26,8 +26,8 @@ namespace nano { namespace editor {
 
 	void WindowSystem::Quit()
 	{
-		std::cout << "Window system exited correctly" << std::endl;
 		delete m_window;
+		std::cout << "Window system quit correctly" << std::endl;
 	}
 
 	graphics::Window & WindowSystem::GetWindow()

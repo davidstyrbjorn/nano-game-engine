@@ -25,7 +25,6 @@ namespace nano { namespace graphics {
 		m_shader->SetUniformMat4f("projection_matrix", math::Matrix4x4::Orthographic(0, c->GetWindowSize().x, c->GetWindowSize().y, 0, -1, 1));
 
 		m_camera = new OrthographicCamera();
-		//m_shader->SetUniformMat4f("view_matrix", m_camera->GetViewMatrix());
 
 		// Triangle
 		m_triangleVAO = new opengl::VertexArrayObject();
@@ -145,6 +144,7 @@ namespace nano { namespace graphics {
 	{
 		m_shader->Bind();
 
+		// Update view_matrix(camera view)
 		m_shader->SetUniformMat4f("view_matrix", m_camera->GetViewMatrix());
 		
 		if (m_triangleCount != 0) {

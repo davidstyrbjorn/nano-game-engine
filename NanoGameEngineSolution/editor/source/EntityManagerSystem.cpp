@@ -34,7 +34,7 @@ namespace nano { namespace editor {
 		// Presumebly call update on all the entities
 		for (ecs::Entity *entity : m_entityList) {
 			entity->Update();
-			std::cout << "called update on " << entity->GetID() << std::endl;
+			//std::cout << "called update on " << entity->GetID() << std::endl;
 		}
 	}
 
@@ -44,6 +44,8 @@ namespace nano { namespace editor {
 			delete (*_it);
 		}
 		m_entityList.clear();
+
+		std::cout << "Entity Manager system quit correctly" << std::endl;
 	}
 
 } }

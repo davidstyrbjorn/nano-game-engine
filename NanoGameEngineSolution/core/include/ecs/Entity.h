@@ -17,6 +17,9 @@ namespace nano { namespace ecs {
 
 		std::vector<Component*> m_componentsBag;
 
+		// Keeping track of the renderable component attatched to entity
+		graphics::Renderable *m_renderableComponent;
+
 	public:
 		// Every entity has a transform component
 		Transform *m_transform;
@@ -42,7 +45,7 @@ namespace nano { namespace ecs {
 		//////////
 		// \brief Pushes back component into components bag/list
 		//
-		void AddComponent(Component* a_componentToAdd);
+		Component* AddComponent(Component* a_componentToAdd);
 
 		//////////
 		// \brief Returns the component of type ComponentType if it exists in the components bag/list
@@ -66,29 +69,15 @@ namespace nano { namespace ecs {
 		//////////
 		// Member getters
 		//////////
-
-		//////////
-		// \brief Returns a string copy of the entities ID handle
-		//
 		inline std::string GetID() { return m_id; }
-
-		//////////
-		// \brief Returns a integer representation of the entities state
-		//
 		int GetState();
+		graphics::Renderable* GetRenderableComponent();
 
 		//////////
 		// Member setters
 		//////////
 		
-		//////////
-		// \brief Sets entities ID handle
-		//
 		void SetID(const std::string &a_id);
-
-		//////////
-		// \brief Sets entities state
-		//
 		void SetState(const int a_state);
 	};
 	

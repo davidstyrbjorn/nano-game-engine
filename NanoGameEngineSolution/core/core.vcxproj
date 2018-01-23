@@ -87,7 +87,7 @@
       <AdditionalDependencies>glew32s.lib;opengl32.lib;glfw3.lib;OpenAL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Lib>
-      <AdditionalLibraryDirectories>D:\NanoGameEngine\NanoGameEngine\NanoGameEngineSolution\dependencies\glew\lib\Release\Win32;D:\NanoGameEngine\NanoGameEngine\NanoGameEngineSolution\dependencies\glfw\lib-vc2015;D:\NanoGameEngine\NanoGameEngine\NanoGameEngineSolution\dependencies\OpenAL\libs\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)\dependencies\glew\lib\Release\Win32;$(SolutionDir)\dependencies\glfw\lib-vc2015;$(SolutionDir)\dependencies\OpenAL\libs\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>opengl32.lib;OpenAL32.lib;glew32s.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
@@ -114,7 +114,7 @@
       <AdditionalDependencies>glew32s.lib;opengl32.lib;glfw3.lib;OpenAL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Lib>
-      <AdditionalLibraryDirectories>D:\NanoGameEngine\NanoGameEngine\NanoGameEngineSolution\dependencies\glew\lib\Release\Win32;D:\NanoGameEngine\NanoGameEngine\NanoGameEngineSolution\dependencies\glfw\lib-vc2015;D:\NanoGameEngine\NanoGameEngine\NanoGameEngineSolution\dependencies\OpenAL\libs\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)\dependencies\glew\lib\Release\Win32;$(SolutionDir)\dependencies\glfw\lib-vc2015;$(SolutionDir)\dependencies\OpenAL\libs\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>opengl32.lib;OpenAL32.lib;glew32s.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>

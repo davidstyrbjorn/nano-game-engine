@@ -24,16 +24,27 @@ namespace nano { namespace ecs {
 
 	Entity::~Entity()
 	{
+		// pointer to m_renderableComponent does not need to be freed
+		// it will be freed afer we're done freeing every component in m_componentsBag!
 		for (std::vector<Component*>::iterator it = m_componentsBag.begin(); it != m_componentsBag.end(); ++it) {
 			delete (*it);
 		}
 		m_componentsBag.clear();
 	}
 
-	void Entity::AddComponent(Component * a_componentToAdd)
+	Component* Entity::AddComponent(Component * a_componentToAdd)
 	{
 		a_componentToAdd->SetEntityOwner(this);
 		m_componentsBag.push_back(a_componentToAdd);
+
+		// Check if a_componentToAdd was a renderable component
+		if (dynamic_cast<graphics::Renderable*>(a_componentToAdd) != nullptr) {
+			// It was wow
+			m_renderableComponent = dynamic_cast<graphics::Renderable*>(a_componentToAdd);
+			std::cout << "Added renderable" << std::endl;
+		}
+
+		return a_componentToAdd;
 	}
 
 	void Entity::Start()
@@ -68,6 +79,11 @@ namespace nano { namespace ecs {
 	int Entity::GetState()
 	{
 		return m_state;
+	}
+
+	graphics::Renderable * Entity::GetRenderableComponent()
+	{
+		return m_renderableComponent;
 	}
 
 	void Entity::SetID(const std::string & a_id)

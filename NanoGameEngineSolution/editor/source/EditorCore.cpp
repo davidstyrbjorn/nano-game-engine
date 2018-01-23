@@ -6,6 +6,8 @@
 #include<ecs\components\TransformComponent.h>
 #include<ecs\components\TriangleComponent.h>
 
+#include<graphics\GraphicsInclude.h>
+
 namespace nano { namespace editor { 
 
 	EditorCore::~EditorCore()
@@ -32,6 +34,17 @@ namespace nano { namespace editor {
 		m_entityManagerSystem = EntityManagerSystem::Instance();
 		m_entityManagerSystem->Start();
 
+		// Renderer System
+		m_rendererSystem = RendererSystem::Instance();
+		m_rendererSystem->Start();
+
+		// Test
+		//ecs::Entity* testEntity = new ecs::Entity();
+		//testEntity->Start();
+		//testEntity->AddComponent(new ecs::RectangleComponent(math::Vector2(20, 20), math::Vector4(1, 1, 1, 1)))->Start();
+		//
+		//m_entityManagerSystem->AddNewEntity(testEntity);
+
 		// Start the main loop method
 		this->MainLoop();
 	}
@@ -45,6 +58,11 @@ namespace nano { namespace editor {
 		{
 			// Pre-frame 
 			m_windowSystem->GetWindow().Clear();
+
+			// Rendering
+			m_rendererSystem->GetSimpleRenderer().Begin();
+			m_rendererSystem->Update();
+			m_rendererSystem->GetSimpleRenderer().Flush(); 
 
 			// Update the entity manager system
 			m_entityManagerSystem->Update();
