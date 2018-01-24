@@ -1,6 +1,7 @@
 #include"../include/widgets/MenuBarWidget.h"
 
 #include<CoreConfig.h>
+#include<iostream>
 
 #include"../include/DearImGui/imgui.h"
 
@@ -25,6 +26,7 @@ namespace nano { namespace editor {
 	{
 		if (ImGui::BeginMainMenuBar()) 
 		{
+
 			if (ImGui::BeginMenu("File")) 
 			{
 				if (ImGui::Selectable("Save Level")) {

@@ -131,9 +131,12 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="source\EditorCore.cpp" />
     <ClCompile Include="source\EditorWidgetSystem.cpp" />
+    <ClCompile Include="source\EntityInspectorWidget.cpp" />
     <ClCompile Include="source\EntityManagerSystem.cpp" />
+    <ClCompile Include="source\EntitySelectWidget.cpp" />
     <ClCompile Include="source\MenuBarWidget.cpp" />
     <ClCompile Include="source\RendererSystem.cpp" />
+    <ClCompile Include="source\UnnamedWidget.cpp" />
     <ClCompile Include="source\UtilityWidget.cpp" />
     <ClCompile Include="source\WindowSystem.cpp" />
   </ItemGroup>
@@ -152,8 +155,12 @@
     <ClInclude Include="include\systems\RendererSystem.h" />
     <ClInclude Include="include\systems\WindowSystem.h" />
     <ClInclude Include="include\widgets\EditorWidget.h" />
+    <ClInclude Include="include\widgets\EntityInspectorWidget.h" />
+    <ClInclude Include="include\widgets\EntitySelectWidget.h" />
     <ClInclude Include="include\widgets\MenuBarWidget.h" />
+    <ClInclude Include="include\widgets\UnnamedWidget.h" />
     <ClInclude Include="include\widgets\UtilityWidget.h" />
+    <ClInclude Include="include\widgets\Widget.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

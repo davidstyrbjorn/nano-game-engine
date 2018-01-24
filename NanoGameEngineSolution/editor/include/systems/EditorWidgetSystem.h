@@ -5,6 +5,8 @@
 // Widgets include
 #include"../widgets/UtilityWidget.h"
 #include"../widgets/MenuBarWidget.h"
+#include"../widgets/EntitySelectWidget.h"
+#include"../widgets/UnnamedWidget.h"
 
 namespace nano { namespace editor { 
 
@@ -24,6 +26,8 @@ namespace nano { namespace editor {
 		// Widgets
 		MenuBarWidget m_menuBarWidget;
 		UtilityWidget m_utilityWidget;
+		EntitySelectWidget m_entitySelectWidget;
+		UnnamedWidget m_unnamedWidget;
 
 		// Methods
 		void SetupStyle();
