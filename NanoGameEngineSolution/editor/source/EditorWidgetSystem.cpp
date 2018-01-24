@@ -25,12 +25,14 @@ namespace nano { namespace editor {
 
 		// Call start on widget
 		m_menuBarWidget.Start();
+		m_utilityWidget.Start();
 	}
 
 	void EditorWidgetSystem::Update()
 	{
 		// Update every widget
 		m_menuBarWidget.Update();
+		m_utilityWidget.Update();
 	}
 
 	void EditorWidgetSystem::Quit()
@@ -49,6 +51,7 @@ namespace nano { namespace editor {
 	{
 		// Tell every widget to render their shit
 		m_menuBarWidget.Render();
+		m_utilityWidget.Render();
 
 		// Tell ImGui to render 
 		ImGui::Render();
@@ -56,12 +59,12 @@ namespace nano { namespace editor {
 
 	void EditorWidgetSystem::SetupStyle()
 	{
-		ImGuiIO &io = ImGui::GetIO();
-
-		io.Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\arial.ttf", 12);
-		io.Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\arial.ttf", 10);
-		io.Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\arial.ttf", 14);
-		io.Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\arial.ttf", 18);		
+		//ImGuiIO &io = ImGui::GetIO();
+		//
+		//io.Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\arial.ttf", 12);
+		//io.Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\arial.ttf", 10);
+		//io.Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\arial.ttf", 14);
+		//io.Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\arial.ttf", 18);		
 
 		ImGuiStyle& style = ImGui::GetStyle();
 

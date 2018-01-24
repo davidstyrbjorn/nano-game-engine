@@ -25,19 +25,25 @@ namespace nano { namespace editor {
 	{
 		if (ImGui::BeginMainMenuBar()) 
 		{
-			if (ImGui::BeginMenu("File")) {
+			if (ImGui::BeginMenu("File")) 
+			{
+				if (ImGui::Selectable("Save Level")) {
+
+				}
+				if (ImGui::Selectable("Load Level")) {
+
+				}
 
 				ImGui::EndMenu();
 			}
-			if (ImGui::BeginMenu("Invoke")) {
-
+			if (ImGui::BeginMenu("Invoke")) 
+			{
 				if (ImGui::Selectable("Compile & Run")) {
 
 				}
 				if (ImGui::Selectable("Compile")) {
 
 				}
-
 				ImGui::EndMenu();
 			}
 

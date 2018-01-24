@@ -2,6 +2,8 @@
 
 #include"EditorSystem.h"
 
+// Widgets include
+#include"../widgets/UtilityWidget.h"
 #include"../widgets/MenuBarWidget.h"
 
 namespace nano { namespace editor { 
@@ -21,6 +23,7 @@ namespace nano { namespace editor {
 	private:
 		// Widgets
 		MenuBarWidget m_menuBarWidget;
+		UtilityWidget m_utilityWidget;
 
 		// Methods
 		void SetupStyle();
