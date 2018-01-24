@@ -3,10 +3,12 @@
 #include"EditorSystem.h"
 
 // Widgets include
+#include"../widgets/UtilitySelectWidget.h"
 #include"../widgets/UtilityWidget.h"
 #include"../widgets/MenuBarWidget.h"
 #include"../widgets/EntitySelectWidget.h"
-#include"../widgets/UnnamedWidget.h"
+#include"../widgets/EntityInspectorWidget.h"
+#include"../widgets/ConsoleWidget.h"
 
 namespace nano { namespace editor { 
 
@@ -26,8 +28,10 @@ namespace nano { namespace editor {
 		// Widgets
 		MenuBarWidget m_menuBarWidget;
 		UtilityWidget m_utilityWidget;
+		UtilitySelectWidget m_utilitySelectWidget;
 		EntitySelectWidget m_entitySelectWidget;
-		UnnamedWidget m_unnamedWidget;
+		EntityInspectorWidget m_entityInspectorWidget;
+		ConsoleWidget m_consoleWidget;
 
 		// Methods
 		void SetupStyle();
@@ -41,15 +45,6 @@ namespace nano { namespace editor {
 		// Render routines
 		void Begin();
 		void Flush();
-
-		/*
-		// The widget to be constant on the screen
-		void ShowWorldWidget();
-		void ShowEntityInspector();
-		void ShowConsoleWidget
-		void ShowUtilitySelectWidget();
-		void ShowUtilityInspectorWidget();
-		*/
 	};
 
 } }

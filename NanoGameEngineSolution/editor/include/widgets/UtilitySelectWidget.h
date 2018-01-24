@@ -9,12 +9,12 @@ namespace nano {
 
 namespace nano { namespace editor {  
 
-	class UnnamedWidget : EditorWidget {
+	class UtilitySelectWidget : EditorWidget {
 	private:
 		CoreConfig* m_config;
 
 	public:
-		UnnamedWidget();
+		UtilitySelectWidget();
 
 		// Base methods
 		void Start() override;

@@ -28,16 +28,17 @@ namespace nano { namespace editor {
 
 		// Calculate size
 		ImVec2 size;
-		size.y = (_windowSize.y * UNNAMED_WIDGET_HEIGHT_RATIO); // Make sure height is the ratio based on the current window height
-		size.x = UNNAMED_WIDGET_WIDTH;
+		size.y = (_windowSize.y * ENTITY_INSPECTOR_HEIGHT_RATIO); // Make sure height is the ratio based on the current window height
+		size.x = ENTITY_INSPECTOR_WIDTH;
 
 		// Calculate position
 		ImVec2 pos;
-		pos.x = 0;
-		pos.y = MAIN_MENU_BAR_HEIGHT + (_windowSize.y * ENTITY_SELECT_HEIGHT_RATIO);
+		pos.x = _windowSize.x - size.x;
+		pos.y = MAIN_MENU_BAR_HEIGHT;
 
 		ImGui::SetNextWindowPos(pos);
-		ImGui::Begin("Unnamed", false, size, 1.0f,
+		ImGui::SetNextWindowSize(size);
+		ImGui::Begin("Entity Inspector", false, size, 1.0f,
 			ImGuiWindowFlags_::ImGuiWindowFlags_NoResize |
 			ImGuiWindowFlags_::ImGuiWindowFlags_NoMove |
 			ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse

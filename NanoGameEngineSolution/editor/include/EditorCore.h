@@ -11,6 +11,7 @@
 #include"systems\EntityManagerSystem.h"
 #include"systems\RendererSystem.h"
 #include"systems\EditorWidgetSystem.h"
+#include"systems\InputSystem.h"
 
 namespace nano { namespace editor { 
 
@@ -18,6 +19,7 @@ namespace nano { namespace editor {
 	private:
 		// Editor systems 
 		WindowSystem *m_windowSystem;
+		InputSystem *m_inputSystem;
 		EntityManagerSystem *m_entityManagerSystem;
 		RendererSystem *m_rendererSystem;
 		EditorWidgetSystem *m_editorWidgetSystem;

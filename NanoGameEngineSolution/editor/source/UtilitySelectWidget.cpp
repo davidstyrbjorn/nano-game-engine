@@ -1,4 +1,4 @@
-#include"../include/widgets/UnnamedWidget.h"
+#include"../include/widgets/UtilitySelectWidget.h"
 
 #include<CoreConfig.h>
 #include<math\Vector2.h>
@@ -7,22 +7,22 @@
 
 namespace nano { namespace editor {
 
-	UnnamedWidget::UnnamedWidget()
+	UtilitySelectWidget::UtilitySelectWidget()
 	{
 		m_config = CoreConfig::Instance();
 	}
 
-	void UnnamedWidget::Start()
+	void UtilitySelectWidget::Start()
 	{
 
 	}
 
-	void UnnamedWidget::Update()
+	void UtilitySelectWidget::Update()
 	{
 
 	}
 
-	void UnnamedWidget::Render()
+	void UtilitySelectWidget::Render()
 	{
 		math::Vector2 _windowSize = m_config->GetWindowSize();
 
@@ -37,7 +37,8 @@ namespace nano { namespace editor {
 		pos.y = MAIN_MENU_BAR_HEIGHT + (_windowSize.y * ENTITY_SELECT_HEIGHT_RATIO);
 
 		ImGui::SetNextWindowPos(pos);
-		ImGui::Begin("Unnamed", false, size, 1.0f,
+		ImGui::SetNextWindowSize(size);
+		ImGui::Begin("Utility Select", false, size, 1.0f,
 			ImGuiWindowFlags_::ImGuiWindowFlags_NoResize |
 			ImGuiWindowFlags_::ImGuiWindowFlags_NoMove |
 			ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse

@@ -144,7 +144,6 @@
     <ClCompile Include="source\IndexBuffer.cpp" />
     <ClCompile Include="source\Component.cpp" />
     <ClCompile Include="source\Entity.cpp" />
-    <ClCompile Include="source\Input.cpp" />
     <ClCompile Include="source\Matrix4x4.cpp" />
     <ClCompile Include="source\RectangleComponent.cpp" />
     <ClCompile Include="source\Renderable.cpp" />
@@ -182,7 +181,6 @@
     <ClInclude Include="include\graphics\Simple_Renderer.h" />
     <ClInclude Include="include\graphics\Vertex.h" />
     <ClInclude Include="include\graphics\Window.h" />
-    <ClInclude Include="include\Input.h" />
     <ClInclude Include="include\InputDefinitions.h" />
     <ClInclude Include="include\math\MathInclude.h" />
     <ClInclude Include="include\math\Matrix4x4.h" />

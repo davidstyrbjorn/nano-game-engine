@@ -5,6 +5,8 @@
 
 #include"../include/DearImGui/imgui.h"
 
+#include"../include/systems/EntityManagerSystem.h"
+
 namespace nano { namespace editor {
 
 	MenuBarWidget::MenuBarWidget()
@@ -45,6 +47,13 @@ namespace nano { namespace editor {
 				}
 				if (ImGui::Selectable("Compile")) {
 
+				}
+				ImGui::EndMenu();
+			}
+			if (ImGui::BeginMenu("Entity"))
+			{
+				if (ImGui::Selectable("Create New")) {
+					EntityManagerSystem::Instance()->CreateNewEntity("unnamed");
 				}
 				ImGui::EndMenu();
 			}

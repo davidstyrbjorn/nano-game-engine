@@ -28,6 +28,13 @@ namespace nano { namespace editor {
 		return _list;
 	}
 
+	void EntityManagerSystem::CreateNewEntity(std::string a_entityName)
+	{
+		ecs::Entity* newEntity = new ecs::Entity(a_entityName);
+		newEntity->Start();
+		AddNewEntity(newEntity);
+	}
+
 	void EntityManagerSystem::Start()
 	{
 		for (ecs::Entity* entity : m_entityList) {
@@ -40,7 +47,7 @@ namespace nano { namespace editor {
 		// Presumebly call update on all the entities
 		for (ecs::Entity *entity : m_entityList) {
 			entity->Update();
-			//std::cout << "called update on " << entity->GetID() << std::endl;
+			std::cout << "called update on " << entity->GetID() << std::endl;
 		}
 	}
 

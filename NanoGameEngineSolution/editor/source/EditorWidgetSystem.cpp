@@ -25,18 +25,26 @@ namespace nano { namespace editor {
 
 		// Call start on widget
 		m_menuBarWidget.Start();
-		m_utilityWidget.Start(); 
+		m_consoleWidget.Start();
+		
+		m_utilitySelectWidget.Start();
+		m_utilityWidget.Start();
+
 		m_entitySelectWidget.Start();
-		m_unnamedWidget.Start();
+		m_entityInspectorWidget.Start();
 	}
 
 	void EditorWidgetSystem::Update()
 	{
 		// Update every widget
 		m_menuBarWidget.Update();
+		m_consoleWidget.Update();
+
+		m_utilitySelectWidget.Update();
 		m_utilityWidget.Update();
+
 		m_entitySelectWidget.Update();
-		m_unnamedWidget.Update();
+		m_entitySelectWidget.Update();
 	}
 
 	void EditorWidgetSystem::Quit()
@@ -55,9 +63,13 @@ namespace nano { namespace editor {
 	{
 		// Tell every widget to render their shit
 		m_menuBarWidget.Render();
-		//m_utilityWidget.Render();
+		m_consoleWidget.Render();
+		
+		m_utilitySelectWidget.Render();
+		m_utilityWidget.Render();
+		
 		m_entitySelectWidget.Render();
-		m_unnamedWidget.Render();
+		m_entityInspectorWidget.Render();
 
 		// Tell ImGui to render 
 		ImGui::Render();

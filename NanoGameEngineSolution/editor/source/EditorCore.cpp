@@ -13,6 +13,8 @@
 
 #include<GLFW\glfw3.h>
 
+#include<InputDefinitions.h>
+
 namespace nano { namespace editor { 
 
 	EditorCore::~EditorCore()
@@ -38,6 +40,10 @@ namespace nano { namespace editor {
 		// Window System (1200 by 800)
 		m_windowSystem = WindowSystem::Instance();
 		m_windowSystem->Start();
+
+		// Create input system now that the window is up and running
+		m_inputSystem = InputSystem::Instance();
+		m_inputSystem->Start();
 
 		// Entity Manager System
 		m_entityManagerSystem = EntityManagerSystem::Instance();
@@ -68,6 +74,10 @@ namespace nano { namespace editor {
 
 	void EditorCore::MainLoop()
 	{
+		m_fpsClock.Reset();
+		m_fpsClock.Start();
+		int FPS = 0;
+
 		// Main editor loop 
 		// Here we update every system
 		// Here we control the editor at run time
@@ -76,6 +86,21 @@ namespace nano { namespace editor {
 			// Pre-frame 
 			m_windowSystem->GetWindow().Clear();
 
+			// Events stuff
+			m_inputSystem->Update();
+
+			for (InputEvent event : m_inputSystem->GetPolledEvents()) {
+				if (event.type == InputEventType::MOUSE_PRESSED) {
+					if (event.key == NANO_MOUSE_BUTTON_LEFT) {
+						std::cout << "LMB" << std::endl;
+					}
+					if (event.key == NANO_MOUSE_BUTTON_RIGHT) {
+						std::cout << "RMB" << std::endl;
+					}
+				}
+			}
+
+#pragma region		    RENDERING
 			// Rendering
 			m_rendererSystem->GetSimpleRenderer().Begin();
 			m_editorWidgetSystem->Begin();
@@ -85,11 +110,13 @@ namespace nano { namespace editor {
 
 			m_rendererSystem->GetSimpleRenderer().Flush(); 
 			m_editorWidgetSystem->Flush();
+#pragma endregion
 
 			// Update the entity manager system
 			m_entityManagerSystem->Update();
 
 			// Post-frame
+			m_inputSystem->FlushEvents();
 			m_windowSystem->GetWindow().Display();
 		}
 	}
