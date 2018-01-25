@@ -86,6 +86,15 @@ namespace nano { namespace editor {
 			// Pre-frame 
 			m_windowSystem->GetWindow().Clear();
 
+			for (InputEvent _event : m_inputSystem->GetPolledEvents()) {
+				if (_event.type == InputEventType::KEY_PRESSED) {
+					if (_event.key == NANO_KEY_SPACE)
+					{
+						std::cout << "shut the fuck up " << std::endl;
+					}
+				}
+			}
+
 			// Events stuff
 			m_inputSystem->Update();
 

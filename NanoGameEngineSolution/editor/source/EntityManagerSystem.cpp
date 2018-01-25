@@ -47,7 +47,6 @@ namespace nano { namespace editor {
 		// Presumebly call update on all the entities
 		for (ecs::Entity *entity : m_entityList) {
 			entity->Update();
-			std::cout << "called update on " << entity->GetID() << std::endl;
 		}
 	}
 

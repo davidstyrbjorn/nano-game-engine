@@ -6,6 +6,7 @@
 #include"../include/DearImGui/imgui.h"
 
 #include"../include/systems/EntityManagerSystem.h"
+#include"../include/systems/EditorWidgetSystem.h"
 
 namespace nano { namespace editor {
 
@@ -54,6 +55,12 @@ namespace nano { namespace editor {
 			{
 				if (ImGui::Selectable("Create New")) {
 					EntityManagerSystem::Instance()->CreateNewEntity("unnamed");
+					// Test case!
+					// Send this event to the event handler!
+					EntityEvent _event;
+					_event._type = EventTypes::CREATED_ENTITY;
+					_event._id = "unnamed";
+					EditorWidgetSystem::Instance()->GetEventHandler().AddEvent(_event);
 				}
 				ImGui::EndMenu();
 			}

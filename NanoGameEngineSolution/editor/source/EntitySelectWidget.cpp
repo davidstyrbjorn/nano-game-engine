@@ -5,11 +5,14 @@
 
 #include"../include/DearImGui/imgui.h"
 
+#include"../include/systems/EntityManagerSystem.h"
+
 namespace nano { namespace editor { 
 
 	EntitySelectWidget::EntitySelectWidget()
 	{
 		m_config = CoreConfig::Instance();
+		m_entityManager = EntityManagerSystem::Instance();
 	}
 
 	void EntitySelectWidget::Start() 
@@ -38,7 +41,12 @@ namespace nano { namespace editor {
 			ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse 
 		);
 
-		ImGui::Text("test");
+		// Title
+		ImGui::Text("Level Entities");
+
+		// Simple column-major list of entities
+		std::vector<ecs::Entity*> _list = m_entityManager->GetEntityList();
+		ImGui::Columns(//@@@@@@)
 
 		ImGui::End();
 	}

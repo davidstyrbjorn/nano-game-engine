@@ -50,6 +50,9 @@ namespace nano { namespace editor {
 		// Render routines
 		void Begin();
 		void Flush();
+
+		// Other methods
+		EventHandler& GetEventHandler();
 	};
 
 } }

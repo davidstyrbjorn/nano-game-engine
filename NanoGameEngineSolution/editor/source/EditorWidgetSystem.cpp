@@ -78,6 +78,11 @@ namespace nano { namespace editor {
 		ImGui::Render();
 	}
 
+	EventHandler & EditorWidgetSystem::GetEventHandler()
+	{
+		return *m_eventHandler;
+	}
+
 	void EditorWidgetSystem::SetupStyle()
 	{
 		//ImGuiIO &io = ImGui::GetIO();

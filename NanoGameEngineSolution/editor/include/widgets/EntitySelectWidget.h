@@ -5,6 +5,9 @@
 // FWD
 namespace nano {
 	class CoreConfig;
+	namespace editor {
+		class EntityManagerSystem;
+	}
 }
 
 
@@ -13,6 +16,7 @@ namespace nano { namespace editor {
 	class EntitySelectWidget : EditorWidget {
 	private:
 		CoreConfig* m_config;
+		EntityManagerSystem* m_entityManager;
 
 	public:
 		EntitySelectWidget();

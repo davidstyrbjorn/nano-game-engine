@@ -13,7 +13,7 @@ namespace nano { namespace editor {
 		EventTypes _type;
 	};
 
-	struct EntityEvent {
+	struct EntityEvent : BaseEvent {
 		std::string _id; // ID of the entity this event is handling
 	};
 
