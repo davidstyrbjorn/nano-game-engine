@@ -7,6 +7,8 @@
 #include"../include/DearImGui/imgui.h"
 #include"../include/DearImGui/imgui_glfw.h"
 
+#include<InputDefinitions.h>
+
 namespace nano { namespace editor {
 
 	InputSystem* InputSystem::_instance = nullptr;
@@ -44,6 +46,14 @@ namespace nano { namespace editor {
 	std::deque<InputEvent>& InputSystem::GetPolledEvents()
 	{
 		return m_polledEvents;
+	}
+
+	bool InputSystem::IsMouseButtonDown(int a_button)
+	{
+		if (a_button == NANO_MOUSE_BUTTON_LEFT)
+			return m_lmbDown;
+   else if (a_button == NANO_MOUSE_BUTTON_RIGHT)
+			return m_rmbDown;
 	}
 
 	void InputSystem::Quit()
@@ -84,8 +94,8 @@ namespace nano { namespace editor {
 		// Calling for imgui
 		ImGui_ImplGlfwGL3_MouseButtonCallback(window, button, action, mods);
 
+		InputSystem* temp = InputSystem::Instance();
 		if (action == GLFW_PRESS || action == GLFW_REPEAT) {
-			InputSystem* temp = InputSystem::Instance();
 
 			// Create the event
 			InputEvent _event;
@@ -95,6 +105,21 @@ namespace nano { namespace editor {
 
 			// Add the event to the polled events list
 			temp->m_polledEvents.push_back(_event);
+
+			// Mouse down logic, not mouse events
+			if (action == GLFW_PRESS) {
+				if (button == NANO_MOUSE_BUTTON_LEFT) 
+					temp->m_lmbDown = true;
+				if (button == NANO_MOUSE_BUTTON_RIGHT)
+					temp->m_rmbDown = true;
+			}
+		}
+		if (action == GLFW_RELEASE) {
+			// Mouse down logic
+			if (temp->m_lmbDown && button == NANO_MOUSE_BUTTON_LEFT)
+				temp->m_lmbDown = false;
+			if (temp->m_rmbDown && button == NANO_MOUSE_BUTTON_RIGHT)
+				temp->m_rmbDown = false;
 		}
 	}
 

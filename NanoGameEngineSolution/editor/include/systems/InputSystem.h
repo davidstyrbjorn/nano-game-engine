@@ -23,6 +23,7 @@ namespace nano { namespace editor {
 	class InputSystem : EditorSystem {
 	private:
 		std::deque<InputEvent> m_polledEvents; // list for current frames polled events
+		bool m_lmbDown = false, m_rmbDown = false;
 
 	private:
 		// Private contructor (singleton)
@@ -44,6 +45,8 @@ namespace nano { namespace editor {
 		void FlushEvents();
 		// Return this frames polled events
 		std::deque<InputEvent>& GetPolledEvents();
+		// m_rmbDown && m_lmbDown
+		bool IsMouseButtonDown(int a_button);
 
 		// GLFW callbacks
 		// GLFW callback functions

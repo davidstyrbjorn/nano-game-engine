@@ -135,6 +135,7 @@
     <ClCompile Include="source\EntityInspectorWidget.cpp" />
     <ClCompile Include="source\EntityManagerSystem.cpp" />
     <ClCompile Include="source\EntitySelectWidget.cpp" />
+    <ClCompile Include="source\EventHandler.cpp" />
     <ClCompile Include="source\InputSystem.cpp" />
     <ClCompile Include="source\MenuBarWidget.cpp" />
     <ClCompile Include="source\RendererSystem.cpp" />
@@ -151,6 +152,8 @@
     <ClInclude Include="include\DearImGui\stb_textedit.h" />
     <ClInclude Include="include\DearImGui\stb_truetype.h" />
     <ClInclude Include="include\EditorCore.h" />
+    <ClInclude Include="include\EventHandler.h" />
+    <ClInclude Include="include\Events.h" />
     <ClInclude Include="include\systems\EditorSystem.h" />
     <ClInclude Include="include\systems\EditorWidgetSystem.h" />
     <ClInclude Include="include\systems\EntityManagerSystem.h" />

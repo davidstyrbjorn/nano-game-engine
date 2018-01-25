@@ -89,17 +89,6 @@ namespace nano { namespace editor {
 			// Events stuff
 			m_inputSystem->Update();
 
-			for (InputEvent event : m_inputSystem->GetPolledEvents()) {
-				if (event.type == InputEventType::MOUSE_PRESSED) {
-					if (event.key == NANO_MOUSE_BUTTON_LEFT) {
-						std::cout << "LMB" << std::endl;
-					}
-					if (event.key == NANO_MOUSE_BUTTON_RIGHT) {
-						std::cout << "RMB" << std::endl;
-					}
-				}
-			}
-
 #pragma region		    RENDERING
 			// Rendering
 			m_rendererSystem->GetSimpleRenderer().Begin();

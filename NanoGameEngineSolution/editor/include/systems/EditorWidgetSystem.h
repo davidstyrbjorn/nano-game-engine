@@ -10,6 +10,8 @@
 #include"../widgets/EntityInspectorWidget.h"
 #include"../widgets/ConsoleWidget.h"
 
+#include"../EventHandler.h"
+
 namespace nano { namespace editor { 
 
 	class EditorWidgetSystem : public EditorSystem {
@@ -32,6 +34,9 @@ namespace nano { namespace editor {
 		EntitySelectWidget m_entitySelectWidget;
 		EntityInspectorWidget m_entityInspectorWidget;
 		ConsoleWidget m_consoleWidget;
+
+		// Other
+		EventHandler *m_eventHandler;
 
 		// Methods
 		void SetupStyle();

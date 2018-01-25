@@ -19,6 +19,9 @@ namespace nano { namespace editor {
 
 	void EditorWidgetSystem::Start()
 	{
+		// Create event handler
+		m_eventHandler = new EventHandler();
+
 		ImGui_ImplGlfwGL3_Init(glfwGetCurrentContext(), false);
 
 		SetupStyle();
