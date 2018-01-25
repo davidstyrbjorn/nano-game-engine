@@ -6,6 +6,7 @@
 #include"../include/DearImGui/imgui.h"
 
 #include"../include/systems/EntityManagerSystem.h"
+#include"../include/systems/EditorWidgetSystem.h"
 
 namespace nano { namespace editor { 
 
@@ -42,11 +43,53 @@ namespace nano { namespace editor {
 		);
 
 		// Title
-		ImGui::Text("Level Entities");
+		ImGui::Text("Level Entities: ");
+
+		ImGui::Separator();
 
 		// Simple column-major list of entities
 		std::vector<ecs::Entity*> _list = m_entityManager->GetEntityList();
-		ImGui::Columns(//@@@@@@)
+		ImGui::Columns(1, "entity_columns", true);
+		int i = 0;
+		for(ecs::Entity* entity : _list)
+		{
+			i++; // Incrementer for selectable ID
+
+			if (entity->GetState() != ecs::ECSStates::DESTROYED) 
+			{
+				std::string selectableID = entity->GetID() + "##" + std::to_string(i);
+				
+				// Check if we clicked on entity, if we did send that event to the event handler
+				if (ImGui::Selectable(selectableID.c_str())) {
+					// Clicked on entity
+					BaseEvent _event;
+					_event._type = EventTypes::CLICKED_ON_ENTITY;
+					_event._strID = entity->GetID(); 	
+					EditorWidgetSystem::Instance()->GetEventHandler().AddEvent(_event); // Message the event handler this happend!
+				}
+
+				// Check if we left click
+				if (ImGui::IsItemHovered()) {
+					if (ImGui::GetIO().MouseClicked[1]) {
+						ImGui::OpenPopup("right_click_entity");
+					}
+				}
+
+				// Left click menu
+				if (ImGui::BeginPopup("right_click_entity")) {
+					ImGui::Separator(); ImGui::Spacing();
+
+					if (ImGui::Selectable("Destroy")) {
+						entity->SetState(ecs::ECSStates::DESTROYED);
+					}
+
+					ImGui::EndPopup();
+				}
+
+				// Done with this entity
+				ImGui::NextColumn();
+			}
+		}
 
 		ImGui::End();
 	}

@@ -69,7 +69,7 @@ namespace nano { namespace ecs {
 		//////////
 		// Member getters
 		//////////
-		inline std::string GetID() { return m_id; }
+		std::string GetID();
 		int GetState();
 		graphics::Renderable* GetRenderableComponent();
 

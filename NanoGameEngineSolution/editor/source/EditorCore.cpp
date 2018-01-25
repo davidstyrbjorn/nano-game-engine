@@ -86,17 +86,11 @@ namespace nano { namespace editor {
 			// Pre-frame 
 			m_windowSystem->GetWindow().Clear();
 
-			for (InputEvent _event : m_inputSystem->GetPolledEvents()) {
-				if (_event.type == InputEventType::KEY_PRESSED) {
-					if (_event.key == NANO_KEY_SPACE)
-					{
-						std::cout << "shut the fuck up " << std::endl;
-					}
-				}
-			}
-
 			// Events stuff
 			m_inputSystem->Update();
+
+			// Update the entity manager system
+			m_entityManagerSystem->Update();
 
 #pragma region		    RENDERING
 			// Rendering
@@ -109,9 +103,6 @@ namespace nano { namespace editor {
 			m_rendererSystem->GetSimpleRenderer().Flush(); 
 			m_editorWidgetSystem->Flush();
 #pragma endregion
-
-			// Update the entity manager system
-			m_entityManagerSystem->Update();
 
 			// Post-frame
 			m_inputSystem->FlushEvents();

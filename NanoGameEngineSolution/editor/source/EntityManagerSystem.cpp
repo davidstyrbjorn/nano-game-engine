@@ -17,6 +17,17 @@ namespace nano { namespace editor {
 		m_entityList.push_back(a_entityToAdd);
 	}
 
+	ecs::Entity * EntityManagerSystem::GetEntityByID(std::string a_id)
+	{
+		for (ecs::Entity* entity : m_entityList) {
+			if (a_id == entity->GetID()) {
+				if (entity->GetState() != ecs::ECSStates::DESTROYED) {
+					return entity;
+				}
+			}
+		}
+	}
+
 	std::vector<ecs::Entity*>& EntityManagerSystem::GetEntityList()
 	{
 		return m_entityList;
@@ -44,9 +55,32 @@ namespace nano { namespace editor {
 
 	void EntityManagerSystem::Update()
 	{
+		bool deadEntityExists = false;
+		removeDeadEntities();
+
 		// Presumebly call update on all the entities
 		for (ecs::Entity *entity : m_entityList) {
 			entity->Update();
+			if (entity->GetState() == ecs::ECSStates::DESTROYED)
+				deadEntityExists = true;
+		}
+
+		if (deadEntityExists) {
+			//removeDeadEntities();
+		}
+	}
+
+	inline void EntityManagerSystem::removeDeadEntities()
+	{
+		std::vector<ecs::Entity*>::iterator it;
+		for (it = m_entityList.begin() ; it != m_entityList.end() ; ) {
+			if ((*it)->GetState() == ecs::ECSStates::DESTROYED) {
+				delete *it;
+				it = m_entityList.erase(it);
+			}
+			else {
+				++it;
+			}
 		}
 	}
 

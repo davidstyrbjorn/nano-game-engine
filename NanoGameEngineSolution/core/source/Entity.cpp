@@ -75,6 +75,11 @@ namespace nano { namespace ecs {
 		}
 	}
 
+	std::string Entity::GetID()
+	{
+		return m_id;
+	}
+
 	int Entity::GetState()
 	{
 		return m_state;

@@ -153,6 +153,7 @@
     <ClInclude Include="include\DearImGui\stb_truetype.h" />
     <ClInclude Include="include\EditorCore.h" />
     <ClInclude Include="include\EventHandler.h" />
+    <ClInclude Include="include\EventObserver.h" />
     <ClInclude Include="include\Events.h" />
     <ClInclude Include="include\systems\EditorSystem.h" />
     <ClInclude Include="include\systems\EditorWidgetSystem.h" />

@@ -1,6 +1,7 @@
 #pragma once
 
 #include"EditorWidget.h"
+#include"../EventObserver.h"
 
 // FWD
 namespace nano {
@@ -13,7 +14,7 @@ namespace nano {
 
 namespace nano { namespace editor {  
 
-	class EntitySelectWidget : EditorWidget {
+	class EntitySelectWidget : EditorWidget, public EventObserver {
 	private:
 		CoreConfig* m_config;
 		EntityManagerSystem* m_entityManager;

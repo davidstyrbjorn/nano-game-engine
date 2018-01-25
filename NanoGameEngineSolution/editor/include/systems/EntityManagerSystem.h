@@ -29,9 +29,13 @@ namespace nano { namespace editor {
 	private:
 		std::vector<ecs::Entity*> m_entityList;
 
+		// Private methods
+		inline void removeDeadEntities();
+
 	public:
 		// Entity handling
 		void AddNewEntity(ecs::Entity* a_entityToAdd);
+		ecs::Entity* GetEntityByID(std::string a_id);
 		std::vector<ecs::Entity*> &GetEntityList();
 		std::vector<ecs::Entity*> GetEntityListCopy();
 		// Outside creation

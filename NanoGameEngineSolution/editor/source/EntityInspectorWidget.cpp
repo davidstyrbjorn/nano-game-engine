@@ -2,6 +2,9 @@
 
 #include<CoreConfig.h>
 #include<math\Vector2.h>
+#include<ecs\Entity.h>
+
+#include"../include/systems/EntityManagerSystem.h"
 
 #include"../include/DearImGui/imgui.h"
 
@@ -44,9 +47,18 @@ namespace nano { namespace editor {
 			ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse
 		);
 
-		ImGui::Text("test");
+		if (m_entityToInspect != nullptr) {
+
+				std::string name = m_entityToInspect->GetID();
+				ImGui::Text(name.c_str());
+		}
 
 		ImGui::End();
+	}
+
+	void EntityInspectorWidget::OnEntityClick(std::string a_id)
+	{
+		m_entityToInspect = EntityManagerSystem::Instance()->GetEntityByID(a_id);
 	}
 
 } }
