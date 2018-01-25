@@ -7,7 +7,7 @@
 namespace nano {
 	class CoreConfig;
 	namespace editor {
-		class EntityManagerSystem;
+		class WorldSystem;
 	}
 }
 
@@ -17,7 +17,7 @@ namespace nano { namespace editor {
 	class EntitySelectWidget : EditorWidget, public EventObserver {
 	private:
 		CoreConfig* m_config;
-		EntityManagerSystem* m_entityManager;
+		WorldSystem* m_entityManager;
 
 	public:
 		EntitySelectWidget();

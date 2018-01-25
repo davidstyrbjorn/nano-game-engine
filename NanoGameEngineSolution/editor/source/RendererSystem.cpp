@@ -2,7 +2,7 @@
 
 #include<graphics\GraphicsInclude.h>
 
-#include"../include/systems/EntityManagerSystem.h"
+#include"../include/systems/WorldSystem.h"
 
 namespace nano { namespace editor { 
 
@@ -20,7 +20,7 @@ namespace nano { namespace editor {
 		m_renderer = new graphics::SimpleRenderer();
 	
 		// Get the entity manager
-		m_entityManager = EntityManagerSystem::Instance();
+		m_entityManager = WorldSystem::Instance();
 	}
 
 	void RendererSystem::Update()

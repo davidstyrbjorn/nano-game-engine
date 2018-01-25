@@ -8,7 +8,7 @@
 
 // Editor classes
 #include"systems\WindowSystem.h"
-#include"systems\EntityManagerSystem.h"
+#include"systems\WorldSystem.h"
 #include"systems\RendererSystem.h"
 #include"systems\EditorWidgetSystem.h"
 #include"systems\InputSystem.h"
@@ -20,7 +20,7 @@ namespace nano { namespace editor {
 		// Editor systems 
 		WindowSystem *m_windowSystem;
 		InputSystem *m_inputSystem;
-		EntityManagerSystem *m_entityManagerSystem;
+		WorldSystem *m_WorldSystem;
 		RendererSystem *m_rendererSystem;
 		EditorWidgetSystem *m_editorWidgetSystem;
 		CoreConfig *m_config;

@@ -1,23 +1,23 @@
 #pragma once
 
-#include"../include/systems/EntityManagerSystem.h"
+#include"../include/systems/WorldSystem.h"
 
 namespace nano { namespace editor {
 
-	EntityManagerSystem* EntityManagerSystem::_instance = nullptr;
-	EntityManagerSystem* EntityManagerSystem::Instance()
+	WorldSystem* WorldSystem::_instance = nullptr;
+	WorldSystem* WorldSystem::Instance()
 	{
 		if (_instance == nullptr)
-			_instance = new EntityManagerSystem();
+			_instance = new WorldSystem();
 		return _instance;
 	}
 
-	void EntityManagerSystem::AddNewEntity(ecs::Entity * a_entityToAdd)
+	void WorldSystem::AddNewEntity(ecs::Entity * a_entityToAdd)
 	{
 		m_entityList.push_back(a_entityToAdd);
 	}
 
-	ecs::Entity * EntityManagerSystem::GetEntityByID(std::string a_id)
+	ecs::Entity * WorldSystem::GetEntityByID(std::string a_id)
 	{
 		for (ecs::Entity* entity : m_entityList) {
 			if (a_id == entity->GetID()) {
@@ -28,32 +28,32 @@ namespace nano { namespace editor {
 		}
 	}
 
-	std::vector<ecs::Entity*>& EntityManagerSystem::GetEntityList()
+	std::vector<ecs::Entity*>& WorldSystem::GetEntityList()
 	{
 		return m_entityList;
 	}
 
-	std::vector<ecs::Entity*> EntityManagerSystem::GetEntityListCopy()
+	std::vector<ecs::Entity*> WorldSystem::GetEntityListCopy()
 	{
 		std::vector<ecs::Entity*> _list = m_entityList;
 		return _list;
 	}
 
-	void EntityManagerSystem::CreateNewEntity(std::string a_entityName)
+	void WorldSystem::CreateNewEntity(std::string a_entityName)
 	{
 		ecs::Entity* newEntity = new ecs::Entity(a_entityName);
 		newEntity->Start();
 		AddNewEntity(newEntity);
 	}
 
-	void EntityManagerSystem::Start()
+	void WorldSystem::Start()
 	{
 		for (ecs::Entity* entity : m_entityList) {
 			entity->Start();
 		}
 	}
 
-	void EntityManagerSystem::Update()
+	void WorldSystem::Update()
 	{
 		bool deadEntityExists = false;
 		removeDeadEntities();
@@ -70,7 +70,7 @@ namespace nano { namespace editor {
 		}
 	}
 
-	inline void EntityManagerSystem::removeDeadEntities()
+	inline void WorldSystem::removeDeadEntities()
 	{
 		std::vector<ecs::Entity*>::iterator it;
 		for (it = m_entityList.begin() ; it != m_entityList.end() ; ) {
@@ -84,7 +84,7 @@ namespace nano { namespace editor {
 		}
 	}
 
-	void EntityManagerSystem::Quit()
+	void WorldSystem::Quit()
 	{
 		for (std::vector<ecs::Entity*>::iterator _it = m_entityList.begin(); _it != m_entityList.end(); ++_it) {
 			delete (*_it);

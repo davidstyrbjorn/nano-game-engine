@@ -157,7 +157,7 @@
     <ClInclude Include="include\Events.h" />
     <ClInclude Include="include\systems\EditorSystem.h" />
     <ClInclude Include="include\systems\EditorWidgetSystem.h" />
-    <ClInclude Include="include\systems\EntityManagerSystem.h" />
+    <ClInclude Include="include\systems\WorldSystem.h" />
     <ClInclude Include="include\systems\InputSystem.h" />
     <ClInclude Include="include\systems\RendererSystem.h" />
     <ClInclude Include="include\systems\WindowSystem.h" />

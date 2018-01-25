@@ -21,7 +21,7 @@ namespace nano { namespace editor {
 	{
 		// Call Quit on every system
 		m_windowSystem->Quit();
-		m_entityManagerSystem->Quit();
+		m_WorldSystem->Quit();
 		m_editorWidgetSystem->Quit();
 	}
 
@@ -46,8 +46,8 @@ namespace nano { namespace editor {
 		m_inputSystem->Start();
 
 		// Entity Manager System
-		m_entityManagerSystem = EntityManagerSystem::Instance();
-		m_entityManagerSystem->Start();
+		m_WorldSystem = WorldSystem::Instance();
+		m_WorldSystem->Start();
 
 		// Renderer System
 		m_rendererSystem = RendererSystem::Instance();
@@ -64,7 +64,7 @@ namespace nano { namespace editor {
 		//testEntity->Start();
 		//testEntity->AddComponent(new ecs::RectangleComponent(math::Vector2(100, 100), math::Vector4(0.4, 0.1, 0.9, 1)))->Start();
 		//
-		//m_entityManagerSystem->AddNewEntity(testEntity);
+		//m_WorldSystem->AddNewEntity(testEntity);
 
 		/////////////////////////////////////////////////////////////////////
 
@@ -90,7 +90,7 @@ namespace nano { namespace editor {
 			m_inputSystem->Update();
 
 			// Update the entity manager system
-			m_entityManagerSystem->Update();
+			m_WorldSystem->Update();
 
 #pragma region		    RENDERING
 			// Rendering

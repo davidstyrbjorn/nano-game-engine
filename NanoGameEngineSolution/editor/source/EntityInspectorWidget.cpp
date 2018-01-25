@@ -4,7 +4,7 @@
 #include<math\Vector2.h>
 #include<ecs\Entity.h>
 
-#include"../include/systems/EntityManagerSystem.h"
+#include"../include/systems/WorldSystem.h"
 
 #include"../include/DearImGui/imgui.h"
 
@@ -47,10 +47,9 @@ namespace nano { namespace editor {
 			ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse
 		);
 
-		if (m_entityToInspect != nullptr) {
-
-				std::string name = m_entityToInspect->GetID();
-				ImGui::Text(name.c_str());
+		if (m_entityToInspect != nullptr) 
+		{
+				ImGui::Text(m_entityToInspect->GetID().c_str());
 		}
 
 		ImGui::End();
@@ -58,7 +57,15 @@ namespace nano { namespace editor {
 
 	void EntityInspectorWidget::OnEntityClick(std::string a_id)
 	{
-		m_entityToInspect = EntityManagerSystem::Instance()->GetEntityByID(a_id);
+		m_entityToInspect = WorldSystem::Instance()->GetEntityByID(a_id);
+	}
+
+	void EntityInspectorWidget::OnEntityDestroyed(std::string a_id)
+	{
+		// Check if the destroyed entity is the entity we inspect
+		if (WorldSystem::Instance()->Instance()->GetEntityByID(a_id) == m_entityToInspect) {
+			m_entityToInspect = nullptr;
+		}
 	}
 
 } }

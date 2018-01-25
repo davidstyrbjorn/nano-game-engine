@@ -8,7 +8,7 @@ namespace nano {
 		class SimpleRenderer;
 	}
 	namespace editor {
-		class EntityManagerSystem;
+		class WorldSystem;
 	}
 }
 
@@ -28,7 +28,7 @@ namespace nano { namespace editor {
 
 	private:
 		graphics::SimpleRenderer* m_renderer;
-		EntityManagerSystem* m_entityManager;
+		WorldSystem* m_entityManager;
 
 	public:
 		// EditorSystem base class

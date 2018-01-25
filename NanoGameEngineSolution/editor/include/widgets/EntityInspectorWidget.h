@@ -17,7 +17,6 @@ namespace nano {
 		class EntityInspectorWidget : EditorWidget, public EventObserver {
 		private:
 			CoreConfig* m_config;
-
 			ecs::Entity *m_entityToInspect;
 
 		public:
@@ -30,6 +29,7 @@ namespace nano {
 
 			// Concept code @
 			void OnEntityClick(std::string a_id) override;
+			void OnEntityDestroyed(std::string a_id) override;
 		};
 
 	}

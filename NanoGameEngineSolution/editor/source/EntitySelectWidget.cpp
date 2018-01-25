@@ -5,7 +5,7 @@
 
 #include"../include/DearImGui/imgui.h"
 
-#include"../include/systems/EntityManagerSystem.h"
+#include"../include/systems/WorldSystem.h"
 #include"../include/systems/EditorWidgetSystem.h"
 
 namespace nano { namespace editor { 
@@ -13,7 +13,7 @@ namespace nano { namespace editor {
 	EntitySelectWidget::EntitySelectWidget()
 	{
 		m_config = CoreConfig::Instance();
-		m_entityManager = EntityManagerSystem::Instance();
+		m_entityManager = WorldSystem::Instance();
 	}
 
 	void EntitySelectWidget::Start() 
@@ -80,6 +80,10 @@ namespace nano { namespace editor {
 					ImGui::Separator(); ImGui::Spacing();
 
 					if (ImGui::Selectable("Destroy")) {
+						BaseEvent _event;
+						_event._strID = entity->GetID();
+						_event._type = EventTypes::REMOVED_ENTITY;
+						EditorWidgetSystem::Instance()->GetEventHandler().AddEvent(_event);
 						entity->SetState(ecs::ECSStates::DESTROYED);
 					}
 
