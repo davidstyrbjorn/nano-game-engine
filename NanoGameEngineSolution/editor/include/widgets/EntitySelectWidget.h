@@ -13,6 +13,9 @@ namespace nano {
 	namespace ecs {
 		class Entity;
 	}
+	namespace math {
+		class Vector2;
+	}
 }
 
 
@@ -24,6 +27,9 @@ namespace nano { namespace editor {
 		WorldSystem* m_entityManager;
 		InputSystem* m_inputSystem;
 		ecs::Entity *m_leftClickedEntity;
+
+		// Private methods
+		bool IsMouseInViewFrustrum(const math::Vector2& a_pos);
 
 	public:
 		EntitySelectWidget();

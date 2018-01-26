@@ -57,10 +57,7 @@ namespace nano { namespace editor {
 					WorldSystem::Instance()->CreateNewEntity("unnamed");
 					// Test case!
 					// Send this event to the event handler!
-					BaseEvent _event;
-					_event._type = EventTypes::CREATED_ENTITY;
-					_event._strID = "unnamed";
-					EditorWidgetSystem::Instance()->GetEventHandler().AddEvent(_event);
+					EditorWidgetSystem::Instance()->GetEventHandler().AddEvent(BaseEvent(EventTypes::CREATED_ENTITY, "unnamed"));
 				}
 				ImGui::EndMenu();
 			}

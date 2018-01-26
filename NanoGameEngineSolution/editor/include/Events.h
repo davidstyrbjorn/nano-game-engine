@@ -13,6 +13,10 @@ namespace nano { namespace editor {
 	struct BaseEvent {
 		EventTypes _type;
 		std::string _strID;
+		BaseEvent(EventTypes a_type, std::string a_strID) {
+			_type = a_type;
+			_strID = a_strID;
+		}
 	};
 
 } }

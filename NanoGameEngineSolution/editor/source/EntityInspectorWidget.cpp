@@ -68,7 +68,7 @@ namespace nano { namespace editor {
 			// Angle
 			ImGui::SliderAngle("Angle", (float*)&m_entityToInspect->m_transform->angle);
 
-			ImGui::Separator(); ImGui::Spacing();
+			ImGui::Separator(); ImGui::Spacing(); ImGui::Spacing();
 
 			// Start listing components
 			graphics::Renderable* renderableComponent = m_entityToInspect->GetRenderableComponent();
@@ -86,6 +86,14 @@ namespace nano { namespace editor {
 				math::Vector4 renderableColor = renderableComponent->GetColor();
 				ImGui::ColorEdit4("Color", (float*)&renderableColor);
 				renderableComponent->SetColor(renderableColor);
+				
+				ImGui::Separator();
+			}
+
+
+			ecs::SoundComponent* soundComponent = m_entityToInspect->GetComponent<ecs::SoundComponent>();
+			if (soundComponent != nullptr) {
+				ImGui::Text("Sound Component");
 			}
 		}
 
@@ -94,6 +102,11 @@ namespace nano { namespace editor {
 
 	void EntityInspectorWidget::OnEntityClick(std::string a_id)
 	{
+		// "-1" - clicked on empty space
+		if (a_id == "-1") {
+			m_entityToInspect = nullptr;
+			return;
+		}
 		m_entityToInspect = WorldSystem::Instance()->GetEntityByID(a_id);
 	}
 

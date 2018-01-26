@@ -9,7 +9,7 @@
 #include"../include/systems/EditorWidgetSystem.h"
 #include"../include/systems/InputSystem.h"
 
-namespace nano { namespace editor { 
+namespace nano { namespace editor {
 
 	EntitySelectWidget::EntitySelectWidget()
 	{
@@ -23,19 +23,36 @@ namespace nano { namespace editor {
 
 	}
 
+	bool EntitySelectWidget::IsMouseInViewFrustrum(const math::Vector2& a_position) {
+		// View frustrum dimensions
+		float x = ENTITY_SELECT_WIDTH;
+		float y = MAIN_MENU_BAR_HEIGHT;
+		float width = m_config->GetWindowSize().x - ENTITY_INSPECTOR_WIDTH;
+		float height = m_config->GetWindowSize().y - (m_config->GetWindowSize().y * UTILITY_HEIGHT_RATIO);
+
+		if (a_position.x > x && a_position.x < width && a_position.y > y && a_position.y < height)
+			return true;
+
+		return false;
+	}
+
 	void EntitySelectWidget::Update()
 	{
 		for (InputEvent _event : m_inputSystem->GetPolledEvents()) {
 			if (_event.type == InputEventType::MOUSE_PRESSED) {
 				math::Vector2 mousePos = m_inputSystem->GetMousePosition();
 				// TODO: Check if mouse is within the view frustrum
-				for (ecs::Entity* entity : m_entityManager->GetEntityList()) {
-					if (mousePos.x > entity->m_transform->position.x && mousePos.x < entity->m_transform->position.x + entity->m_transform->size.x && mousePos.y > entity->m_transform->position.y && mousePos.y < entity->m_transform->position.y + entity->m_transform->size.y) {
-						BaseEvent _event;
-						_event._type = EventTypes::CLICKED_ON_ENTITY;
-						_event._strID = entity->GetID();
-						EditorWidgetSystem::Instance()->GetEventHandler().AddEvent(_event);
+				if (IsMouseInViewFrustrum(mousePos)) 
+				{
+					bool hitDetect = false;
+					for (ecs::Entity* entity : m_entityManager->GetEntityList()) {
+						if (mousePos.x > entity->m_transform->position.x && mousePos.x < entity->m_transform->position.x + entity->m_transform->size.x && mousePos.y > entity->m_transform->position.y && mousePos.y < entity->m_transform->position.y + entity->m_transform->size.y) {
+							EditorWidgetSystem::Instance()->GetEventHandler().AddEvent(BaseEvent(EventTypes::CLICKED_ON_ENTITY, entity->GetID()));
+							hitDetect = true;
+						}
 					}
+					if (!hitDetect)
+						EditorWidgetSystem::Instance()->GetEventHandler().AddEvent(BaseEvent(EventTypes::CLICKED_ON_ENTITY, "-1"));
 				}
 			}
 		}
@@ -77,12 +94,8 @@ namespace nano { namespace editor {
 				// Check if we clicked on entity, if we did send that event to the event handler
 				if (ImGui::Selectable(selectableID.c_str())) {
 					// Clicked on entity
-					BaseEvent _event;
-					_event._type = EventTypes::CLICKED_ON_ENTITY;
-					_event._strID = entity->GetID(); 	
-					EditorWidgetSystem::Instance()->GetEventHandler().AddEvent(_event); // Message the event handler this happend!
+					EditorWidgetSystem::Instance()->GetEventHandler().AddEvent(BaseEvent(EventTypes::CLICKED_ON_ENTITY, entity->GetID())); // Message the event handler this happend!
 				}
-
 
 				// Check if we left click
 				if (ImGui::IsItemHovered()) {
@@ -100,11 +113,9 @@ namespace nano { namespace editor {
 		if (ImGui::BeginPopup("right_click_entity")) {
 			//ImGui::Spacing();
 
-			if (ImGui::Selectable("Destroy")) {
-				BaseEvent _event;
-				_event._type = EventTypes::REMOVED_ENTITY;
-				_event._strID = m_leftClickedEntity->GetID();
-				EditorWidgetSystem::Instance()->GetEventHandler().AddEvent(_event);
+			if (ImGui::Selectable("Destroy")) 
+			{
+				EditorWidgetSystem::Instance()->GetEventHandler().AddEvent(BaseEvent(EventTypes::REMOVED_ENTITY, m_leftClickedEntity->GetID()));
 				m_leftClickedEntity->SetState(ecs::ECSStates::DESTROYED);
 			}
 			if (ImGui::Selectable("Rename")) {
