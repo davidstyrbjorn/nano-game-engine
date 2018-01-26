@@ -3,7 +3,11 @@
 #include"../math/Vector2.h"
 #include"../math/Vector4.h"
 
-#include"../ecs/components/TransformComponent.h"
+namespace nano {
+	namespace ecs {
+		class Transform;
+	}
+}
 
 namespace nano { namespace graphics { 
 
@@ -11,22 +15,14 @@ namespace nano { namespace graphics {
 	class Renderable {
 	protected:
 		// Renderable shared data
-		math::Vector2 m_size;
 		math::Vector4 m_color;
 		ecs::Transform* m_transform;
+
 	public:
 		// Default constructor
-		Renderable();
-
-		// Constructor w/in arguments
-		Renderable(const math::Vector2& a_size, const math::Vector4& a_color);
+		Renderable() { }
 
 		// Setters
-
-		///////////
-		// \brief Sets the size
-		//
-		void SetSize(const math::Vector2 a_size);
 
 		///////////
 		// \brief Sets the color
@@ -34,11 +30,6 @@ namespace nano { namespace graphics {
 		void SetColor(const math::Vector4 a_color);
 
 		// Getters
-
-		///////////
-		// \brief Returns a vector copy of the size
-		//
-		math::Vector2 GetSize();
 
 		///////////
 		// \brief Returns a vector copy of the color

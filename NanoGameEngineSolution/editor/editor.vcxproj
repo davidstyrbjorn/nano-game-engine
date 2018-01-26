@@ -133,7 +133,7 @@
     <ClCompile Include="source\EditorCore.cpp" />
     <ClCompile Include="source\EditorWidgetSystem.cpp" />
     <ClCompile Include="source\EntityInspectorWidget.cpp" />
-    <ClCompile Include="source\EntityManagerSystem.cpp" />
+    <ClCompile Include="source\WorldSystem.cpp" />
     <ClCompile Include="source\EntitySelectWidget.cpp" />
     <ClCompile Include="source\EventHandler.cpp" />
     <ClCompile Include="source\InputSystem.cpp" />

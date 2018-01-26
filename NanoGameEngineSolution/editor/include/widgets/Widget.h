@@ -22,7 +22,7 @@ namespace nano { namespace editor {
 // Entity Inspector Widget
 // Position: upper right
 #define ENTITY_INSPECTOR_HEIGHT_RATIO 8/10 // --||..
-#define ENTITY_INSPECTOR_WIDTH 200 
+#define ENTITY_INSPECTOR_WIDTH 235
 
 // Console Widget
 // Position: bottom right

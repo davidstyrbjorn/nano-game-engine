@@ -8,6 +8,10 @@ namespace nano {
 	class CoreConfig;
 	namespace editor {
 		class WorldSystem;
+		class InputSystem;
+	}
+	namespace ecs {
+		class Entity;
 	}
 }
 
@@ -18,6 +22,8 @@ namespace nano { namespace editor {
 	private:
 		CoreConfig* m_config;
 		WorldSystem* m_entityManager;
+		InputSystem* m_inputSystem;
+		ecs::Entity *m_leftClickedEntity;
 
 	public:
 		EntitySelectWidget();
@@ -27,5 +33,5 @@ namespace nano { namespace editor {
 		void Update() override;
 		void Render() override;
 	};
-
+	
 } }

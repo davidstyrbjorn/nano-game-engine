@@ -60,11 +60,12 @@ namespace nano { namespace editor {
 		/////////////////////////////////////////////////////////////////////
 
 		// Test
-		//ecs::Entity* testEntity = new ecs::Entity();
-		//testEntity->Start();
-		//testEntity->AddComponent(new ecs::RectangleComponent(math::Vector2(100, 100), math::Vector4(0.4, 0.1, 0.9, 1)))->Start();
-		//
-		//m_WorldSystem->AddNewEntity(testEntity);
+		ecs::Entity* testEntity = new ecs::Entity("Rectangle");
+		testEntity->Start();
+		testEntity->m_transform->position = math::Vector2(400, 100);
+		testEntity->m_transform->size = math::Vector2(100, 40);
+		testEntity->AddComponent(new ecs::RectangleComponent(math::Vector4(0.4, 0.1, 0.9, 1)))->Start();
+		m_WorldSystem->AddNewEntity(testEntity);
 
 		/////////////////////////////////////////////////////////////////////
 

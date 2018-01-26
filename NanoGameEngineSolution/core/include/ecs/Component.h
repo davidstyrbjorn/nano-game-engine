@@ -14,6 +14,11 @@ namespace nano { namespace ecs {
 		virtual ~Component() { }
 
 		//////////
+		// \brief Init called after the component has been added to entity
+		//
+		virtual void Init() { } 
+
+		//////////
 		// \brief Start called by entity owner
 		//
 		virtual void Start() { }

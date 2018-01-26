@@ -5,6 +5,7 @@
 #include"../include/CoreConfig.h"
 #include"../include/math/Matrix4x4.h"
 #include"../include/graphics/Camera.h"
+#include"../include/ecs/components/TransformComponent.h"
 
 #define GLEW_STATIC
 #include"GL\glew.h"
@@ -102,7 +103,7 @@ namespace nano { namespace graphics {
 			GLintptr _offset = m_triangleCount * (TRIANGLE_SIZE);
 
 			math::Vector2 pos = a_renderable->GetTransformComponent()->position;
-			math::Vector2 size = a_renderable->GetSize();
+			math::Vector2 size = a_renderable->GetTransformComponent()->size;
 			math::Vector4 color = a_renderable->GetColor();
 
 			Vertex data[] = {
@@ -122,7 +123,7 @@ namespace nano { namespace graphics {
 			GLintptr _offset = m_quadCount * (QUAD_SIZE);
 
 			math::Vector2 pos = a_renderable->GetTransformComponent()->position;
-			math::Vector2 size = a_renderable->GetSize();
+			math::Vector2 size = a_renderable->GetTransformComponent()->size;
 			math::Vector4 color = a_renderable->GetColor();
 
 			Vertex data[] = {

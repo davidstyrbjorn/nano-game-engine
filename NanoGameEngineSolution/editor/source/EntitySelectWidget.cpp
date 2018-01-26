@@ -7,6 +7,7 @@
 
 #include"../include/systems/WorldSystem.h"
 #include"../include/systems/EditorWidgetSystem.h"
+#include"../include/systems/InputSystem.h"
 
 namespace nano { namespace editor { 
 
@@ -14,6 +15,7 @@ namespace nano { namespace editor {
 	{
 		m_config = CoreConfig::Instance();
 		m_entityManager = WorldSystem::Instance();
+		m_inputSystem = InputSystem::Instance();
 	}
 
 	void EntitySelectWidget::Start() 
@@ -23,7 +25,20 @@ namespace nano { namespace editor {
 
 	void EntitySelectWidget::Update()
 	{
-
+		for (InputEvent _event : m_inputSystem->GetPolledEvents()) {
+			if (_event.type == InputEventType::MOUSE_PRESSED) {
+				math::Vector2 mousePos = m_inputSystem->GetMousePosition();
+				// TODO: Check if mouse is within the view frustrum
+				for (ecs::Entity* entity : m_entityManager->GetEntityList()) {
+					if (mousePos.x > entity->m_transform->position.x && mousePos.x < entity->m_transform->position.x + entity->m_transform->size.x && mousePos.y > entity->m_transform->position.y && mousePos.y < entity->m_transform->position.y + entity->m_transform->size.y) {
+						BaseEvent _event;
+						_event._type = EventTypes::CLICKED_ON_ENTITY;
+						_event._strID = entity->GetID();
+						EditorWidgetSystem::Instance()->GetEventHandler().AddEvent(_event);
+					}
+				}
+			}
+		}
 	}
 
 	void EntitySelectWidget::Render()
@@ -68,31 +83,35 @@ namespace nano { namespace editor {
 					EditorWidgetSystem::Instance()->GetEventHandler().AddEvent(_event); // Message the event handler this happend!
 				}
 
+
 				// Check if we left click
 				if (ImGui::IsItemHovered()) {
 					if (ImGui::GetIO().MouseClicked[1]) {
+						m_leftClickedEntity = entity;
 						ImGui::OpenPopup("right_click_entity");
 					}
-				}
-
-				// Left click menu
-				if (ImGui::BeginPopup("right_click_entity")) {
-					ImGui::Separator(); ImGui::Spacing();
-
-					if (ImGui::Selectable("Destroy")) {
-						BaseEvent _event;
-						_event._strID = entity->GetID();
-						_event._type = EventTypes::REMOVED_ENTITY;
-						EditorWidgetSystem::Instance()->GetEventHandler().AddEvent(_event);
-						entity->SetState(ecs::ECSStates::DESTROYED);
-					}
-
-					ImGui::EndPopup();
 				}
 
 				// Done with this entity
 				ImGui::NextColumn();
 			}
+		}
+
+		if (ImGui::BeginPopup("right_click_entity")) {
+			//ImGui::Spacing();
+
+			if (ImGui::Selectable("Destroy")) {
+				BaseEvent _event;
+				_event._type = EventTypes::REMOVED_ENTITY;
+				_event._strID = m_leftClickedEntity->GetID();
+				EditorWidgetSystem::Instance()->GetEventHandler().AddEvent(_event);
+				m_leftClickedEntity->SetState(ecs::ECSStates::DESTROYED);
+			}
+			if (ImGui::Selectable("Rename")) {
+				std::cout << "Rename not yet implemented" << std::endl;
+			}
+			
+			ImGui::EndPopup();
 		}
 
 		ImGui::End();

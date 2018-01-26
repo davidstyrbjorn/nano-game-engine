@@ -43,6 +43,8 @@ namespace nano { namespace ecs {
 			m_renderableComponent = dynamic_cast<graphics::Renderable*>(a_componentToAdd);
 		}
 
+		a_componentToAdd->Init();
+
 		return a_componentToAdd;
 	}
 
@@ -76,6 +78,11 @@ namespace nano { namespace ecs {
 	}
 
 	std::string Entity::GetID()
+	{
+		return m_id;
+	}
+
+	std::string Entity::GetIDReference()
 	{
 		return m_id;
 	}

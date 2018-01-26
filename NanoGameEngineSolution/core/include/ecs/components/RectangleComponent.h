@@ -13,12 +13,13 @@ namespace nano { namespace ecs {
 	public:
 		// Inits the neccesary data
 		void Start() override;
+		void Init() override;
 
 		// Empty constructor
 		RectangleComponent();
 
 		// Constructor with arguments
-		RectangleComponent(const math::Vector2& a_size, const math::Vector4& a_color);
+		RectangleComponent(const math::Vector4& a_color);
 
 		// Override for the renderer 
 		int GetVertexCount() override { return 4; }

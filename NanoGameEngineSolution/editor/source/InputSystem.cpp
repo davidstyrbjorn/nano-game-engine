@@ -31,6 +31,7 @@ namespace nano { namespace editor {
 		glfwSetKeyCallback(glfwGetCurrentContext(), key_callback);
 		glfwSetMouseButtonCallback(glfwGetCurrentContext(), mouse_button_callback);
 		glfwSetCharCallback(glfwGetCurrentContext(), character_callback);
+		glfwSetCursorPosCallback(glfwGetCurrentContext(), cursor_position_callback);
 	}
 
 	void InputSystem::Update()
@@ -54,6 +55,16 @@ namespace nano { namespace editor {
 			return m_lmbDown;
    else if (a_button == NANO_MOUSE_BUTTON_RIGHT)
 			return m_rmbDown;
+	}
+
+	math::Vector2 & InputSystem::GetMousePosition() 
+	{
+		return m_mousePosition;
+	}
+
+	void InputSystem::SetMousePosition(const math::Vector2 & a_pos)
+	{
+		m_mousePosition = a_pos;
 	}
 
 	void InputSystem::Quit()
@@ -121,6 +132,12 @@ namespace nano { namespace editor {
 			if (temp->m_rmbDown && button == NANO_MOUSE_BUTTON_RIGHT)
 				temp->m_rmbDown = false;
 		}
+	}
+
+	void editor::cursor_position_callback(GLFWwindow * window, double xpos, double ypos)
+	{
+		InputSystem *instance = InputSystem::Instance();
+		instance->SetMousePosition(math::Vector2(xpos, ypos));
 	}
 
 }
