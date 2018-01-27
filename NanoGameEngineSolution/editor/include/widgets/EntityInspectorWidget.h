@@ -9,6 +9,9 @@ namespace nano {
 	namespace ecs {
 		class Entity;
 	}
+	namespace editor {
+		class InputSystem;
+	}
 }
 
 namespace nano {
@@ -17,7 +20,10 @@ namespace nano {
 		class EntityInspectorWidget : EditorWidget, public EventObserver {
 		private:
 			CoreConfig* m_config;
+			InputSystem* m_inputSystem;
 			ecs::Entity *m_entityToInspect;
+
+			bool m_isDraggingEntity = false;
 
 		public:
 			EntityInspectorWidget();
@@ -27,7 +33,6 @@ namespace nano {
 			void Update() override;
 			void Render() override;
 
-			// Concept code @
 			void OnEntityClick(std::string a_id) override;
 			void OnEntityDestroyed(std::string a_id) override;
 		};

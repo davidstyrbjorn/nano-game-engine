@@ -6,6 +6,7 @@
 #include<math\Vector2.h>
 
 #include"../include/systems/WorldSystem.h"
+#include"../include/systems/InputSystem.h"
 
 #include"../include/DearImGui/imgui.h"
 
@@ -19,6 +20,7 @@ namespace nano { namespace editor {
 	EntityInspectorWidget::EntityInspectorWidget()
 	{
 		m_config = CoreConfig::Instance();
+		m_inputSystem = InputSystem::Instance();
 	}
 
 	void EntityInspectorWidget::Start()
@@ -28,7 +30,33 @@ namespace nano { namespace editor {
 
 	void EntityInspectorWidget::Update()
 	{
+		// Dragging input
+		if (m_entityToInspect != nullptr) {
+			for (InputEvent _event : m_inputSystem->GetPolledEvents()) {
+				if (_event.type == InputEventType::MOUSE_PRESSED) {
+					math::Vector2 mousePos = m_inputSystem->GetMousePosition();
 
+					if (mousePos.x > m_entityToInspect->m_transform->position.x && mousePos.x < m_entityToInspect->m_transform->position.x + m_entityToInspect->m_transform->size.x) {
+						if (mousePos.y > m_entityToInspect->m_transform->position.y && mousePos.y < m_entityToInspect->m_transform->position.y + m_entityToInspect->m_transform->size.y) {
+							m_isDraggingEntity = true;
+						}
+					}
+				}
+				else if (_event.type == InputEventType::MOUSE_RELEASE) {
+					if (m_isDraggingEntity)
+						m_isDraggingEntity = false;
+				}
+			}
+		}
+		else {
+			m_isDraggingEntity = false;
+		}
+
+		// Dragging logic
+		if (m_isDraggingEntity) {
+			// TODO @ Some kind of anchor point logic for dragging 
+			m_entityToInspect->m_transform->position = m_inputSystem->GetMousePosition();
+		}
 	}
 
 	void EntityInspectorWidget::Render()
@@ -105,6 +133,8 @@ namespace nano { namespace editor {
 	{
 		// "-1" - clicked on empty space
 		if (a_id == "-1") {
+			if(m_entityToInspect != nullptr)
+				m_entityToInspect->SetEditorState(ecs::ECSEditorStates::NOT_HIGHLIGHTED);
 			m_entityToInspect = nullptr;
 			return;
 		}
@@ -118,7 +148,6 @@ namespace nano { namespace editor {
 	{
 		// Check if the destroyed entity is the entity we inspect
 		if (WorldSystem::Instance()->Instance()->GetEntityByID(a_id) == m_entityToInspect) {
-			m_entityToInspect->SetEditorState(ecs::ECSEditorStates::NOT_HIGHLIGHTED);
 			m_entityToInspect = nullptr;
 		}
 	}

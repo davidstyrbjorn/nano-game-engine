@@ -6,6 +6,8 @@ namespace nano {
 	namespace openal {
 		class SoundSource;
 		class SoundBuffer;
+
+
 	}
 }
 

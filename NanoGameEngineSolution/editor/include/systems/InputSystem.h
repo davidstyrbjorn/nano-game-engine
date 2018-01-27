@@ -13,7 +13,8 @@ namespace nano { namespace editor {
 		KEY_PRESSED,
 		KEY_HOLD,
 		MOUSE_PRESSED,
-		MOUSE_HOLD
+		MOUSE_HOLD,
+		MOUSE_RELEASE
 	};
 
 	struct InputEvent {

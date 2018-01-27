@@ -3,6 +3,8 @@
 /** unsigned 32-bit integer */
 typedef unsigned int ALuint;
 
+#include<map>
+
 namespace nano {
 
 	namespace math {

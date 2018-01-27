@@ -19,7 +19,7 @@ namespace nano { namespace openal {
 		alSourcei(m_source, AL_SOURCE_RELATIVE, AL_TRUE);
 
 		// Initial sound state
-		m_soundState = NOT_PLAYING;
+		m_soundState = SoundState::NOT_PLAYING;
 	}
 
 	SoundSource::~SoundSource()

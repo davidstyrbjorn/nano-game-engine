@@ -21,7 +21,7 @@ namespace nano { namespace editor {
 
 	void EntitySelectWidget::Start() 
 	{
-
+		
 	}
 
 	bool EntitySelectWidget::IsMouseInViewFrustrum(const math::Vector2& a_position) {

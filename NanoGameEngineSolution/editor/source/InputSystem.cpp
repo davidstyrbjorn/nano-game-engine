@@ -126,6 +126,13 @@ namespace nano { namespace editor {
 			}
 		}
 		if (action == GLFW_RELEASE) {
+
+			// Create mouse release event
+			InputEvent _event;
+			_event.type = InputEventType::MOUSE_RELEASE;
+			_event.key = button;
+			temp->m_polledEvents.push_back(_event);
+
 			// Mouse down logic
 			if (temp->m_lmbDown && button == NANO_MOUSE_BUTTON_LEFT)
 				temp->m_lmbDown = false;
