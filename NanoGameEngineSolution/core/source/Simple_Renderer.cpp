@@ -36,8 +36,10 @@ namespace nano { namespace graphics {
 
 		m_triangleVAO->EnableVertexAttribArray(0);
 		m_triangleVAO->EnableVertexAttribArray(1);
+		m_triangleVAO->EnableVertexAttribArray(2);
 		m_triangleVAO->SetVertexAttribPointer(0, 2, GL_FLOAT, sizeof(Vertex), 0);
 		m_triangleVAO->SetVertexAttribPointer(1, 4, GL_FLOAT, sizeof(Vertex), (void*)OFFSET_TO_COLOR);
+		m_triangleVAO->SetVertexAttribPointer(2, 1, GL_FLOAT, sizeof(Vertex), (void*)OFFSET_TO_EDITOR_STATE);
 		m_triangleVAO->Unbind();
 
 		// Quad
@@ -49,8 +51,10 @@ namespace nano { namespace graphics {
 		
 		m_quadVAO->EnableVertexAttribArray(0);
 		m_quadVAO->EnableVertexAttribArray(1);
+		m_quadVAO->EnableVertexAttribArray(2);
 		m_quadVAO->SetVertexAttribPointer(0, 2, GL_FLOAT, sizeof(Vertex), 0);
 		m_quadVAO->SetVertexAttribPointer(1, 4, GL_FLOAT, sizeof(Vertex), (void*)OFFSET_TO_COLOR);
+		m_quadVAO->SetVertexAttribPointer(2, 1, GL_FLOAT, sizeof(Vertex), (void*)OFFSET_TO_EDITOR_STATE);
 		
 		int m_indicesOffset = 0;
 		GLuint m_indices[INDICES_COUNT];
@@ -105,11 +109,15 @@ namespace nano { namespace graphics {
 			math::Vector2 pos = a_renderable->GetTransformComponent()->position;
 			math::Vector2 size = a_renderable->GetTransformComponent()->size;
 			math::Vector4 color = a_renderable->GetColor();
+			
+			float editorState = 0.0f;
+			if (a_renderable->GetTransformComponent()->GetEntityOwner().GetEditorState() == ecs::ECSEditorStates::HIGHLIGHTED)
+				editorState = 1.0f;
 
 			Vertex data[] = {
-				{ math::Vector2(pos.x,pos.y), color },
-				{ math::Vector2(pos.x, pos.y + size.y), color },
-				{ pos+size, color }
+				{ math::Vector2(pos.x,pos.y), color, editorState },
+				{ math::Vector2(pos.x, pos.y + size.y), color, editorState },
+				{ pos+size, color, editorState }
 			};
 
 			m_triangleVBO->Bind();
@@ -125,12 +133,16 @@ namespace nano { namespace graphics {
 			math::Vector2 pos = a_renderable->GetTransformComponent()->position;
 			math::Vector2 size = a_renderable->GetTransformComponent()->size;
 			math::Vector4 color = a_renderable->GetColor();
+			
+			float editorState = 0.0f;
+			if (a_renderable->GetTransformComponent()->GetEntityOwner().GetEditorState() == ecs::ECSEditorStates::HIGHLIGHTED)
+				editorState = 1.0f;
 
 			Vertex data[] = {
-				{ math::Vector2(pos.x,pos.y), color },
-				{ math::Vector2(pos.x, pos.y + size.y), color },
-				{ pos + size, color },
-				{ math::Vector2(pos.x + size.x, pos.y), color },
+				{ math::Vector2(pos.x,pos.y), color, editorState },
+				{ math::Vector2(pos.x, pos.y + size.y), color, editorState },
+				{ pos + size, color, editorState },
+				{ math::Vector2(pos.x + size.x, pos.y), color, editorState },
 			};
 
 			m_quadVBO->Bind();

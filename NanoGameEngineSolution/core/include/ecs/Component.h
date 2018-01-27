@@ -31,7 +31,7 @@ namespace nano { namespace ecs {
 		//////////
 		// \brief Returns this components owner
 		//
-		const Entity& GetEntityOwner();
+		Entity& GetEntityOwner();
 		//////////
 		// \brief Sets this components owner
 		//

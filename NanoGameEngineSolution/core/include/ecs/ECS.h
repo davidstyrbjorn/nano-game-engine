@@ -8,4 +8,9 @@ namespace nano { namespace ecs {
 		DESTROYED = 0x2
 	};
 
+	typedef enum ECSEditorStates {
+		HIGHLIGHTED = 1,
+		NOT_HIGHLIGHTED = 0,
+	};
+
 } } 

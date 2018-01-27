@@ -2,6 +2,7 @@
 
 #include<math\Vector2.h>
 #include<CoreConfig.h>
+#include<ecs\components\TransformComponent.h>
 
 #include"../include/DearImGui/imgui.h"
 

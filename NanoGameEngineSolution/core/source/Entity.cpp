@@ -1,6 +1,7 @@
 #include"../include/ecs/Entity.h"
 
 #include"../include/ecs/Component.h"
+#include"../include/ecs/components/TransformComponent.h"
 
 namespace nano { namespace ecs {
 
@@ -8,18 +9,21 @@ namespace nano { namespace ecs {
 	{
 		m_id = "unnamed";
 		m_transform = new ecs::Transform();
+		m_transform->SetEntityOwner(this);
 	}
 
 	Entity::Entity(const std::string & a_id)
 	{
 		m_id = a_id;
 		m_transform = new ecs::Transform();
+		m_transform->SetEntityOwner(this);
 	}
 
 	Entity::Entity(const char * a_id)
 	{
 		m_id = a_id;
 		m_transform = new ecs::Transform();
+		m_transform->SetEntityOwner(this);
 	}
 
 	Entity::~Entity()
@@ -92,6 +96,11 @@ namespace nano { namespace ecs {
 		return m_state;
 	}
 
+	int Entity::GetEditorState()
+	{
+		return m_editorState;
+	}
+
 	graphics::Renderable * Entity::GetRenderableComponent()
 	{
 		return m_renderableComponent;
@@ -105,6 +114,11 @@ namespace nano { namespace ecs {
 	void Entity::SetState(const int a_state)
 	{
 		m_state = static_cast<ECSStates>(a_state);
+	}
+
+	void Entity::SetEditorState(const int a_state)
+	{
+		m_editorState = static_cast<ECSEditorStates>(a_state);
 	}
 
 } } 

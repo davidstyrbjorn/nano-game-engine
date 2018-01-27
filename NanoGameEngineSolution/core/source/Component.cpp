@@ -4,7 +4,7 @@
 
 namespace nano { namespace ecs {
 
-	const Entity & Component::GetEntityOwner()
+	Entity & Component::GetEntityOwner()
 	{
 		return *m_owner;
 	}

@@ -4,6 +4,9 @@
 
 #include"../include/systems/WorldSystem.h"
 
+#define GLEW_STATIC
+#include<GL\glew.h>
+
 namespace nano { namespace editor { 
 
 	RendererSystem* RendererSystem::_instance = nullptr;

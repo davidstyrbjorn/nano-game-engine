@@ -9,6 +9,7 @@
 
 #include"../include/DearImGui/imgui.h"
 
+#include<ecs\components\TransformComponent.h>
 #include<ecs\components\RectangleComponent.h>
 #include<ecs\components\SoundComponent.h>
 #include<ecs\components\TriangleComponent.h>
@@ -107,13 +108,17 @@ namespace nano { namespace editor {
 			m_entityToInspect = nullptr;
 			return;
 		}
-		m_entityToInspect = WorldSystem::Instance()->GetEntityByID(a_id);
+		else {
+			m_entityToInspect = WorldSystem::Instance()->GetEntityByID(a_id);
+			m_entityToInspect->SetEditorState(ecs::ECSEditorStates::HIGHLIGHTED);
+		}
 	}
 
 	void EntityInspectorWidget::OnEntityDestroyed(std::string a_id)
 	{
 		// Check if the destroyed entity is the entity we inspect
 		if (WorldSystem::Instance()->Instance()->GetEntityByID(a_id) == m_entityToInspect) {
+			m_entityToInspect->SetEditorState(ecs::ECSEditorStates::NOT_HIGHLIGHTED);
 			m_entityToInspect = nullptr;
 		}
 	}

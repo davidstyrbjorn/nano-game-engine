@@ -3,17 +3,18 @@
 #include<string>
 #include<vector>
 #include"ECS.h"
-#include"components\TransformComponent.h"
 #include"../graphics/Renderable.h"
 
 namespace nano { namespace ecs {
 
+	class Transform;
 	class Component;
 
 	class Entity {
 	private:
 		std::string m_id;
 		ECSStates m_state = ECSStates::ACTIVE;
+		ECSEditorStates m_editorState = ECSEditorStates::NOT_HIGHLIGHTED;
 
 		std::vector<Component*> m_componentsBag;
 
@@ -72,6 +73,7 @@ namespace nano { namespace ecs {
 		std::string GetID();
 		std::string GetIDReference();
 		int GetState();
+		int GetEditorState();
 		graphics::Renderable* GetRenderableComponent();
 
 		//////////
@@ -80,6 +82,7 @@ namespace nano { namespace ecs {
 		
 		void SetID(const std::string &a_id);
 		void SetState(const int a_state);
+		void SetEditorState(const int a_state);
 	};
 	
 } }

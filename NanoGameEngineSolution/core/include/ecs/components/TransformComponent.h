@@ -2,10 +2,11 @@
 
 #include"../../math/Vector2.h"
 #include"../../math/Vector4.h"
+#include"../Component.h"
 
 namespace nano { namespace ecs { 
 
-	class Transform {
+	class Transform : public Component  {
 	public:
 		// C++11 Auto declaration
 		math::Vector2 position = math::Vector2(0, 0);
