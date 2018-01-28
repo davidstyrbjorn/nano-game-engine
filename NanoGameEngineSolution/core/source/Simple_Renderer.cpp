@@ -24,6 +24,7 @@ namespace nano { namespace graphics {
 		m_shader = new Shader(c->GetShaderPaths()[0], c->GetShaderPaths()[1]);
 		m_shader->Bind();
 		m_shader->SetUniformMat4f("projection_matrix", math::Matrix4x4::Orthographic(0, c->GetWindowSize().x, c->GetWindowSize().y, 0, -1, 1));
+		m_shader->SetUniform1f("textureSampler", 1); // GL_TEXTURE0
 
 		m_camera = new OrthographicCamera();
 
@@ -34,12 +35,14 @@ namespace nano { namespace graphics {
 		m_triangleVBO = new opengl::VertexBuffer(nullptr, TRIANGLE_BUFFER_SIZE, GL_DYNAMIC_DRAW);
 		m_triangleVBO->Bind();
 
-		m_triangleVAO->EnableVertexAttribArray(0);
-		m_triangleVAO->EnableVertexAttribArray(1);
-		m_triangleVAO->EnableVertexAttribArray(2);
+		m_triangleVAO->EnableVertexAttribArray(0);  // pos
+		m_triangleVAO->EnableVertexAttribArray(1);  // color
+		m_triangleVAO->EnableVertexAttribArray(2);  // uv
+		m_triangleVAO->EnableVertexAttribArray(3);  // editor state
 		m_triangleVAO->SetVertexAttribPointer(0, 2, GL_FLOAT, sizeof(Vertex), 0);
 		m_triangleVAO->SetVertexAttribPointer(1, 4, GL_FLOAT, sizeof(Vertex), (void*)OFFSET_TO_COLOR);
-		m_triangleVAO->SetVertexAttribPointer(2, 1, GL_FLOAT, sizeof(Vertex), (void*)OFFSET_TO_EDITOR_STATE);
+		m_triangleVAO->SetVertexAttribPointer(2, 2, GL_FLOAT, sizeof(Vertex), (void*)OFFSET_TO_UV);
+		m_triangleVAO->SetVertexAttribPointer(3, 1, GL_FLOAT, sizeof(Vertex), (void*)OFFSET_TO_EDITOR_STATE);
 		m_triangleVAO->Unbind();
 
 		// Quad
@@ -49,12 +52,14 @@ namespace nano { namespace graphics {
 		m_quadVBO = new opengl::VertexBuffer(nullptr, QUAD_BUFFER_SIZE, GL_DYNAMIC_DRAW);
 		m_quadVBO->Bind();
 		
-		m_quadVAO->EnableVertexAttribArray(0);
-		m_quadVAO->EnableVertexAttribArray(1);
-		m_quadVAO->EnableVertexAttribArray(2);
+		m_quadVAO->EnableVertexAttribArray(0);  // pos
+		m_quadVAO->EnableVertexAttribArray(1);  // color
+		m_quadVAO->EnableVertexAttribArray(2);  // uv
+		m_quadVAO->EnableVertexAttribArray(3);  // editor state
 		m_quadVAO->SetVertexAttribPointer(0, 2, GL_FLOAT, sizeof(Vertex), 0);
 		m_quadVAO->SetVertexAttribPointer(1, 4, GL_FLOAT, sizeof(Vertex), (void*)OFFSET_TO_COLOR);
-		m_quadVAO->SetVertexAttribPointer(2, 1, GL_FLOAT, sizeof(Vertex), (void*)OFFSET_TO_EDITOR_STATE);
+		m_quadVAO->SetVertexAttribPointer(2, 2, GL_FLOAT, sizeof(Vertex), (void*)OFFSET_TO_UV);
+		m_quadVAO->SetVertexAttribPointer(3, 1, GL_FLOAT, sizeof(Vertex), (void*)OFFSET_TO_EDITOR_STATE);
 		
 		int m_indicesOffset = 0;
 		GLuint m_indices[INDICES_COUNT];
@@ -73,6 +78,27 @@ namespace nano { namespace graphics {
 		m_quadIBO = new opengl::IndexBuffer(m_indices, sizeof(m_indices));
 		
 		m_quadVAO->Unbind();
+
+		// Texture
+		m_textureVAO = new opengl::VertexArrayObject();
+		m_textureVAO->Bind();
+
+		m_textureVBO = new opengl::VertexBuffer(nullptr, VERTEX_SIZE * 4, GL_STATIC_DRAW);
+		m_textureVBO->Bind();
+
+		m_textureVAO->EnableVertexAttribArray(0);  // pos
+		m_textureVAO->EnableVertexAttribArray(1);  // color
+		m_textureVAO->EnableVertexAttribArray(2);  // uv
+		m_textureVAO->EnableVertexAttribArray(3);  // editor state
+		m_textureVAO->SetVertexAttribPointer(0, 2, GL_FLOAT, sizeof(Vertex), 0);
+		m_textureVAO->SetVertexAttribPointer(1, 4, GL_FLOAT, sizeof(Vertex), (void*)OFFSET_TO_COLOR);
+		m_textureVAO->SetVertexAttribPointer(2, 2, GL_FLOAT, sizeof(Vertex), (void*)OFFSET_TO_UV);
+		m_textureVAO->SetVertexAttribPointer(3, 1, GL_FLOAT, sizeof(Vertex), (void*)OFFSET_TO_EDITOR_STATE);
+
+		GLuint iboData[] = { 0,1,2,2,3,0 };
+		m_textureIBO = new opengl::IndexBuffer(iboData, sizeof(iboData));
+
+		m_textureVAO->Unbind();
 	}
 
 	SimpleRenderer::~SimpleRenderer()
@@ -115,9 +141,9 @@ namespace nano { namespace graphics {
 				editorState = 1.0f;
 
 			Vertex data[] = {
-				{ math::Vector2(pos.x,pos.y), color, editorState },
-				{ math::Vector2(pos.x, pos.y + size.y), color, editorState },
-				{ pos+size, color, editorState }
+				{ math::Vector2(pos.x,pos.y), color, math::Vector2(-1,-1), editorState },
+				{ math::Vector2(pos.x, pos.y + size.y), color, math::Vector2(-1,-1), editorState },
+				{ pos+size, color, math::Vector2(-1,-1), editorState }
 			};
 
 			m_triangleVBO->Bind();
@@ -127,30 +153,40 @@ namespace nano { namespace graphics {
 			m_triangleCount++;
 		}
 		else if (a_renderable->GetVertexCount() == 4) {
-			// Quad
-			GLintptr _offset = m_quadCount * (QUAD_SIZE);
+			if (a_renderable->GetTexture() == nullptr) {
+				// Quad
+				GLintptr _offset = m_quadCount * (QUAD_SIZE);
 
-			math::Vector2 pos = a_renderable->GetTransformComponent()->position;
-			math::Vector2 size = a_renderable->GetTransformComponent()->size;
-			math::Vector4 color = a_renderable->GetColor();
-			
-			float editorState = 0.0f;
-			if (a_renderable->GetTransformComponent()->GetEntityOwner().GetEditorState() == ecs::ECSEditorStates::HIGHLIGHTED)
-				editorState = 1.0f;
+				math::Vector2 pos = a_renderable->GetTransformComponent()->position;
+				math::Vector2 size = a_renderable->GetTransformComponent()->size;
+				math::Vector4 color = a_renderable->GetColor();
 
-			Vertex data[] = {
-				{ math::Vector2(pos.x,pos.y), color, editorState },
-				{ math::Vector2(pos.x, pos.y + size.y), color, editorState },
-				{ pos + size, color, editorState },
-				{ math::Vector2(pos.x + size.x, pos.y), color, editorState },
-			};
+				float editorState = 0.0f;
+				if (a_renderable->GetTransformComponent()->GetEntityOwner().GetEditorState() == ecs::ECSEditorStates::HIGHLIGHTED)
+					editorState = 1.0f;
 
-			m_quadVBO->Bind();
-			m_quadVBO->SetDatSub(_offset, sizeof(data), (float*)&data);
-			m_quadVBO->Unbind();
+				Vertex data[] = {
+					{ math::Vector2(pos.x,pos.y), color, math::Vector2(-1,-1), editorState },
+					{ math::Vector2(pos.x, pos.y + size.y), color, math::Vector2(-1,-1), editorState },
+					{ pos + size, color, math::Vector2(-1,-1), editorState },
+					{ math::Vector2(pos.x + size.x, pos.y), color, math::Vector2(-1,-1), editorState },
+				};
 
-			m_quadCount++;
+				m_quadVBO->Bind();
+				m_quadVBO->SetDatSub(_offset, sizeof(data), (float*)&data);
+				m_quadVBO->Unbind();
+
+				m_quadCount++;
+			}
+			else {
+				AddTextureToRender(a_renderable);
+			}
 		}
+	}
+
+	void SimpleRenderer::AddTextureToRender(Renderable * a_renderable)
+	{
+		m_texturesToRender.push_back(a_renderable);
 	}
 
 	void SimpleRenderer::Flush()
@@ -180,7 +216,48 @@ namespace nano { namespace graphics {
 			m_quadIBO->Unbind();
 			m_quadVBO->Unbind();
 		}
+
+		this->PostFlush();
+
 		m_shader->Unbind();
+	}
+
+	void SimpleRenderer::PostFlush()
+	{
+		// Render the textures we want to render
+		while (!m_texturesToRender.empty()) {
+			Renderable* texturedRenderable = m_texturesToRender.front();
+
+			math::Vector2 pos = texturedRenderable->GetTransformComponent()->position;
+			math::Vector2 size = texturedRenderable->GetTransformComponent()->size;
+			math::Vector4 color = texturedRenderable->GetColor();
+
+			float editorState = 0.0f;
+
+			Vertex data[] = {
+				{ math::Vector2(pos.x,pos.y), color, math::Vector2(0, 0), editorState },
+				{ math::Vector2(pos.x, pos.y + size.y), color, math::Vector2(0, 1), editorState },
+				{ pos + size, color, math::Vector2(1, 1), editorState },
+				{ math::Vector2(pos.x + size.x, pos.y), color, math::Vector2(1, 0), editorState },
+			};
+
+			// Bind
+			texturedRenderable->GetTexture()->Bind();
+			m_textureVAO->Bind();
+			m_textureVBO->Bind();
+			m_textureIBO->Bind();
+
+			m_textureVBO->SetData((float*)&data, sizeof(data), GL_STATIC_DRAW);
+			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+
+			// Unbind
+			m_textureVAO->Unbind();
+			m_textureVBO->Unbind();
+			m_textureIBO->Unbind();
+			texturedRenderable->GetTexture()->Unbind();
+			
+			m_texturesToRender.pop_front();
+		}
 	}
 
 	OrthographicCamera * SimpleRenderer::GetCamera()

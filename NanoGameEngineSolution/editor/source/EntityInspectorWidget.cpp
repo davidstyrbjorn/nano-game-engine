@@ -39,6 +39,7 @@ namespace nano { namespace editor {
 					if (mousePos.x > m_entityToInspect->m_transform->position.x && mousePos.x < m_entityToInspect->m_transform->position.x + m_entityToInspect->m_transform->size.x) {
 						if (mousePos.y > m_entityToInspect->m_transform->position.y && mousePos.y < m_entityToInspect->m_transform->position.y + m_entityToInspect->m_transform->size.y) {
 							m_isDraggingEntity = true;
+							m_dragDeltaPosition = mousePos - m_entityToInspect->m_transform->position;
 						}
 					}
 				}
@@ -55,7 +56,7 @@ namespace nano { namespace editor {
 		// Dragging logic
 		if (m_isDraggingEntity) {
 			// TODO @ Some kind of anchor point logic for dragging 
-			m_entityToInspect->m_transform->position = m_inputSystem->GetMousePosition();
+			m_entityToInspect->m_transform->position = m_inputSystem->GetMousePosition() - m_dragDeltaPosition;
 		}
 	}
 

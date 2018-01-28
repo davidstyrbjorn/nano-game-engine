@@ -2,6 +2,7 @@
 
 #include"EditorWidget.h"
 #include"../EventObserver.h"
+#include<math\Vector2.h>
 
 // FWD
 namespace nano {
@@ -24,6 +25,7 @@ namespace nano {
 			ecs::Entity *m_entityToInspect;
 
 			bool m_isDraggingEntity = false;
+			math::Vector2 m_dragDeltaPosition;
 
 		public:
 			EntityInspectorWidget();

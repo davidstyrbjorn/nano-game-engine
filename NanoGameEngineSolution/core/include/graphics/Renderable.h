@@ -7,6 +7,9 @@ namespace nano {
 	namespace ecs {
 		class Transform;
 	}
+	namespace opengl {
+		class Texture;
+	}
 }
 
 namespace nano { namespace graphics { 
@@ -15,8 +18,9 @@ namespace nano { namespace graphics {
 	class Renderable {
 	protected:
 		// Renderable shared data
-		math::Vector4 m_color;
+		math::Vector4 m_color = math::Vector4(0, 0, 0, 1); // deafault black color
 		ecs::Transform* m_transform;
+		opengl::Texture *m_texture;
 
 	public:
 		// Default constructor
@@ -31,15 +35,14 @@ namespace nano { namespace graphics {
 
 		// Getters
 
-		///////////
-		// \brief Returns a vector copy of the color
-		//
+		// brief Returns a vector copy of the color
 		math::Vector4 GetColor();
 
-		///////////
-		// \brief Returns a pointer to the transform of the renderable
-		//
+		// brief Returns a pointer to the transform of the renderable
 		ecs::Transform *GetTransformComponent();
+
+		// brief Returns a pointer to the transform of the renderable
+		opengl::Texture *GetTexture();
 
 		///////////
 		// \brief Returns the number of vertices for renderable 

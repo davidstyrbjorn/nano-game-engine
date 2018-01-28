@@ -140,6 +140,8 @@
     <ClCompile Include="source\SoundBuffer.cpp" />
     <ClCompile Include="source\SoundContextDevice.cpp" />
     <ClCompile Include="source\SoundSource.cpp" />
+    <ClCompile Include="source\SpriteComponent.cpp" />
+    <ClCompile Include="source\Texture.cpp" />
     <ClCompile Include="source\TriangleComponent.cpp" />
     <ClCompile Include="source\IndexBuffer.cpp" />
     <ClCompile Include="source\Component.cpp" />
@@ -169,6 +171,7 @@
     <ClInclude Include="include\ecs\Component.h" />
     <ClInclude Include="include\ecs\components\RectangleComponent.h" />
     <ClInclude Include="include\ecs\components\SoundComponent.h" />
+    <ClInclude Include="include\ecs\components\SpriteComponent.h" />
     <ClInclude Include="include\ecs\components\TransformComponent.h" />
     <ClInclude Include="include\ecs\components\TriangleComponent.h" />
     <ClInclude Include="include\ecs\ECS.h" />
@@ -190,6 +193,7 @@
     <ClInclude Include="include\opengl\IndexBuffer.h" />
     <ClInclude Include="include\opengl\NanoOpenGL.h" />
     <ClInclude Include="include\opengl\NanoOpenGLBase.h" />
+    <ClInclude Include="include\opengl\Texture.h" />
     <ClInclude Include="include\opengl\VertexArrayObject.h" />
     <ClInclude Include="include\opengl\VertexBuffer.h" />
     <ClInclude Include="include\Random.h" />
@@ -197,6 +201,7 @@
     <ClInclude Include="include\sound\NanoOpenAL.h" />
     <ClInclude Include="include\sound\SoundContextDevice.h" />
     <ClInclude Include="include\sound\SoundSource.h" />
+    <ClInclude Include="include\stb\stb_image.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

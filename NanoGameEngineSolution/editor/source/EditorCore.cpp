@@ -5,6 +5,7 @@
 #include<ecs\components\SoundComponent.h>
 #include<ecs\components\TransformComponent.h>
 #include<ecs\components\TriangleComponent.h>
+#include<ecs\components\SpriteComponent.h>
 
 #include<graphics\GraphicsInclude.h>
 
@@ -65,8 +66,12 @@ namespace nano { namespace editor {
 		testEntity->m_transform->position = math::Vector2(400, 100);
 		testEntity->m_transform->size = math::Vector2(100, 40);
 		testEntity->AddComponent(new ecs::RectangleComponent(math::Vector4(0.4, 0.1, 0.9, 1)))->Start();
-		testEntity->AddComponent(new ecs::SoundComponent("D:\\temp\\sound.wav"));
 		m_WorldSystem->AddNewEntity(testEntity);
+
+		ecs::Entity* Sprite = new ecs::Entity("Sprite");
+		Sprite->Start();
+		Sprite->AddComponent(new ecs::SpriteComponent("D:\\temp\\cat.png"))->Start();
+		m_WorldSystem->AddNewEntity(Sprite);
 
 		/////////////////////////////////////////////////////////////////////
 

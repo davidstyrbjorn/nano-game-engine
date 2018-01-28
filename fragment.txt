@@ -1,11 +1,15 @@
 #version 330
 
+// from vertex
 in vec4 color;
+in vec2 uv;
 in float highlighted;
 
-// vec3 ambient = light.ambientCoefficient * surfaceColor.rgb * light.intensities;
+// Fragment uniforms
 uniform vec3 ambientColor = vec3(0.5, 0.5, 0.5);
+uniform sampler2D textureSampler;
 
+// Returns lightning model 
 vec3 LightModel()
 {
 	if(highlighted > 0)
@@ -15,5 +19,11 @@ vec3 LightModel()
 
 void main() 
 {
-	gl_FragColor = vec4(color.rgb * LightModel(), 1);
+	// For now this just means there is no texture so render it with no texture
+	if(uv.x == -1 && uv.y == -1) { 
+		gl_FragColor = vec4(color.rgb * LightModel(), 1);
+        }
+	else {
+		gl_FragColor = texture(textureSampler, uv);
+	}
 }

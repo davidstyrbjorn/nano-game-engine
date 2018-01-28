@@ -22,15 +22,26 @@ namespace nano { namespace graphics {
 
 	class SimpleRenderer {
 	private:
-		opengl::VertexBuffer *m_triangleVBO, *m_quadVBO;
-		opengl::VertexArrayObject *m_triangleVAO, *m_quadVAO;
-		opengl::IndexBuffer *m_quadIBO;
+		// For now
+		// We are going to render textures slow
+		// After the batch of triangles and quads have been rendered 
+		// We go through every texture and instance render them
+		std::deque<Renderable*> m_texturesToRender;
+
+		opengl::VertexBuffer *m_triangleVBO, *m_quadVBO, *m_textureVBO;
+		opengl::VertexArrayObject *m_triangleVAO, *m_quadVAO, *m_textureVAO;
+		opengl::IndexBuffer *m_quadIBO, *m_textureIBO;
 		Shader *m_shader;
 
 		int m_triangleCount, m_quadCount;
 
-	public:
 		OrthographicCamera *m_camera;
+		
+		// Private methods
+		void AddTextureToRender(Renderable* a_renderable);
+		void PostFlush();
+
+	public:
 		// Default Constructor
 		SimpleRenderer();
 
