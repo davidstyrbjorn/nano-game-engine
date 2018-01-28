@@ -5,6 +5,11 @@
 
 namespace nano { namespace graphics {
 
+	Renderable::~Renderable()
+	{
+		delete m_texture;
+	}
+
 	void Renderable::SetColor(const math::Vector4 a_color)
 	{
 		m_color = a_color;

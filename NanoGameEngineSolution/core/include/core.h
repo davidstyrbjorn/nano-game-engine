@@ -32,6 +32,10 @@ typedef void GLvoid;
 typedef ptrdiff_t GLintptr;
 typedef ptrdiff_t GLsizeiptr;
 
+// Nano macro define
+#define GL_RGB 0x1907
+#define GL_RGBA 0x1908
+
 // Nano macros
 #define PI 3.14159265359
 #define DEG2RADS PI/180

@@ -19,7 +19,7 @@ namespace nano { namespace editor {
 
 	void UtilityWidget::Update()
 	{
-
+		
 	}
 
 	void UtilityWidget::Render()

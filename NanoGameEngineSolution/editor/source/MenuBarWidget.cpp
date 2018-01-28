@@ -51,6 +51,15 @@ namespace nano { namespace editor {
 				}
 				ImGui::EndMenu();
 			}
+			if (ImGui::BeginMenu("About")) {
+				if (ImGui::Selectable("Version")) {
+
+				}
+				if (ImGui::Selectable("Credit")) {
+					m_showCreditsWidget = true;
+				}
+				ImGui::EndMenu();
+			}
 			if (ImGui::BeginMenu("Entity"))
 			{
 				if (ImGui::Selectable("Create New")) {
@@ -64,6 +73,11 @@ namespace nano { namespace editor {
 
 			ImGui::EndMainMenuBar();
 		}
+
+		ImGui::Begin("Credits", &m_showCreditsWidget, ImVec2(300, 200), 1.0f, ImGuiWindowFlags_::ImGuiWindowFlags_NoResize | ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse);
+		ImGui::Text("Programmer: David Styrbjörn");
+		ImGui::Text("License: GNU General Public License v3.0");
+		ImGui::End();
 	}
 }
 }

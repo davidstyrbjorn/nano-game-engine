@@ -4,6 +4,7 @@
 #include<math\Vector2.h>
 #include<ecs\Entity.h>
 #include<math\Vector2.h>
+#include<opengl\Texture.h>
 
 #include"../include/systems/WorldSystem.h"
 #include"../include/systems/InputSystem.h"
@@ -14,6 +15,9 @@
 #include<ecs\components\RectangleComponent.h>
 #include<ecs\components\SoundComponent.h>
 #include<ecs\components\TriangleComponent.h>
+#include<ecs\components\SpriteComponent.h>
+
+#include<stb\stb_image.h>
 
 namespace nano { namespace editor {
 
@@ -55,7 +59,6 @@ namespace nano { namespace editor {
 
 		// Dragging logic
 		if (m_isDraggingEntity) {
-			// TODO @ Some kind of anchor point logic for dragging 
 			m_entityToInspect->m_transform->position = m_inputSystem->GetMousePosition() - m_dragDeltaPosition;
 		}
 	}
@@ -105,10 +108,13 @@ namespace nano { namespace editor {
 			if (renderableComponent != nullptr) {
 				// Shape type
 				ImGui::Text("Renderable Component");
-				if (renderableComponent->GetVertexCount() == 3) {
+				if (renderableComponent->GetTexture() != nullptr) {
+					ImGui::Text("Type: Sprite");
+				}
+				else if (renderableComponent->GetVertexCount() == 3) {
 					ImGui::Text("Type: Triangle");
 				}
-				if (renderableComponent->GetVertexCount() == 4) {
+				else if (renderableComponent->GetVertexCount() == 4) {
 					ImGui::Text("Type: Rectangle");
 				}
 
@@ -116,10 +122,23 @@ namespace nano { namespace editor {
 				math::Vector4 renderableColor = renderableComponent->GetColor();
 				ImGui::ColorEdit4("Color", (float*)&renderableColor);
 				renderableComponent->SetColor(renderableColor);
+
+				// Image if there is any
+				if (renderableComponent->GetTexture() != nullptr) 
+				{
+					// Display the sprite image
+					ImGui::Image((ImTextureID*)renderableComponent->GetTexture()->GetTextureID(), ImVec2(150,150));
+
+					// Input for changing texture
+					static char texturePath[128] = "";
+					ImGui::InputText("Texture Path", texturePath, 128);
+					if (ImGui::Button("Load Texture")) {
+						m_entityToInspect->GetComponent<ecs::SpriteComponent>()->LoadNewTexture(texturePath);
+					}
+				}
 				
 				ImGui::Separator();
 			}
-
 
 			ecs::SoundComponent* soundComponent = m_entityToInspect->GetComponent<ecs::SoundComponent>();
 			if (soundComponent != nullptr) {

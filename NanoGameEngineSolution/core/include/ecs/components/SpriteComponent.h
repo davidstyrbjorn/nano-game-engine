@@ -13,6 +13,9 @@ namespace nano { namespace ecs {
 	private:
 		const char* m_imagePath;
 
+		// Private methods
+		std::string GetFileExtension(const char* a_string);
+
 	public:
 		// Inits the neccesary data
 		void Start() override;
@@ -23,6 +26,9 @@ namespace nano { namespace ecs {
 
 		// Constructor with arguments
 		SpriteComponent(const char* a_imagePath);
+
+		// Loads new texture for sprite component
+		void LoadNewTexture(const char* a_imagePath);
 
 		// Override for the renderer 
 		int GetVertexCount() override { return 4; }

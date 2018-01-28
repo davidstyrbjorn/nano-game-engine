@@ -26,6 +26,9 @@ namespace nano { namespace graphics {
 		// Default constructor
 		Renderable() { }
 
+		// Virtual destructor
+		virtual ~Renderable();
+
 		// Setters
 
 		///////////

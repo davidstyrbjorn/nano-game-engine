@@ -21,6 +21,7 @@ namespace nano { namespace editor {
 
 	private:
 		CoreConfig *m_config;
+		bool m_showCreditsWidget = false;
 	};
 
 } }

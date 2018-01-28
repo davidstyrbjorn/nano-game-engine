@@ -3,13 +3,26 @@
 #define GLEW_STATIC
 #include<GL\glew.h>
 
+#include"../include/math/Vector2.h"
+
 namespace nano { namespace opengl { 
 
-	Texture::Texture(unsigned char* a_imageData, unsigned int a_width, unsigned int a_height)
+	Texture::Texture(unsigned char* a_imageData, unsigned int a_width, unsigned int a_height, GLenum a_format)
 	{
 		glGenTextures(1, &m_textureID);
 		this->Bind();
-		
+		this->SetTextureData(a_imageData, a_width, a_height, a_format);
+		glActiveTexture(GL_TEXTURE0);
+		this->Unbind();
+	}
+
+	Texture::~Texture()
+	{
+		glDeleteTextures(1, &m_textureID);
+	}
+
+	void Texture::SetTextureData(unsigned char * a_imageData, unsigned int a_width, unsigned int a_height, GLenum a_format)
+	{
 		// Set texture parameters
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -18,18 +31,25 @@ namespace nano { namespace opengl {
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 		glGenerateMipmap(GL_TEXTURE_2D);
-
+		
 		// Fill the texture buffer with the image data
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, a_width, a_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, a_imageData);
+		glTexImage2D(GL_TEXTURE_2D, 0, a_format, a_width, a_height, 0, a_format, GL_UNSIGNED_BYTE, a_imageData);
 
-		glActiveTexture(GL_TEXTURE0);
-
-		this->Unbind();
+		// Set member values
+		m_width = a_width;
+		m_height = a_height;
 	}
 
-	Texture::~Texture()
+	GLuint Texture::GetTextureID()
 	{
-		glDeleteTextures(1, &m_textureID);
+		if(glIsTexture(m_textureID))
+			return m_textureID;
+		return -1;
+	}
+
+	math::Vector2 & Texture::GetTextureSize()
+	{
+		return math::Vector2(m_width, m_height);
 	}
 
 	void Texture::Bind()

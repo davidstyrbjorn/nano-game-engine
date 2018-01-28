@@ -25,5 +25,9 @@ void main()
         }
 	else {
 		gl_FragColor = texture(textureSampler, uv);
+
+		//if(gl_FragColor.a < 0.3){
+		//	discard;
+		//}
 	}
 }
