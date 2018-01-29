@@ -59,6 +59,8 @@ namespace nano { namespace ecs {
 					return dynamic_cast<ComponentType*>(m_componentsBag[i]);
 				}
 			}
+
+			return nullptr;
 		}
 
 		//////////

@@ -13,6 +13,9 @@
 #include"systems\EditorWidgetSystem.h"
 #include"systems\InputSystem.h"
 
+// @ Remove 
+#include<sound\SoundContextDevice.h>
+
 namespace nano { namespace editor { 
 
 	class EditorCore {
@@ -24,6 +27,7 @@ namespace nano { namespace editor {
 		RendererSystem *m_rendererSystem;
 		EditorWidgetSystem *m_editorWidgetSystem;
 		CoreConfig *m_config;
+		openal::ContextDevice *contextDevice;
 
 		// Other
 		Clock m_fpsClock;

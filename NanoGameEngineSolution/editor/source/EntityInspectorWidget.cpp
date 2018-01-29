@@ -17,6 +17,9 @@
 #include<ecs\components\TriangleComponent.h>
 #include<ecs\components\SpriteComponent.h>
 
+#include<sound\SoundSource.h>
+#include<sound\SoundBuffer.h>
+
 #include<stb\stb_image.h>
 
 namespace nano { namespace editor {
@@ -135,14 +138,57 @@ namespace nano { namespace editor {
 					if (ImGui::Button("Load Texture")) {
 						m_entityToInspect->GetComponent<ecs::SpriteComponent>()->LoadNewTexture(texturePath);
 					}
-				}
-				
-				ImGui::Separator();
+				}	
 			}
+			
+			ImGui::Separator(); ImGui::Spacing();
 
 			ecs::SoundComponent* soundComponent = m_entityToInspect->GetComponent<ecs::SoundComponent>();
-			if (soundComponent != nullptr) {
+			bool hasSoundComponent = soundComponent == nullptr ? false : true;
+			if (hasSoundComponent) {
+
+				openal::SoundSource *source = soundComponent->GetSource();
+
 				ImGui::Text("Sound Component");
+				
+				// Load sound
+				static char soundPath[128] = "";
+				ImGui::InputText("Sound Path", soundPath, 128);
+				if (ImGui::Button("Load Sound")) {
+					soundComponent->LoadNewSound(soundPath);
+				}
+
+				// Data modifiers
+				// Volume/Gain
+				static float gain = source->GetVolume();
+				ImGui::SliderFloat("Gain", &gain, 0, 5, "%.1f");
+				source->SetVolume(gain);
+
+				// Pitch
+				static float pitch = source->GetPitch();
+				ImGui::SliderFloat("Pitch", &pitch, 0, 5, "%.1f");
+				source->SetPitch(pitch);
+
+				// Looping
+				static bool looping;
+				ImGui::Checkbox("Looping", &looping);
+				source->SetLooping(looping);
+
+				// State modifiers
+				if (ImGui::Button("Play")) {
+					source->Play();
+				}
+				ImGui::SameLine(100);
+				if (ImGui::Button("Stop")) {
+					source->Stop();
+				}
+				if (ImGui::Button("Pause")) {
+					source->Pause();
+				}
+				ImGui::SameLine(100);
+				if (ImGui::Button("Continue")) {
+					source->Continue();
+				}
 			}
 		}
 

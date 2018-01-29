@@ -18,6 +18,7 @@ namespace nano { namespace editor {
 	{
 		// Getting acess to the config file
 		m_config = CoreConfig::Instance();
+		m_showCreditsWidget = false;
 	}
 
 	void MenuBarWidget::Update()
@@ -74,10 +75,12 @@ namespace nano { namespace editor {
 			ImGui::EndMainMenuBar();
 		}
 
-		ImGui::Begin("Credits", &m_showCreditsWidget, ImVec2(300, 200), 1.0f, ImGuiWindowFlags_::ImGuiWindowFlags_NoResize | ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse);
-		ImGui::Text("Programmer: David Styrbjörn");
-		ImGui::Text("License: GNU General Public License v3.0");
-		ImGui::End();
+		if (m_showCreditsWidget) {
+			ImGui::Begin("Credits", &m_showCreditsWidget, ImVec2(300, 200), 1.0f, ImGuiWindowFlags_::ImGuiWindowFlags_NoResize | ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse);
+			ImGui::Text("Programmer: David Styrbjörn");
+			ImGui::Text("License: GNU General Public License v3.0");
+			ImGui::End();
+		}
 	}
 }
 }

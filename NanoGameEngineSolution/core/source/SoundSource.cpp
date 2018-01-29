@@ -27,6 +27,13 @@ namespace nano { namespace openal {
 		alDeleteBuffers(1, &m_source);
 	}
 
+	void SoundSource::SetBuffer(ALuint a_buffer)
+	{
+		// Attatch the sound buffer to this source
+		alSourcei(m_source, AL_BUFFER, a_buffer);
+		m_soundState = SoundState::NOT_PLAYING;
+	}
+
 	float SoundSource::GetVolume()
 	{
 		float v = 0;

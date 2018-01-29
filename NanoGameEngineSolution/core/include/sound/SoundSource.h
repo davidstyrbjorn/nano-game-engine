@@ -31,6 +31,9 @@ namespace openal {
 		// Destructor 
 		~SoundSource();
 
+		// Changing buffers
+		void SetBuffer(ALuint a_buffer);
+
 		// Property functions ie. alSource()
 		void SetVolume(const float a_gain);
 		void SetLooping(bool a_loop);

@@ -7,7 +7,8 @@ namespace nano {
 
 	openal::ContextDevice::ContextDevice()
 	{
-	
+		this->CreateDevice();
+		this->CreateContext();
 	}
 
 	void openal::ContextDevice::CreateDevice()
