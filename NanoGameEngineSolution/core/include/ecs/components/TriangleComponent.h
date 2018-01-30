@@ -14,6 +14,7 @@ namespace nano { namespace ecs {
 		// Inits the neccesary data
 		void Start() override;
 		void Init() override;
+		void OnStateChange(ECSStates a_newState) override;
 
 		// Empty constructor
 		TriangleComponent();

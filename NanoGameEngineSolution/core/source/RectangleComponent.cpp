@@ -17,7 +17,7 @@ namespace nano { namespace ecs {
 
 	RectangleComponent::RectangleComponent()
 	{
-		m_color = math::Vector4(0, 0, 0, 0);
+
 	}
 
 	RectangleComponent::RectangleComponent(const math::Vector4 & a_color)

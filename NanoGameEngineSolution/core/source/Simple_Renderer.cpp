@@ -41,11 +41,9 @@ namespace nano { namespace graphics {
 		m_triangleVAO->EnableVertexAttribArray(0);  // pos
 		m_triangleVAO->EnableVertexAttribArray(1);  // color
 		m_triangleVAO->EnableVertexAttribArray(2);  // uv
-		m_triangleVAO->EnableVertexAttribArray(3);  // editor state
 		m_triangleVAO->SetVertexAttribPointer(0, 2, GL_FLOAT, sizeof(Vertex), 0);
 		m_triangleVAO->SetVertexAttribPointer(1, 4, GL_FLOAT, sizeof(Vertex), (void*)OFFSET_TO_COLOR);
 		m_triangleVAO->SetVertexAttribPointer(2, 2, GL_FLOAT, sizeof(Vertex), (void*)OFFSET_TO_UV);
-		m_triangleVAO->SetVertexAttribPointer(3, 1, GL_FLOAT, sizeof(Vertex), (void*)OFFSET_TO_EDITOR_STATE);
 		m_triangleVAO->Unbind();
 
 		// Quad
@@ -58,11 +56,9 @@ namespace nano { namespace graphics {
 		m_quadVAO->EnableVertexAttribArray(0);  // pos
 		m_quadVAO->EnableVertexAttribArray(1);  // color
 		m_quadVAO->EnableVertexAttribArray(2);  // uv
-		m_quadVAO->EnableVertexAttribArray(3);  // editor state
 		m_quadVAO->SetVertexAttribPointer(0, 2, GL_FLOAT, sizeof(Vertex), 0);
 		m_quadVAO->SetVertexAttribPointer(1, 4, GL_FLOAT, sizeof(Vertex), (void*)OFFSET_TO_COLOR);
 		m_quadVAO->SetVertexAttribPointer(2, 2, GL_FLOAT, sizeof(Vertex), (void*)OFFSET_TO_UV);
-		m_quadVAO->SetVertexAttribPointer(3, 1, GL_FLOAT, sizeof(Vertex), (void*)OFFSET_TO_EDITOR_STATE);
 		
 		int m_indicesOffset = 0;
 		GLuint m_indices[INDICES_COUNT];
@@ -96,7 +92,6 @@ namespace nano { namespace graphics {
 		m_textureVAO->SetVertexAttribPointer(0, 2, GL_FLOAT, sizeof(Vertex), 0);
 		m_textureVAO->SetVertexAttribPointer(1, 4, GL_FLOAT, sizeof(Vertex), (void*)OFFSET_TO_COLOR);
 		m_textureVAO->SetVertexAttribPointer(2, 2, GL_FLOAT, sizeof(Vertex), (void*)OFFSET_TO_UV);
-		m_textureVAO->SetVertexAttribPointer(3, 1, GL_FLOAT, sizeof(Vertex), (void*)OFFSET_TO_EDITOR_STATE);
 
 		GLuint iboData[] = { 0,1,2,2,3,0 };
 		m_textureIBO = new opengl::IndexBuffer(iboData, sizeof(iboData));
@@ -129,6 +124,7 @@ namespace nano { namespace graphics {
 
 	void SimpleRenderer::Submit(Renderable * a_renderable)
 	{
+		assert(a_renderable != nullptr); // nullptr to in-argument!
 		assert(a_renderable->GetVertexCount() != -1 || (m_quadCount + m_triangleCount) < MAX_PRIMITIVES); // Invalid argument or we've passed primitive threshold!
 
 		if (a_renderable->GetVertexCount() == 3) {
@@ -138,15 +134,11 @@ namespace nano { namespace graphics {
 			math::Vector2 pos = a_renderable->GetTransformComponent()->position;
 			math::Vector2 size = a_renderable->GetTransformComponent()->size;
 			math::Vector4 color = a_renderable->GetColor();
-			
-			float editorState = 0.0f;
-			if (a_renderable->GetTransformComponent()->GetEntityOwner().GetEditorState() == ecs::ECSEditorStates::HIGHLIGHTED)
-				editorState = 1.0f;
 
 			Vertex data[] = {
-				{ math::Vector2(pos.x,pos.y), color, math::Vector2(-1,-1), editorState },
-				{ math::Vector2(pos.x, pos.y + size.y), color, math::Vector2(-1,-1), editorState },
-				{ pos+size, color, math::Vector2(-1,-1), editorState }
+				{ math::Vector2(pos.x,pos.y), color, math::Vector2(-1,-1) },
+				{ math::Vector2(pos.x, pos.y + size.y), color, math::Vector2(-1,-1) },
+				{ pos+size, color, math::Vector2(-1,-1) }
 			};
 
 			m_triangleVBO->Bind();
@@ -164,15 +156,11 @@ namespace nano { namespace graphics {
 				math::Vector2 size = a_renderable->GetTransformComponent()->size;
 				math::Vector4 color = a_renderable->GetColor();
 
-				float editorState = 0.0f;
-				if (a_renderable->GetTransformComponent()->GetEntityOwner().GetEditorState() == ecs::ECSEditorStates::HIGHLIGHTED)
-					editorState = 1.0f;
-
 				Vertex data[] = {
-					{ math::Vector2(pos.x,pos.y), color, math::Vector2(-1,-1), editorState },
-					{ math::Vector2(pos.x, pos.y + size.y), color, math::Vector2(-1,-1), editorState },
-					{ pos + size, color, math::Vector2(-1,-1), editorState },
-					{ math::Vector2(pos.x + size.x, pos.y), color, math::Vector2(-1,-1), editorState },
+					{ math::Vector2(pos.x,pos.y), color, math::Vector2(-1,-1) },
+					{ math::Vector2(pos.x, pos.y + size.y), color, math::Vector2(-1,-1) },
+					{ pos + size, color, math::Vector2(-1,-1) },
+					{ math::Vector2(pos.x + size.x, pos.y), color, math::Vector2(-1,-1) },
 				};
 
 				m_quadVBO->Bind();
@@ -238,10 +226,10 @@ namespace nano { namespace graphics {
 			float editorState = 0.0f;
 
 			Vertex data[] = {
-				{ math::Vector2(pos.x,pos.y), color, math::Vector2(0, 0), editorState },
-				{ math::Vector2(pos.x, pos.y + size.y), color, math::Vector2(0, 1), editorState },
-				{ pos + size, color, math::Vector2(1, 1), editorState },
-				{ math::Vector2(pos.x + size.x, pos.y), color, math::Vector2(1, 0), editorState },
+				{ math::Vector2(pos.x,pos.y), color, math::Vector2(0, 0) },
+				{ math::Vector2(pos.x, pos.y + size.y), color, math::Vector2(0, 1) },
+				{ pos + size, color, math::Vector2(1, 1) },
+				{ math::Vector2(pos.x + size.x, pos.y), color, math::Vector2(1, 0) },
 			};
 
 			// Bind

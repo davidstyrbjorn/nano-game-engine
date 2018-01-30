@@ -17,6 +17,12 @@ namespace nano { namespace ecs {
 		m_source = new openal::SoundSource(m_buffer->GetBufferId());
 	}
 
+	SoundComponent::~SoundComponent()
+	{
+		delete m_buffer;
+		delete m_source;
+	}
+
 	void SoundComponent::LoadNewSound(const char * a_soundFilePath)
 	{
 		// Create the new sound

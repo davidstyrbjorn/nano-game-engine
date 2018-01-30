@@ -22,6 +22,8 @@
 
 #include<stb\stb_image.h>
 
+#include<InputDefinitions.h>
+
 namespace nano { namespace editor {
 
 	EntityInspectorWidget::EntityInspectorWidget()
@@ -139,9 +141,9 @@ namespace nano { namespace editor {
 						m_entityToInspect->GetComponent<ecs::SpriteComponent>()->LoadNewTexture(texturePath);
 					}
 				}	
+				
+				ImGui::Separator(); ImGui::Spacing();
 			}
-			
-			ImGui::Separator(); ImGui::Spacing();
 
 			ecs::SoundComponent* soundComponent = m_entityToInspect->GetComponent<ecs::SoundComponent>();
 			bool hasSoundComponent = soundComponent == nullptr ? false : true;
@@ -150,7 +152,16 @@ namespace nano { namespace editor {
 				openal::SoundSource *source = soundComponent->GetSource();
 
 				ImGui::Text("Sound Component");
-				
+				if (ImGui::IsItemHovered()) {
+					if (ImGui::GetIO().MouseClicked[1]) {
+						ImGui::OpenPopup("right_click_component");
+					}
+				}
+				if (ImGui::BeginPopup("right_click_component")) {
+					ImGui::Selectable("Destroy");
+					ImGui::EndPopup();
+				}
+
 				// Load sound
 				static char soundPath[128] = "";
 				ImGui::InputText("Sound Path", soundPath, 128);
@@ -189,7 +200,11 @@ namespace nano { namespace editor {
 				if (ImGui::Button("Continue")) {
 					source->Continue();
 				}
+
+				ImGui::Spacing(); ImGui::Separator();
 			}
+
+
 		}
 
 		ImGui::End();
@@ -199,14 +214,12 @@ namespace nano { namespace editor {
 	{
 		// "-1" - clicked on empty space
 		if (a_id == "-1") {
-			if(m_entityToInspect != nullptr)
-				m_entityToInspect->SetEditorState(ecs::ECSEditorStates::NOT_HIGHLIGHTED);
+			// Deselect the entity i.e set it to a nullptr
 			m_entityToInspect = nullptr;
 			return;
 		}
 		else {
 			m_entityToInspect = WorldSystem::Instance()->GetEntityByID(a_id);
-			m_entityToInspect->SetEditorState(ecs::ECSEditorStates::HIGHLIGHTED);
 		}
 	}
 

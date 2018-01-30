@@ -42,7 +42,6 @@ namespace nano { namespace ecs {
 
 	SpriteComponent::SpriteComponent(const char * a_imagePath)
 	{
-		m_color = math::Vector4(0, 0, 0, 1);
 		m_imagePath = a_imagePath;
 	}
 

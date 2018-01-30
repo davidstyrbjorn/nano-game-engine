@@ -121,4 +121,9 @@ namespace nano { namespace ecs {
 		m_editorState = static_cast<ECSEditorStates>(a_state);
 	}
 
+	void Entity::SetRenderableComponent(graphics::Renderable * a_renderable)
+	{
+		m_renderableComponent = a_renderable;
+	}
+
 } } 

@@ -15,9 +15,15 @@ namespace nano { namespace ecs {
 		m_transform = m_owner->m_transform;
 	}
 
+	void TriangleComponent::OnStateChange(ECSStates a_newState)
+	{
+		if (a_newState == ECSStates::DESTROYED) {
+			m_owner->SetRenderableComponent(nullptr);
+		}
+	}
+
 	TriangleComponent::TriangleComponent()
 	{
-		m_color = math::Vector4(0, 0, 0, 0);
 	}
 
 	TriangleComponent::TriangleComponent(const math::Vector4 & a_color)
@@ -27,3 +33,4 @@ namespace nano { namespace ecs {
 
 }
 }
+ 

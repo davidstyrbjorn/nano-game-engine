@@ -20,6 +20,9 @@ namespace nano { namespace ecs {
 		// Compiler with path to sound to load
 		SoundComponent(const char* a_soundFilePath);
 
+		// Destructor
+		~SoundComponent();
+
 		void LoadNewSound(const char* a_soundFilePath);
 
 		// Getters

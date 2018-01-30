@@ -22,6 +22,7 @@ namespace nano { namespace ecs {
 	void ecs::Component::SetState(const int a_state)
 	{
 		m_state = static_cast<ECSStates>(a_state);
+		OnStateChange(m_state);
 	}
 
 } }

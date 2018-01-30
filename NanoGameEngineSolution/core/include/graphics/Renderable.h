@@ -18,7 +18,7 @@ namespace nano { namespace graphics {
 	class Renderable {
 	protected:
 		// Renderable shared data
-		math::Vector4 m_color = math::Vector4(0, 0, 0, 1); // deafault black color
+		math::Vector4 m_color = math::Vector4(1, 1, 1, 1); // deafault white color
 		ecs::Transform* m_transform;
 		opengl::Texture *m_texture;
 

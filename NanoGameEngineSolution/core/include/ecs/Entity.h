@@ -85,6 +85,7 @@ namespace nano { namespace ecs {
 		void SetID(const std::string &a_id);
 		void SetState(const int a_state);
 		void SetEditorState(const int a_state);
+		void SetRenderableComponent(graphics::Renderable* a_renderable);
 	};
 	
 } }

@@ -29,6 +29,11 @@ namespace nano { namespace ecs {
 		virtual void Update() { } 
 
 		//////////
+		// \brief Gets called on component state change
+		//
+		virtual void OnStateChange(ECSStates a_newState) { }
+
+		//////////
 		// \brief Returns this components owner
 		//
 		Entity& GetEntityOwner();

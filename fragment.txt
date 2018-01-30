@@ -3,7 +3,6 @@
 // from vertex
 in vec4 color;
 in vec2 uv;
-in float highlighted;
 
 // Fragment uniforms
 uniform vec3 ambientColor = vec3(0.5, 0.5, 0.5);
@@ -12,9 +11,8 @@ uniform sampler2D textureSampler;
 // Returns lightning model 
 vec3 LightModel()
 {
-	if(highlighted > 0)
-		return clamp(ambientColor*3, 0.0, 1.0);
-	return clamp(ambientColor, 0.0, 2.0);
+	// TODO: Do diffuse & specular mapping
+	return clamp(ambientColor, 0.0, 1.0);
 }
 
 void main() 
@@ -24,7 +22,7 @@ void main()
 		gl_FragColor = vec4(color.rgb * LightModel(), 1);
         }
 	else {
-		gl_FragColor = texture(textureSampler, uv);
+		gl_FragColor = texture(textureSampler, uv) * vec4(color.rgb, 1);
 
 		//if(gl_FragColor.a < 0.3){
 		//	discard;
