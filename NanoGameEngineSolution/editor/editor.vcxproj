@@ -133,6 +133,7 @@
     <ClCompile Include="source\EditorCore.cpp" />
     <ClCompile Include="source\EditorWidgetSystem.cpp" />
     <ClCompile Include="source\EntityInspectorWidget.cpp" />
+    <ClCompile Include="source\SoundSystem.cpp" />
     <ClCompile Include="source\WorldSystem.cpp" />
     <ClCompile Include="source\EntitySelectWidget.cpp" />
     <ClCompile Include="source\EventHandler.cpp" />
@@ -157,6 +158,7 @@
     <ClInclude Include="include\Events.h" />
     <ClInclude Include="include\systems\EditorSystem.h" />
     <ClInclude Include="include\systems\EditorWidgetSystem.h" />
+    <ClInclude Include="include\systems\SoundSystem.h" />
     <ClInclude Include="include\systems\WorldSystem.h" />
     <ClInclude Include="include\systems\InputSystem.h" />
     <ClInclude Include="include\systems\RendererSystem.h" />

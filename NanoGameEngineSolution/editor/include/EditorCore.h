@@ -12,6 +12,7 @@
 #include"systems\RendererSystem.h"
 #include"systems\EditorWidgetSystem.h"
 #include"systems\InputSystem.h"
+#include"systems\SoundSystem.h"
 
 // @ Remove 
 #include<sound\SoundContextDevice.h>
@@ -26,6 +27,7 @@ namespace nano { namespace editor {
 		WorldSystem *m_WorldSystem;
 		RendererSystem *m_rendererSystem;
 		EditorWidgetSystem *m_editorWidgetSystem;
+		SoundSystem *m_soundSystem;
 		CoreConfig *m_config;
 		openal::ContextDevice *contextDevice;
 

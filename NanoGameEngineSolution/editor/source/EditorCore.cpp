@@ -24,6 +24,7 @@ namespace nano { namespace editor {
 		m_windowSystem->Quit();
 		m_WorldSystem->Quit();
 		m_editorWidgetSystem->Quit();
+		m_soundSystem->Quit();
 	}
 
 	EditorCore::EditorCore()
@@ -33,9 +34,6 @@ namespace nano { namespace editor {
 
 	void EditorCore::Init()
 	{
-		// @ Remove
-		contextDevice = new openal::ContextDevice();
-
 		m_config = CoreConfig::Instance();
 		m_config->SetShaderPaths("../../vertex.txt", "../../fragment.txt");
 
@@ -48,6 +46,10 @@ namespace nano { namespace editor {
 		// Create input system now that the window is up and running
 		m_inputSystem = InputSystem::Instance();
 		m_inputSystem->Start();
+
+		// Sound system (OpenAL device&context)
+		m_soundSystem = SoundSystem::Instance();
+		m_soundSystem->Start();
 
 		// Entity Manager System
 		m_WorldSystem = WorldSystem::Instance();
@@ -64,30 +66,30 @@ namespace nano { namespace editor {
 		/////////////////////////////////////////////////////////////////////
 
 		// Test
-		ecs::Entity* testEntity = new ecs::Entity("Rectangle");
-		testEntity->Start();
-		testEntity->m_transform->position = math::Vector2(400, 100);
-		testEntity->m_transform->size = math::Vector2(100, 40);
-		testEntity->AddComponent(new ecs::RectangleComponent(math::Vector4(0.4, 0.1, 0.9, 1)))->Start();
-		testEntity->AddComponent(new ecs::SoundComponent("D:\\temp\\sound.wav"));
-		m_WorldSystem->AddNewEntity(testEntity);
-
-		ecs::Entity* triangle = new ecs::Entity("Triangle");
-		triangle->Start();
-		triangle->m_transform->position = math::Vector2(400, 200);
-		triangle->m_transform->size = math::Vector2(100, 100);
-		triangle->AddComponent(new ecs::TriangleComponent(math::Vector4(1, 0.1, 0.1, 1)))->Start();
-		m_WorldSystem->AddNewEntity(triangle);
-
-		ecs::Entity* Sprite = new ecs::Entity("Sprite");
-		Sprite->Start();
-		Sprite->AddComponent(new ecs::SpriteComponent("D:\\temp\\cat.png"))->Start();
-		m_WorldSystem->AddNewEntity(Sprite);
-
-		ecs::Entity* Sprite2 = new ecs::Entity("Sprit2e");
-		Sprite2->Start();
-		Sprite2->AddComponent(new ecs::SpriteComponent("D:\\temp\\square.png"))->Start();
-		m_WorldSystem->AddNewEntity(Sprite2);
+		//ecs::Entity* testEntity = new ecs::Entity("Rectangle");
+		//testEntity->Start();
+		//testEntity->m_transform->position = math::Vector2(400, 100);
+		//testEntity->m_transform->size = math::Vector2(100, 40);
+		//testEntity->AddComponent(new ecs::RectangleComponent(math::Vector4(0.4, 0.1, 0.9, 1)))->Start();
+		//testEntity->AddComponent(new ecs::SoundComponent("C:\\temp\\sound.wav"));
+		//m_WorldSystem->AddNewEntity(testEntity);
+		//
+		//ecs::Entity* triangle = new ecs::Entity("Triangle");
+		//triangle->Start();
+		//triangle->m_transform->position = math::Vector2(400, 200);
+		//triangle->m_transform->size = math::Vector2(100, 100);
+		//triangle->AddComponent(new ecs::TriangleComponent(math::Vector4(1, 0.1, 0.1, 1)))->Start();
+		//m_WorldSystem->AddNewEntity(triangle);
+		//
+		//ecs::Entity* Sprite = new ecs::Entity("Sprite");
+		//Sprite->Start();
+		//Sprite->AddComponent(new ecs::SpriteComponent("C:\\temp\\cat.png"))->Start();
+		//m_WorldSystem->AddNewEntity(Sprite);
+		//
+		//ecs::Entity* Sprite2 = new ecs::Entity("Sprit2e");
+		//Sprite2->Start();
+		//Sprite2->AddComponent(new ecs::SpriteComponent("C:\\temp\\sample.jpg"))->Start();
+		//m_WorldSystem->AddNewEntity(Sprite2);
 
 		/////////////////////////////////////////////////////////////////////
 
@@ -114,7 +116,7 @@ namespace nano { namespace editor {
 
 			// Update the entity manager system
 			m_WorldSystem->Update();
-
+			
 #pragma region		    RENDERING
 			// Rendering
 			m_rendererSystem->GetSimpleRenderer().Begin();

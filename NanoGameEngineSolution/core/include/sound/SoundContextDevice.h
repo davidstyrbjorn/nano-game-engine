@@ -14,6 +14,9 @@ namespace nano { namespace openal {
 		// Default Constructor
 		ContextDevice();
 
+		// Destructor
+		~ContextDevice();
+
 		// Creates OpenAL context
 		void CreateContext();
 

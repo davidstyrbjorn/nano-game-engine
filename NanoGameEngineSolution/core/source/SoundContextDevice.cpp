@@ -3,12 +3,23 @@
 #include<alc.h>
 #include<al.h>
 
+#include<iostream>
+
 namespace nano { 
 
 	openal::ContextDevice::ContextDevice()
 	{
-		this->CreateDevice();
-		this->CreateContext();
+
+	}
+
+	openal::ContextDevice::~ContextDevice()
+	{
+		alcSuspendContext(m_context);
+
+		if (!alcCloseDevice(m_device)) {
+			// Log error @
+			std::cout << "Failed to close OpenAL context" << std::endl;
+		}
 	}
 
 	void openal::ContextDevice::CreateDevice()
