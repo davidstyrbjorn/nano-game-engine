@@ -93,7 +93,7 @@ namespace nano { namespace editor {
 		if (m_entityToInspect != nullptr) 
 		{
 			// ID section
-			static std::string nameString = "ID: " + m_entityToInspect->GetID();
+			std::string nameString = "ID: " + m_entityToInspect->GetID();
 			ImGui::Text(nameString.c_str());
 			
 			ImGui::Separator(); ImGui::Spacing();
@@ -113,6 +113,24 @@ namespace nano { namespace editor {
 			if (renderableComponent != nullptr) {
 				// Shape type
 				ImGui::Text("Renderable Component");
+				// Right click component name
+				if (ImGui::IsItemHovered()) {
+					if (ImGui::GetIO().MouseClicked[1]) {
+						ImGui::OpenPopup("right_click_component_renderable");
+					}
+				}
+				if (ImGui::BeginPopup("right_click_component_renderable")) {
+					if (ImGui::Selectable("Destroy")) {
+						if (renderableComponent->GetTexture() != nullptr)
+							m_entityToInspect->GetComponent<ecs::SpriteComponent>()->SetState(ecs::ECSStates::DESTROYED);
+						else if (renderableComponent->GetVertexCount() == 3)
+							m_entityToInspect->GetComponent<ecs::TriangleComponent>()->SetState(ecs::ECSStates::DESTROYED);
+						else
+							m_entityToInspect->GetComponent<ecs::RectangleComponent>()->SetState(ecs::ECSStates::DESTROYED);
+					}
+					ImGui::EndPopup();
+				}
+
 				if (renderableComponent->GetTexture() != nullptr) {
 					ImGui::Text("Type: Sprite");
 				}
@@ -152,13 +170,16 @@ namespace nano { namespace editor {
 				openal::SoundSource *source = soundComponent->GetSource();
 
 				ImGui::Text("Sound Component");
+				// Right click component name
 				if (ImGui::IsItemHovered()) {
 					if (ImGui::GetIO().MouseClicked[1]) {
-						ImGui::OpenPopup("right_click_component");
+						ImGui::OpenPopup("right_click_component_sound");
 					}
 				}
-				if (ImGui::BeginPopup("right_click_component")) {
-					ImGui::Selectable("Destroy");
+				if (ImGui::BeginPopup("right_click_component_sound")) {
+					if (ImGui::Selectable("Destroy")) {
+						soundComponent->SetState(ecs::ECSStates::DESTROYED);
+					}
 					ImGui::EndPopup();
 				}
 

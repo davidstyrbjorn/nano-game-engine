@@ -35,6 +35,13 @@ namespace nano { namespace ecs {
 		m_transform->size = math::Vector2(width, height);
 	}
 
+	void SpriteComponent::OnStateChange(ECSStates a_newState)
+	{
+		if (a_newState == ECSStates::DESTROYED) {
+			m_owner->SetRenderableComponent(nullptr);
+		}
+	}
+
 	SpriteComponent::SpriteComponent()
 	{
 		

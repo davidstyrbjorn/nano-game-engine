@@ -6,6 +6,9 @@
 // FWD
 namespace nano {
 	class CoreConfig;
+	namespace editor {
+		class RendererSystem;
+	}
 }
 
 namespace nano { namespace editor { 
@@ -22,6 +25,7 @@ namespace nano { namespace editor {
 
 	private:
 		CoreConfig *m_config;
+		RendererSystem *m_renderSystem;
 	};
 
 } }

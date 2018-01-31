@@ -1,4 +1,5 @@
 #include"../include/widgets/UtilityWidget.h"
+#include"../include/systems/RendererSystem.h"
 
 #include"../include/DearImGui/imgui.h"
 
@@ -7,9 +8,14 @@
 
 namespace nano { namespace editor {
 
+	enum UtilityType {
+		CAMERA
+	};
+
 	UtilityWidget::UtilityWidget()
 	{
 		m_config = CoreConfig::Instance();
+		m_renderSystem = RendererSystem::Instance();
 	}
 
 	void UtilityWidget::Start()
@@ -24,6 +30,8 @@ namespace nano { namespace editor {
 
 	void UtilityWidget::Render()
 	{
+		static UtilityType utilityType = UtilityType::CAMERA;
+
 		math::Vector2 _windowSize = m_config->GetWindowSize();
 	
 		// Calculate size
@@ -44,7 +52,20 @@ namespace nano { namespace editor {
 			ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse
 		);
 
-		ImGui::Text("test");
+		// Upper left corner drop down to select utility type to modify
+		std::string utilityName;
+		if (utilityType == UtilityType::CAMERA) {
+			utilityName = "Camera";
+		}
+		if (ImGui::Button(utilityName.c_str())) {
+			// Do the drop down logic
+		}
+
+		if (utilityType == UtilityType::CAMERA) {
+			// Render and do the camera utility stuff
+			math::Vector2 pos;
+			ImGui::DragFloat(
+		}
 
 		ImGui::End();
 	}

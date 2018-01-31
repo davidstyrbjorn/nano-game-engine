@@ -15,6 +15,13 @@ namespace nano { namespace ecs {
 		m_transform = m_owner->m_transform;
 	}
 
+	void RectangleComponent::OnStateChange(ECSStates a_newState)
+	{
+		if (a_newState == ECSStates::DESTROYED) {
+			m_owner->SetRenderableComponent(nullptr);
+		}
+	}
+
 	RectangleComponent::RectangleComponent()
 	{
 
