@@ -9,6 +9,7 @@ namespace nano {
 	namespace editor {
 		class WorldSystem;
 		class InputSystem;
+		class RendererSystem;
 	}
 	namespace ecs {
 		class Entity;
@@ -26,6 +27,7 @@ namespace nano { namespace editor {
 		CoreConfig* m_config;
 		WorldSystem* m_entityManager;
 		InputSystem* m_inputSystem;
+		RendererSystem *m_renderSystem;
 		ecs::Entity *m_leftClickedEntity;
 
 		// Private methods

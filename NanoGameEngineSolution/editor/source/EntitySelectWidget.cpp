@@ -9,6 +9,9 @@
 #include"../include/systems/WorldSystem.h"
 #include"../include/systems/EditorWidgetSystem.h"
 #include"../include/systems/InputSystem.h"
+#include"../include/systems/RendererSystem.h"
+
+#include<graphics\Simple_Renderer.h>
 
 namespace nano { namespace editor {
 
@@ -17,6 +20,7 @@ namespace nano { namespace editor {
 		m_config = CoreConfig::Instance();
 		m_entityManager = WorldSystem::Instance();
 		m_inputSystem = InputSystem::Instance();
+		m_renderSystem = RendererSystem::Instance();
 	}
 
 	void EntitySelectWidget::Start() 
@@ -26,22 +30,23 @@ namespace nano { namespace editor {
 
 	bool EntitySelectWidget::IsMouseInViewFrustrum(const math::Vector2& a_position) {
 		// View frustrum dimensions
-		float x = ENTITY_SELECT_WIDTH;
-		float y = MAIN_MENU_BAR_HEIGHT;
-		float width = m_config->GetWindowSize().x - ENTITY_INSPECTOR_WIDTH;
-		float height = m_config->GetWindowSize().y - (m_config->GetWindowSize().y * UTILITY_HEIGHT_RATIO);
+		// @ Make this work with camera position
+		//float x = ENTITY_SELECT_WIDTH;
+		//float y = MAIN_MENU_BAR_HEIGHT;
+		//float width = m_config->GetWindowSize().x - ENTITY_INSPECTOR_WIDTH;
+		//float height = m_config->GetWindowSize().y - (m_config->GetWindowSize().y * UTILITY_HEIGHT_RATIO);
+		//
+		//if (a_position.x > x && a_position.x < width && a_position.y > y && a_position.y < height)
+		//	return true;
 
-		if (a_position.x > x && a_position.x < width && a_position.y > y && a_position.y < height)
-			return true;
-
-		return false;
+		return true;
 	}
 
 	void EntitySelectWidget::Update()
 	{
 		for (InputEvent _event : m_inputSystem->GetPolledEvents()) {
 			if (_event.type == InputEventType::MOUSE_PRESSED) {
-				math::Vector2 mousePos = m_inputSystem->GetMousePosition();
+				math::Vector2 mousePos = m_inputSystem->GetMousePosition() + m_renderSystem->GetSimpleRenderer().GetCamera()->GetPosition();
 				// TODO: Check if mouse is within the view frustrum
 				if (IsMouseInViewFrustrum(mousePos)) 
 				{
@@ -52,8 +57,9 @@ namespace nano { namespace editor {
 							hitDetect = true;
 						}
 					}
-					if (!hitDetect)
-						EditorWidgetSystem::Instance()->GetEventHandler().AddEvent(BaseEvent(EventTypes::CLICKED_ON_ENTITY, "-1"));
+					// @ Blocked because IsMouseInViewFrustrum is not working atm!
+					//if (!hitDetect)
+						//EditorWidgetSystem::Instance()->GetEventHandler().AddEvent(BaseEvent(EventTypes::CLICKED_ON_ENTITY, "-1"));
 				}
 			}
 		}

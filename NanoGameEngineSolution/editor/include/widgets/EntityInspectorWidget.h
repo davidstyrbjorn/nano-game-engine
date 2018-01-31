@@ -12,6 +12,7 @@ namespace nano {
 	}
 	namespace editor {
 		class InputSystem;
+		class RendererSystem;
 	}
 }
 
@@ -22,6 +23,7 @@ namespace nano {
 		private:
 			CoreConfig* m_config;
 			InputSystem* m_inputSystem;
+			RendererSystem *m_renderSystem;
 			ecs::Entity *m_entityToInspect;
 
 			bool m_isDraggingEntity = false;

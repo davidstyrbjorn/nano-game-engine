@@ -26,10 +26,10 @@ namespace nano { namespace graphics {
 		CoreConfig* c = CoreConfig::Instance();
 		m_shader = new Shader(c->GetShaderPaths()[0], c->GetShaderPaths()[1]);
 		m_shader->Bind();
-		m_shader->SetUniformMat4f("projection_matrix", math::Matrix4x4::Orthographic(0, c->GetWindowSize().x, c->GetWindowSize().y, 0, -1, 1));
 		m_shader->SetUniform1f("textureSampler", 0); // GL_TEXTURE0
 
-		m_camera = new OrthographicCamera();
+		m_camera = new OrthographicCamera(c->GetWindowSize());
+		m_shader->SetUniformMat4f("projection_matrix", m_camera->GetProjectionMatrix());
 
 		// Triangle
 		m_triangleVAO = new opengl::VertexArrayObject();

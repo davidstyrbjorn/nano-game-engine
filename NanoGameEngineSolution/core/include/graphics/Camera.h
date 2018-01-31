@@ -9,15 +9,16 @@ namespace nano { namespace graphics {
 	class OrthographicCamera {
 	public:
 		// Default Constructor
-		OrthographicCamera();
+		OrthographicCamera(const math::Vector2& a_windowSize);
 
 		// Destructor
 		~OrthographicCamera() { }
 
 	private:
 		// Camera data
+		math::Matrix4x4 m_projectionMatrix;
 		math::Matrix4x4 m_viewMatrix;
-		math::Vector2 m_translation;
+		math::Vector2 m_position;
 
 	public:
 		// Updates the m_viewMatrix with m_translation vector
@@ -30,6 +31,7 @@ namespace nano { namespace graphics {
 
 		// Getters
 		math::Matrix4x4 GetViewMatrix();
+		math::Matrix4x4 GetProjectionMatrix();
 		math::Vector2 GetPosition();
 	};
 	

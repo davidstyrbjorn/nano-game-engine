@@ -2,26 +2,27 @@
 
 namespace nano { namespace graphics { 
 
-	OrthographicCamera::OrthographicCamera()
+	OrthographicCamera::OrthographicCamera(const math::Vector2& a_windowSize)
 	{
-		m_translation = math::Vector2(0, 0);
+		m_projectionMatrix = math::Matrix4x4::Orthographic(0, a_windowSize.x, a_windowSize.y, 0, -1, 1);
+		m_position = math::Vector2(0, 0);
 		this->UpdateMatrix();
 	}
 
 	void OrthographicCamera::UpdateMatrix()
 	{
-		m_viewMatrix = math::Matrix4x4::Translation(math::Vector3(-m_translation.x, -m_translation.y, 0));
+		m_viewMatrix = math::Matrix4x4::Translation(math::Vector3(-m_position.x, -m_position.y, 0));
 	}
 
 	void OrthographicCamera::Translate(const math::Vector2 & a_translationVector)
 	{
-		m_translation += (a_translationVector);
+		m_position += (a_translationVector);
 		this->UpdateMatrix();
 	}
 
 	void OrthographicCamera::SetPosition(const math::Vector2 & a_positionVector)
 	{
-		m_translation = a_positionVector;
+		m_position = a_positionVector;
 		this->UpdateMatrix();
 	}
 
@@ -30,9 +31,14 @@ namespace nano { namespace graphics {
 		return m_viewMatrix;
 	}
 
+	math::Matrix4x4 OrthographicCamera::GetProjectionMatrix()
+	{
+		return m_projectionMatrix;
+	}
+
 	math::Vector2 OrthographicCamera::GetPosition()
 	{
-		return m_translation;
+		return m_position;
 	}
 
 } } 

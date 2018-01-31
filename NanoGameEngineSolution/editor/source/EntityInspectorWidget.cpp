@@ -5,9 +5,13 @@
 #include<ecs\Entity.h>
 #include<math\Vector2.h>
 #include<opengl\Texture.h>
+#include<sound\SoundSource.h>
+#include<sound\SoundBuffer.h>
+#include<graphics\Simple_Renderer.h>
 
 #include"../include/systems/WorldSystem.h"
 #include"../include/systems/InputSystem.h"
+#include"../include/systems/RendererSystem.h"
 
 #include"../include/DearImGui/imgui.h"
 
@@ -16,9 +20,6 @@
 #include<ecs\components\SoundComponent.h>
 #include<ecs\components\TriangleComponent.h>
 #include<ecs\components\SpriteComponent.h>
-
-#include<sound\SoundSource.h>
-#include<sound\SoundBuffer.h>
 
 #include<stb\stb_image.h>
 
@@ -34,17 +35,23 @@ namespace nano { namespace editor {
 
 	void EntityInspectorWidget::Start()
 	{
-
+		m_renderSystem = RendererSystem::Instance();
 	}
 
 	void EntityInspectorWidget::Update()
 	{
+		math::Vector2 mousePos = m_inputSystem->GetMousePosition() + m_renderSystem->GetSimpleRenderer().GetCamera()->GetPosition();
 		// Dragging input
 		if (m_entityToInspect != nullptr) {
 			for (InputEvent _event : m_inputSystem->GetPolledEvents()) {
+				if (_event.type == InputEventType::KEY_PRESSED) {
+					// "de"select entity
+					if (_event.key == NANO_KEY_ESCAPE) {
+						if (m_entityToInspect != nullptr)
+							m_entityToInspect = nullptr;
+					}
+				}
 				if (_event.type == InputEventType::MOUSE_PRESSED) {
-					math::Vector2 mousePos = m_inputSystem->GetMousePosition();
-
 					if (mousePos.x > m_entityToInspect->m_transform->position.x && mousePos.x < m_entityToInspect->m_transform->position.x + m_entityToInspect->m_transform->size.x) {
 						if (mousePos.y > m_entityToInspect->m_transform->position.y && mousePos.y < m_entityToInspect->m_transform->position.y + m_entityToInspect->m_transform->size.y) {
 							m_isDraggingEntity = true;
@@ -64,7 +71,7 @@ namespace nano { namespace editor {
 
 		// Dragging logic
 		if (m_isDraggingEntity) {
-			m_entityToInspect->m_transform->position = m_inputSystem->GetMousePosition() - m_dragDeltaPosition;
+			m_entityToInspect->m_transform->position = mousePos - m_dragDeltaPosition;
 		}
 	}
 

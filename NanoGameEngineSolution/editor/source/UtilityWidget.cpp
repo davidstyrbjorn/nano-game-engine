@@ -6,11 +6,14 @@
 #include<CoreConfig.h>
 #include<math\Vector2.h>
 
+#include<graphics\Simple_Renderer.h>
+
 namespace nano { namespace editor {
 
 	enum UtilityType {
 		CAMERA
 	};
+#define CAM_MAX_X 1000
 
 	UtilityWidget::UtilityWidget()
 	{
@@ -60,11 +63,13 @@ namespace nano { namespace editor {
 		if (ImGui::Button(utilityName.c_str())) {
 			// Do the drop down logic
 		}
+		ImGui::Separator();
 
 		if (utilityType == UtilityType::CAMERA) {
 			// Render and do the camera utility stuff
-			math::Vector2 pos;
-			ImGui::DragFloat(
+			math::Vector2 pos = m_renderSystem->GetSimpleRenderer().GetCamera()->GetPosition();
+			ImGui::DragFloat2("Position", (float*)&pos);
+			m_renderSystem->GetSimpleRenderer().GetCamera()->SetPosition(pos);
 		}
 
 		ImGui::End();
