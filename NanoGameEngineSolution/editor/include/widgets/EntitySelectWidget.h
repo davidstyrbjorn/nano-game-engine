@@ -2,6 +2,7 @@
 
 #include"EditorWidget.h"
 #include"../EventObserver.h"
+#include<math\Vector2.h>
 
 // FWD
 namespace nano {
@@ -14,11 +15,7 @@ namespace nano {
 	namespace ecs {
 		class Entity;
 	}
-	namespace math {
-		class Vector2;
-	}
 }
-
 
 namespace nano { namespace editor {  
 
@@ -29,6 +26,10 @@ namespace nano { namespace editor {
 		InputSystem* m_inputSystem;
 		RendererSystem *m_renderSystem;
 		ecs::Entity *m_leftClickedEntity;
+
+		bool m_isDraggingView = false;
+		math::Vector2 m_dragOrigin;
+		math::Vector2 m_lastFrameMousePos;
 
 		// Private methods
 		bool IsMouseInViewFrustrum(const math::Vector2& a_pos);

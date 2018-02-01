@@ -97,6 +97,25 @@ namespace nano { namespace graphics {
 		m_textureIBO = new opengl::IndexBuffer(iboData, sizeof(iboData));
 
 		m_textureVAO->Unbind();
+
+		// Grid test
+		m_gridVAO = new opengl::VertexArrayObject();
+		m_gridVAO->Bind();
+
+		m_gridVBO = new opengl::VertexBuffer(nullptr, GRID_BUFFER_SIZE, GL_DYNAMIC_DRAW);
+		m_gridVBO->Bind();
+
+		m_gridVAO->EnableVertexAttribArray(0);  // pos
+		m_gridVAO->EnableVertexAttribArray(1);  // color
+		m_gridVAO->EnableVertexAttribArray(2);  // uv
+		m_gridVAO->EnableVertexAttribArray(3);  // editor state
+		m_gridVAO->SetVertexAttribPointer(0, 2, GL_FLOAT, sizeof(Vertex), 0);
+		m_gridVAO->SetVertexAttribPointer(1, 4, GL_FLOAT, sizeof(Vertex), (void*)OFFSET_TO_COLOR);
+		m_gridVAO->SetVertexAttribPointer(2, 2, GL_FLOAT, sizeof(Vertex), (void*)OFFSET_TO_UV);
+
+		m_gridIBO = new opengl::IndexBuffer(m_indices, sizeof(m_indices));
+
+		m_gridVAO->Unbind();
 	}
 
 	SimpleRenderer::~SimpleRenderer()
@@ -187,28 +206,29 @@ namespace nano { namespace graphics {
 		// Update view_matrix(camera view)
 		m_shader->SetUniformMat4f("view_matrix", m_camera->GetViewMatrix());
 		
-		if (m_triangleCount != 0) {
-			m_triangleVAO->Bind();
-			m_triangleVBO->Bind();
+		//if (m_triangleCount != 0) {
+		//	m_triangleVAO->Bind();
+		//	m_triangleVBO->Bind();
+		//
+		//	glDrawArrays(GL_TRIANGLES, 0, m_triangleCount * 3);
+		//
+		//	m_triangleVAO->Unbind();
+		//	m_triangleVBO->Unbind();
+		//}
+		//if (m_quadCount != 0) {
+		//	m_quadVAO->Bind();
+		//	m_quadIBO->Bind();
+		//	m_quadVAO->Bind();
+		//
+		//	glDrawElements(GL_TRIANGLES, 6 * m_quadCount, GL_UNSIGNED_INT, nullptr);
+		//
+		//	m_quadVAO->Unbind();
+		//	m_quadIBO->Unbind();
+		//	m_quadVBO->Unbind();
+		//}
+		TestDrawGrid(5);
 
-			glDrawArrays(GL_TRIANGLES, 0, m_triangleCount * 3);
-
-			m_triangleVAO->Unbind();
-			m_triangleVBO->Unbind();
-		}
-		if (m_quadCount != 0) {
-			m_quadVAO->Bind();
-			m_quadIBO->Bind();
-			m_quadVAO->Bind();
-
-			glDrawElements(GL_TRIANGLES, 6 * m_quadCount, GL_UNSIGNED_INT, nullptr);
-
-			m_quadVAO->Unbind();
-			m_quadIBO->Unbind();
-			m_quadVBO->Unbind();
-		}
-
-		this->PostFlush();
+		//this->PostFlush();
 
 		m_shader->Unbind();
 	}
@@ -216,7 +236,8 @@ namespace nano { namespace graphics {
 	void SimpleRenderer::PostFlush()
 	{
 		// Render the textures we want to render
-		while (!m_texturesToRender.empty()) {
+		while (!m_texturesToRender.empty()) 
+		{
 			Renderable* texturedRenderable = m_texturesToRender.front();
 
 			math::Vector2 pos = texturedRenderable->GetTransformComponent()->position;
@@ -249,6 +270,42 @@ namespace nano { namespace graphics {
 			
 			m_texturesToRender.pop_front();
 		}
+	}
+
+	void SimpleRenderer::TestDrawGrid(int a_thickness)
+	{
+		// Bind
+		m_gridVAO->Bind();
+		m_gridVBO->Bind();
+		m_gridIBO->Bind();
+
+		// Reset the grid buffer
+		m_gridVBO->SetData(nullptr, GRID_BUFFER_SIZE, GL_DYNAMIC_DRAW);
+
+		// Arbitary grid values that are constant
+		static int GRID_LENGTH_IN_PIXELS = 1000;
+		static math::Vector4 GRID_COLOR = math::Vector4(1, 0, 0, 1);
+		static int LINE_OFFSET = 30;
+
+		// Fill the grid buffer with the grid quads
+		for (int i = 0; i < 10; i++) {
+			Vertex data[] = 
+			{
+				{ math::Vector2(0,0), GRID_COLOR, math::Vector2(-1,-1) },
+				{ math::Vector2(0, a_thickness),  GRID_COLOR, math::Vector2(-1,-1) },
+				{ math::Vector2(1000, a_thickness),  GRID_COLOR, math::Vector2(-1,-1) },
+				{ math::Vector2(1000, 0),  GRID_COLOR, math::Vector2(-1,-1) },
+			};
+
+			m_gridVBO->SetDatSub(i*(VERTEX_SIZE*4), sizeof(data), (float*)&data);
+		}
+
+		glDrawElements(GL_TRIANGLES, GRID_COUNT*6, GL_UNSIGNED_INT, nullptr);
+
+		// Unbind
+		m_gridVAO->Unbind();
+		m_gridVBO->Unbind();
+		m_gridIBO->Unbind();
 	}
 
 	OrthographicCamera * SimpleRenderer::GetCamera()

@@ -14,6 +14,9 @@
 #define QUAD_BUFFER_SIZE QUAD_SIZE * MAX_PRIMITIVES
 #define INDICES_COUNT MAX_PRIMITIVES*6
 
+#define GRID_COUNT 250
+#define GRID_BUFFER_SIZE GRID_COUNT * VERTEX_SIZE
+
 namespace nano { namespace graphics { 
 
 	class Renderable;
@@ -33,6 +36,10 @@ namespace nano { namespace graphics {
 		opengl::IndexBuffer *m_quadIBO, *m_textureIBO;
 		Shader *m_shader;
 
+		opengl::VertexBuffer *m_gridVBO;
+		opengl::IndexBuffer *m_gridIBO;
+		opengl::VertexArrayObject *m_gridVAO;
+
 		int m_triangleCount, m_quadCount;
 
 		OrthographicCamera *m_camera;
@@ -40,6 +47,7 @@ namespace nano { namespace graphics {
 		// Private methods
 		void AddTextureToRender(Renderable* a_renderable);
 		void PostFlush();
+		void TestDrawGrid(int a_thickness);
 
 	public:
 		// Default Constructor

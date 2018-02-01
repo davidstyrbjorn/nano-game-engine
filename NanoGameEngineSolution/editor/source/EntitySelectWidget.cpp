@@ -1,6 +1,5 @@
 #include"../include/widgets/EntitySelectWidget.h"
 
-#include<math\Vector2.h>
 #include<CoreConfig.h>
 #include<ecs\components\TransformComponent.h>
 
@@ -40,7 +39,7 @@ namespace nano { namespace editor {
 			return true;
 
 		return false;
-	}
+	}		  
 
 	void EntitySelectWidget::Update()
 	{
@@ -57,12 +56,31 @@ namespace nano { namespace editor {
 							hitDetect = true;
 						}
 					}
-					// @ Blocked because IsMouseInViewFrustrum is not working atm!
-					if (!hitDetect)
+					if (!hitDetect) {
 						EditorWidgetSystem::Instance()->GetEventHandler().AddEvent(BaseEvent(EventTypes::CLICKED_ON_ENTITY, "-1"));
+						// Mouse drag
+						m_isDraggingView = true;
+						m_dragOrigin = m_inputSystem->GetMousePosition();
+					}
+
 				}
+			
+			}
+			if (_event.type == InputEventType::MOUSE_RELEASE) {
+				if (m_isDraggingView)
+					m_isDraggingView = false;
 			}
 		}
+
+		// Drag logic
+		if (m_isDraggingView) {
+			// Mouse drag delta 
+			math::Vector2 mousePos = m_inputSystem->GetMousePosition();
+			math::Vector2 delta = mousePos - m_lastFrameMousePos;
+			m_renderSystem->GetSimpleRenderer().GetCamera()->Translate(delta*-1);
+		}
+
+		m_lastFrameMousePos = m_inputSystem->GetMousePosition();
 	}
 
 	void EntitySelectWidget::Render()
