@@ -31,15 +31,15 @@ namespace nano { namespace editor {
 	bool EntitySelectWidget::IsMouseInViewFrustrum(const math::Vector2& a_position) {
 		// View frustrum dimensions
 		// @ Make this work with camera position
-		//float x = ENTITY_SELECT_WIDTH;
-		//float y = MAIN_MENU_BAR_HEIGHT;
-		//float width = m_config->GetWindowSize().x - ENTITY_INSPECTOR_WIDTH;
-		//float height = m_config->GetWindowSize().y - (m_config->GetWindowSize().y * UTILITY_HEIGHT_RATIO);
-		//
-		//if (a_position.x > x && a_position.x < width && a_position.y > y && a_position.y < height)
-		//	return true;
+		float x = ENTITY_SELECT_WIDTH + m_renderSystem->GetSimpleRenderer().GetCamera()->GetPosition().x;
+		float y = MAIN_MENU_BAR_HEIGHT + m_renderSystem->GetSimpleRenderer().GetCamera()->GetPosition().y;
+		float width = (m_config->GetWindowSize().x - ENTITY_INSPECTOR_WIDTH) + m_renderSystem->GetSimpleRenderer().GetCamera()->GetPosition().x;
+		float height = (m_config->GetWindowSize().y - (m_config->GetWindowSize().y * UTILITY_HEIGHT_RATIO)) + m_renderSystem->GetSimpleRenderer().GetCamera()->GetPosition().y;
+		
+		if (a_position.x > x && a_position.x < width && a_position.y > y && a_position.y < height)
+			return true;
 
-		return true;
+		return false;
 	}
 
 	void EntitySelectWidget::Update()
@@ -58,8 +58,8 @@ namespace nano { namespace editor {
 						}
 					}
 					// @ Blocked because IsMouseInViewFrustrum is not working atm!
-					//if (!hitDetect)
-						//EditorWidgetSystem::Instance()->GetEventHandler().AddEvent(BaseEvent(EventTypes::CLICKED_ON_ENTITY, "-1"));
+					if (!hitDetect)
+						EditorWidgetSystem::Instance()->GetEventHandler().AddEvent(BaseEvent(EventTypes::CLICKED_ON_ENTITY, "-1"));
 				}
 			}
 		}

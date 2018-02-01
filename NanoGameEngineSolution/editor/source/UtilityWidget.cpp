@@ -11,7 +11,8 @@
 namespace nano { namespace editor {
 
 	enum UtilityType {
-		CAMERA
+		CAMERA,
+		WINDOW
 	};
 #define CAM_MAX_X 1000
 
@@ -60,8 +61,21 @@ namespace nano { namespace editor {
 		if (utilityType == UtilityType::CAMERA) {
 			utilityName = "Camera";
 		}
+		if (utilityType == UtilityType::WINDOW) {
+			utilityName = "Window";
+		}
 		if (ImGui::Button(utilityName.c_str())) {
 			// Do the drop down logic
+			ImGui::OpenPopup("utility_select_popup");
+		}
+		if (ImGui::BeginPopup("utility_select_popup")) {
+			if (ImGui::Selectable("Camera")) {
+				utilityType = UtilityType::CAMERA;
+			}
+			if (ImGui::Selectable("Window")) {
+				utilityType = UtilityType::WINDOW;
+			}
+			ImGui::EndPopup();
 		}
 		ImGui::Separator();
 
@@ -70,6 +84,9 @@ namespace nano { namespace editor {
 			math::Vector2 pos = m_renderSystem->GetSimpleRenderer().GetCamera()->GetPosition();
 			ImGui::DragFloat2("Position", (float*)&pos);
 			m_renderSystem->GetSimpleRenderer().GetCamera()->SetPosition(pos);
+		}
+		if (utilityType == UtilityType::WINDOW) {
+			// Window utility stuff
 		}
 
 		ImGui::End();
