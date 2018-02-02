@@ -226,6 +226,7 @@ namespace nano { namespace graphics {
 		}
 		if (m_quadCount != 0) {
 			m_quadVAO->Bind();
+
 			m_quadIBO->Bind();
 			m_quadVAO->Bind();
 		

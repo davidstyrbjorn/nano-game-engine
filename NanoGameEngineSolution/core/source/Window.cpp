@@ -21,7 +21,7 @@ namespace nano { namespace graphics {
 		// Callbacks
 		glfwSetWindowSizeCallback(m_glfwWindow, window_size_callback);
 
-		//glfwSwapInterval(0); // @ what does this do vs not doing it?
+		glfwSwapInterval(0); 
 		glViewport(0, 0, a_windowSize.x, a_windowSize.y);
 		
 		config = CoreConfig::Instance();
