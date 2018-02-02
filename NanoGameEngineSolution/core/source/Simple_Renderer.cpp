@@ -209,6 +209,8 @@ namespace nano { namespace graphics {
 	void SimpleRenderer::Flush()
 	{
 		m_shader->Bind();
+
+		//TestDrawGrid(5);
 		
 		// Update view_matrix(camera view)
 		m_shader->SetUniformMat4f("view_matrix", m_camera->GetViewMatrix());
@@ -234,8 +236,6 @@ namespace nano { namespace graphics {
 			m_quadVBO->Unbind();
 		}
 		this->PostFlush();
-
-		TestDrawGrid(5);
 
 		m_shader->Unbind();
 	}
@@ -291,37 +291,32 @@ namespace nano { namespace graphics {
 
 		// Arbitary grid values that are constant
 		static int GRID_LENGTH_IN_PIXELS = 1000;
-		static math::Vector4 GRID_COLOR = math::Vector4(1, 0, 0, 1);
+		static math::Vector4 GRID_COLOR = math::Vector4(0.1, 0.1, 0.1, 0.1);
 		static int LINE_OFFSET = 30;
 
+		// Vector to be filled with grid data
 		std::vector<Vertex> m_gridData;
 
 		// Fill the grid buffer with the grid quads
-		//for (int i = 0; i < 1; i++) {
+		// Vertical lines
+		for (int y = 0; y < GRID_COUNT/2; y++) {
+			// Fill the vector vertex with the grid data 
+			m_gridData.push_back({ math::Vector2(0, (y*LINE_OFFSET)), GRID_COLOR, math::Vector2(-1,-1) }); // Upper left
+			m_gridData.push_back({ math::Vector2(0, a_thickness + (y*LINE_OFFSET)),  GRID_COLOR, math::Vector2(-1,-1) }); // Down left
+			m_gridData.push_back({ math::Vector2(GRID_LENGTH_IN_PIXELS, a_thickness + (y*LINE_OFFSET)),  GRID_COLOR, math::Vector2(-1,-1) }); // Down right
+			m_gridData.push_back({ math::Vector2(GRID_LENGTH_IN_PIXELS, (y*LINE_OFFSET)),  GRID_COLOR, math::Vector2(-1,-1) }); // Upper right
+		}
+		// Horizontal lines
+		for (int x = 0; x < GRID_COUNT/2; x++) {
+			// Fill the vector vertex with the grid data
+			m_gridData.push_back({ math::Vector2((x*LINE_OFFSET), 0), GRID_COLOR, math::Vector2(-1, -1) }); // Upper left
+			m_gridData.push_back({ math::Vector2((x*LINE_OFFSET), GRID_LENGTH_IN_PIXELS), GRID_COLOR, math::Vector2(-1, -1) }); // Down left
+			m_gridData.push_back({ math::Vector2(a_thickness + (x*LINE_OFFSET), GRID_LENGTH_IN_PIXELS), GRID_COLOR, math::Vector2(-1, -1) });
+			m_gridData.push_back({ math::Vector2(a_thickness + (x*LINE_OFFSET), 0), GRID_COLOR, math::Vector2(-1, -1) });
+		}
+		m_gridVBO->SetData((float*)m_gridData.data(), m_gridData.size() * sizeof(Vertex), GL_STATIC_DRAW);
 
-			m_gridData.push_back({ math::Vector2(0,0), GRID_COLOR, math::Vector2(-1,-1) });
-			m_gridData.push_back({ math::Vector2(0, a_thickness),  GRID_COLOR, math::Vector2(-1,-1) });
-			m_gridData.push_back({ math::Vector2(1000, a_thickness),  GRID_COLOR, math::Vector2(-1,-1) });
-			m_gridData.push_back({ math::Vector2(1000, 0),  GRID_COLOR, math::Vector2(-1,-1) });
-
-			//Vertex grid_data[] = 
-			//{
-			//	{ math::Vector2(0,0), GRID_COLOR, math::Vector2(-1,-1) },
-			//	{ math::Vector2(0, a_thickness),  GRID_COLOR, math::Vector2(-1,-1) },
-			//	{ math::Vector2(1000, a_thickness),  GRID_COLOR, math::Vector2(-1,-1) },
-			//	{ math::Vector2(1000, 0),  GRID_COLOR, math::Vector2(-1,-1) },
-			//
-			//	{ math::Vector2(0,LINE_OFFSET), GRID_COLOR, math::Vector2(-1,-1) },
-			//	{ math::Vector2(0, a_thickness + LINE_OFFSET),  GRID_COLOR, math::Vector2(-1,-1) },
-			//	{ math::Vector2(1000, a_thickness + LINE_OFFSET),  GRID_COLOR, math::Vector2(-1,-1) },
-			//	{ math::Vector2(1000, LINE_OFFSET),  GRID_COLOR, math::Vector2(-1,-1) },
-			//};
-			Vertex* a = &m_gridData[0];
-			m_gridVBO->SetData((float*)&a, sizeof(m_gridData), GL_STATIC_DRAW);
-			//m_gridVBO->SetDatSub(i*(VERTEX_SIZE), sizeof(grid_data), (float*)&grid_data);
-		//}
-
-		glDrawElements(GL_TRIANGLES, GRID_COUNT*6, GL_UNSIGNED_INT, nullptr);
+		glDrawElements(GL_TRIANGLES, (GRID_COUNT)*6, GL_UNSIGNED_INT, nullptr);
 
 		// Unbind
 		m_gridVAO->Unbind();
