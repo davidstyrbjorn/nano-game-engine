@@ -163,14 +163,9 @@
     <ClInclude Include="include\systems\InputSystem.h" />
     <ClInclude Include="include\systems\RendererSystem.h" />
     <ClInclude Include="include\systems\WindowSystem.h" />
-    <ClInclude Include="include\widgets\ConsoleWidget.h" />
     <ClInclude Include="include\widgets\EditorWidget.h" />
-    <ClInclude Include="include\widgets\EntityInspectorWidget.h" />
-    <ClInclude Include="include\widgets\EntitySelectWidget.h" />
-    <ClInclude Include="include\widgets\MenuBarWidget.h" />
-    <ClInclude Include="include\widgets\UtilitySelectWidget.h" />
-    <ClInclude Include="include\widgets\UtilityWidget.h" />
     <ClInclude Include="include\widgets\Widget.h" />
+    <ClInclude Include="include\widgets\Widgets.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

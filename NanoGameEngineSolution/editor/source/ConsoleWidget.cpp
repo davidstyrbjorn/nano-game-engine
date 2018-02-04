@@ -1,4 +1,4 @@
-#include"../include/widgets/ConsoleWidget.h"
+#include"../include/widgets/Widgets.h"
 
 #include"../include/DearImGui/imgui.h"
 

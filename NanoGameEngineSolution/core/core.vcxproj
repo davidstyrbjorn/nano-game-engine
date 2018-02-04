@@ -150,10 +150,10 @@
     <ClCompile Include="source\RectangleComponent.cpp" />
     <ClCompile Include="source\Renderable.cpp" />
     <ClCompile Include="source\Shader.cpp" />
-    <ClCompile Include="main.cpp">
+    <Text Include="main.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
+    </Text>
     <ClCompile Include="source\Core.cpp" />
     <ClCompile Include="source\Simple_Renderer.cpp" />
     <ClCompile Include="source\TransformComponent.cpp" />

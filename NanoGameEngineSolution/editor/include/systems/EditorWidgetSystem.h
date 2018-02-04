@@ -3,12 +3,7 @@
 #include"EditorSystem.h"
 
 // Widgets include
-#include"../widgets/UtilitySelectWidget.h"
-#include"../widgets/UtilityWidget.h"
-#include"../widgets/MenuBarWidget.h"
-#include"../widgets/EntitySelectWidget.h"
-#include"../widgets/EntityInspectorWidget.h"
-#include"../widgets/ConsoleWidget.h"
+#include"../widgets/Widgets.h"
 
 #include"../EventHandler.h"
 

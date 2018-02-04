@@ -71,7 +71,7 @@ namespace nano { namespace editor {
 		testEntity->m_transform->position = math::Vector2(400, 100);
 		testEntity->m_transform->size = math::Vector2(100, 40);
 		testEntity->AddComponent(new ecs::RectangleComponent(math::Vector4(0.4, 0.1, 0.9, 1)))->Start();
-		testEntity->AddComponent(new ecs::SoundComponent("C:\\temp\\sound.wav"));
+		testEntity->AddComponent(new ecs::SoundComponent("D:\\temp\\sound.wav"));
 		m_WorldSystem->AddNewEntity(testEntity);
 		
 		ecs::Entity* triangle = new ecs::Entity("Triangle");
@@ -83,12 +83,12 @@ namespace nano { namespace editor {
 		
 		ecs::Entity* Sprite = new ecs::Entity("Sprite");
 		Sprite->Start();
-		Sprite->AddComponent(new ecs::SpriteComponent("C:\\temp\\cat.png"))->Start();
+		Sprite->AddComponent(new ecs::SpriteComponent("D:\\temp\\cat.png"))->Start();
 		m_WorldSystem->AddNewEntity(Sprite);
 		
 		ecs::Entity* Sprite2 = new ecs::Entity("Sprit2e");
 		Sprite2->Start();
-		Sprite2->AddComponent(new ecs::SpriteComponent("C:\\temp\\sample.jpg"))->Start();
+		Sprite2->AddComponent(new ecs::SpriteComponent("D:\\temp\\sample.jpg"))->Start();
 		m_WorldSystem->AddNewEntity(Sprite2);
 
 		/////////////////////////////////////////////////////////////////////

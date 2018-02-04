@@ -1,4 +1,4 @@
-#include"../include/widgets/EntitySelectWidget.h"
+#include"../include/widgets/Widgets.h"
 
 #include<CoreConfig.h>
 #include<ecs\components\TransformComponent.h>

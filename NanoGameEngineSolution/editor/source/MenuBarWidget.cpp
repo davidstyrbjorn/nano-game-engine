@@ -1,4 +1,4 @@
-#include"../include/widgets/MenuBarWidget.h"
+#include"../include/widgets/Widgets.h"
 
 #include<CoreConfig.h>
 #include<iostream>

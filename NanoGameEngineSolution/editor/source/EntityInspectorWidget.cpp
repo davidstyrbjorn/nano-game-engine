@@ -1,4 +1,4 @@
-#include"../include/widgets/EntityInspectorWidget.h"
+#include"../include/widgets/Widgets.h"
 
 #include<CoreConfig.h>
 #include<math\Vector2.h>
@@ -70,7 +70,7 @@ namespace nano { namespace editor {
 		}
 
 		// Dragging logic
-		if (m_isDraggingEntity) {
+		if (m_isDraggingEntity && !m_addComponentWindow) {
 			m_entityToInspect->m_transform->position = mousePos - m_dragDeltaPosition;
 		}
 	}
@@ -113,11 +113,12 @@ namespace nano { namespace editor {
 			// Angle
 			ImGui::SliderAngle("Angle", (float*)&m_entityToInspect->m_transform->angle);
 
-			ImGui::Separator(); ImGui::Spacing(); ImGui::Spacing();
+			ImGui::Spacing(); ImGui::Separator(); ImGui::Spacing();
 
 			// Start listing components
 			graphics::Renderable* renderableComponent = m_entityToInspect->GetRenderableComponent();
-			if (renderableComponent != nullptr) {
+			bool hasRenderableComponent = renderableComponent == nullptr ? false : true;
+			if (hasRenderableComponent) {
 				// Shape type
 				ImGui::Text("Renderable Component");
 				// Right click component name
@@ -167,7 +168,7 @@ namespace nano { namespace editor {
 					}
 				}	
 				
-				ImGui::Separator(); ImGui::Spacing();
+				ImGui::Spacing(); ImGui::Separator(); ImGui::Spacing();
 			}
 
 			ecs::SoundComponent* soundComponent = m_entityToInspect->GetComponent<ecs::SoundComponent>();
@@ -229,25 +230,98 @@ namespace nano { namespace editor {
 					source->Continue();
 				}
 
-				ImGui::Spacing(); ImGui::Separator();
+				ImGui::Spacing(); ImGui::Separator(); ImGui::Spacing();
 			}
 
-
+			// Add component
+			static ImVec2 buttonSize = ImVec2(100, 30);
+			ImGui::Indent((ImGui::GetWindowSize().x/2)-(buttonSize.x*0.7));
+			if (ImGui::Button("Add Component", buttonSize)) {
+				ImGui::OpenPopup("add_component");
+			}
+			if (ImGui::BeginPopup("add_component")) {
+				if (ImGui::Selectable("Sprite Component")) {
+					if (!hasRenderableComponent) {
+						m_addComponentWindow = true;
+						m_componentType = "Sprite Component";
+					}
+					else {
+						// Already have renderable component
+					}
+				}
+				if (ImGui::Selectable("Rectangle Component")) {
+					if (!hasRenderableComponent) {
+						m_addComponentWindow = true;
+						m_componentType = "Rectangle Component";
+					}
+					else {
+						// Already have renderable component
+					}
+				}
+				if (ImGui::Selectable("Triangle Component")) {
+					if (!hasRenderableComponent) {
+						m_addComponentWindow = true;
+						m_componentType = "Triangle Component";
+					}
+					else {
+						// Already have renderable component
+					}
+				}
+				if (ImGui::Selectable("Sound Component")) {
+					if (!hasSoundComponent) {
+						m_addComponentWindow = true;
+						m_componentType = "Sound Component";
+					}
+					else {
+						// Already have sound component
+					}
+				}
+				ImGui::EndPopup();
+			}
 		}
 
 		ImGui::End();
+
+		if (m_entityToInspect != nullptr && m_addComponentWindow) 
+		{
+			static ImVec2 windowSize = ImVec2(325, 275);
+			ImGui::Begin("Add Component", &m_addComponentWindow, windowSize, 1.0f, ImGuiWindowFlags_::ImGuiWindowFlags_NoResize | ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse);
+
+			ImGui::Text(m_componentType.c_str());
+			ImGui::Separator();
+
+			if (m_componentType == "Sound Component") {
+				// Soundfile path
+			}
+			else if (m_componentType == "Sprite Component") {
+				// Texture path
+				static char buffer[128];
+				ImGui::InputText("Texture Path", buffer, 128);
+			}
+			else if (m_componentType == "Rectangle Component") {
+				// Color & Size
+			}
+			else if (m_componentType == "Triangle Component") {
+				// Color & Size
+			}
+
+			ImGui::End();
+		}
 	}
 
 	void EntityInspectorWidget::OnEntityClick(std::string a_id)
 	{
-		// "-1" - clicked on empty space
-		if (a_id == "-1") {
-			// Deselect the entity i.e set it to a nullptr
-			m_entityToInspect = nullptr;
-			return;
-		}
-		else {
-			m_entityToInspect = WorldSystem::Instance()->GetEntityByID(a_id);
+		if (!m_addComponentWindow) {
+			// "-1" - clicked on empty space
+			if (a_id == "-1") {
+				// Deselect the entity i.e set it to a nullptr
+				m_entityToInspect = nullptr;
+				return;
+			}
+			else {
+				//m_addComponentWindow = false;
+				m_entityToInspect = WorldSystem::Instance()->GetEntityByID(a_id);
+			}
 		}
 	}
 
