@@ -251,6 +251,8 @@ namespace nano { namespace editor {
 				}
 				if (ImGui::Selectable("Rectangle Component")) {
 					if (!hasRenderableComponent) {
+						m_addComponentColor = math::Vector4(1, 1, 1, 1);
+						m_addComponentSize = math::Vector2(50, 50);
 						m_addComponentWindow = true;
 						m_componentType = "Rectangle Component";
 					}
@@ -260,6 +262,8 @@ namespace nano { namespace editor {
 				}
 				if (ImGui::Selectable("Triangle Component")) {
 					if (!hasRenderableComponent) {
+						m_addComponentColor = math::Vector4(1, 1, 1, 1);
+						m_addComponentSize = math::Vector2(50, 50);
 						m_addComponentWindow = true;
 						m_componentType = "Triangle Component";
 					}
@@ -288,21 +292,53 @@ namespace nano { namespace editor {
 			ImGui::Begin("Add Component", &m_addComponentWindow, windowSize, 1.0f, ImGuiWindowFlags_::ImGuiWindowFlags_NoResize | ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse);
 
 			ImGui::Text(m_componentType.c_str());
-			ImGui::Separator();
+			ImGui::Separator(); ImGui::Spacing();
 
 			if (m_componentType == "Sound Component") {
 				// Soundfile path
+				static char buffer[128];
+				ImGui::InputText("Sound File Path", buffer, 128);
+
+				if (ImGui::Button("Confirm")) {
+					m_entityToInspect->AddComponent(new ecs::SoundComponent(buffer));
+					m_addComponentWindow = false;
+					m_componentType = "none";
+				}
 			}
 			else if (m_componentType == "Sprite Component") {
 				// Texture path
 				static char buffer[128];
 				ImGui::InputText("Texture Path", buffer, 128);
+
+				if (ImGui::Button("Confirm")) {
+					m_entityToInspect->AddComponent(new ecs::SpriteComponent(buffer));
+					m_addComponentWindow = false;
+					m_componentType = "none";
+				}
 			}
 			else if (m_componentType == "Rectangle Component") {
 				// Color & Size
+				ImGui::DragFloat2("Size", (float*)&m_addComponentSize);
+				ImGui::ColorEdit4("Color", (float*)&m_addComponentColor);
+
+				if (ImGui::Button("Confirm")) {
+					m_entityToInspect->AddComponent(new ecs::RectangleComponent(m_addComponentColor));
+					m_entityToInspect->m_transform->size = m_addComponentSize;
+					m_addComponentWindow = false;
+					m_componentType = "none";
+				}
 			}
 			else if (m_componentType == "Triangle Component") {
 				// Color & Size
+				ImGui::DragFloat2("Size", (float*)&m_addComponentSize);
+				ImGui::ColorEdit4("Color", (float*)&m_addComponentColor);
+
+				if (ImGui::Button("Confirm")) {
+					m_entityToInspect->AddComponent(new ecs::TriangleComponent(m_addComponentColor));
+					m_entityToInspect->m_transform->size = m_addComponentSize;
+					m_addComponentWindow = false;
+					m_componentType = "none";
+				}
 			}
 
 			ImGui::End();

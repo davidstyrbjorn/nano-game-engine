@@ -4,6 +4,7 @@
 #include"../EventObserver.h"
 
 #include<math\Vector2.h>
+#include<math\Vector4.h>
 
 // FWD
 namespace nano {
@@ -43,11 +44,15 @@ namespace nano { namespace editor {
 		RendererSystem *m_renderSystem;
 		ecs::Entity *m_entityToInspect;
 
+		// Drag entity
 		bool m_isDraggingEntity = false;
 		math::Vector2 m_dragDeltaPosition;
 
+		// Add component
 		std::string m_componentType = "none";
 		bool m_addComponentWindow = false;
+		math::Vector2 m_addComponentSize;
+		math::Vector4 m_addComponentColor;
 
 	public:
 		EntityInspectorWidget();
@@ -132,3 +137,11 @@ namespace nano { namespace editor {
 		RendererSystem *m_renderSystem;
 	};
 } }
+
+
+
+/*
+
+Making quick todo list brb
+
+*/
