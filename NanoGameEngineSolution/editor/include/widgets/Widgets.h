@@ -54,6 +54,9 @@ namespace nano { namespace editor {
 		math::Vector2 m_addComponentSize;
 		math::Vector4 m_addComponentColor;
 
+		// Rename
+		bool m_renameEntityWindow = false;
+
 	public:
 		EntityInspectorWidget();
 

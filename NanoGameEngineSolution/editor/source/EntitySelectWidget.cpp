@@ -11,6 +11,7 @@
 #include"../include/systems/RendererSystem.h"
 
 #include<graphics\Simple_Renderer.h>
+#include<InputDefinitions.h>
 
 namespace nano { namespace editor {
 
@@ -46,25 +47,32 @@ namespace nano { namespace editor {
 		for (InputEvent _event : m_inputSystem->GetPolledEvents()) {
 			if (_event.type == InputEventType::MOUSE_PRESSED) {
 				math::Vector2 mousePos = m_inputSystem->GetMousePosition() + m_renderSystem->GetSimpleRenderer().GetCamera()->GetPosition();
-				// TODO: Check if mouse is within the view frustrum
-				if (IsMouseInViewFrustrum(mousePos)) 
+				// Check if mouse is within the view frustrum
+				if (IsMouseInViewFrustrum(mousePos))
 				{
-					bool hitDetect = false;
-					for (ecs::Entity* entity : m_entityManager->GetEntityList()) {
-						if (mousePos.x > entity->m_transform->position.x && mousePos.x < entity->m_transform->position.x + entity->m_transform->size.x && mousePos.y > entity->m_transform->position.y && mousePos.y < entity->m_transform->position.y + entity->m_transform->size.y) {
-							EditorWidgetSystem::Instance()->GetEventHandler().AddEvent(BaseEvent(EventTypes::CLICKED_ON_ENTITY, entity->GetID()));
-							hitDetect = true;
-						}
-					}
-					if (!hitDetect) {
-						EditorWidgetSystem::Instance()->GetEventHandler().AddEvent(BaseEvent(EventTypes::CLICKED_ON_ENTITY, "-1"));
+					// RMB - Drag camera view
+					if (_event.key == NANO_MOUSE_BUTTON_RIGHT) 
+					{
 						// Mouse drag
 						m_isDraggingView = true;
 						m_dragOrigin = m_inputSystem->GetMousePosition();
 					}
-
+					// LMB - Click to inspect entity
+					else if(_event.key == NANO_MOUSE_BUTTON_LEFT) 
+					{
+							bool hitDetect = false;
+							for (ecs::Entity* entity : m_entityManager->GetEntityList()) {
+								if (mousePos.x > entity->m_transform->position.x && mousePos.x < entity->m_transform->position.x + entity->m_transform->size.x && mousePos.y > entity->m_transform->position.y && mousePos.y < entity->m_transform->position.y + entity->m_transform->size.y) {
+									EditorWidgetSystem::Instance()->GetEventHandler().AddEvent(BaseEvent(EventTypes::CLICKED_ON_ENTITY, entity->GetID()));
+									hitDetect = true;
+								}
+							}
+							if (!hitDetect) 
+							{
+								EditorWidgetSystem::Instance()->GetEventHandler().AddEvent(BaseEvent(EventTypes::CLICKED_ON_ENTITY, "-1"));
+							}
+						}
 				}
-			
 			}
 			if (_event.type == InputEventType::MOUSE_RELEASE) {
 				if (m_isDraggingView)

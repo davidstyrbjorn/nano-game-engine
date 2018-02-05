@@ -52,10 +52,12 @@ namespace nano { namespace editor {
 					}
 				}
 				if (_event.type == InputEventType::MOUSE_PRESSED) {
-					if (mousePos.x > m_entityToInspect->m_transform->position.x && mousePos.x < m_entityToInspect->m_transform->position.x + m_entityToInspect->m_transform->size.x) {
-						if (mousePos.y > m_entityToInspect->m_transform->position.y && mousePos.y < m_entityToInspect->m_transform->position.y + m_entityToInspect->m_transform->size.y) {
-							m_isDraggingEntity = true;
-							m_dragDeltaPosition = mousePos - m_entityToInspect->m_transform->position;
+					if (_event.key == NANO_MOUSE_BUTTON_LEFT) {
+						if (mousePos.x > m_entityToInspect->m_transform->position.x && mousePos.x < m_entityToInspect->m_transform->position.x + m_entityToInspect->m_transform->size.x) {
+							if (mousePos.y > m_entityToInspect->m_transform->position.y && mousePos.y < m_entityToInspect->m_transform->position.y + m_entityToInspect->m_transform->size.y) {
+								m_isDraggingEntity = true;
+								m_dragDeltaPosition = mousePos - m_entityToInspect->m_transform->position;
+							}
 						}
 					}
 				}
@@ -102,7 +104,18 @@ namespace nano { namespace editor {
 			// ID section
 			std::string nameString = "ID: " + m_entityToInspect->GetID();
 			ImGui::Text(nameString.c_str());
-			
+			if (ImGui::IsItemHovered()) {
+				if (ImGui::GetIO().MouseClicked[1]) {
+					ImGui::OpenPopup("rename_entity");
+				}
+			}
+			if (ImGui::BeginPopup("rename_entity")) {
+				if (ImGui::Selectable("Rename")) {
+					m_renameEntityWindow = true;
+				}
+				ImGui::EndPopup();
+			}
+
 			ImGui::Separator(); ImGui::Spacing();
 			
 			ImGui::Text("Transform Component");
@@ -343,11 +356,19 @@ namespace nano { namespace editor {
 
 			ImGui::End();
 		}
+
+		if (m_entityToInspect != nullptr && m_renameEntityWindow) 
+		{
+			static ImVec2 windowSize = ImVec2(300, 150);
+			ImGui::Begin("Rename", &m_renameEntityWindow, windowSize, 1.0f, ImGuiWindowFlags_::ImGuiWindowFlags_NoResize | ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse);
+
+			ImGui::End();
+		}
 	}
 
 	void EntityInspectorWidget::OnEntityClick(std::string a_id)
 	{
-		if (!m_addComponentWindow) {
+		if (!m_addComponentWindow && !m_renameEntityWindow) {
 			// "-1" - clicked on empty space
 			if (a_id == "-1") {
 				// Deselect the entity i.e set it to a nullptr
