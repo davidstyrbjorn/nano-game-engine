@@ -28,6 +28,8 @@ namespace nano { namespace graphics {
 		void Translate(const math::Vector2 &a_translationVector);
 		// Sets the camera's position
 		void SetPosition(const math::Vector2 &a_positionVector);
+		// Sets the camera's size (window size)
+		void SetSize(const math::Vector2 &a_cameraSize);
 
 		// Getters
 		math::Matrix4x4 GetViewMatrix();

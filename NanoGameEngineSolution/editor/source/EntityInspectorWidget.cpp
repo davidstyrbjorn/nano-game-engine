@@ -359,8 +359,15 @@ namespace nano { namespace editor {
 
 		if (m_entityToInspect != nullptr && m_renameEntityWindow) 
 		{
-			static ImVec2 windowSize = ImVec2(300, 150);
+			static ImVec2 windowSize = ImVec2(300, 60);
 			ImGui::Begin("Rename", &m_renameEntityWindow, windowSize, 1.0f, ImGuiWindowFlags_::ImGuiWindowFlags_NoResize | ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse);
+
+			static char buffer[128] = "";
+			if (ImGui::InputText("New Name", buffer, 128, ImGuiInputTextFlags_::ImGuiInputTextFlags_EnterReturnsTrue) || ImGui::Button("Confirm"))
+			{
+				m_entityToInspect->SetID(buffer);
+				m_renameEntityWindow = false;
+			}
 
 			ImGui::End();
 		}

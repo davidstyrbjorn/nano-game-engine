@@ -26,6 +26,11 @@ namespace nano { namespace graphics {
 		this->UpdateMatrix();
 	}
 
+	void OrthographicCamera::SetSize(const math::Vector2 & a_cameraSize)
+	{
+		m_projectionMatrix = math::Matrix4x4::Orthographic(0, a_cameraSize.x, a_cameraSize.y, 0, -1, 1);
+	}
+
 	math::Matrix4x4 OrthographicCamera::GetViewMatrix()
 	{
 		return m_viewMatrix;

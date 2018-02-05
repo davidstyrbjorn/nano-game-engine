@@ -43,4 +43,14 @@ namespace nano {
 		return { m_vertexShaderPath, m_fragmentShaderPath };
 	}
 
+	void CoreConfig::SetErrorTexturePath(const char * a_path)
+	{
+		m_errorTexturePath = a_path;
+	}
+
+	const char * CoreConfig::GetErrorTexturePath()
+	{
+		return m_errorTexturePath;
+	}
+
 }

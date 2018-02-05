@@ -140,11 +140,3 @@ namespace nano { namespace editor {
 		RendererSystem *m_renderSystem;
 	};
 } }
-
-
-
-/*
-
-Making quick todo list brb
-
-*/

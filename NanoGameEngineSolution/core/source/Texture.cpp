@@ -7,7 +7,7 @@
 
 namespace nano { namespace opengl { 
 
-	Texture::Texture(unsigned char* a_imageData, unsigned int a_width, unsigned int a_height, GLenum a_format)
+	Texture::Texture(void* a_imageData, unsigned int a_width, unsigned int a_height, GLenum a_format)
 	{
 		glGenTextures(1, &m_textureID);
 		this->Bind();
@@ -21,7 +21,7 @@ namespace nano { namespace opengl {
 		glDeleteTextures(1, &m_textureID);
 	}
 
-	void Texture::SetTextureData(unsigned char * a_imageData, unsigned int a_width, unsigned int a_height, GLenum a_format)
+	void Texture::SetTextureData(void* a_imageData, unsigned int a_width, unsigned int a_height, GLenum a_format)
 	{
 		// Set texture parameters
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);

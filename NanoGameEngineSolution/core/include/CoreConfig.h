@@ -27,6 +27,7 @@ namespace nano {
 
 		// Renderer
 		std::string m_vertexShaderPath, m_fragmentShaderPath;
+		const char* m_errorTexturePath;
 
 	public:
 		// Window
@@ -38,5 +39,7 @@ namespace nano {
 		// Renderer
 		void SetShaderPaths(std::string a_vertex, std::string a_fragment);
 		std::array<std::string, 2> GetShaderPaths();
+		void SetErrorTexturePath(const char* a_path);
+		const char* GetErrorTexturePath();
 	};
 }

@@ -18,13 +18,13 @@ namespace nano { namespace opengl {
 
 	public:
 		// Default Constructor
-		Texture(unsigned char* a_imageData, unsigned int a_width, unsigned int a_height, GLenum a_format);
+		Texture(void* a_imageData, unsigned int a_width, unsigned int a_height, GLenum a_format);
 
 		// Destructor
 		~Texture();
 
 		// Other
-		void SetTextureData(unsigned char *a_imageData, unsigned int a_width, unsigned int a_height, GLenum a_format);
+		void SetTextureData(void* a_imageData, unsigned int a_width, unsigned int a_height, GLenum a_format);
 
 		// Getters
 		GLuint GetTextureID();

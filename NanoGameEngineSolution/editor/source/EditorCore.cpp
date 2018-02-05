@@ -36,6 +36,7 @@ namespace nano { namespace editor {
 	{
 		m_config = CoreConfig::Instance();
 		m_config->SetShaderPaths("../../vertex.txt", "../../fragment.txt");
+		m_config->SetErrorTexturePath("..//resources//error_texture.png");
 
 		// Start every editor system
 
@@ -83,7 +84,7 @@ namespace nano { namespace editor {
 		
 		ecs::Entity* Sprite = new ecs::Entity("Sprite");
 		Sprite->Start();
-		Sprite->AddComponent(new ecs::SpriteComponent("D:\\temp\\cat.png"))->Start();
+		Sprite->AddComponent(new ecs::SpriteComponent("D:\\temp\\no\\cat.png"))->Start();
 		m_WorldSystem->AddNewEntity(Sprite);
 		
 		ecs::Entity* Sprite2 = new ecs::Entity("Sprit2e");

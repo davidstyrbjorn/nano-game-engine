@@ -21,6 +21,8 @@ namespace nano { namespace graphics {
 		// Callbacks
 		glfwSetWindowSizeCallback(m_glfwWindow, window_size_callback);
 
+		glfwSetWindowUserPointer(m_glfwWindow, this);
+
 		glfwSwapInterval(0); 
 		glViewport(0, 0, a_windowSize.x, a_windowSize.y);
 		
@@ -63,6 +65,11 @@ namespace nano { namespace graphics {
 	void window_size_callback(GLFWwindow * window, int width, int height)
 	{
 		CoreConfig::Instance()->SetWindowSize(math::Vector2(width, height));
+		glViewport(0, 0, width, height);
+
+		// Message owner @ HOTFIX
+		Window* temp = (Window*)glfwGetWindowUserPointer(window);
+		temp->owner->WindowResized(width, height);
 	}
 
 }
