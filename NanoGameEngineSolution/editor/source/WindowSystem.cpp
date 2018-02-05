@@ -37,7 +37,6 @@ namespace nano { namespace editor {
 
 	void WindowSystem::WindowResized(int a_width, int a_height)
 	{
-		std::cout << "what" << std::endl;
 		RendererSystem::Instance()->GetSimpleRenderer().GetCamera()->SetSize(math::Vector2(a_width, a_height));
 	}
 
