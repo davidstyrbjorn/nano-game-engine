@@ -17,6 +17,9 @@
 // @ Remove 
 #include<sound\SoundContextDevice.h>
 
+#define FPS 400
+#define MS 1000/FPS
+
 namespace nano { namespace editor { 
 
 	class EditorCore {
@@ -33,6 +36,7 @@ namespace nano { namespace editor {
 
 		// Other
 		Clock m_fpsClock;
+		Clock m_frameClock;
 
 	public:
 		// Default constructor

@@ -16,6 +16,8 @@
 
 #include<InputDefinitions.h>
 
+#include<thread>
+
 namespace nano { namespace editor { 
 
 	EditorCore::~EditorCore()
@@ -102,7 +104,10 @@ namespace nano { namespace editor {
 	{
 		m_fpsClock.Reset();
 		m_fpsClock.Start();
-		int FPS = 0;
+		int frameCount = 0;
+
+		m_frameClock.Reset();
+		m_frameClock.Start();
 
 		// Main editor loop 
 		// Here we update every system
@@ -110,38 +115,41 @@ namespace nano { namespace editor {
 		while (m_windowSystem->GetWindow().IsOpen()) 
 		{
 			if (m_fpsClock.GetTicks() >= 1000) {
-				std::cout << FPS << std::endl;
-				FPS = 0;
+				std::cout << frameCount << std::endl;
+				frameCount = 0;
 				m_fpsClock.Reset();
 			}
 
-			// Pre-frame 
-			m_windowSystem->GetWindow().Clear();
+			if (m_frameClock.GetTicks() >= MS) {
+				// Pre-frame 
+				m_windowSystem->GetWindow().Clear();
 
-			// Events stuff
-			m_inputSystem->Update();
+				// Events stuff
+				m_inputSystem->Update();
 
-			// Update the entity manager system
-			m_WorldSystem->Update();
-			
+				// Update the entity manager system
+				m_WorldSystem->Update();
+
 #pragma region		    RENDERING
-			// Rendering
-			m_rendererSystem->GetSimpleRenderer().Begin();
-			m_editorWidgetSystem->Begin();
+				// Rendering
+				m_rendererSystem->GetSimpleRenderer().Begin();
+				m_editorWidgetSystem->Begin();
 
-			m_rendererSystem->Update();
-			m_editorWidgetSystem->Update();
+				m_rendererSystem->Update();
+				m_editorWidgetSystem->Update();
 
-			m_rendererSystem->GetSimpleRenderer().Flush(); 
-			m_editorWidgetSystem->Flush();
+				m_rendererSystem->GetSimpleRenderer().Flush();
+				m_editorWidgetSystem->Flush();
 #pragma endregion
 
-			// Post-frame
-			m_inputSystem->FlushEvents();
-			m_windowSystem->GetWindow().Display();
+				// Post-frame
+				m_inputSystem->FlushEvents();
+				m_windowSystem->GetWindow().Display();
 
-			// Increment frame counter
-			FPS++;
+				// Final
+				frameCount++;
+				m_frameClock.Reset();
+			}
 		}
 	}
 
