@@ -122,8 +122,13 @@ namespace nano { namespace editor {
 
 			if (entity->GetState() != ecs::ECSStates::DESTROYED) 
 			{
+				ImGui::PushItemWidth(30);
+				bool temp = entity->GetState() == ecs::ECSStates::ACTIVE ? true : false;
+				ImGui::Checkbox(std::string("##" + entity->GetID()).c_str(), &temp);
+				entity->SetState(temp);
+				ImGui::SameLine(33);
+
 				std::string selectableID = entity->GetID() + "##" + std::to_string(i);
-				
 				// Check if we clicked on entity, if we did send that event to the event handler
 				if (ImGui::Selectable(selectableID.c_str())) {
 					// Clicked on entity
@@ -152,7 +157,8 @@ namespace nano { namespace editor {
 				m_leftClickedEntity->SetState(ecs::ECSStates::DESTROYED);
 			}
 			if (ImGui::Selectable("Rename")) {
-				std::cout << "Rename not yet implemented" << std::endl;
+				EditorWidgetSystem::Instance()->GetEventHandler().AddEvent(BaseEvent(EventTypes::CLICKED_ON_ENTITY, m_leftClickedEntity->GetID())); // Message the event handler this happend!
+				EditorWidgetSystem::Instance()->GetEventHandler().AddEvent(BaseEvent(EventTypes::RENAME_ENTITY, m_leftClickedEntity->GetID()));
 			}
 			
 			ImGui::EndPopup();

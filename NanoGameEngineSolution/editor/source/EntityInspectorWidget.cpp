@@ -51,8 +51,7 @@ namespace nano { namespace editor {
 				if (_event.type == InputEventType::KEY_PRESSED) {
 					// "de"select entity
 					if (_event.key == NANO_KEY_ESCAPE) {
-						if (m_entityToInspect != nullptr)
-							m_entityToInspect = nullptr;
+						OnEntityClick("-1");
 					}
 				}
 				if (_event.type == InputEventType::MOUSE_PRESSED) {
@@ -119,6 +118,15 @@ namespace nano { namespace editor {
 				}
 				ImGui::EndPopup();
 			}
+			// State
+			std::string stateString;
+			if (m_entityToInspect->GetState() == ecs::ECSStates::ACTIVE) {
+				stateString = "State: Active";
+			}
+			else {
+				stateString = "State: Disabled";
+			}
+			ImGui::Text(stateString.c_str());
 
 			ImGui::Separator(); ImGui::Spacing();
 			
@@ -363,7 +371,7 @@ namespace nano { namespace editor {
 
 		if (m_entityToInspect != nullptr && m_renameEntityWindow) 
 		{
-			static ImVec2 windowSize = ImVec2(300, 60);
+			static ImVec2 windowSize = ImVec2(300, 90);
 			ImGui::Begin("Rename", &m_renameEntityWindow, windowSize, 1.0f, ImGuiWindowFlags_::ImGuiWindowFlags_NoResize | ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse);
 
 			static char buffer[128] = "";
@@ -375,6 +383,11 @@ namespace nano { namespace editor {
 
 			ImGui::End();
 		}
+	}
+
+	void EntityInspectorWidget::OnEntityRename(std::string a_id)
+	{
+		m_renameEntityWindow = true;
 	}
 
 	void EntityInspectorWidget::OnEntityClick(std::string a_id)

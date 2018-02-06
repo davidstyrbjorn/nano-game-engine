@@ -17,7 +17,7 @@
 // @ Remove 
 #include<sound\SoundContextDevice.h>
 
-#define FPS 400
+#define FPS 70
 #define MS 1000/FPS
 
 namespace nano { namespace editor { 

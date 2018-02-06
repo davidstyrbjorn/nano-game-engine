@@ -9,6 +9,7 @@ namespace nano { namespace editor {
 		virtual void OnEntityCreation(std::string a_id) { }
 		virtual void OnEntityDestroyed(std::string a_id) { }
 		virtual void OnEntityClick(std::string a_id) { }
+		virtual void OnEntityRename(std::string a_id) { }
 	};
 
 } }

@@ -15,6 +15,7 @@ namespace nano { namespace graphics {
 
 	class WindowOwner {
 	public:
+		// Callback polymorphic method/s
 		virtual void WindowResized(int a_width, int a_height) { }
 	};
 

@@ -7,7 +7,8 @@ namespace nano { namespace editor {
 	enum EventTypes {
 		CREATED_ENTITY,
 		REMOVED_ENTITY,
-		CLICKED_ON_ENTITY
+		CLICKED_ON_ENTITY,
+		RENAME_ENTITY
 	};
 
 	struct BaseEvent {

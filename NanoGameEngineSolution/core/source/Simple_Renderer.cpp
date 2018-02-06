@@ -209,12 +209,12 @@ namespace nano { namespace graphics {
 	void SimpleRenderer::Flush()
 	{
 		m_shader->Bind();
-
-		//TestDrawGrid(5);
 		
 		// Update view_matrix(camera view)
 		m_shader->SetUniformMat4f("view_matrix", m_camera->GetViewMatrix());
+		m_shader->SetUniformMat4f("projection_matrix", m_camera->GetProjectionMatrix());
 		
+
 		if (m_triangleCount != 0) {
 			m_triangleVAO->Bind();
 			m_triangleVBO->Bind();

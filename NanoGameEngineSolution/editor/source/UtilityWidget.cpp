@@ -81,9 +81,28 @@ namespace nano { namespace editor {
 
 		if (utilityType == UtilityType::CAMERA) {
 			// Render and do the camera utility stuff
+
+			// Camera position
+			ImGui::PushItemWidth(150);
 			math::Vector2 pos = m_renderSystem->GetSimpleRenderer().GetCamera()->GetPosition();
-			ImGui::DragFloat2("Position", (float*)&pos);
+			ImGui::DragFloat2("Position", (float*)&pos, 1.0f, 0.0f, 0.0f, "%.1f");
 			m_renderSystem->GetSimpleRenderer().GetCamera()->SetPosition(pos);
+
+			// Camera size
+			ImGui::PushItemWidth(150);
+			math::Vector2 size = m_renderSystem->GetSimpleRenderer().GetCamera()->GetSize();
+			ImGui::DragFloat2("Size", (float*)&size, 1.0f, 0.0f, 0.0f, "%.0f");
+			m_renderSystem->GetSimpleRenderer().GetCamera()->SetSize(size);
+			// Button for reseting camera position to zero, zero
+			if (ImGui::Button("Reset Position")) {
+				m_renderSystem->GetSimpleRenderer().GetCamera()->SetPosition(math::Vector2(0, 0));
+			}
+			ImGui::SameLine(120);
+			// Button for matching the camera size to the current window size
+			if (ImGui::Button("Math Window Size")) {
+				math::Vector2 _windowSize = m_config->GetWindowSize();
+				m_renderSystem->GetSimpleRenderer().GetCamera()->SetSize(_windowSize);
+			}
 		}
 		if (utilityType == UtilityType::WINDOW) {
 			// Window utility stuff
