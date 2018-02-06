@@ -6,6 +6,8 @@
 #include<math\Vector2.h>
 #include<math\Vector4.h>
 
+#include"../HighlightEntity.h"
+
 // FWD
 namespace nano {
 	class CoreConfig;
@@ -18,7 +20,6 @@ namespace nano {
 		class WorldSystem;
 	}
 }
-
 
 namespace nano { namespace editor {
 
@@ -43,6 +44,7 @@ namespace nano { namespace editor {
 		InputSystem* m_inputSystem;
 		RendererSystem *m_renderSystem;
 		ecs::Entity *m_entityToInspect;
+		HighlightEntity highlighEntity;
 
 		// Drag entity
 		bool m_isDraggingEntity = false;

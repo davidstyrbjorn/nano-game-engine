@@ -40,6 +40,10 @@ namespace nano { namespace editor {
 
 	void EntityInspectorWidget::Update()
 	{
+		highlighEntity.Update();
+		if(highlighEntity.ShouldHighlight())
+			RendererSystem::Instance()->GetSimpleRenderer().Submit(highlighEntity.GetRenderable());
+
 		math::Vector2 mousePos = m_inputSystem->GetMousePosition() + m_renderSystem->GetSimpleRenderer().GetCamera()->GetPosition();
 		// Dragging input
 		if (m_entityToInspect != nullptr) {
@@ -379,12 +383,18 @@ namespace nano { namespace editor {
 			// "-1" - clicked on empty space
 			if (a_id == "-1") {
 				// Deselect the entity i.e set it to a nullptr
-				m_entityToInspect = nullptr;
+				if (m_entityToInspect != nullptr) {
+					m_entityToInspect->SetEditorState(ecs::ECSEditorStates::NOT_HIGHLIGHTED);
+					highlighEntity.SetNewHighlightedEntity(nullptr);
+					m_entityToInspect = nullptr;
+				}
 				return;
 			}
 			else {
 				//m_addComponentWindow = false;
 				m_entityToInspect = WorldSystem::Instance()->GetEntityByID(a_id);
+				m_entityToInspect->SetEditorState(ecs::ECSEditorStates::HIGHLIGHTED);
+				highlighEntity.SetNewHighlightedEntity(m_entityToInspect);
 			}
 		}
 	}
@@ -393,6 +403,7 @@ namespace nano { namespace editor {
 	{
 		// Check if the destroyed entity is the entity we inspect
 		if (WorldSystem::Instance()->Instance()->GetEntityByID(a_id) == m_entityToInspect) {
+			highlighEntity.SetNewHighlightedEntity(nullptr);
 			m_entityToInspect = nullptr;
 		}
 	}

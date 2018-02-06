@@ -82,12 +82,12 @@ namespace nano { namespace editor {
 		triangle->AddComponent(new ecs::TriangleComponent(math::Vector4(1, 0.1, 0.1, 1)))->Start();
 		m_WorldSystem->AddNewEntity(triangle);
 		
-		ecs::Entity* Sprite = new ecs::Entity("Sprite");
+		ecs::Entity* Sprite = new ecs::Entity("Sprite(png)");
 		Sprite->Start();
 		Sprite->AddComponent(new ecs::SpriteComponent("D:\\temp\\no\\cat.png"))->Start();
 		m_WorldSystem->AddNewEntity(Sprite);
 		
-		ecs::Entity* Sprite2 = new ecs::Entity("Sprit2e");
+		ecs::Entity* Sprite2 = new ecs::Entity("Sprit2(jpg)");
 		Sprite2->Start();
 		Sprite2->AddComponent(new ecs::SpriteComponent("D:\\temp\\sample.jpg"))->Start();
 		m_WorldSystem->AddNewEntity(Sprite2);

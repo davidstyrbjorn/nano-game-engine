@@ -21,12 +21,7 @@ namespace nano { namespace ecs {
 	{
 		m_transform = m_owner->m_transform;
 
-		int width, height, n;
-		unsigned char *data = stbi_load(m_imagePath, &width, &height, &n, 0);
-		if (data == NULL) {
-			data = stbi_load(CoreConfig::Instance()->GetErrorTexturePath(), &width, &height, &n, 0);
-		}
-
+		// Get the format of the image to load
 		GLenum format;
 		std::string extension = GetFileExtension(m_imagePath);
 		if (extension == ".png")
@@ -35,6 +30,13 @@ namespace nano { namespace ecs {
 			format = GL_RGB;
 		else
 			format = GL_RGB; // Default format if unkown extension
+
+		int width, height, n;
+		unsigned char *data = stbi_load(m_imagePath, &width, &height, &n, 0);
+		if (data == NULL) {
+			data = stbi_load(CoreConfig::Instance()->GetErrorTexturePath(), &width, &height, &n, 0);
+			format = GL_RGBA;
+		}
 
 		m_texture = new opengl::Texture(data, width, height, format);
 
