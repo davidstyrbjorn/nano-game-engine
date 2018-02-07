@@ -5,21 +5,13 @@ in vec4 color;
 in vec2 uv;
 
 // Fragment uniforms
-uniform vec3 ambientColor = vec3(1, 1, 1);
 uniform sampler2D textureSampler;
-
-// Returns lightning model 
-vec3 LightModel()
-{
-	// TODO: Do diffuse & specular mapping
-	return clamp(ambientColor, 0.0, 1.0);
-}
 
 void main() 
 {
 	// For now this just means there is no texture so render it with no texture
 	if(uv.x == -1 && uv.y == -1) { 
-		gl_FragColor = vec4(color.rgb * LightModel(), color.a);
+		gl_FragColor = vec4(color.rgb, color.a);
         }
 	else {
 		gl_FragColor = texture(textureSampler, uv) * vec4(color.rgb, 1);

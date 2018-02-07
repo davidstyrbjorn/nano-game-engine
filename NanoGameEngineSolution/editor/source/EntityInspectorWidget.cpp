@@ -12,6 +12,8 @@
 #include"../include/systems/WorldSystem.h"
 #include"../include/systems/InputSystem.h"
 #include"../include/systems/RendererSystem.h"
+#include"../include/systems/EditorWidgetSystem.h"
+#include"../include/EventHandler.h"
 
 #include"../include/DearImGui/imgui.h"
 
@@ -52,6 +54,12 @@ namespace nano { namespace editor {
 					// "de"select entity
 					if (_event.key == NANO_KEY_ESCAPE) {
 						OnEntityClick("-1");
+					}
+					// Delete the current entity
+					if (_event.key == NANO_KEY_DELETE) {
+						highlighEntity.SetNewHighlightedEntity(nullptr);
+						m_entityToInspect->SetState(ecs::ECSStates::DESTROYED);
+						m_entityToInspect = nullptr;
 					}
 				}
 				if (_event.type == InputEventType::MOUSE_PRESSED) {

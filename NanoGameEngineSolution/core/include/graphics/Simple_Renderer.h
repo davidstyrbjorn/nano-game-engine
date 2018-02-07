@@ -15,7 +15,11 @@
 #define INDICES_COUNT MAX_PRIMITIVES*6
 
 #define GRID_COUNT 250
-#define GRID_BUFFER_SIZE GRID_COUNT * VERTEX_SIZE
+#define GRID_BUFFER_SIZE GRID_COUNT * VERTEX_SIZE * 4
+
+namespace nano {
+	class CoreConfig;
+}
 
 namespace nano { namespace graphics { 
 
@@ -36,18 +40,15 @@ namespace nano { namespace graphics {
 		opengl::IndexBuffer *m_quadIBO, *m_textureIBO;
 		Shader *m_shader;
 
-		opengl::VertexBuffer *m_gridVBO;
-		opengl::IndexBuffer *m_gridIBO;
-		opengl::VertexArrayObject *m_gridVAO;
-
 		int m_triangleCount, m_quadCount;
 
+		CoreConfig* m_config;
 		OrthographicCamera *m_camera;
 		
 		// Private methods
 		void AddTextureToRender(Renderable* a_renderable);
 		void PostFlush();
-		void TestDrawGrid(int a_thickness);
+		void SubmitGridData();
 
 	public:
 		// Default Constructor

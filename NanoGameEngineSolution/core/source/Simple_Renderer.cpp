@@ -6,6 +6,7 @@
 #include"../include/math/Matrix4x4.h"
 #include"../include/graphics/Camera.h"
 #include"../include/ecs/components/TransformComponent.h"
+#include"../include/CoreConfig.h"
 
 #define GLEW_STATIC
 #include"GL\glew.h"
@@ -16,6 +17,8 @@ namespace nano { namespace graphics {
 
 	SimpleRenderer::SimpleRenderer()
 	{
+		m_config = CoreConfig::Instance();
+
 		// Initalize GLEW
 		glewInit();
 
@@ -101,24 +104,6 @@ namespace nano { namespace graphics {
 		m_textureVBO->Unbind();
 		m_textureVAO->Unbind();
 
-		// Grid test
-		m_gridVAO = new opengl::VertexArrayObject();
-		m_gridVAO->Bind();
-
-		m_gridVBO = new opengl::VertexBuffer(nullptr, GRID_BUFFER_SIZE, GL_DYNAMIC_DRAW);
-		m_gridVBO->Bind();
-
-		m_gridVAO->EnableVertexAttribArray(0);  // pos
-		m_gridVAO->EnableVertexAttribArray(1);  // color
-		m_gridVAO->EnableVertexAttribArray(2);  // uv
-		m_gridVAO->SetVertexAttribPointer(0, 2, GL_FLOAT, sizeof(Vertex), 0);
-		m_gridVAO->SetVertexAttribPointer(1, 4, GL_FLOAT, sizeof(Vertex), (void*)OFFSET_TO_COLOR);
-		m_gridVAO->SetVertexAttribPointer(2, 2, GL_FLOAT, sizeof(Vertex), (void*)OFFSET_TO_UV);
-
-		m_gridIBO = new opengl::IndexBuffer(m_indices, sizeof(m_indices));
-
-		m_gridVBO->Unbind();
-		m_gridVAO->Unbind();
 	}
 
 	SimpleRenderer::~SimpleRenderer()
@@ -142,6 +127,8 @@ namespace nano { namespace graphics {
 		m_quadCount = 0;
 		m_quadVBO->Bind();
 		m_quadVBO->SetData(nullptr, QUAD_BUFFER_SIZE, GL_DYNAMIC_DRAW);
+
+		this->SubmitGridData();
 	}
 
 	void SimpleRenderer::Submit(Renderable * a_renderable)
@@ -209,11 +196,9 @@ namespace nano { namespace graphics {
 	void SimpleRenderer::Flush()
 	{
 		m_shader->Bind();
-		
-		// Update view_matrix(camera view)
+		// Update matrices based on camera position & size
 		m_shader->SetUniformMat4f("view_matrix", m_camera->GetViewMatrix());
 		m_shader->SetUniformMat4f("projection_matrix", m_camera->GetProjectionMatrix());
-		
 
 		if (m_triangleCount != 0) {
 			m_triangleVAO->Bind();
@@ -236,8 +221,8 @@ namespace nano { namespace graphics {
 			m_quadIBO->Unbind();
 			m_quadVBO->Unbind();
 		}
-		this->PostFlush();
 
+		this->PostFlush();
 		m_shader->Unbind();
 	}
 
@@ -280,49 +265,40 @@ namespace nano { namespace graphics {
 		}
 	}
 
-	void SimpleRenderer::TestDrawGrid(int a_thickness)
+	void SimpleRenderer::SubmitGridData()
 	{
-		// Bind
-		m_gridVAO->Bind();
-		m_gridVBO->Bind();
-		m_gridIBO->Bind();
+		static math::Vector4 color = math::Vector4(0.05, 0.05, 0.05, 0.7);
+		static math::Vector2 uv = math::Vector2(-1, -1);
+		static float gridThickness = 3;
+		static int lineOffset = 30;
 
-		// Reset the grid buffer
-		//m_gridVBO->SetData(nullptr, GRID_BUFFER_SIZE, GL_DYNAMIC_DRAW);
+		GLintptr _offset = m_quadCount * (QUAD_SIZE);
+		std::vector<Vertex> gridDataVector;
+		math::Vector2 camPos = m_camera->GetPosition();
+		math::Vector2 camSize = m_camera->GetSize();
 
-		// Arbitary grid values that are constant
-		static int GRID_LENGTH_IN_PIXELS = 1000;
-		static math::Vector4 GRID_COLOR = math::Vector4(0.1, 0.1, 0.1, 0.1);
-		static int LINE_OFFSET = 30;
+		for (int y = 0; y < 27; y++) {
+			gridDataVector.push_back({ camPos + math::Vector2(0, (y*lineOffset)), color, uv });
+			gridDataVector.push_back({ camPos + math::Vector2(0, gridThickness + (y*lineOffset)), color, uv });
+			gridDataVector.push_back({ camPos + math::Vector2(camSize.x, gridThickness + (y*lineOffset)), color, uv });
+			gridDataVector.push_back({ camPos + math::Vector2(camSize.x, (y*lineOffset)), color, uv });
 
-		// Vector to be filled with grid data
-		std::vector<Vertex> m_gridData;
-
-		// Fill the grid buffer with the grid quads
-		// Vertical lines
-		for (int y = 0; y < GRID_COUNT/2; y++) {
-			// Fill the vector vertex with the grid data 
-			m_gridData.push_back({ math::Vector2(0, (y*LINE_OFFSET)), GRID_COLOR, math::Vector2(-1,-1) }); // Upper left
-			m_gridData.push_back({ math::Vector2(0, a_thickness + (y*LINE_OFFSET)),  GRID_COLOR, math::Vector2(-1,-1) }); // Down left
-			m_gridData.push_back({ math::Vector2(GRID_LENGTH_IN_PIXELS, a_thickness + (y*LINE_OFFSET)),  GRID_COLOR, math::Vector2(-1,-1) }); // Down right
-			m_gridData.push_back({ math::Vector2(GRID_LENGTH_IN_PIXELS, (y*LINE_OFFSET)),  GRID_COLOR, math::Vector2(-1,-1) }); // Upper right
+			m_quadCount++;
 		}
-		// Horizontal lines
-		for (int x = 0; x < GRID_COUNT/2; x++) {
-			// Fill the vector vertex with the grid data
-			m_gridData.push_back({ math::Vector2((x*LINE_OFFSET), 0), GRID_COLOR, math::Vector2(-1, -1) }); // Upper left
-			m_gridData.push_back({ math::Vector2((x*LINE_OFFSET), GRID_LENGTH_IN_PIXELS), GRID_COLOR, math::Vector2(-1, -1) }); // Down left
-			m_gridData.push_back({ math::Vector2(a_thickness + (x*LINE_OFFSET), GRID_LENGTH_IN_PIXELS), GRID_COLOR, math::Vector2(-1, -1) });
-			m_gridData.push_back({ math::Vector2(a_thickness + (x*LINE_OFFSET), 0), GRID_COLOR, math::Vector2(-1, -1) });
+		for (int x = 0; x < 32; x++) {
+			gridDataVector.push_back({ camPos + math::Vector2((x*lineOffset), 0), color, uv });
+			gridDataVector.push_back({ camPos + math::Vector2((x*lineOffset), camSize.y), color, uv });
+			gridDataVector.push_back({ camPos + math::Vector2(gridThickness + (x*lineOffset), camSize.y), color, uv });
+			gridDataVector.push_back({ camPos + math::Vector2(gridThickness + (x*lineOffset), 0), color, uv });
+
+			m_quadCount++;
 		}
-		m_gridVBO->SetData((float*)m_gridData.data(), m_gridData.size() * sizeof(Vertex), GL_STATIC_DRAW);
 
-		glDrawElements(GL_TRIANGLES, (GRID_COUNT)*6, GL_UNSIGNED_INT, nullptr);
-
-		// Unbind
-		m_gridVAO->Unbind();
-		m_gridVBO->Unbind();
-		m_gridIBO->Unbind();
+		m_quadVAO->Bind();
+		m_quadVBO->Bind();
+		m_quadVBO->SetDatSub(_offset, gridDataVector.size() * sizeof(Vertex), (float*)gridDataVector.data());
+		m_quadVBO->Unbind();
+		m_quadVAO->Unbind();
 	}
 
 	OrthographicCamera * SimpleRenderer::GetCamera()

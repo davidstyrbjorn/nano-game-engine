@@ -46,10 +46,6 @@ namespace nano { namespace editor {
 		ecs::Entity *m_entityToInspect;
 		HighlightEntity highlighEntity;
 
-		// Multiselect
-		bool m_multiSelectMode;
-		std::vector<ecs::Entity*> m_entitiesToInspect;
-
 		// Drag entity
 		bool m_isDraggingEntity = false;
 		math::Vector2 m_dragDeltaPosition;
