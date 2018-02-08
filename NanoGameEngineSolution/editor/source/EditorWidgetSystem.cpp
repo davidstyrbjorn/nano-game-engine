@@ -22,6 +22,7 @@ namespace nano { namespace editor {
 		// Create event handler
 		m_eventHandler = new EventHandler();
 		m_eventHandler->AddEventObserver(&m_entityInspectorWidget);
+		m_eventHandler->AddEventObserver(&m_consoleWidget);
 
 		ImGui_ImplGlfwGL3_Init(glfwGetCurrentContext(), false);
 

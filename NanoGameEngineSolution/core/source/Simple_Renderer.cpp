@@ -200,15 +200,6 @@ namespace nano { namespace graphics {
 		m_shader->SetUniformMat4f("view_matrix", m_camera->GetViewMatrix());
 		m_shader->SetUniformMat4f("projection_matrix", m_camera->GetProjectionMatrix());
 
-		if (m_triangleCount != 0) {
-			m_triangleVAO->Bind();
-			m_triangleVBO->Bind();
-		
-			glDrawArrays(GL_TRIANGLES, 0, m_triangleCount * 3);
-		
-			m_triangleVAO->Unbind();
-			m_triangleVBO->Unbind();
-		}
 		if (m_quadCount != 0) {
 			m_quadVAO->Bind();
 
@@ -220,6 +211,15 @@ namespace nano { namespace graphics {
 			m_quadVAO->Unbind();
 			m_quadIBO->Unbind();
 			m_quadVBO->Unbind();
+		}
+		if (m_triangleCount != 0) {
+			m_triangleVAO->Bind();
+			m_triangleVBO->Bind();
+
+			glDrawArrays(GL_TRIANGLES, 0, m_triangleCount * 3);
+
+			m_triangleVAO->Unbind();
+			m_triangleVBO->Unbind();
 		}
 
 		this->PostFlush();

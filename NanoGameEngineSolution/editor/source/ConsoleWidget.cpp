@@ -50,5 +50,25 @@ namespace nano {
 			ImGui::End();
 		}
 
+		void ConsoleWidget::OnEntityCreation(std::string a_id)
+		{
+			std::cout << "Created entity with ID " << a_id << std::endl;
+		}
+
+		void ConsoleWidget::OnEntityDestroyed(std::string a_id)
+		{
+			std::cout << "Destroyed entity with ID " << a_id << std::endl;
+		}
+
+		void ConsoleWidget::OnEntityClick(std::string a_id)
+		{
+			std::cout << "Clicked on entity with ID " << a_id << std::endl;
+		}
+
+		void ConsoleWidget::OnEntityRename(std::string a_id)
+		{
+			std::cout << "Renamed entity " << a_id << std::endl;
+		}
+
 	}
 }
