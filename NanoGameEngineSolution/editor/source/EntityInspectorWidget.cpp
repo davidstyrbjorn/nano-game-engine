@@ -57,9 +57,11 @@ namespace nano { namespace editor {
 					}
 					// Delete the current entity
 					if (_event.key == NANO_KEY_DELETE) {
-						highlighEntity.SetNewHighlightedEntity(nullptr);
+						std::string temp = m_entityToInspect->GetID();
 						m_entityToInspect->SetState(ecs::ECSStates::DESTROYED);
+						highlighEntity.SetNewHighlightedEntity(nullptr);
 						m_entityToInspect = nullptr;
+						EditorWidgetSystem::Instance()->GetEventHandler().AddEvent(BaseEvent(EventTypes::REMOVED_ENTITY, temp));
 					}
 				}
 				if (_event.type == InputEventType::MOUSE_PRESSED) {
@@ -168,6 +170,9 @@ namespace nano { namespace editor {
 							m_entityToInspect->GetComponent<ecs::TriangleComponent>()->SetState(ecs::ECSStates::DESTROYED);
 						else
 							m_entityToInspect->GetComponent<ecs::RectangleComponent>()->SetState(ecs::ECSStates::DESTROYED);
+						// Event Handler
+						BaseEvent _event(EventTypes::MANIPULATED_COMPONENT, m_entityToInspect->GetID(), "Renderable Component", "Destroyed");
+						EditorWidgetSystem::Instance()->GetEventHandler().AddEvent(_event);
 					}
 					ImGui::EndPopup();
 				}
@@ -220,6 +225,9 @@ namespace nano { namespace editor {
 				if (ImGui::BeginPopup("right_click_component_sound")) {
 					if (ImGui::Selectable("Destroy")) {
 						soundComponent->SetState(ecs::ECSStates::DESTROYED);
+						// Event handler
+						BaseEvent _event(EventTypes::MANIPULATED_COMPONENT, m_entityToInspect->GetID(), "Sound Component", "Destroyed");
+						EditorWidgetSystem::Instance()->GetEventHandler().AddEvent(_event);
 					}
 					ImGui::EndPopup();
 				}
@@ -336,6 +344,10 @@ namespace nano { namespace editor {
 					m_entityToInspect->AddComponent(new ecs::SoundComponent(buffer));
 					m_addComponentWindow = false;
 					m_componentType = "none";
+
+					// Event Handling
+					BaseEvent _event(EventTypes::MANIPULATED_COMPONENT, m_entityToInspect->GetID(), "Sound Component", "Added");
+					EditorWidgetSystem::Instance()->GetEventHandler().AddEvent(_event);
 				}
 			}
 			else if (m_componentType == "Sprite Component") {
@@ -347,6 +359,10 @@ namespace nano { namespace editor {
 					m_entityToInspect->AddComponent(new ecs::SpriteComponent(buffer));
 					m_addComponentWindow = false;
 					m_componentType = "none";
+
+					// Event Handling
+					BaseEvent _event(EventTypes::MANIPULATED_COMPONENT, m_entityToInspect->GetID(), "Sprite Component", "Added");
+					EditorWidgetSystem::Instance()->GetEventHandler().AddEvent(_event);
 				}
 			}
 			else if (m_componentType == "Rectangle Component") {
@@ -359,6 +375,10 @@ namespace nano { namespace editor {
 					m_entityToInspect->m_transform->size = m_addComponentSize;
 					m_addComponentWindow = false;
 					m_componentType = "none";
+
+					// Event Handling
+					BaseEvent _event(EventTypes::MANIPULATED_COMPONENT, m_entityToInspect->GetID(), "Rectangle Component", "Added");
+					EditorWidgetSystem::Instance()->GetEventHandler().AddEvent(_event);
 				}
 			}
 			else if (m_componentType == "Triangle Component") {
@@ -371,6 +391,10 @@ namespace nano { namespace editor {
 					m_entityToInspect->m_transform->size = m_addComponentSize;
 					m_addComponentWindow = false;
 					m_componentType = "none";
+
+					// Event Handling
+					BaseEvent _event(EventTypes::MANIPULATED_COMPONENT, m_entityToInspect->GetID(), "Triangle Component", "Added");
+					EditorWidgetSystem::Instance()->GetEventHandler().AddEvent(_event);
 				}
 			}
 
@@ -423,9 +447,11 @@ namespace nano { namespace editor {
 	void EntityInspectorWidget::OnEntityDestroyed(std::string a_id)
 	{
 		// Check if the destroyed entity is the entity we inspect
-		if (WorldSystem::Instance()->Instance()->GetEntityByID(a_id) == m_entityToInspect) {
-			highlighEntity.SetNewHighlightedEntity(nullptr);
-			m_entityToInspect = nullptr;
+		if (m_entityToInspect != nullptr) {
+			if (WorldSystem::Instance()->Instance()->GetEntityByID(a_id) == m_entityToInspect) {
+				highlighEntity.SetNewHighlightedEntity(nullptr);
+				m_entityToInspect = nullptr;
+			}
 		}
 	}
 

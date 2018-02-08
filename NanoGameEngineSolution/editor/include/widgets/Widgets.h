@@ -8,6 +8,8 @@
 
 #include"../HighlightEntity.h"
 
+#include<deque>
+
 // FWD
 namespace nano {
 	class CoreConfig;
@@ -26,7 +28,16 @@ namespace nano { namespace editor {
 	// Console Widget bottom-right
 	class ConsoleWidget : EditorWidget, public EventObserver {
 	private:
+		struct ConsoleMessage {
+			std::string messageString;
+			math::Vector4 color;
+		};
+
 		CoreConfig* m_config;
+		std::deque<ConsoleMessage> m_messageQueue;
+		const int MESSAGE_COUNT_MAX = 7;
+
+		void AddConsoleMessage(const std::string& a_message, const math::Vector4& a_color = math::Vector4(1, 1, 1, 1));
 
 	public:
 		ConsoleWidget();
@@ -41,6 +52,7 @@ namespace nano { namespace editor {
 		void OnEntityDestroyed(std::string a_id)  override;
 		void OnEntityClick(std::string a_id) 	  override;
 		void OnEntityRename(std::string a_id) 	  override;
+		virtual void OnComponentManipulation(std::string a_id, std::string a_id2, std::string a_id3) override;
 	};
 
 	// Entity Inspector upper-right

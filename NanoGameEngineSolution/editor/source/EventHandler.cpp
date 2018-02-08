@@ -36,9 +36,14 @@ namespace nano { namespace editor {
 				_observer->OnEntityClick(a_event._strID);
 			}
 		}
-		if (a_event._type == EventTypes::RENAME_ENTITY) {
+		else if (a_event._type == EventTypes::RENAME_ENTITY) {
 			for (EventObserver *_observer : m_eventObservers) {
 				_observer->OnEntityRename(a_event._strID);
+			}
+		}
+		else if (a_event._type == EventTypes::MANIPULATED_COMPONENT) {
+			for (EventObserver *_observer : m_eventObservers) {
+				_observer->OnComponentManipulation(a_event._strID, a_event._strID2, a_event._strID3);
 			}
 		}
 	}
