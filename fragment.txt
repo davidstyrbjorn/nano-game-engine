@@ -7,7 +7,6 @@ in float textureSlot;
 
 // Fragment uniforms
 uniform sampler2D textureSampler;
-uniform sampler2D textureSamplerList[32];
 
 void main() 
 {

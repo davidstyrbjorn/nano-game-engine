@@ -61,7 +61,6 @@ namespace nano { namespace graphics {
 		m_quadVAO->EnableVertexAttribArray(0);  // pos
 		m_quadVAO->EnableVertexAttribArray(1);  // color
 		m_quadVAO->EnableVertexAttribArray(2);  // uv
-		m_quadVAO->EnableVertexAttribArray(3);  // texture slot
 		m_quadVAO->SetVertexAttribPointer(0, 2, GL_FLOAT, sizeof(Vertex), 0);
 		m_quadVAO->SetVertexAttribPointer(1, 4, GL_FLOAT, sizeof(Vertex), (void*)OFFSET_TO_COLOR);
 		m_quadVAO->SetVertexAttribPointer(2, 2, GL_FLOAT, sizeof(Vertex), (void*)OFFSET_TO_UV);
@@ -163,7 +162,7 @@ namespace nano { namespace graphics {
 			if (a_renderable->GetTexture() == nullptr) {
 				// Quad
 				GLintptr _offset = m_quadCount * (QUAD_SIZE);
-		
+				
 				math::Vector2 pos = a_renderable->GetTransformComponent()->position;
 				math::Vector2 size = a_renderable->GetTransformComponent()->size;
 				math::Vector4 color = a_renderable->GetColor();
@@ -233,29 +232,29 @@ namespace nano { namespace graphics {
 		while (!m_texturesToRender.empty()) 
 		{
 			Renderable* texturedRenderable = m_texturesToRender.front();
-
+		
 			math::Vector2 pos = texturedRenderable->GetTransformComponent()->position;
 			math::Vector2 size = texturedRenderable->GetTransformComponent()->size;
 			math::Vector4 color = texturedRenderable->GetColor();
-
+		
 			float editorState = 0.0f;
-
+		
 			Vertex data[] = {
 				{ math::Vector2(pos.x,pos.y), color, math::Vector2(0, 0) },
 				{ math::Vector2(pos.x, pos.y + size.y), color, math::Vector2(0, 1) },
 				{ pos + size, color, math::Vector2(1, 1) },
 				{ math::Vector2(pos.x + size.x, pos.y), color, math::Vector2(1, 0) },
 			};
-
+		
 			// Bind
 			texturedRenderable->GetTexture()->Bind();
 			m_textureVAO->Bind();
 			m_textureVBO->Bind();
 			m_textureIBO->Bind();
-
+		
 			m_textureVBO->SetData((float*)&data, sizeof(data), GL_STATIC_DRAW);
 			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
-
+		
 			// Unbind
 			m_textureVAO->Unbind();
 			m_textureVBO->Unbind();

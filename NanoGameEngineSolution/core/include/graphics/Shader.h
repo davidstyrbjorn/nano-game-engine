@@ -31,6 +31,7 @@ namespace nano { namespace graphics {
 
 		// Uniform setters
 		void SetUniform1f(const char* a_name, float a_value);
+		void SetUniform1fv(const char* a_name, int a_count, float* a_value);
 		void SetUniform2f(const char* a_name, const math::Vector2 &a_vec2);
 		void SetUniform3f(const char* a_name, const math::Vector3 &a_vec3);
 		void SetUniform4f(const char* a_name, const math::Vector4 &a_vec4);

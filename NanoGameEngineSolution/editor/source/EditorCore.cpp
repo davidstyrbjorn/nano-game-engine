@@ -83,11 +83,10 @@ namespace nano { namespace editor {
 		triangle->m_transform->size = math::Vector2(100, 100);
 		triangle->AddComponent(new ecs::TriangleComponent(math::Vector4(1, 0.1, 0.1, 1)))->Start();
 		m_WorldSystem->AddNewEntity(triangle);
-		triangle->SetState(ecs::ECSStates::DISABLED);
 		
 		ecs::Entity* Sprite = new ecs::Entity("Sprite(png)");
 		Sprite->Start();
-		Sprite->AddComponent(new ecs::SpriteComponent("C:\\temp\\no\\cat.png"))->Start();
+		Sprite->AddComponent(new ecs::SpriteComponent("C:\\temp\\cat.png"))->Start();
 		m_WorldSystem->AddNewEntity(Sprite);
 		
 		ecs::Entity* Sprite2 = new ecs::Entity("Sprit2(jpg)");

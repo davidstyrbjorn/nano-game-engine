@@ -1,5 +1,6 @@
 #pragma once
 
+#include<vector>
 #include<deque>
 #include"../opengl/NanoOpenGL.h"
 #include"Vertex.h"
@@ -44,11 +45,15 @@ namespace nano { namespace graphics {
 
 		CoreConfig* m_config;
 		OrthographicCamera *m_camera;
+
+		std::vector<unsigned int> m_textureSlots;
 		
 		// Private methods
 		void AddTextureToRender(Renderable* a_renderable);
 		void PostFlush();
 		void SubmitGridData();
+		float GetTextureSlot(int a_textureID);
+
 
 	public:
 		// Default Constructor

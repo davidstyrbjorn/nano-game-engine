@@ -63,7 +63,7 @@ namespace nano { namespace opengl {
 
 	void Texture::Bind()
 	{
-		glActiveTexture(GL_TEXTURE5);
+		//glActiveTexture(GL_TEXTURE5);
 		glBindTexture(GL_TEXTURE_2D, m_textureID);
 	}
 

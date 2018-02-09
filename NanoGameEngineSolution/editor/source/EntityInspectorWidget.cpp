@@ -43,8 +43,8 @@ namespace nano { namespace editor {
 	void EntityInspectorWidget::Update()
 	{
 		highlighEntity.Update();
-		if(highlighEntity.ShouldHighlight())
-			RendererSystem::Instance()->GetSimpleRenderer().Submit(highlighEntity.GetRenderable());
+		//if(highlighEntity.ShouldHighlight())
+		//	RendererSystem::Instance()->GetSimpleRenderer().Submit(highlighEntity.GetRenderable());
 
 		math::Vector2 mousePos = m_inputSystem->GetMousePosition() + m_renderSystem->GetSimpleRenderer().GetCamera()->GetPosition();
 		// Dragging input

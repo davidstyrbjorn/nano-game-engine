@@ -111,6 +111,11 @@ void Shader::SetUniform1f(const char * a_name, float a_value)
 	glUniform1f(getUniformLocation(a_name), a_value);
 }
 
+void Shader::SetUniform1fv(const char * a_name, int a_count, float * a_value)
+{
+	glUniform1fv(getUniformLocation(a_name), a_count, a_value);
+}
+
 void Shader::SetUniform2f(const char* a_name, const math::Vector2 & a_vec2)
 {
 	glUniform2f(getUniformLocation(a_name), a_vec2.x, a_vec2.y);
