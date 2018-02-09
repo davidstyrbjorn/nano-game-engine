@@ -55,12 +55,13 @@ namespace nano { namespace graphics {
 		m_quadVAO = new opengl::VertexArrayObject();
 		m_quadVAO->Bind();
 		
-		m_quadVBO = new opengl::VertexBuffer(nullptr, QUAD_BUFFER_SIZE, GL_DYNAMIC_DRAW);
+		m_quadVBO = new opengl::VertexBuffer(nullptr, QUAD_BUFFER_SIZE + GRID_BUFFER_SIZE, GL_DYNAMIC_DRAW);
 		m_quadVBO->Bind();
 		
 		m_quadVAO->EnableVertexAttribArray(0);  // pos
 		m_quadVAO->EnableVertexAttribArray(1);  // color
 		m_quadVAO->EnableVertexAttribArray(2);  // uv
+		m_quadVAO->EnableVertexAttribArray(3);  // texture slot
 		m_quadVAO->SetVertexAttribPointer(0, 2, GL_FLOAT, sizeof(Vertex), 0);
 		m_quadVAO->SetVertexAttribPointer(1, 4, GL_FLOAT, sizeof(Vertex), (void*)OFFSET_TO_COLOR);
 		m_quadVAO->SetVertexAttribPointer(2, 2, GL_FLOAT, sizeof(Vertex), (void*)OFFSET_TO_UV);
@@ -126,7 +127,7 @@ namespace nano { namespace graphics {
 
 		m_quadCount = 0;
 		m_quadVBO->Bind();
-		m_quadVBO->SetData(nullptr, QUAD_BUFFER_SIZE, GL_DYNAMIC_DRAW);
+		m_quadVBO->SetData(nullptr, QUAD_BUFFER_SIZE + GRID_BUFFER_SIZE, GL_DYNAMIC_DRAW);
 
 		this->SubmitGridData();
 	}

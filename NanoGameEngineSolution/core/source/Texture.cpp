@@ -12,7 +12,6 @@ namespace nano { namespace opengl {
 		glGenTextures(1, &m_textureID);
 		this->Bind();
 		this->SetTextureData(a_imageData, a_width, a_height, a_format);
-		glActiveTexture(GL_TEXTURE0);
 		this->Unbind();
 	}
 
@@ -40,6 +39,11 @@ namespace nano { namespace opengl {
 		m_height = a_height;
 	}
 
+	void Texture::SetTextureSlot(unsigned int a_textureSlot)
+	{
+		m_textureSlot = a_textureSlot;
+	}
+
 	GLuint Texture::GetTextureID()
 	{
 		if(glIsTexture(m_textureID))
@@ -52,8 +56,14 @@ namespace nano { namespace opengl {
 		return math::Vector2(m_width, m_height);
 	}
 
+	unsigned int Texture::GetTextureSlot() const
+	{
+		return m_textureSlot;
+	}
+
 	void Texture::Bind()
 	{
+		glActiveTexture(GL_TEXTURE5);
 		glBindTexture(GL_TEXTURE_2D, m_textureID);
 	}
 

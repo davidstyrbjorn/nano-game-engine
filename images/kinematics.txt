@@ -1,0 +1,36 @@
+Physics body:
+Transform - position, size & rotation
+Collider type { BoundingBox, Triangle, Circle }
+Velocity
+
+Kinematic notes:
+Rigidbody: Group of particles with a fixed distance between each particle, each particle has a relative rotation to the other particles.
+Particle: A body of which we take no regard to the mass when calculating angular and linear position. 
+Shared properties of both:
+Position,
+Velocity,
+Acceleration
+
+Velocity & Acceleration
+v - vector quantity measured with the magnitude Speed
+v = ds/dt <- instantenious velocity
+
+Acceleration
+a - vector quantity 
+a = dv/dt
+
+Relation between, displacment, velocity and accelration 
+a = dv/dt = d^2s/dt^2
+
+Constant Acceleration
+Non-constant Acceleration
+a = -kv^2
+k - constant and the - sign indicates the acceleration is acting opposite of the objects velocity direction
+this yields
+a = dv/dt
+-kv^2 = dv/dt
+-k dt = dv/v^2
+this would lead to
+v dt = ds where v = v1 / (1 + v1 k t)
+
+2D Particle Kinematics
