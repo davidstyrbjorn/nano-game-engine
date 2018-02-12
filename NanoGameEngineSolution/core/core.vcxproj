@@ -169,6 +169,7 @@
     <ClInclude Include="include\Core.h" />
     <ClInclude Include="include\CoreConfig.h" />
     <ClInclude Include="include\ecs\Component.h" />
+    <ClInclude Include="include\ecs\components\FourwayMoveComponent.h" />
     <ClInclude Include="include\ecs\components\RectangleComponent.h" />
     <ClInclude Include="include\ecs\components\SoundComponent.h" />
     <ClInclude Include="include\ecs\components\SpriteComponent.h" />
