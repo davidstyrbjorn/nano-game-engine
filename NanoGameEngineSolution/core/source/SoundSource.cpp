@@ -22,6 +22,12 @@ namespace nano { namespace openal {
 		m_soundState = SoundState::NOT_PLAYING;
 	}
 
+	SoundSource::SoundSource()
+	{
+		alGenSources(1, &m_source);
+		m_soundState = SoundState::NOT_PLAYING;
+	}
+
 	SoundSource::~SoundSource()
 	{
 		alDeleteBuffers(1, &m_source);

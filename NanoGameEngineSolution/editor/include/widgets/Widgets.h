@@ -69,10 +69,8 @@ namespace nano { namespace editor {
 		math::Vector2 m_dragDeltaPosition;
 
 		// Add component
-		std::string m_componentType = "none";
-		bool m_addComponentWindow = false;
-		math::Vector2 m_addComponentSize;
-		math::Vector4 m_addComponentColor;
+		const math::Vector2 m_addComponentSize = math::Vector2(100, 100);
+		const math::Vector4 m_addComponentColor = math::Vector4(1, 0, 1, 1);
 
 		// Rename
 		bool m_renameEntityWindow = false;

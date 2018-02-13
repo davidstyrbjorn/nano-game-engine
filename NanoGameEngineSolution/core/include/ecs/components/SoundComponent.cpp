@@ -17,6 +17,11 @@ namespace nano { namespace ecs {
 		m_source = new openal::SoundSource(m_buffer->GetBufferId());
 	}
 
+	SoundComponent::SoundComponent()
+	{
+		m_source = new openal::SoundSource();
+	}
+
 	SoundComponent::~SoundComponent()
 	{
 		delete m_buffer;
@@ -29,6 +34,7 @@ namespace nano { namespace ecs {
 		int format, size, sampleRate, channel, bps;
 		char* data = loadWAV(a_soundFilePath, channel, sampleRate, bps, size, format);
 
+		if (m_buffer == nullptr) m_buffer = new openal::SoundBuffer();
 		m_buffer->SetData(format, data, size, sampleRate);
 
 		m_source->SetBuffer(m_buffer->GetBufferId());

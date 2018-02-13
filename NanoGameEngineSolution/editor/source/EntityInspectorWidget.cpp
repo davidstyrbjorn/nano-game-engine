@@ -43,8 +43,8 @@ namespace nano { namespace editor {
 	void EntityInspectorWidget::Update()
 	{
 		highlighEntity.Update();
-		//if(highlighEntity.ShouldHighlight())
-		//	RendererSystem::Instance()->GetSimpleRenderer().Submit(highlighEntity.GetRenderable());
+		if(highlighEntity.ShouldHighlight())
+			RendererSystem::Instance()->GetSimpleRenderer().Submit(highlighEntity.GetRenderable());
 
 		math::Vector2 mousePos = m_inputSystem->GetMousePosition() + m_renderSystem->GetSimpleRenderer().GetCamera()->GetPosition();
 		// Dragging input
@@ -85,7 +85,7 @@ namespace nano { namespace editor {
 		}
 
 		// Dragging logic
-		if (m_isDraggingEntity && !m_addComponentWindow) {
+		if (m_isDraggingEntity) {
 			m_entityToInspect->m_transform->position = mousePos - m_dragDeltaPosition;
 		}
 	}
@@ -283,8 +283,7 @@ namespace nano { namespace editor {
 			if (ImGui::BeginPopup("add_component")) {
 				if (ImGui::Selectable("Sprite Component")) {
 					if (!hasRenderableComponent) {
-						m_addComponentWindow = true;
-						m_componentType = "Sprite Component";
+						m_entityToInspect->AddComponent(new ecs::SpriteComponent());
 					}
 					else {
 						// Already have renderable component
@@ -292,10 +291,8 @@ namespace nano { namespace editor {
 				}
 				if (ImGui::Selectable("Rectangle Component")) {
 					if (!hasRenderableComponent) {
-						m_addComponentColor = math::Vector4(1, 1, 1, 1);
-						m_addComponentSize = math::Vector2(50, 50);
-						m_addComponentWindow = true;
-						m_componentType = "Rectangle Component";
+						m_entityToInspect->AddComponent(new ecs::RectangleComponent(m_addComponentColor));
+						m_entityToInspect->m_transform->size = m_addComponentSize;
 					}
 					else {
 						// Already have renderable component
@@ -303,10 +300,8 @@ namespace nano { namespace editor {
 				}
 				if (ImGui::Selectable("Triangle Component")) {
 					if (!hasRenderableComponent) {
-						m_addComponentColor = math::Vector4(1, 1, 1, 1);
-						m_addComponentSize = math::Vector2(50, 50);
-						m_addComponentWindow = true;
-						m_componentType = "Triangle Component";
+						m_entityToInspect->AddComponent(new ecs::TriangleComponent(m_addComponentColor));
+						m_entityToInspect->m_transform->size = m_addComponentSize;
 					}
 					else {
 						// Already have renderable component
@@ -314,8 +309,7 @@ namespace nano { namespace editor {
 				}
 				if (ImGui::Selectable("Sound Component")) {
 					if (!hasSoundComponent) {
-						m_addComponentWindow = true;
-						m_componentType = "Sound Component";
+						m_entityToInspect->AddComponent(new ecs::SoundComponent());
 					}
 					else {
 						// Already have sound component
@@ -326,80 +320,6 @@ namespace nano { namespace editor {
 		}
 
 		ImGui::End();
-
-		if (m_entityToInspect != nullptr && m_addComponentWindow) 
-		{
-			static ImVec2 windowSize = ImVec2(325, 275);
-			ImGui::Begin("Add Component", &m_addComponentWindow, windowSize, 1.0f, ImGuiWindowFlags_::ImGuiWindowFlags_NoResize | ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse);
-
-			ImGui::Text(m_componentType.c_str());
-			ImGui::Separator(); ImGui::Spacing();
-
-			if (m_componentType == "Sound Component") {
-				// Soundfile path
-				static char buffer[128];
-				ImGui::InputText("Sound File Path", buffer, 128);
-
-				if (ImGui::Button("Confirm")) {
-					m_entityToInspect->AddComponent(new ecs::SoundComponent(buffer));
-					m_addComponentWindow = false;
-					m_componentType = "none";
-
-					// Event Handling
-					BaseEvent _event(EventTypes::MANIPULATED_COMPONENT, m_entityToInspect->GetID(), "Sound Component", "Added");
-					EditorWidgetSystem::Instance()->GetEventHandler().AddEvent(_event);
-				}
-			}
-			else if (m_componentType == "Sprite Component") {
-				// Texture path
-				static char buffer[128];
-				ImGui::InputText("Texture Path", buffer, 128);
-
-				if (ImGui::Button("Confirm")) {
-					m_entityToInspect->AddComponent(new ecs::SpriteComponent(buffer));
-					m_addComponentWindow = false;
-					m_componentType = "none";
-
-					// Event Handling
-					BaseEvent _event(EventTypes::MANIPULATED_COMPONENT, m_entityToInspect->GetID(), "Sprite Component", "Added");
-					EditorWidgetSystem::Instance()->GetEventHandler().AddEvent(_event);
-				}
-			}
-			else if (m_componentType == "Rectangle Component") {
-				// Color & Size
-				ImGui::DragFloat2("Size", (float*)&m_addComponentSize);
-				ImGui::ColorEdit4("Color", (float*)&m_addComponentColor);
-
-				if (ImGui::Button("Confirm")) {
-					m_entityToInspect->AddComponent(new ecs::RectangleComponent(m_addComponentColor));
-					m_entityToInspect->m_transform->size = m_addComponentSize;
-					m_addComponentWindow = false;
-					m_componentType = "none";
-
-					// Event Handling
-					BaseEvent _event(EventTypes::MANIPULATED_COMPONENT, m_entityToInspect->GetID(), "Rectangle Component", "Added");
-					EditorWidgetSystem::Instance()->GetEventHandler().AddEvent(_event);
-				}
-			}
-			else if (m_componentType == "Triangle Component") {
-				// Color & Size
-				ImGui::DragFloat2("Size", (float*)&m_addComponentSize);
-				ImGui::ColorEdit4("Color", (float*)&m_addComponentColor);
-
-				if (ImGui::Button("Confirm")) {
-					m_entityToInspect->AddComponent(new ecs::TriangleComponent(m_addComponentColor));
-					m_entityToInspect->m_transform->size = m_addComponentSize;
-					m_addComponentWindow = false;
-					m_componentType = "none";
-
-					// Event Handling
-					BaseEvent _event(EventTypes::MANIPULATED_COMPONENT, m_entityToInspect->GetID(), "Triangle Component", "Added");
-					EditorWidgetSystem::Instance()->GetEventHandler().AddEvent(_event);
-				}
-			}
-
-			ImGui::End();
-		}
 
 		if (m_entityToInspect != nullptr && m_renameEntityWindow) 
 		{
@@ -424,7 +344,7 @@ namespace nano { namespace editor {
 
 	void EntityInspectorWidget::OnEntityClick(std::string a_id)
 	{
-		if (!m_addComponentWindow && !m_renameEntityWindow) {
+		if (!m_renameEntityWindow) {
 			// "-1" - clicked on empty space
 			if (a_id == "-1") {
 				// Deselect the entity i.e set it to a nullptr

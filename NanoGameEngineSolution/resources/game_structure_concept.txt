@@ -1,0 +1,7 @@
+game_name_folder ->
+    nano_resouruces
+    nano_externals
+    game_name_folder ->
+        level.nlf
+        level2.nlf
+        ...*.nlf

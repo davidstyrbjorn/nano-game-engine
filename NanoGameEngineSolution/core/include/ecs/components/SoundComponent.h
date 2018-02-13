@@ -17,8 +17,10 @@ namespace nano { namespace ecs {
 		openal::SoundBuffer *m_buffer;
 		
 	public:
-		// Compiler with path to sound to load
+		// Constructor with path to sound to load
 		SoundComponent(const char* a_soundFilePath);
+		// Empty constructor, creates source but no buffer
+		SoundComponent();
 
 		// Destructor
 		~SoundComponent();

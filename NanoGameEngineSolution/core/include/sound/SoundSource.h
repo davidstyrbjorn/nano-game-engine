@@ -27,6 +27,7 @@ namespace openal {
 	public:
 		// Constructor
 		SoundSource(ALuint a_buffer);
+		SoundSource();
 
 		// Destructor 
 		~SoundSource();

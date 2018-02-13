@@ -54,7 +54,7 @@ namespace nano { namespace ecs {
 
 	SpriteComponent::SpriteComponent()
 	{
-		
+		m_imagePath = ""; // error texture
 	}
 
 	SpriteComponent::SpriteComponent(const char * a_imagePath)
