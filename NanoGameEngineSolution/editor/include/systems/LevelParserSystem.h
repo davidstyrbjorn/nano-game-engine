@@ -8,10 +8,10 @@ namespace nano { namespace editor {
 	class LevelParserSystem : EditorSystem {
 	private:
 		// Private constructor singleton pattern
-		LevelParserSystem();
+		LevelParserSystem() { }
 		static LevelParserSystem* _instance;
 
-		// Data
+		// Datakkkkl
 		std::string m_levelString;
 
 	public:

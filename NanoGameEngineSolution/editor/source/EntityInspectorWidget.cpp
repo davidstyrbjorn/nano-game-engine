@@ -22,6 +22,7 @@
 #include<ecs\components\SoundComponent.h>
 #include<ecs\components\TriangleComponent.h>
 #include<ecs\components\SpriteComponent.h>
+#include<ecs\components\FourwayMoveComponent.h>
 
 #include<stb\stb_image.h>
 
@@ -270,6 +271,26 @@ namespace nano { namespace editor {
 				if (ImGui::Button("Continue")) {
 					source->Continue();
 				}
+
+				ImGui::Spacing(); ImGui::Separator(); ImGui::Spacing();
+			}
+
+			ecs::FourwayMoveComponent* fwmComponent = m_entityToInspect->GetComponent<ecs::FourwayMoveComponent>();
+			bool hasFwmComponent = fwmComponent == nullptr ? false : true;
+			if (hasFwmComponent) {
+
+				ImGui::Text("FourwayMove Component");
+
+				int up, right, down, left;
+				up = fwmComponent->GetKey("up");
+				right = fwmComponent->GetKey("right");
+				down = fwmComponent->GetKey("down");
+				left = fwmComponent->GetKey("left");
+
+				ImGui::Text(std::to_string(up).c_str());
+				ImGui::Text(std::to_string(right).c_str());
+				ImGui::Text(std::to_string(down).c_str());
+				ImGui::Text(std::to_string(left).c_str());
 
 				ImGui::Spacing(); ImGui::Separator(); ImGui::Spacing();
 			}

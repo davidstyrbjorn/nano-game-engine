@@ -6,6 +6,7 @@
 #include<ecs\components\TransformComponent.h>
 #include<ecs\components\TriangleComponent.h>
 #include<ecs\components\SpriteComponent.h>
+#include<ecs\components\FourwayMoveComponent.h>
 
 #include<graphics\GraphicsInclude.h>
 
@@ -87,6 +88,8 @@ namespace nano { namespace editor {
 		ecs::Entity* Sprite = new ecs::Entity("Sprite(png)");
 		Sprite->Start();
 		Sprite->AddComponent(new ecs::SpriteComponent("C:\\temp\\cat.png"))->Start();
+		int temp[] = { 0,1,2,3 };
+		Sprite->AddComponent(new ecs::FourwayMoveComponent(5, temp))->Start();
 		m_WorldSystem->AddNewEntity(Sprite);
 		
 		ecs::Entity* Sprite2 = new ecs::Entity("Sprit2(jpg)");

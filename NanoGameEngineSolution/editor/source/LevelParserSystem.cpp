@@ -21,6 +21,7 @@ namespace nano { namespace editor {
 		// TODO: 2018/13/02
 		// Parse every entity from the world into the level text file
 		// Parse every config-thing i.e; background-color, camera-stuff etc
+
 	}
 
 	void LevelParserSystem::Start()
