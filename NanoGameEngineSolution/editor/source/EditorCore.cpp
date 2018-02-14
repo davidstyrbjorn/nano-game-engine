@@ -19,10 +19,14 @@
 
 #include<thread>
 
+#include"../include/systems/LevelParserSystem.h"
+
 namespace nano { namespace editor { 
 
 	EditorCore::~EditorCore()
 	{
+		LevelParserSystem::Instance()->ParseCurrentLevelToFile("C:\\temp\\level.txt");
+
 		// Call Quit on every system
 		m_windowSystem->Quit();
 		m_WorldSystem->Quit();

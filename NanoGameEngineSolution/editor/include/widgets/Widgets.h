@@ -74,6 +74,7 @@ namespace nano { namespace editor {
 
 		// Rename
 		bool m_renameEntityWindow = false;
+		bool m_showKeycodeWindow = false;
 
 	public:
 		EntityInspectorWidget();

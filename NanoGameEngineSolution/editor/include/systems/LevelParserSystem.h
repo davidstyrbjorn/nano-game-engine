@@ -11,16 +11,16 @@ namespace nano { namespace editor {
 		LevelParserSystem() { }
 		static LevelParserSystem* _instance;
 
-		// Datakkkkl
+		
 		std::string m_levelString;
 
 	public:
 		// Singleton connection
-		LevelParserSystem* Instance();
+		static LevelParserSystem* Instance();
 
-		std::string GetLevelString();
-		void ParseCurrentLevelToString();
-
+		std::string GetLevelStringFromFile(const char* a_filePath);
+		void ParseCurrentLevelToFile(const char* a_filePath);
+					    
 		// Override
 		void Start() override;
 		void Update() override { }

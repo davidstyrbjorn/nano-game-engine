@@ -58,4 +58,12 @@ namespace nano { namespace ecs {
 		}
 	}
 
+	void FourwayMoveComponent::SetKeys(int a_keys[4])
+	{
+		m_keys[0] = a_keys[0];
+		m_keys[1] = a_keys[1];
+		m_keys[2] = a_keys[2];
+		m_keys[3] = a_keys[3];
+	}
+
 } }

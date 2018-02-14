@@ -23,6 +23,7 @@ namespace nano { namespace ecs {
 		void SetVelocity(float a_velocity) { m_velocity = a_velocity; }
 		int GetKey(const char* a_key);
 		void SetKey(const char* a_key, int a_keyCode);
+		void SetKeys(int a_keys[4]);
 	};
 
 } }
