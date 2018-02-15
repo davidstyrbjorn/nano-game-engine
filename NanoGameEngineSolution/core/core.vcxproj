@@ -204,6 +204,7 @@
     <ClInclude Include="include\sound\SoundContextDevice.h" />
     <ClInclude Include="include\sound\SoundSource.h" />
     <ClInclude Include="include\stb\stb_image.h" />
+    <ClInclude Include="include\StringHelp.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

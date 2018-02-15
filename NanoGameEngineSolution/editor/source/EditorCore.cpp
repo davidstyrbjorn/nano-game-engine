@@ -44,6 +44,7 @@ namespace nano { namespace editor {
 		m_config = CoreConfig::Instance();
 		m_config->SetShaderPaths("../../vertex.txt", "../../fragment.txt");
 		m_config->SetErrorTexturePath("..//resources//error_texture.png");
+		m_config->SetFPS(60);
 
 		// Start every editor system
 

@@ -12,45 +12,55 @@ namespace nano {
 		return _instance;
 	}
 
+	void CoreConfig::SetFPS(unsigned int a_fps)
+	{
+		gFps = a_fps;
+	}
+
+	unsigned int CoreConfig::GetFPS()
+	{
+		return gFps;
+	}
+
 	void CoreConfig::SetWindowSize(const math::Vector2 & a_windowSize)
 	{
-		s_windowSize = a_windowSize;
+		gWindowSize = a_windowSize;
 	}
 
 	const math::Vector2 CoreConfig::GetWindowSize()
 	{
-		return s_windowSize;
+		return gWindowSize;
 	}
 
 	void CoreConfig::SetBackgroundColor(const math::Vector3 & a_color)
 	{
-		s_backgroundColor = a_color;
+		gBackgroundColor = a_color;
 	}
 
 	const math::Vector3 CoreConfig::GetBackgroundColor()
 	{
-		return s_backgroundColor;
+		return gBackgroundColor;
 	}
 
 	void CoreConfig::SetShaderPaths(std::string a_vertex, std::string a_fragment)
 	{
-		m_vertexShaderPath = a_vertex;
-		m_fragmentShaderPath = a_fragment;
+		gVertexShaderPath = a_vertex;
+		gFragmentShaderPath = a_fragment;
 	}
 
 	std::array<std::string, 2> CoreConfig::GetShaderPaths()
 	{
-		return { m_vertexShaderPath, m_fragmentShaderPath };
+		return { gVertexShaderPath, gFragmentShaderPath };
 	}
 
 	void CoreConfig::SetErrorTexturePath(const char * a_path)
 	{
-		m_errorTexturePath = a_path;
+		gErrorTexturePath = a_path;
 	}
 
 	const char * CoreConfig::GetErrorTexturePath()
 	{
-		return m_errorTexturePath;
+		return gErrorTexturePath;
 	}
 
 }

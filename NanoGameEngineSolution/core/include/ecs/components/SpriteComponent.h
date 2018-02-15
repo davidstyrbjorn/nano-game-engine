@@ -33,6 +33,9 @@ namespace nano { namespace ecs {
 
 		// Override for the renderer 
 		int GetVertexCount() override { return 4; }
+
+		// Get texture path
+		const char* GetImagePath() { return m_imagePath; }
 	};
 
 } }

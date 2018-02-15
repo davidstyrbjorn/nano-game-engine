@@ -68,6 +68,7 @@ namespace nano { namespace ecs {
 		unsigned char *data = stbi_load(a_imagePath, &width, &height, &n, 0);
 		if (data == NULL) {
 			data = stbi_load(CoreConfig::Instance()->GetErrorTexturePath(), &width, &height, &n, 0);
+			m_imagePath = 
 		}
 
 		std::string extension = GetFileExtension(a_imagePath);

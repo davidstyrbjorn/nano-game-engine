@@ -21,15 +21,22 @@ namespace nano {
 		static CoreConfig* Instance();
 
 	private:
+		// Core
+		unsigned int gFps;
+
 		// Window
-		math::Vector2 s_windowSize;
-		math::Vector3 s_backgroundColor = math::Vector3(0.2f, 0.2f, 0.2f);
+		math::Vector2 gWindowSize;
+		math::Vector3 gBackgroundColor = math::Vector3(0.2f, 0.2f, 0.2f);
 
 		// Renderer
-		std::string m_vertexShaderPath, m_fragmentShaderPath;
-		const char* m_errorTexturePath;
+		std::string gVertexShaderPath, gFragmentShaderPath;
+		const char* gErrorTexturePath;
 
 	public:
+		// Core
+		void SetFPS(unsigned int a_fps);
+		unsigned int GetFPS();
+
 		// Window
 		void SetWindowSize(const math::Vector2& a_windowSize);
 		const math::Vector2 GetWindowSize();

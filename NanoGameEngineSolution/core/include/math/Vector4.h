@@ -21,6 +21,7 @@ namespace nano { namespace math {
 
 		// Getters
 		const float GetMagnitude() const;
+		const std::string ToString();
 
 		// Public static methods 
 		inline static Vector4 Right() { return Vector4(1, 0, 0, 0); }

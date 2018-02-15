@@ -1,7 +1,10 @@
 #include "../include/math/Vector4.h"
+#include<string>
 
 // C++ standard math library
 #include<cmath>
+
+#include"../include/StringHelp.h"
 
 namespace nano { namespace math {
 
@@ -28,6 +31,11 @@ namespace nano { namespace math {
 	const float Vector4::GetMagnitude() const
 	{
 		return sqrt(powf(this->x, 2) + powf(this->y, 2) + powf(this->z, 2));
+	}
+
+	const std::string Vector4::ToString()
+	{
+		return to_string_with_precision<float>(x, 3) + ", " + to_string_with_precision<float>(y, 3) + ", " + to_string_with_precision<float>(z, 3) + ", " + to_string_with_precision<float>(w, 3);
 	}
 
 	// Operator overloading methods
