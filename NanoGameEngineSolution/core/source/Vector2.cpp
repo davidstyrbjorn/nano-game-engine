@@ -2,6 +2,7 @@
 
 // C++ standard math library
 #include<cmath>
+#include"../include/StringHelp.h"
 
 namespace nano { namespace math {
 
@@ -43,6 +44,11 @@ namespace nano { namespace math {
 	{
 		float result = (this->x * a_other.x) + (this->y * a_other.y);
 		return result;
+	}
+
+	const std::string Vector2::ToString()
+	{
+		return to_string_with_precision<float>(x, 3) + ", " + to_string_with_precision<float>(y, 3);
 	}
 
 	// Operator overloading methods

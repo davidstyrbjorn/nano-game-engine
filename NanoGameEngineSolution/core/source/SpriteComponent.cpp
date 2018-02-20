@@ -54,7 +54,7 @@ namespace nano { namespace ecs {
 
 	SpriteComponent::SpriteComponent()
 	{
-		m_imagePath = ""; // error texture
+		m_imagePath = CoreConfig::Instance()->GetErrorTexturePath();
 	}
 
 	SpriteComponent::SpriteComponent(const char * a_imagePath)
@@ -64,11 +64,13 @@ namespace nano { namespace ecs {
 
 	void SpriteComponent::LoadNewTexture(const char * a_imagePath)
 	{
+		m_imagePath = a_imagePath;
+
 		int width, height, n;
 		unsigned char *data = stbi_load(a_imagePath, &width, &height, &n, 0);
 		if (data == NULL) {
 			data = stbi_load(CoreConfig::Instance()->GetErrorTexturePath(), &width, &height, &n, 0);
-			m_imagePath = 
+			m_imagePath = CoreConfig::Instance()->GetErrorTexturePath();
 		}
 
 		std::string extension = GetFileExtension(a_imagePath);

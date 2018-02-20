@@ -299,6 +299,10 @@ namespace nano { namespace editor {
 					m_showKeycodeWindow = !m_showKeycodeWindow;
 				}
 
+				float velocity = fwmComponent->GetVelocity();
+				ImGui::InputFloat("Velocity", &velocity, 0, 0, 2);
+				fwmComponent->SetVelocity(velocity);
+
 				ImGui::Spacing(); ImGui::Separator(); ImGui::Spacing();
 			}
 
@@ -341,6 +345,14 @@ namespace nano { namespace editor {
 					}
 					else {
 						// Already have sound component
+					}
+				}
+				if (ImGui::Selectable("Fourway Move Component")) {
+					if (!hasFwmComponent) {
+						m_entityToInspect->AddComponent(new ecs::FourwayMoveComponent());
+					}
+					else {
+
 					}
 				}
 				ImGui::EndPopup();

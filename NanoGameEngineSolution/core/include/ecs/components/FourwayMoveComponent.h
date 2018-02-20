@@ -13,10 +13,11 @@ namespace nano { namespace ecs {
 	public:
 		// Default constructor
 		FourwayMoveComponent(float a_velocity, int a_keys[4]);
+		FourwayMoveComponent();
 
 		// Component base methods
 		void Start() override;
-		void Update() override;
+		virtual void Update() override;
 
 		// Member methods
 		float GetVelocity() { return m_velocity; }

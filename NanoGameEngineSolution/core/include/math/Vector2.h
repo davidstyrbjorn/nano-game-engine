@@ -22,6 +22,7 @@ namespace nano { namespace math {
 		const float GetAngle(const Vector2& a_other); // In radians
 		const Vector2& Normalized() const;
 		const float Dot(const math::Vector2& a_other) const;
+		const std::string ToString();
 
 		// Public static methods 
 		inline static Vector2 Right() { return Vector2(1, 0); }

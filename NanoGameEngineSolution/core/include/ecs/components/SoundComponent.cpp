@@ -9,6 +9,8 @@ namespace nano { namespace ecs {
 
 	SoundComponent::SoundComponent(const char * a_soundFilePath)
 	{
+		m_soundPath = a_soundFilePath;
+
 		int format, size, sampleRate, channel, bps;
 		char* data = loadWAV(a_soundFilePath, channel, sampleRate, bps, size, format);
 
@@ -30,7 +32,8 @@ namespace nano { namespace ecs {
 
 	void SoundComponent::LoadNewSound(const char * a_soundFilePath)
 	{
-		// Create the new sound
+		m_soundPath = a_soundFilePath;
+
 		int format, size, sampleRate, channel, bps;
 		char* data = loadWAV(a_soundFilePath, channel, sampleRate, bps, size, format);
 
@@ -43,6 +46,11 @@ namespace nano { namespace ecs {
 	openal::SoundSource * nano::ecs::SoundComponent::GetSource()
 	{
 		return m_source;
+	}
+
+	const char * SoundComponent::GetSoundPath()
+	{
+		return m_soundPath;
 	}
 
 } } 

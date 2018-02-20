@@ -25,7 +25,7 @@ namespace nano { namespace editor {
 
 	EditorCore::~EditorCore()
 	{
-		LevelParserSystem::Instance()->ParseCurrentLevelToFile("C:\\temp\\level.txt");
+		LevelParserSystem::Instance()->ParseCurrentLevelToFile("D:\\temp\\level.txt");
 
 		// Call Quit on every system
 		m_windowSystem->Quit();

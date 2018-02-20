@@ -6,11 +6,19 @@ namespace nano { namespace ecs {
 	ecs::FourwayMoveComponent::FourwayMoveComponent(float a_velocity, int a_keys[4])
 	{
 		m_velocity = a_velocity;
-		//(*m_keys) = *a_keys;
 		m_keys[0] = a_keys[0];
 		m_keys[1] = a_keys[1];
 		m_keys[2] = a_keys[2];
 		m_keys[3] = a_keys[3];
+	}
+
+	FourwayMoveComponent::FourwayMoveComponent()
+	{
+		m_velocity = 0;
+		m_keys[0] = 0;
+		m_keys[1] = 0;
+		m_keys[2] = 0;
+		m_keys[3] = 0;
 	}
 
 	void ecs::FourwayMoveComponent::Start()

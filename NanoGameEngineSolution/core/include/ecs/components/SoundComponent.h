@@ -15,6 +15,7 @@ namespace nano { namespace ecs {
 	private:
 		openal::SoundSource *m_source;
 		openal::SoundBuffer *m_buffer;
+		const char* m_soundPath;
 		
 	public:
 		// Constructor with path to sound to load
@@ -29,6 +30,7 @@ namespace nano { namespace ecs {
 
 		// Getters
 		openal::SoundSource *GetSource();
+		const char* GetSoundPath();
 	};
 
 } }

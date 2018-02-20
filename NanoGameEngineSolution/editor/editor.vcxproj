@@ -159,6 +159,7 @@
     <ClInclude Include="include\EventObserver.h" />
     <ClInclude Include="include\Events.h" />
     <ClInclude Include="include\HighlightEntity.h" />
+    <ClInclude Include="include\SerializerAPI.h" />
     <ClInclude Include="include\systems\EditorSystem.h" />
     <ClInclude Include="include\systems\EditorWidgetSystem.h" />
     <ClInclude Include="include\systems\LevelParserSystem.h" />

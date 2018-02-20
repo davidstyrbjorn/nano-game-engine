@@ -34,6 +34,8 @@ namespace nano { namespace ecs {
 			delete (*it);
 		}
 		m_componentsBag.clear();
+		
+		delete m_transform;
 	}
 
 	Component* Entity::AddComponent(Component * a_componentToAdd)
