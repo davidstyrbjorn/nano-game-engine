@@ -96,6 +96,9 @@ namespace nano { namespace editor {
 					std::string imagePathString = "path " + std::string(spriteComponent->GetImagePath());
 					nano::WriteToFile(imagePathString, true);
 				}
+				else {
+					nano::WriteToFile("path none", true);
+				}
 			}
 			else {
 				nano::WriteToFile("none", true);
