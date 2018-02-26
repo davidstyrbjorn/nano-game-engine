@@ -127,8 +127,6 @@ namespace nano { namespace graphics {
 		m_quadCount = 0;
 		m_quadVBO->Bind();
 		m_quadVBO->SetData(nullptr, QUAD_BUFFER_SIZE + GRID_BUFFER_SIZE, GL_DYNAMIC_DRAW);
-
-		this->SubmitGridData();
 	}
 
 	void SimpleRenderer::Submit(Renderable * a_renderable)

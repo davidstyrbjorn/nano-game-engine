@@ -45,15 +45,10 @@ namespace nano { namespace graphics {
 
 		CoreConfig* m_config;
 		OrthographicCamera *m_camera;
-
-		std::vector<unsigned int> m_textureSlots;
 		
 		// Private methods
 		void AddTextureToRender(Renderable* a_renderable);
 		void PostFlush();
-		void SubmitGridData();
-		float GetTextureSlot(int a_textureID);
-
 
 	public:
 		// Default Constructor
@@ -66,6 +61,11 @@ namespace nano { namespace graphics {
 		// \brief Called at begining of each render frame
 		//
 		void Begin();
+
+		//////////
+		// \brief Submits grid data to the current quad vertex buffer
+		//
+		void SubmitGridData();
 
 		//////////
 		// \brief Pushes back a_renderable to the render list

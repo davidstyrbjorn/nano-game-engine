@@ -1,6 +1,7 @@
 #include"../include/systems/RendererSystem.h"
 
-#include<graphics\GraphicsInclude.h>
+#define NANO_EDITOR
+#include"graphics\Simple_Renderer.h"
 
 #include"../include/systems/WorldSystem.h"
 

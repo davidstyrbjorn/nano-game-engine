@@ -1,4 +1,4 @@
-#include"../include/systems/LevelParserSystem.h"
+#include"../include/LevelParser.h"
 #include"../include/systems/RendererSystem.h"
 #include<CoreConfig.h>
 #include"../include/systems/WorldSystem.h"
@@ -17,23 +17,18 @@
 #include<StringHelp.h>
 #include"../include/SerializerAPI.h"
 
-namespace nano { namespace editor { 
+namespace nano { namespace editor {
 
-	LevelParserSystem* LevelParserSystem::_instance = nullptr;
-
-	LevelParserSystem* LevelParserSystem::Instance()
+	LevelParser::LevelParser()
 	{
-		if (_instance == nullptr)
-			_instance = new LevelParserSystem();
-		return _instance;
 	}
 
-	std::string LevelParserSystem::GetLevelStringFromFile(const char* a_folderPath)
+	std::string LevelParser::GetLevelStringFromFile(const char* a_folderPath)
 	{
 		return m_levelString;
 	}
 
-	void LevelParserSystem::ParseCurrentLevelToFile(const char* a_folderPath)
+	void LevelParser::ParseCurrentLevelToFile(const char* a_folderPath)
 	{
 		// TODO: 2018/13/02
 		// Parse every entity from the world into the level text file
@@ -137,16 +132,6 @@ namespace nano { namespace editor {
 		}
 		
 		nano::CloseOutputFile();
-	}
-
-	void LevelParserSystem::Start()
-	{
-
-	}
-
-	void LevelParserSystem::Quit()
-	{
-		m_levelString.clear();
 	}
 
 } }

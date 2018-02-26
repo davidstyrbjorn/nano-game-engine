@@ -19,13 +19,14 @@
 
 #include<thread>
 
-#include"../include/systems/LevelParserSystem.h"
+#include"../include/LevelParser.h"
 
 namespace nano { namespace editor { 
 
 	EditorCore::~EditorCore()
 	{
-		LevelParserSystem::Instance()->ParseCurrentLevelToFile("D:\\temp\\level.txt");
+		LevelParser lp;
+		lp.ParseCurrentLevelToFile("C:\\temp\\level.txt");
 
 		// Call Quit on every system
 		m_windowSystem->Quit();
@@ -141,6 +142,7 @@ namespace nano { namespace editor {
 #pragma region		    RENDERING
 				// Rendering
 				m_rendererSystem->GetSimpleRenderer().Begin();
+				m_rendererSystem->GetSimpleRenderer().SubmitGridData();
 				m_editorWidgetSystem->Begin();
 
 				m_rendererSystem->Update();

@@ -37,13 +37,13 @@ namespace nano {
 		void SetFPS(unsigned int a_fps);
 		unsigned int GetFPS();
 
-		// Window
+		// Window @ TODO: Remove this crap, let whatever window system handle this alone
 		void SetWindowSize(const math::Vector2& a_windowSize);
 		const math::Vector2 GetWindowSize();
 		void SetBackgroundColor(const math::Vector3& a_color);
 		const math::Vector3 GetBackgroundColor();
 		
-		// Renderer
+		// Renderer @ TODO: Remove this crap, let the renderer handle this alone
 		void SetShaderPaths(std::string a_vertex, std::string a_fragment);
 		std::array<std::string, 2> GetShaderPaths();
 		void SetErrorTexturePath(const char* a_path);
