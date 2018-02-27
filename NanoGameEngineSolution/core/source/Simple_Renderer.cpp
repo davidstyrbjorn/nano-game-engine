@@ -15,7 +15,7 @@
 
 namespace nano { namespace graphics {
 
-	SimpleRenderer::SimpleRenderer()
+	SimpleRenderer::SimpleRenderer(const char* a_vertexPath, const char* a_fragmentPath)
 	{
 		m_config = CoreConfig::Instance();
 
@@ -27,7 +27,7 @@ namespace nano { namespace graphics {
 
 		// Create shader
 		CoreConfig* c = CoreConfig::Instance();
-		m_shader = new Shader(c->GetShaderPaths()[0], c->GetShaderPaths()[1]);
+		m_shader = new Shader(a_vertexPath, a_fragmentPath); 
 		m_shader->Bind();
 		m_shader->SetUniform1f("textureSampler", 0); // GL_TEXTURE0
 

@@ -42,17 +42,6 @@ namespace nano {
 		return gBackgroundColor;
 	}
 
-	void CoreConfig::SetShaderPaths(std::string a_vertex, std::string a_fragment)
-	{
-		gVertexShaderPath = a_vertex;
-		gFragmentShaderPath = a_fragment;
-	}
-
-	std::array<std::string, 2> CoreConfig::GetShaderPaths()
-	{
-		return { gVertexShaderPath, gFragmentShaderPath };
-	}
-
 	void CoreConfig::SetErrorTexturePath(const char * a_path)
 	{
 		gErrorTexturePath = a_path;

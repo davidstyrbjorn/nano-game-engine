@@ -32,7 +32,8 @@ namespace nano { namespace editor {
 
 	public:
 		// EditorSystem base class
-		void Start() override;
+		void Start() override { }
+		void Start(const char* a_vertexPath, const char* a_fragmentPath);
 		void Update() override;
 		void Quit() override;
 

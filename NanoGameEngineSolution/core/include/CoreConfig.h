@@ -29,7 +29,6 @@ namespace nano {
 		math::Vector3 gBackgroundColor = math::Vector3(0.2f, 0.2f, 0.2f);
 
 		// Renderer
-		std::string gVertexShaderPath, gFragmentShaderPath;
 		const char* gErrorTexturePath;
 
 	public:
@@ -43,9 +42,7 @@ namespace nano {
 		void SetBackgroundColor(const math::Vector3& a_color);
 		const math::Vector3 GetBackgroundColor();
 		
-		// Renderer @ TODO: Remove this crap, let the renderer handle this alone
-		void SetShaderPaths(std::string a_vertex, std::string a_fragment);
-		std::array<std::string, 2> GetShaderPaths();
+		// Renderer 
 		void SetErrorTexturePath(const char* a_path);
 		const char* GetErrorTexturePath();
 	};

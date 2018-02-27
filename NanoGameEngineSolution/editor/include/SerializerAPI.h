@@ -7,8 +7,6 @@
 
 namespace nano {
 
-// Serializing Starts Here
-
 ///////////////////
 // 
 // 
@@ -130,6 +128,17 @@ bool CloseInputFile()
 	return true;
 }
 
-// Deserializing End Here
+///////////////////
+// Returns value based on if it managed to open file at a_filePath
+// 
+bool DoesFileExist(std::string a_filePath)
+{
+	std::ifstream stream(a_filePath);
+	if (stream.is_open()) {
+		return true;
+	}
+
+	return false;
+}
 
 }

@@ -88,7 +88,7 @@ namespace nano { namespace editor {
 	void EditorWidgetSystem::SetupStyle()
 	{
 		//ImGuiIO &io = ImGui::GetIO();
-		//
+		
 		//io.Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\arial.ttf", 12);
 		//io.Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\arial.ttf", 10);
 		//io.Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\arial.ttf", 14);

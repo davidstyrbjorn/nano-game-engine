@@ -10,7 +10,7 @@ namespace nano { namespace editor {
 		m_thisEntity = new ecs::Entity("entity");
 		m_thisEntity->Start();
 
-		m_thisEntity->AddComponent(new ecs::SpriteComponent("C:\\temp\\rect.png"));
+		m_thisEntity->AddComponent(new ecs::SpriteComponent("resources\\rect.png"));
 		m_thisRenderable = m_thisEntity->GetRenderableComponent();
 	}
 

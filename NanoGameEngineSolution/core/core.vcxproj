@@ -177,7 +177,6 @@
     <ClInclude Include="include\ecs\components\TransformComponent.h" />
     <ClInclude Include="include\ecs\components\TriangleComponent.h" />
     <ClInclude Include="include\ecs\ECS.h" />
-    <ClInclude Include="include\ecs\ECSInclude.h" />
     <ClInclude Include="include\ecs\Entity.h" />
     <ClInclude Include="include\graphics\Camera.h" />
     <ClInclude Include="include\graphics\GraphicsInclude.h" />

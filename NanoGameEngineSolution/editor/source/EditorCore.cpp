@@ -1,6 +1,5 @@
 #include"../include/EditorCore.h"
 
-#include<ecs\ECSInclude.h>
 #include<ecs\components\RectangleComponent.h>
 #include<ecs\components\SoundComponent.h>
 #include<ecs\components\TransformComponent.h>
@@ -17,8 +16,6 @@
 
 #include<InputDefinitions.h>
 
-#include<thread>
-
 #include"../include/LevelParser.h"
 
 namespace nano { namespace editor { 
@@ -26,7 +23,7 @@ namespace nano { namespace editor {
 	EditorCore::~EditorCore()
 	{
 		LevelParser lp;
-		lp.ParseCurrentLevelToFile("C:\\temp\\level.txt");
+		lp.ParseCurrentLevelToFile("resources//levels//levelname.txt");
 
 		// Call Quit on every system
 		m_windowSystem->Quit();
@@ -43,8 +40,7 @@ namespace nano { namespace editor {
 	void EditorCore::Init()
 	{
 		m_config = CoreConfig::Instance();
-		m_config->SetShaderPaths("../../vertex.txt", "../../fragment.txt");
-		m_config->SetErrorTexturePath("..//resources//error_texture.png");
+		m_config->SetErrorTexturePath("resources//error_texture.png");
 		m_config->SetFPS(60);
 
 		// Start every editor system
@@ -67,7 +63,7 @@ namespace nano { namespace editor {
 
 		// Renderer System
 		m_rendererSystem = RendererSystem::Instance();
-		m_rendererSystem->Start();
+		m_rendererSystem->Start("D:\\temp\\vertex.txt", "D:\\temp\\fragment.txt");
 
 		// Editor Widget System
 		m_editorWidgetSystem = EditorWidgetSystem::Instance();
@@ -76,32 +72,32 @@ namespace nano { namespace editor {
 		/////////////////////////////////////////////////////////////////////
 
 		// Test
-		ecs::Entity* testEntity = new ecs::Entity("Rectangle");
-		testEntity->Start();
-		testEntity->m_transform->position = math::Vector2(400, 100);
-		testEntity->m_transform->size = math::Vector2(100, 40);
-		testEntity->AddComponent(new ecs::RectangleComponent(math::Vector4(0.4, 0.1, 0.9, 1)))->Start();
-		testEntity->AddComponent(new ecs::SoundComponent("D:\\temp\\sound.wav"));
-		m_WorldSystem->AddNewEntity(testEntity);
-		
-		ecs::Entity* triangle = new ecs::Entity("Triangle");
-		triangle->Start();
-		triangle->m_transform->position = math::Vector2(400, 200);
-		triangle->m_transform->size = math::Vector2(100, 100);
-		triangle->AddComponent(new ecs::TriangleComponent(math::Vector4(1, 0.1, 0.1, 1)))->Start();
-		m_WorldSystem->AddNewEntity(triangle);
-		
-		ecs::Entity* Sprite = new ecs::Entity("Sprite(png)");
-		Sprite->Start();
-		Sprite->AddComponent(new ecs::SpriteComponent("C:\\temp\\cat.png"))->Start();
-		int temp[] = { 0,1,2,3 };
-		Sprite->AddComponent(new ecs::FourwayMoveComponent(5, temp))->Start();
-		m_WorldSystem->AddNewEntity(Sprite);
-		
-		ecs::Entity* Sprite2 = new ecs::Entity("Sprit2(jpg)");
-		Sprite2->Start();
-		Sprite2->AddComponent(new ecs::SpriteComponent("C:\\temp\\sample.jpg"))->Start();
-		m_WorldSystem->AddNewEntity(Sprite2);
+		//ecs::Entity* testEntity = new ecs::Entity("Rectangle");
+		//testEntity->Start();
+		//testEntity->m_transform->position = math::Vector2(400, 100);
+		//testEntity->m_transform->size = math::Vector2(100, 40);
+		//testEntity->AddComponent(new ecs::RectangleComponent(math::Vector4(0.4, 0.1, 0.9, 1)))->Start();
+		//testEntity->AddComponent(new ecs::SoundComponent("D:\\temp\\sound.wav"));
+		//m_WorldSystem->AddNewEntity(testEntity);
+		//
+		//ecs::Entity* triangle = new ecs::Entity("Triangle");
+		//triangle->Start();
+		//triangle->m_transform->position = math::Vector2(400, 200);
+		//triangle->m_transform->size = math::Vector2(100, 100);
+		//triangle->AddComponent(new ecs::TriangleComponent(math::Vector4(1, 0.1, 0.1, 1)))->Start();
+		//m_WorldSystem->AddNewEntity(triangle);
+		//
+		//ecs::Entity* Sprite = new ecs::Entity("Sprite(png)");
+		//Sprite->Start();
+		//Sprite->AddComponent(new ecs::SpriteComponent("C:\\temp\\cat.png"))->Start();
+		//int temp[] = { 0,1,2,3 };
+		//Sprite->AddComponent(new ecs::FourwayMoveComponent(5, temp))->Start();
+		//m_WorldSystem->AddNewEntity(Sprite);
+		//
+		//ecs::Entity* Sprite2 = new ecs::Entity("Sprit2(jpg)");
+		//Sprite2->Start();
+		//Sprite2->AddComponent(new ecs::SpriteComponent("C:\\temp\\sample.jpg"))->Start();
+		//m_WorldSystem->AddNewEntity(Sprite2);
 
 		/////////////////////////////////////////////////////////////////////
 
