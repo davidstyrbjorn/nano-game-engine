@@ -19,8 +19,8 @@ Shader::Shader()
 
 Shader::Shader(std::string a_vertexShaderPath, std::string a_fragmentShaderPath)
 {
-	std::fstream vertexFile(a_vertexShaderPath, std::fstream::in | std::fstream::out | std::fstream::app);
-	std::fstream fragmentFile(a_fragmentShaderPath, std::fstream::in | std::fstream::out | std::fstream::app);
+	std::ifstream vertexFile(a_vertexShaderPath);
+	std::ifstream fragmentFile(a_fragmentShaderPath);
 	if (!vertexFile.is_open() || !fragmentFile.is_open()) {
 		// @ Throw error file is not open
 		std::cout << "Could not open either fragment or vertex shader at given path" << std::endl;
@@ -104,7 +104,6 @@ GLint Shader::getUniformLocation(const char * a_name)
 {
 	return glGetUniformLocation(m_shaderProgram, a_name);
 }
-
 
 void Shader::SetUniform1f(const char * a_name, float a_value)
 {

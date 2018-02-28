@@ -1,0 +1,25 @@
+#version 330
+
+// from vertex
+in vec4 color;
+in vec2 uv;
+in float textureSlot;
+
+// Fragment uniforms
+uniform sampler2D textureSampler;
+
+void main() 
+{
+	// For now this just means there is no texture so render it with no texture
+	if(uv.x == -1 && uv.y == -1) { 
+		gl_FragColor = vec4(color.rgb, color.a);
+		//gl_FragColor = vec4(textureSampler, textureSampler, textureSampler, 1);
+        }
+	else {
+		gl_FragColor = texture(textureSampler, uv) * vec4(color.rgb, 1);
+
+		//if(gl_FragColor.a < 0.3){
+		//	discard;
+		//}
+	}
+}

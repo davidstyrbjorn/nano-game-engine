@@ -63,7 +63,7 @@ namespace nano { namespace editor {
 
 		// Renderer System
 		m_rendererSystem = RendererSystem::Instance();
-		m_rendererSystem->Start("D:\\temp\\vertex.txt", "D:\\temp\\fragment.txt");
+		m_rendererSystem->Start("resources//vertex.txt", "resources//fragment.txt");
 
 		// Editor Widget System
 		m_editorWidgetSystem = EditorWidgetSystem::Instance();
@@ -71,7 +71,7 @@ namespace nano { namespace editor {
 
 		/////////////////////////////////////////////////////////////////////
 
-		// Test
+		// Test 
 		//ecs::Entity* testEntity = new ecs::Entity("Rectangle");
 		//testEntity->Start();
 		//testEntity->m_transform->position = math::Vector2(400, 100);
