@@ -1,6 +1,5 @@
 #include"../include/LevelParser.h"
 #include"../include/systems/RendererSystem.h"
-#include<CoreConfig.h>
 #include"../include/systems/WorldSystem.h"
 
 #include<graphics\Simple_Renderer.h>
@@ -34,7 +33,6 @@ namespace nano { namespace editor {
 		// Parse every entity from the world into the level text file
 		// Parse every config-thing i.e; background-color, camera-stuff etc
 		
-		CoreConfig *config = CoreConfig::Instance();
 		RendererSystem *renderSystem = RendererSystem::Instance();
 		WorldSystem* world = WorldSystem::Instance();
 
@@ -48,7 +46,7 @@ namespace nano { namespace editor {
 		nano::WriteToFile("[LEVEL_CONFIG]", true);
 		std::string camPosString = "cam_pos " + to_string_with_precision<float>(renderSystem->GetSimpleRenderer().GetCamera()->GetPosition().x, 6) + ", " + to_string_with_precision<float>(renderSystem->GetSimpleRenderer().GetCamera()->GetPosition().y, 6);
 		nano::WriteToFile(camPosString, true);
-		std::string fpsString = "fps " + std::to_string(config->GetFPS());
+		std::string fpsString = "fps 60";
 		nano::WriteToFile(fpsString.c_str(), true);
 
 		nano::InsertBlankLine();

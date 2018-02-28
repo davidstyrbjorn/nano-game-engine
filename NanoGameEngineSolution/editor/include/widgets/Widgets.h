@@ -2,17 +2,15 @@
 
 #include"EditorWidget.h"
 #include"../EventObserver.h"
+#include"../HighlightEntity.h"
 
 #include<math\Vector2.h>
 #include<math\Vector4.h>
-
-#include"../HighlightEntity.h"
 
 #include<deque>
 
 // FWD
 namespace nano {
-	class CoreConfig;
 	namespace ecs {
 		class Entity;
 	}
@@ -33,7 +31,6 @@ namespace nano { namespace editor {
 			math::Vector4 color;
 		};
 
-		CoreConfig* m_config;
 		std::deque<ConsoleMessage> m_messageQueue;
 		const int MESSAGE_COUNT_MAX = 7;
 
@@ -58,7 +55,6 @@ namespace nano { namespace editor {
 	// Entity Inspector upper-right
 	class EntityInspectorWidget : EditorWidget, public EventObserver {
 	private:
-		CoreConfig* m_config;
 		InputSystem* m_inputSystem;
 		RendererSystem *m_renderSystem;
 		ecs::Entity *m_entityToInspect;
@@ -92,7 +88,6 @@ namespace nano { namespace editor {
 	// Entity selection upper-left
 	class EntitySelectWidget : EditorWidget, public EventObserver {
 	private:
-		CoreConfig* m_config;
 		WorldSystem* m_entityManager;
 		InputSystem* m_inputSystem;
 		RendererSystem *m_renderSystem;
@@ -124,16 +119,10 @@ namespace nano { namespace editor {
 		void Start() override;
 		void Update() override;
 		void Render() override;
-
-	private:
-		CoreConfig *m_config;
-		bool m_showCreditsWidget = false;
 	};
 
 	// middle-left
 	class UtilitySelectWidget : EditorWidget, public EventObserver {
-	private:
-		CoreConfig* m_config;
 
 	public:
 		UtilitySelectWidget();
@@ -156,7 +145,6 @@ namespace nano { namespace editor {
 		void Render() override;
 
 	private:
-		CoreConfig *m_config;
 		RendererSystem *m_renderSystem;
 	};
 } }

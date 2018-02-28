@@ -1,7 +1,7 @@
 #include"../include/widgets/Widgets.h"
 
-#include<CoreConfig.h>
 #include<ecs\components\TransformComponent.h>
+#include<graphics\Camera.h>
 
 #include"../include/DearImGui/imgui.h"
 
@@ -9,6 +9,7 @@
 #include"../include/systems/EditorWidgetSystem.h"
 #include"../include/systems/InputSystem.h"
 #include"../include/systems/RendererSystem.h"
+#include"../include/systems/EditorConfig.h"
 
 #include<graphics\Simple_Renderer.h>
 #include<InputDefinitions.h>
@@ -17,7 +18,6 @@ namespace nano { namespace editor {
 
 	EntitySelectWidget::EntitySelectWidget()
 	{
-		m_config = CoreConfig::Instance();
 		m_entityManager = WorldSystem::Instance();
 		m_inputSystem = InputSystem::Instance();
 		m_renderSystem = RendererSystem::Instance();
@@ -30,11 +30,12 @@ namespace nano { namespace editor {
 
 	bool EntitySelectWidget::IsMouseInViewFrustrum(const math::Vector2& a_position) {
 		// View frustrum dimensions
-		// @ Make this work with camera position
+		static EditorConfig* c = EditorConfig::Instance();
+
 		float x = ENTITY_SELECT_WIDTH + m_renderSystem->GetSimpleRenderer().GetCamera()->GetPosition().x;
 		float y = MAIN_MENU_BAR_HEIGHT + m_renderSystem->GetSimpleRenderer().GetCamera()->GetPosition().y;
-		float width = (m_config->GetWindowSize().x - ENTITY_INSPECTOR_WIDTH) + m_renderSystem->GetSimpleRenderer().GetCamera()->GetPosition().x;
-		float height = (m_config->GetWindowSize().y - (m_config->GetWindowSize().y * UTILITY_HEIGHT_RATIO)) + m_renderSystem->GetSimpleRenderer().GetCamera()->GetPosition().y;
+		float width = (c->getWindowSize().x - ENTITY_INSPECTOR_WIDTH) + m_renderSystem->GetSimpleRenderer().GetCamera()->GetPosition().x;
+		float height = (c->getWindowSize().y - (c->getWindowSize().y * UTILITY_HEIGHT_RATIO)) + m_renderSystem->GetSimpleRenderer().GetCamera()->GetPosition().y;
 		
 		if (a_position.x > x && a_position.x < width && a_position.y > y && a_position.y < height)
 			return true;
@@ -93,7 +94,7 @@ namespace nano { namespace editor {
 
 	void EntitySelectWidget::Render()
 	{
-		math::Vector2 _windowSize = m_config->GetWindowSize();
+		math::Vector2 _windowSize = EditorConfig::Instance()->getWindowSize();
 
 		ImVec2 size;
 		size.y = (_windowSize.y * ENTITY_SELECT_HEIGHT_RATIO); // Make sure height is the ratio based on the current window height

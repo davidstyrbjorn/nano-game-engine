@@ -1,6 +1,5 @@
 #include"../include/widgets/Widgets.h"
 
-#include<CoreConfig.h>
 #include<math\Vector2.h>
 #include<ecs\Entity.h>
 #include<math\Vector2.h>
@@ -8,21 +7,23 @@
 #include<sound\SoundSource.h>
 #include<sound\SoundBuffer.h>
 #include<graphics\Simple_Renderer.h>
-
-#include"../include/systems/WorldSystem.h"
-#include"../include/systems/InputSystem.h"
-#include"../include/systems/RendererSystem.h"
-#include"../include/systems/EditorWidgetSystem.h"
-#include"../include/EventHandler.h"
-
-#include"../include/DearImGui/imgui.h"
-
+#include<graphics\Camera.h>
 #include<ecs\components\TransformComponent.h>
 #include<ecs\components\RectangleComponent.h>
 #include<ecs\components\SoundComponent.h>
 #include<ecs\components\TriangleComponent.h>
 #include<ecs\components\SpriteComponent.h>
 #include<ecs\components\FourwayMoveComponent.h>
+
+#include"../include/systems/WorldSystem.h"
+#include"../include/systems/InputSystem.h"
+#include"../include/systems/RendererSystem.h"
+#include"../include/systems/EditorWidgetSystem.h"
+#include"../include/EventHandler.h"
+#include"../include/systems/EditorConfig.h"
+
+#include"../include/DearImGui/imgui.h"
+
 
 #include<stb\stb_image.h>
 
@@ -32,7 +33,6 @@ namespace nano { namespace editor {
 
 	EntityInspectorWidget::EntityInspectorWidget()
 	{
-		m_config = CoreConfig::Instance();
 		m_inputSystem = InputSystem::Instance();
 	}
 
@@ -93,7 +93,7 @@ namespace nano { namespace editor {
 
 	void EntityInspectorWidget::Render()
 	{
-		math::Vector2 _windowSize = m_config->GetWindowSize();
+		math::Vector2 _windowSize = EditorConfig::Instance()->getWindowSize();
 
 		// Calculate size
 		ImVec2 size;

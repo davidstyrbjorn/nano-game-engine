@@ -17,7 +17,6 @@ namespace nano {
 		alcSuspendContext(m_context);
 
 		if (!alcCloseDevice(m_device)) {
-			// Log error @
 			std::cout << "Failed to close OpenAL context" << std::endl;
 		}
 	}

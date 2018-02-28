@@ -2,10 +2,11 @@
 
 #include<iostream>
 
+using namespace nano::editor;
+
 int main()
 {
-	nano::editor::EditorCore* editor = new nano::editor::EditorCore();
-
+	EditorCore* editor = new EditorCore();
 	delete editor;
 
 	std::cin.get();

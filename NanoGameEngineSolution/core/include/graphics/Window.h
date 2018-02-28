@@ -7,6 +7,7 @@ struct GLFWwindow;
 namespace nano {
 	namespace math {
 		class Vector2;
+		class Vector4;
 	}
 	class CoreConfig;
 }
@@ -30,6 +31,7 @@ namespace nano { namespace graphics {
 		// Public methods
 		void Close();
 		void Clear();
+		void Clear(const math::Vector4 a_clearColor);
 		void Display();
 
 		// Public methods (getters)
@@ -39,7 +41,7 @@ namespace nano { namespace graphics {
 		// GLFW callbacks
 		static friend void window_size_callback(GLFWwindow* window, int width, int height);
 
-		// @ TEMPORARY HOTFIX
+		// This will be either Editor::WindowSystem or Engine::WindowSystem!
 		WindowOwner *owner;
 
 	private:

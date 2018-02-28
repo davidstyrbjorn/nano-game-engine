@@ -27,7 +27,7 @@ namespace nano { namespace editor {
 		void Update() override;
 		void Quit() override;
 
-		// @ HOTFIX
+		// Callback
 		void WindowResized(int a_width, int a_height) override;
 
 		// Window routines

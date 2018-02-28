@@ -52,7 +52,7 @@ namespace nano { namespace graphics {
 
 	public:
 		// Default Constructor
-		SimpleRenderer(const char* a_vertexPath, const char* a_fragmentPath);
+		SimpleRenderer(const char* a_vertexPath, const char* a_fragmentPath, const math::Vector2& a_windowSize);
 
 		// Destructor
 		~SimpleRenderer();

@@ -1,15 +1,15 @@
 #include"../include/widgets/Widgets.h"
 
 #include"../include/DearImGui/imgui.h"
+#include"../include/systems/EditorConfig.h"
 
-#include<CoreConfig.h>
 #include<math\Vector2.h>
 
 namespace nano { namespace editor {
 
 	ConsoleWidget::ConsoleWidget()
 	{
-		m_config = CoreConfig::Instance();
+
 	}
 
 	void ConsoleWidget::Start()
@@ -24,7 +24,7 @@ namespace nano { namespace editor {
 
 	void ConsoleWidget::Render()
 	{
-		math::Vector2 _windowSize = m_config->GetWindowSize();
+		math::Vector2 _windowSize = EditorConfig::Instance()->getWindowSize();
 
 		// Calculate size
 		ImVec2 size;

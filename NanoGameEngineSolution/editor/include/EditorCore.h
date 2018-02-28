@@ -3,7 +3,6 @@
 // Classes from core
 #include<graphics\GraphicsInclude.h>
 #include<math\MathInclude.h>
-#include<CoreConfig.h>
 #include<Clock.h>
 
 // Editor classes
@@ -13,9 +12,6 @@
 #include"systems\EditorWidgetSystem.h"
 #include"systems\InputSystem.h"
 #include"systems\SoundSystem.h"
-
-// @ Remove 
-#include<sound\SoundContextDevice.h>
 
 #define FPS -1
 #define MS 1000/FPS
@@ -32,7 +28,6 @@ namespace nano { namespace editor {
 		EditorWidgetSystem *m_editorWidgetSystem;
 		SoundSystem *m_soundSystem;
 		CoreConfig *m_config;
-		openal::ContextDevice *contextDevice;
 
 		// Other
 		Clock m_fpsClock;

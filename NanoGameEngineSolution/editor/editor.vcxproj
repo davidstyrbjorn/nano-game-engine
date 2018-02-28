@@ -130,6 +130,7 @@
     <ClCompile Include="include\DearImGui\imgui_glfw.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="source\ConsoleWidget.cpp" />
+    <ClCompile Include="source\EditorConfig.cpp" />
     <ClCompile Include="source\EditorCore.cpp" />
     <ClCompile Include="source\EditorWidgetSystem.cpp" />
     <ClCompile Include="source\EntityInspectorWidget.cpp" />
@@ -160,6 +161,7 @@
     <ClInclude Include="include\Events.h" />
     <ClInclude Include="include\HighlightEntity.h" />
     <ClInclude Include="include\SerializerAPI.h" />
+    <ClInclude Include="include\systems\EditorConfig.h" />
     <ClInclude Include="include\systems\EditorSystem.h" />
     <ClInclude Include="include\systems\EditorWidgetSystem.h" />
     <ClInclude Include="include\LevelParser.h" />

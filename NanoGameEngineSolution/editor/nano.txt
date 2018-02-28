@@ -1,0 +1,3 @@
+project_name test
+author davidstyrbjorn@gmail.com
+local_path D:\NanoGameEngine\NanoGameEngine\NanoGameEngineSolution\editor

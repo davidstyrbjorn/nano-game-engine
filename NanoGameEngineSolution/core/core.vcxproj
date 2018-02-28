@@ -132,7 +132,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="source\CoreConfig.cpp" />
     <ClCompile Include="include\ecs\components\SoundComponent.cpp" />
     <ClCompile Include="source\Camera.cpp" />
     <ClCompile Include="source\Clock.cpp" />
@@ -168,7 +167,6 @@
   <ItemGroup>
     <ClInclude Include="include\Clock.h" />
     <ClInclude Include="include\Core.h" />
-    <ClInclude Include="include\CoreConfig.h" />
     <ClInclude Include="include\ecs\Component.h" />
     <ClInclude Include="include\ecs\components\FourwayMoveComponent.h" />
     <ClInclude Include="include\ecs\components\RectangleComponent.h" />

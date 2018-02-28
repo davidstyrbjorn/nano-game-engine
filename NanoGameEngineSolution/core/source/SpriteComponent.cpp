@@ -8,8 +8,6 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include"../include/stb/stb_image.h"
 
-#include"../include/CoreConfig.h"
-
 namespace nano { namespace ecs {
 
 	void SpriteComponent::Start()
@@ -34,7 +32,7 @@ namespace nano { namespace ecs {
 		int width, height, n;
 		unsigned char *data = stbi_load(m_imagePath, &width, &height, &n, 0);
 		if (data == NULL) {
-			data = stbi_load(CoreConfig::Instance()->GetErrorTexturePath(), &width, &height, &n, 0);
+			data = stbi_load("resources\\error_texture.png", &width, &height, &n, 0);
 			format = GL_RGBA;
 		}
 
@@ -54,7 +52,7 @@ namespace nano { namespace ecs {
 
 	SpriteComponent::SpriteComponent()
 	{
-		m_imagePath = CoreConfig::Instance()->GetErrorTexturePath();
+		m_imagePath = "resources\\error_texture.png";
 	}
 
 	SpriteComponent::SpriteComponent(const char * a_imagePath)
@@ -69,8 +67,8 @@ namespace nano { namespace ecs {
 		int width, height, n;
 		unsigned char *data = stbi_load(a_imagePath, &width, &height, &n, 0);
 		if (data == NULL) {
-			data = stbi_load(CoreConfig::Instance()->GetErrorTexturePath(), &width, &height, &n, 0);
-			m_imagePath = CoreConfig::Instance()->GetErrorTexturePath();
+			data = stbi_load("resources\\error_texture.png", &width, &height, &n, 0);
+			m_imagePath = "resources\\error_texture.png";
 		}
 
 		std::string extension = GetFileExtension(a_imagePath);

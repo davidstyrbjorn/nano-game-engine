@@ -2,11 +2,9 @@
 
 #include"../include/graphics/Renderable.h"
 #include"../include/graphics/Shader.h"
-#include"../include/CoreConfig.h"
 #include"../include/math/Matrix4x4.h"
 #include"../include/graphics/Camera.h"
 #include"../include/ecs/components/TransformComponent.h"
-#include"../include/CoreConfig.h"
 
 #define GLEW_STATIC
 #include"GL\glew.h"
@@ -15,10 +13,8 @@
 
 namespace nano { namespace graphics {
 
-	SimpleRenderer::SimpleRenderer(const char* a_vertexPath, const char* a_fragmentPath)
+	SimpleRenderer::SimpleRenderer(const char* a_vertexPath, const char* a_fragmentPath, const math::Vector2& a_windowSize)
 	{
-		m_config = CoreConfig::Instance();
-
 		// Initalize GLEW
 		glewInit();
 
@@ -26,12 +22,11 @@ namespace nano { namespace graphics {
 		glEnable(GL_BLEND);
 
 		// Create shader
-		CoreConfig* c = CoreConfig::Instance();
 		m_shader = new Shader(a_vertexPath, a_fragmentPath); 
 		m_shader->Bind();
 		m_shader->SetUniform1f("textureSampler", 0); // GL_TEXTURE0
 
-		m_camera = new OrthographicCamera(c->GetWindowSize());
+		m_camera = new OrthographicCamera(a_windowSize);
 		m_shader->SetUniformMat4f("projection_matrix", m_camera->GetProjectionMatrix());
 
 		// Triangle

@@ -1,10 +1,11 @@
 #include"../include/systems/WindowSystem.h"
 
 #include<math\Vector2.h>
-
-#include"../include/systems/RendererSystem.h"
 #include<graphics\Simple_Renderer.h>
 #include<graphics\Camera.h>
+
+#include"../include/systems/EditorConfig.h"
+#include"../include/systems/RendererSystem.h"
 
 namespace nano { namespace editor { 
 	
@@ -22,6 +23,7 @@ namespace nano { namespace editor {
 	{
 		m_window = new graphics::Window(math::Vector2(1200, 800), "Nano Editor (Windows Standalone x86)");
 		m_window->owner = this;
+		EditorConfig::Instance()->setWindowSize(math::Vector2(1200, 800));
 	}
 
 	void WindowSystem::Update()
@@ -37,7 +39,7 @@ namespace nano { namespace editor {
 
 	void WindowSystem::WindowResized(int a_width, int a_height)
 	{
-		//RendererSystem::Instance()->GetSimpleRenderer().GetCamera()->SetSize(math::Vector2(a_width, a_height));
+		EditorConfig::Instance()->setWindowSize(math::Vector2(a_width, a_height));
 	}
 
 	graphics::Window & WindowSystem::GetWindow()

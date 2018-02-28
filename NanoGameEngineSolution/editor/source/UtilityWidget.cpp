@@ -1,12 +1,12 @@
 #include"../include/widgets/Widgets.h"
 
-#include"../include/DearImGui/imgui.h"
-
-#include<CoreConfig.h>
 #include<math\Vector2.h>
-
-#include"../include/systems/RendererSystem.h"
+#include<graphics\Camera.h>
 #include<graphics\Simple_Renderer.h>
+
+#include"../include/DearImGui/imgui.h"
+#include"../include/systems/RendererSystem.h"
+#include"../include/systems/EditorConfig.h"
 
 namespace nano { namespace editor {
 
@@ -18,7 +18,6 @@ namespace nano { namespace editor {
 
 	UtilityWidget::UtilityWidget()
 	{
-		m_config = CoreConfig::Instance();
 		m_renderSystem = RendererSystem::Instance();
 	}
 
@@ -36,7 +35,7 @@ namespace nano { namespace editor {
 	{
 		static UtilityType utilityType = UtilityType::CAMERA;
 
-		math::Vector2 _windowSize = m_config->GetWindowSize();
+		math::Vector2 _windowSize = EditorConfig::Instance()->getWindowSize();
 	
 		// Calculate size
 		ImVec2 size;
@@ -100,7 +99,7 @@ namespace nano { namespace editor {
 			ImGui::SameLine(120);
 			// Button for matching the camera size to the current window size
 			if (ImGui::Button("Math Window Size")) {
-				math::Vector2 _windowSize = m_config->GetWindowSize();
+				math::Vector2 _windowSize = EditorConfig::Instance()->getWindowSize();
 				m_renderSystem->GetSimpleRenderer().GetCamera()->SetSize(_windowSize);
 			}
 		}

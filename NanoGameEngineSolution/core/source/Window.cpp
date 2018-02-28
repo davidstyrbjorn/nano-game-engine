@@ -1,17 +1,14 @@
 #include"../include/graphics/Window.h"
 
 #include"../include/math/Vector2.h"
-#include"../include/CoreConfig.h"
+#include"../include/math/Vector4.h"
 
 #include<GLFW\glfw3.h>
-
-#include"../include/CoreConfig.h"
 
 namespace nano { namespace graphics {
 
 	Window::Window(const math::Vector2 & a_windowSize, const std::string & a_windowCaption)
 	{
-
 		// Init glfw
 		if (!glfwInit())
 			std::cout << "GLFW init error" << std::endl;
@@ -25,9 +22,6 @@ namespace nano { namespace graphics {
 
 		glfwSwapInterval(0); 
 		glViewport(0, 0, a_windowSize.x, a_windowSize.y);
-		
-		config = CoreConfig::Instance();
-		config->SetWindowSize(a_windowSize);
 	}
 
 	Window::~Window()
@@ -42,8 +36,13 @@ namespace nano { namespace graphics {
 
 	void Window::Clear()
 	{
+		Clear(math::Vector4(0, 0, 0, 0));
+	}
+
+	void Window::Clear(const math::Vector4 a_clearColor)
+	{
 		glClear(GL_COLOR_BUFFER_BIT);
-		glClearColor(config->GetBackgroundColor().x, config->GetBackgroundColor().y, config->GetBackgroundColor().y, 1);
+		glClearColor(a_clearColor.x, a_clearColor.y, a_clearColor.z, a_clearColor.w);
 	}
 
 	void Window::Display()
@@ -64,10 +63,8 @@ namespace nano { namespace graphics {
 
 	void window_size_callback(GLFWwindow * window, int width, int height)
 	{
-		CoreConfig::Instance()->SetWindowSize(math::Vector2(width, height));
 		glViewport(0, 0, width, height);
 
-		// Message owner @ HOTFIX
 		Window* temp = (Window*)glfwGetWindowUserPointer(window);
 		temp->owner->WindowResized(width, height);
 	}

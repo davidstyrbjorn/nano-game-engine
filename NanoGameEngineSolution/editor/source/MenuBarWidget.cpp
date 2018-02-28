@@ -1,14 +1,27 @@
 #include"../include/widgets/Widgets.h"
 
-#include<CoreConfig.h>
-#include<iostream>
 
 #include"../include/DearImGui/imgui.h"
 
 #include"../include/systems/WorldSystem.h"
 #include"../include/systems/EditorWidgetSystem.h"
+#include"../include/LevelParser.h"
+#include"../include/systems/EditorConfig.h"
+
+#include<iostream>
+#include<fstream>
 
 namespace nano { namespace editor {
+
+	bool DoesFileExist(std::string a_filePath)
+	{
+		std::ifstream stream(a_filePath);
+		if (stream.is_open()) {
+			return true;
+		}
+
+		return false;
+	}
 
 	MenuBarWidget::MenuBarWidget()
 	{
@@ -16,9 +29,7 @@ namespace nano { namespace editor {
 
 	void MenuBarWidget::Start()
 	{
-		// Getting acess to the config file
-		m_config = CoreConfig::Instance();
-		m_showCreditsWidget = false;
+
 	}
 
 	void MenuBarWidget::Update()
@@ -28,13 +39,18 @@ namespace nano { namespace editor {
 
 	void MenuBarWidget::Render()
 	{
+
+		static bool m_showSaveLevelWidget = false;
+		static bool m_showCreditsWidget = false;
+		static LevelParser levelParser;
+
 		if (ImGui::BeginMainMenuBar()) 
 		{
 
 			if (ImGui::BeginMenu("File")) 
 			{
 				if (ImGui::Selectable("Save Level")) {
-
+					m_showSaveLevelWidget = true;
 				}
 				if (ImGui::Selectable("Load Level")) {
 
@@ -65,7 +81,6 @@ namespace nano { namespace editor {
 			{
 				if (ImGui::Selectable("Create New")) {
 					WorldSystem::Instance()->CreateNewEntity("unnamed");
-					// Test case!
 					// Send this event to the event handler!
 					EditorWidgetSystem::Instance()->GetEventHandler().AddEvent(BaseEvent(EventTypes::CREATED_ENTITY, "unnamed"));
 				}
@@ -79,6 +94,32 @@ namespace nano { namespace editor {
 			ImGui::Begin("Credits", &m_showCreditsWidget, ImVec2(300, 200), 1.0f, ImGuiWindowFlags_::ImGuiWindowFlags_NoResize | ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse);
 			ImGui::Text("Programmer: David Styrbjörn");
 			ImGui::Text("License: GNU General Public License v3.0");
+			ImGui::End();
+		}
+		if (m_showSaveLevelWidget) {
+			static int width = 300;
+			static int height = 200;
+			// Center the window 
+			ImGui::SetNextWindowPos(ImVec2((EditorConfig::Instance()->getWindowSize().x / 2)-(width/2), (EditorConfig::Instance()->getWindowSize().y/2)-(height)));
+			ImGui::Begin("Save Level", &m_showSaveLevelWidget, ImVec2(width, height), 1.0f, ImGuiWindowFlags_::ImGuiWindowFlags_NoResize | ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_::ImGuiWindowFlags_NoMove);
+
+			static char buffer[128] = "";
+			ImGui::InputText("Level Name", buffer, 128);
+			if (ImGui::Button("Save")) {
+				std::string location = "resources\\levels\\" + std::string(buffer) + ".txt";
+				// Check if there's already a saved level with this name!
+				// @ TODO: Handle if there's already a existing level with said name
+				if (DoesFileExist(location)) {
+					//std::cout << "Hello! This level already exists" << std::endl;
+					levelParser.ParseCurrentLevelToFile(location.c_str());
+				}
+				else {
+					//std::cout << "File does not exist big lol" << std::endl;
+					levelParser.ParseCurrentLevelToFile(location.c_str());
+				}
+				m_showSaveLevelWidget = false;
+			}
+
 			ImGui::End();
 		}
 	}

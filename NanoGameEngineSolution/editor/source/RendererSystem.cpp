@@ -1,6 +1,5 @@
 #include"../include/systems/RendererSystem.h"
 
-#define NANO_EDITOR
 #include"graphics\Simple_Renderer.h"
 
 #include"../include/systems/WorldSystem.h"
@@ -21,7 +20,7 @@ namespace nano { namespace editor {
 	void RendererSystem::Start(const char* a_vertexPath, const char* a_fragmentPath)
 	{
 		// Create the renderer (from core)
-		m_renderer = new graphics::SimpleRenderer(a_vertexPath, a_fragmentPath);
+		m_renderer = new graphics::SimpleRenderer(a_vertexPath, a_fragmentPath, math::Vector2(1200,800));
 	
 		// Get the entity manager
 		m_entityManager = WorldSystem::Instance();
