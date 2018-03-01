@@ -58,7 +58,7 @@ namespace nano { namespace editor {
 		bool deadEntityExists = false;
 		removeDeadEntities();
 
-		// Presumebly call update on all the entities
+		// Call update on all the entities
 		for (ecs::Entity *entity : m_entityList) {
 			entity->Update();
 			if (entity->GetState() == ecs::ECSStates::DESTROYED)

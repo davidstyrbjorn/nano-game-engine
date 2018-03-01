@@ -45,10 +45,7 @@ namespace nano { namespace editor {
 		void Render() override;
 
 		// Methods from event observer base
-		void OnEntityCreation(std::string a_id)   override;
-		void OnEntityDestroyed(std::string a_id)  override;
-		void OnEntityClick(std::string a_id) 	  override;
-		void OnEntityRename(std::string a_id) 	  override;
+		void OnEntityManipulation(std::string a_id, std::string a_id2);
 		void OnComponentManipulation(std::string a_id, std::string a_id2, std::string a_id3) override;
 		void OnNewConsoleMessage(std::string a_id) override;
 	};
@@ -81,9 +78,7 @@ namespace nano { namespace editor {
 		void Update() override;
 		void Render() override;
 
-		void OnEntityRename(std::string a_id) override; 
-		void OnEntityClick(std::string a_id) override;
-		void OnEntityDestroyed(std::string a_id) override;
+		void OnEntityManipulation(std::string a_id, std::string a_id2);
 	};
 
 	// Entity selection upper-left

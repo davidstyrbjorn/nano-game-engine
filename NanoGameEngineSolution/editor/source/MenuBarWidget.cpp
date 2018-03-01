@@ -82,7 +82,7 @@ namespace nano { namespace editor {
 				if (ImGui::Selectable("Create New")) {
 					WorldSystem::Instance()->CreateNewEntity("unnamed");
 					// Send this event to the event handler!
-					EditorWidgetSystem::Instance()->GetEventHandler().AddEvent(BaseEvent(EventTypes::CREATED_ENTITY, "unnamed"));
+					EditorWidgetSystem::Instance()->GetEventHandler().AddEvent(BaseEvent(EventTypes::MANIPULATED_ENTITY, "entity_created", "unnamed"));
 				}
 				ImGui::EndMenu();
 			}

@@ -54,7 +54,7 @@ namespace nano { namespace editor {
 				if (_event.type == InputEventType::KEY_PRESSED) {
 					// "de"select entity
 					if (_event.key == NANO_KEY_ESCAPE) {
-						OnEntityClick("-1");
+						//OnEntityClick("-1"); @
 					}
 					// Delete the current entity
 					if (_event.key == NANO_KEY_DELETE) {
@@ -62,7 +62,7 @@ namespace nano { namespace editor {
 						m_entityToInspect->SetState(ecs::ECSStates::DESTROYED);
 						highlighEntity.SetNewHighlightedEntity(nullptr);
 						m_entityToInspect = nullptr;
-						EditorWidgetSystem::Instance()->GetEventHandler().AddEvent(BaseEvent(EventTypes::REMOVED_ENTITY, temp));
+						EditorWidgetSystem::Instance()->GetEventHandler().AddEvent(BaseEvent(EventTypes::MANIPULATED_ENTITY, "entity_destroyed", temp));
 					}
 				}
 				if (_event.type == InputEventType::MOUSE_PRESSED) {
@@ -522,39 +522,55 @@ namespace nano { namespace editor {
 		}
 	}
 
-	void EntityInspectorWidget::OnEntityRename(std::string a_id)
-	{
-		m_renameEntityWindow = true;
-	}
+	//void EntityInspectorWidget::OnEntityClick(std::string a_id)
+	//{
+	//	if (!m_renameEntityWindow && !m_showKeycodeWindow) {
+	//		// "-1" - clicked on empty space
+	//		if (a_id == "-1") {
+	//			// Deselect the entity i.e set it to a nullptr
+	//			if (m_entityToInspect != nullptr) {
+	//				highlighEntity.SetNewHighlightedEntity(nullptr);
+	//				m_entityToInspect = nullptr;
+	//			}
+	//			return;
+	//		}
+	//		else {
+	//			m_entityToInspect = WorldSystem::Instance()->GetEntityByID(a_id);
+	//			highlighEntity.SetNewHighlightedEntity(m_entityToInspect);
+	//		}
+	//	}
+	//}
 
-	void EntityInspectorWidget::OnEntityClick(std::string a_id)
+	void EntityInspectorWidget::OnEntityManipulation(std::string a_id, std::string a_id2) 
 	{
-		if (!m_renameEntityWindow && !m_showKeycodeWindow) {
-			// "-1" - clicked on empty space
-			if (a_id == "-1") {
-				// Deselect the entity i.e set it to a nullptr
-				if (m_entityToInspect != nullptr) {
+		if (a_id == "entity_clicked") {
+			if (!m_renameEntityWindow && !m_showKeycodeWindow) {
+				// "-1" - clicked on empty space
+				if (a_id2 == "-1") {
+					// Deselect the entity i.e set it to a nullptr
+					if (m_entityToInspect != nullptr) {
+						highlighEntity.SetNewHighlightedEntity(nullptr);
+						m_entityToInspect = nullptr;
+					}
+					return;
+				}
+				else {
+					m_entityToInspect = WorldSystem::Instance()->GetEntityByID(a_id2);
+					highlighEntity.SetNewHighlightedEntity(m_entityToInspect);
+				}
+			}
+		}
+		if (a_id == "entity_destroyed") {
+			// Check if the destroyed entity is the entity we inspect
+			if (m_entityToInspect != nullptr) {
+				if (WorldSystem::Instance()->Instance()->GetEntityByID(a_id2) == m_entityToInspect) {
 					highlighEntity.SetNewHighlightedEntity(nullptr);
 					m_entityToInspect = nullptr;
 				}
-				return;
-			}
-			else {
-				m_entityToInspect = WorldSystem::Instance()->GetEntityByID(a_id);
-				highlighEntity.SetNewHighlightedEntity(m_entityToInspect);
 			}
 		}
-	}
-
-	void EntityInspectorWidget::OnEntityDestroyed(std::string a_id)
-	{
-		// Check if the destroyed entity is the entity we inspect
-		if (m_entityToInspect != nullptr) {
-			if (WorldSystem::Instance()->Instance()->GetEntityByID(a_id) == m_entityToInspect) {
-				highlighEntity.SetNewHighlightedEntity(nullptr);
-				m_entityToInspect = nullptr;
-			}
+		if (a_id == "entity_rename") {
+			m_renameEntityWindow = true;
 		}
 	}
-
 } }

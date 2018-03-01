@@ -5,10 +5,6 @@
 namespace nano { namespace editor {  
 
 	enum EventTypes {
-		CREATED_ENTITY,
-		REMOVED_ENTITY,
-		CLICKED_ON_ENTITY,
-		RENAME_ENTITY,
 		MANIPULATED_COMPONENT,
 		MANIPULATED_ENTITY,
 		CONSOLE_MESSAGE

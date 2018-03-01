@@ -53,25 +53,21 @@ namespace nano { namespace editor {
 		ImGui::End();
 	}
 
-	void ConsoleWidget::OnEntityCreation(std::string a_id)
+	void ConsoleWidget::OnEntityManipulation(std::string a_id, std::string a_id2)
 	{
-		AddConsoleMessage("Created entity with ID " + a_id, math::Vector4(0, 1, 0, 1));
-	}
-
-	void ConsoleWidget::OnEntityDestroyed(std::string a_id)
-	{
-		AddConsoleMessage("Destroyed entity with ID " + a_id, math::Vector4(1, 0, 0 , 1));
-	}
-
-	void ConsoleWidget::OnEntityClick(std::string a_id)
-	{
-		if (a_id == "-1") return; // Empty space
-		AddConsoleMessage("Clicked on entity with ID " + a_id);
-	}
-
-	void ConsoleWidget::OnEntityRename(std::string a_id)
-	{
-		AddConsoleMessage("Renaming entity with ID " + a_id);
+		if (a_id == "entity_created") {
+			AddConsoleMessage("Created entity with ID " + a_id2, math::Vector4(0, 1, 0, 1));
+		}
+		else if (a_id == "entity_clicked") {
+			if (a_id == "-1") return; // Empty space
+			AddConsoleMessage("Clicked on entity with ID " + a_id2);
+		}
+		else if (a_id == "entity_destroyed") {
+			AddConsoleMessage("Destroyed entity with ID " + a_id, math::Vector4(1, 0, 0, 1));
+		}
+		else if (a_id == "entity_rename") {
+			AddConsoleMessage("Renaming entity with ID " + a_id);
+		}
 	}
 
 	void ConsoleWidget::OnComponentManipulation(std::string a_id, std::string a_id2, std::string a_id3)
