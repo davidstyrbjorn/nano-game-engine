@@ -1,0 +1,20 @@
+[LEVEL_CONFIG]
+cam_pos -333, -182
+fps 60
+
+[LEVEL_ENTITIES]
+[ENTITY]
+id unnamed
+transform
+pos 78, 44
+size 100, 100
+angle 0
+renderable
+vertex_count 3
+color 1, 0.675, 0.0118, 1
+path none
+sound component
+none
+fourway move component
+none
+

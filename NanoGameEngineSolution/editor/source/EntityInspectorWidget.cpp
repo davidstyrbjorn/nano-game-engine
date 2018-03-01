@@ -324,7 +324,9 @@ namespace nano { namespace editor {
 				if (ImGui::Selectable("Rectangle Component")) {
 					if (!hasRenderableComponent) {
 						m_entityToInspect->AddComponent(new ecs::RectangleComponent(m_addComponentColor));
-						m_entityToInspect->m_transform->size = m_addComponentSize;
+						if (m_entityToInspect->m_transform->size == math::Vector2(0, 0)) {
+							m_entityToInspect->m_transform->size = m_addComponentSize;
+						}
 					}
 					else {
 						// Already have renderable component
@@ -333,7 +335,9 @@ namespace nano { namespace editor {
 				if (ImGui::Selectable("Triangle Component")) {
 					if (!hasRenderableComponent) {
 						m_entityToInspect->AddComponent(new ecs::TriangleComponent(m_addComponentColor));
-						m_entityToInspect->m_transform->size = m_addComponentSize;
+						if (m_entityToInspect->m_transform->size == math::Vector2(0, 0)) {
+							m_entityToInspect->m_transform->size = m_addComponentSize;
+						}
 					}
 					else {
 						// Already have renderable component

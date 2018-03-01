@@ -17,6 +17,7 @@
 #include<InputDefinitions.h>
 
 #include"../include/LevelParser.h"
+#include"../include/systems/EditorConfig.h"
 
 namespace nano { namespace editor { 
 
@@ -37,6 +38,7 @@ namespace nano { namespace editor {
 	void EditorCore::Init()
 	{
 		// Start every editor system
+		EditorConfig::Instance()->loadProjectInfo();
 
 		// Window System (1200 by 800)
 		m_windowSystem = WindowSystem::Instance();
@@ -88,7 +90,7 @@ namespace nano { namespace editor {
 
 			if (m_frameClock.GetTicks() >= MS) {
 				// Pre-frame 
-				m_windowSystem->GetWindow().Clear(math::Vector4(0.1f, 0.1f, 0.1f, 0));
+				m_windowSystem->GetWindow().Clear(math::Vector4(0.2f, 0.2f, 0.2f, 0));
 
 				// Events stuff
 				m_inputSystem->Update();

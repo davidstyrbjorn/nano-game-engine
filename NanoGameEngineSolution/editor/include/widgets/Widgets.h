@@ -64,7 +64,7 @@ namespace nano { namespace editor {
 
 		// Add component
 		const math::Vector2 m_addComponentSize = math::Vector2(100, 100);
-		const math::Vector4 m_addComponentColor = math::Vector4(1, 0, 1, 1);
+		const math::Vector4 m_addComponentColor = math::Vector4(1, 1, 1, 1);
 
 		// Rename
 		bool m_renameEntityWindow = false;
