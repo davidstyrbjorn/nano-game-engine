@@ -18,7 +18,7 @@ namespace nano { namespace editor {
 	private:
 		std::deque<BaseEvent> m_polledEvents; // Current list of polled events
 		std::vector<EventObserver*> m_eventObservers; // List of objects that wants to listen to events (-ish)
-		const int g_maxEvents = 40; // max number of events
+		const int g_maxEvents = 10; // max number of events
 
 	public:
 		// Methods

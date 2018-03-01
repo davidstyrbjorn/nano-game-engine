@@ -117,7 +117,11 @@ namespace nano { namespace editor {
 					//std::cout << "File does not exist big lol" << std::endl;
 					levelParser.ParseCurrentLevelToFile(location.c_str());
 				}
+
+				// Done with saving
 				m_showSaveLevelWidget = false;
+				std::string message = "Saved Level " + std::string(buffer) + " at resources/levels/" + std::string(buffer) + ".txt";
+				EditorWidgetSystem::Instance()->GetEventHandler().AddEvent(BaseEvent(EventTypes::CONSOLE_MESSAGE, message));
 			}
 
 			ImGui::End();

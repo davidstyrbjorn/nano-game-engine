@@ -79,6 +79,11 @@ namespace nano { namespace editor {
 		AddConsoleMessage(a_id3 + " " + a_id2 + " on entity " + a_id);
 	}
 
+	void ConsoleWidget::OnNewConsoleMessage(std::string a_id)
+	{
+		AddConsoleMessage(a_id);
+	}
+
 	void ConsoleWidget::AddConsoleMessage(const std::string & a_message, const math::Vector4& a_color)
 	{
 		if (m_messageQueue.size() >= MESSAGE_COUNT_MAX)

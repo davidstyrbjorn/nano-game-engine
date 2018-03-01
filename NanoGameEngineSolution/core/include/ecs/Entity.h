@@ -14,7 +14,6 @@ namespace nano { namespace ecs {
 	private:
 		std::string m_id;
 		ECSStates m_state = ECSStates::ACTIVE;
-		ECSEditorStates m_editorState = ECSEditorStates::NOT_HIGHLIGHTED;
 
 		std::vector<Component*> m_componentsBag;
 
@@ -75,16 +74,13 @@ namespace nano { namespace ecs {
 		std::string GetID();
 		std::string GetIDReference();
 		int GetState();
-		int GetEditorState();
 		graphics::Renderable* GetRenderableComponent();
 
 		//////////
 		// Member setters
-		//////////
-		
+		//////////		
 		void SetID(const std::string &a_id);
 		void SetState(const int a_state);
-		void SetEditorState(const int a_state);
 		void SetRenderableComponent(graphics::Renderable* a_renderable);
 	};
 	

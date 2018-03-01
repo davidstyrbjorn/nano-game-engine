@@ -534,16 +534,13 @@ namespace nano { namespace editor {
 			if (a_id == "-1") {
 				// Deselect the entity i.e set it to a nullptr
 				if (m_entityToInspect != nullptr) {
-					m_entityToInspect->SetEditorState(ecs::ECSEditorStates::NOT_HIGHLIGHTED);
 					highlighEntity.SetNewHighlightedEntity(nullptr);
 					m_entityToInspect = nullptr;
 				}
 				return;
 			}
 			else {
-				//m_addComponentWindow = false;
 				m_entityToInspect = WorldSystem::Instance()->GetEntityByID(a_id);
-				m_entityToInspect->SetEditorState(ecs::ECSEditorStates::HIGHLIGHTED);
 				highlighEntity.SetNewHighlightedEntity(m_entityToInspect);
 			}
 		}

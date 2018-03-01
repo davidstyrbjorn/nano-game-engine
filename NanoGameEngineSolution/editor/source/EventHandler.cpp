@@ -21,9 +21,14 @@ namespace nano { namespace editor {
 		m_polledEvents.push_back(a_event);
 
 		// Message the observers
-		if (a_event._type == EventTypes::CREATED_ENTITY) {
+		//if (a_event._type == EventTypes::CREATED_ENTITY) {
+		//	for (EventObserver *_observer : m_eventObservers) {
+		//		_observer->OnEntityCreation(a_event._strID);
+		//	}
+		//}
+		if (a_event._type == EventTypes::MANIPULATED_ENTITY) {
 			for (EventObserver *_observer : m_eventObservers) {
-				_observer->OnEntityCreation(a_event._strID);
+				_observer->OnEntityManipulation(a_event._strID, a_event._strID2);
 			}
 		}
 		else if (a_event._type == EventTypes::REMOVED_ENTITY) {
@@ -44,6 +49,11 @@ namespace nano { namespace editor {
 		else if (a_event._type == EventTypes::MANIPULATED_COMPONENT) {
 			for (EventObserver *_observer : m_eventObservers) {
 				_observer->OnComponentManipulation(a_event._strID, a_event._strID2, a_event._strID3);
+			}
+		}
+		else if (a_event._type == EventTypes::CONSOLE_MESSAGE) {
+			for (EventObserver *_observer : m_eventObservers) {
+				_observer->OnNewConsoleMessage(a_event._strID);
 			}
 		}
 	}

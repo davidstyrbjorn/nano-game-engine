@@ -49,7 +49,8 @@ namespace nano { namespace editor {
 		void OnEntityDestroyed(std::string a_id)  override;
 		void OnEntityClick(std::string a_id) 	  override;
 		void OnEntityRename(std::string a_id) 	  override;
-		virtual void OnComponentManipulation(std::string a_id, std::string a_id2, std::string a_id3) override;
+		void OnComponentManipulation(std::string a_id, std::string a_id2, std::string a_id3) override;
+		void OnNewConsoleMessage(std::string a_id) override;
 	};
 
 	// Entity Inspector upper-right

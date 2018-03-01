@@ -98,11 +98,6 @@ namespace nano { namespace ecs {
 		return m_state;
 	}
 
-	int Entity::GetEditorState()
-	{
-		return m_editorState;
-	}
-
 	graphics::Renderable * Entity::GetRenderableComponent()
 	{
 		return m_renderableComponent;
@@ -116,11 +111,6 @@ namespace nano { namespace ecs {
 	void Entity::SetState(const int a_state)
 	{
 		m_state = static_cast<ECSStates>(a_state);
-	}
-
-	void Entity::SetEditorState(const int a_state)
-	{
-		m_editorState = static_cast<ECSEditorStates>(a_state);
 	}
 
 	void Entity::SetRenderableComponent(graphics::Renderable * a_renderable)
