@@ -21,7 +21,9 @@ namespace nano { namespace editor {
 
 	void WindowSystem::Start()
 	{
-		m_window = new graphics::Window(math::Vector2(1200, 800), "Nano Editor (Windows Standalone x86)");
+		std::string projectName = EditorConfig::Instance()->getProjectInfo().projectName;
+		std::string caption = "Project: " + projectName + " || Nano Editor (Windows Standalone x86)";
+		m_window = new graphics::Window(math::Vector2(1200, 800), caption);
 		m_window->owner = this;
 		EditorConfig::Instance()->setWindowSize(math::Vector2(1200, 800));
 	}
