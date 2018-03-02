@@ -53,7 +53,7 @@ namespace nano { namespace editor {
 					m_showSaveLevelWidget = true;
 				}
 				if (ImGui::Selectable("Load Level")) {
-
+					std::vector<ecs::Entity*> temp = levelParser.GetParsedLevelFromFile("level.txt").entities;
 				}
 
 				ImGui::EndMenu();

@@ -7,6 +7,8 @@
 #include<ecs\Entity.h>
 #include<graphics\Renderable.h>
 #include<ecs\components\SpriteComponent.h>
+#include<ecs\components\TriangleComponent.h>
+#include<ecs\components\RectangleComponent.h>
 #include<ecs\components\TransformComponent.h>
 #include<ecs\components\SoundComponent.h>
 #include<ecs\components\FourwayMoveComponent.h>
@@ -18,16 +20,145 @@
 
 namespace nano { namespace editor {
 
+	std::vector<std::string> LevelParser::GetSegmentedString(std::string a_stringToSplit) 
+	{
+		std::vector<std::string> segmentedString;
+		std::stringstream ss(a_stringToSplit);
+		std::string segment;
+
+		while (std::getline(ss, segment, '\n')) {
+			segmentedString.push_back(segment);
+		}
+
+		return segmentedString;
+	}
+
 	LevelParser::LevelParser()
 	{
 	}
 
-	std::string LevelParser::GetLevelStringFromFile(const char* a_folderPath)
+	const ParsedLevel LevelParser::GetParsedLevelFromFile(const char * a_levelFileName)
 	{
-		return m_levelString;
+		ParsedLevel parsedLevel;
+
+		std::string levelString = GetLevelStringFromFile(a_levelFileName);
+		// Here now, [0] will be [LEVEL_CONFIG]
+		std::vector<std::string> segmentedLevelString = GetSegmentedString(levelString);
+		std::vector<ecs::Entity*> entities;
+
+		if (segmentedLevelString[0] != "[LEVEL_CONFIG]") {
+			std::cout << "Invalid level file was loaded";
+			return parsedLevel;
+		}
+
+		ecs::Entity* entityToAdd = nullptr;
+		// Current Renderable info
+		int vertex_count;
+		math::Vector4 color; 
+		std::string path;
+
+		for (std::string line : segmentedLevelString) {
+			std::cout << line << std::endl;
+			if (line == "[ENTITY]") {
+				if (entityToAdd == nullptr) {
+					// This is the first so just create a new entity
+					entityToAdd = new ecs::Entity("untitled");
+				}
+				else {
+					// We're now on a new entity so push back the old and reset (call new on EntityToAdd)
+					entities.push_back(entityToAdd);
+					entityToAdd = new ecs::Entity("untitled");
+				}
+			}
+			if (line == "[ENTITIES_END]") {
+				if (entityToAdd != nullptr) {
+					entities.push_back(entityToAdd);
+					entityToAdd = nullptr;
+				}
+			}
+
+			if (entityToAdd != nullptr) {
+				// Entity ID
+				if (line.substr(0, 2) == "id") {
+					entityToAdd->SetID(line.substr(3, line.length()));
+				}
+				// Transform
+				// Position
+				if (line.substr(0, 3) == "pos") {
+					int splitIndex = line.find(',');
+					float x = std::stof(line.substr(4, splitIndex));
+					float y = std::stof(line.substr(splitIndex + 1, line.length()));
+					entityToAdd->m_transform->position = math::Vector2(x, y);
+				}
+				// Size
+				else if (line.substr(0, 4) == "size") {
+					int splitIndex = line.find(',');
+					float x = std::stof(line.substr(5, splitIndex));
+					float y = std::stof(line.substr(splitIndex + 1, line.length()));
+					entityToAdd->m_transform->size = math::Vector2(x, y);
+				}
+				// Angle
+				else if (line.substr(0, 5) == "angle") {
+					float angle = std::stoi(line.substr(6, line.length()));
+					entityToAdd->m_transform->angle = angle;
+				}
+				// Renderable 
+				// 1. vertex_count
+				else if (line.substr(0, 12) == "vertex_count") {
+					vertex_count = std::stoi(line.substr(13, line.length()));
+				}
+				else if (line.substr(0, 5) == "color") {
+					float x, y, z, w;
+					int splitIndex1, splitIndex2, splitIndex3;
+					std::string string = line.substr(6, line.length());
+					x = std::stof(string.substr(0, line.find_first_of(',')));
+					string = line.substr(line.find_first_of(',') + 1, line.length());
+
+					// String should now be y, z, w
+					y = std::stof(string.substr(0, string.find_first_of(',')));
+					z = std::stof(string.substr(string.find_first_of(',')+1, string.find_last_of(',')));
+					w = std::stof(string.substr(string.find_last_of(',') + 1, string.length()));
+
+					color = math::Vector4(x, y, z, w);
+				}
+				else if (line.substr(0, 4) == "path") {
+					path = line.substr(5, line.length());
+
+					// Now add component!
+					if (vertex_count == 3) {
+						// Triangle 
+						entityToAdd->AddComponent(new ecs::TriangleComponent(color));
+					}
+					else if (vertex_count == 4) {
+						// Rectangle OR Sprite
+						if (path == "none") {
+							// Rectangle
+							entityToAdd->AddComponent(new ecs::RectangleComponent(color));
+						}
+						else {
+							// Sprite
+							entityToAdd->AddComponent(new ecs::SpriteComponent(path.c_str()));
+						}
+					}
+				}
+			}
+		}
+
+		parsedLevel.entities = entities;
+
+		return parsedLevel;
 	}
 
-	void LevelParser::ParseCurrentLevelToFile(const char* a_folderPath)
+	std::string LevelParser::GetLevelStringFromFile(const char* a_levelFileName)
+	{
+		OpenInputFile(std::string("resources\\levels\\" + std::string(a_levelFileName)).c_str());
+		std::string levelString;
+		GetAllFileContent(levelString);
+		CloseInputFile();
+		return levelString;
+	}
+
+	void LevelParser::ParseCurrentLevelToFile(const char* a_levelFileName)
 	{
 		// TODO: 2018/13/02
 		// Parse every entity from the world into the level text file
@@ -38,7 +169,7 @@ namespace nano { namespace editor {
 
 		std::vector<ecs::Entity*> entitiesToSave = world->GetEntityList();
 
-		nano::OpenOutputFile(a_folderPath, OpenMode::TRUNCATE);
+		nano::OpenOutputFile(a_levelFileName, OpenMode::TRUNCATE);
 
 		// This is where we parse the entire fucking level into a text file with the correct format
 
@@ -128,6 +259,8 @@ namespace nano { namespace editor {
 
 			nano::InsertBlankLine();
 		}
+
+		nano::WriteToFile("[ENTITIES_END]");
 		
 		nano::CloseOutputFile();
 	}
