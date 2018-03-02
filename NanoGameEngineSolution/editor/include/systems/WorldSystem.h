@@ -40,6 +40,8 @@ namespace nano { namespace editor {
 		std::vector<ecs::Entity*> GetEntityListCopy();
 		// Outside creation
 		void CreateNewEntity(std::string a_entityName);
+		// Loaded new level
+		void LoadedNewLevel(std::vector<ecs::Entity*> a_entityList); // Possible event from the event-observer system?
 
 		// EditorSystem base class
 		void Start() override;

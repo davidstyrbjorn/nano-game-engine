@@ -39,7 +39,7 @@ namespace nano { namespace editor {
 
 	void MenuBarWidget::Render()
 	{
-
+		static bool m_showLoadLevelWidget = false;
 		static bool m_showSaveLevelWidget = false;
 		static bool m_showCreditsWidget = false;
 		static LevelParser levelParser;
@@ -51,20 +51,19 @@ namespace nano { namespace editor {
 			{
 				if (ImGui::Selectable("Save Level")) {
 					m_showSaveLevelWidget = true;
+					m_showLoadLevelWidget = false;
 				}
 				if (ImGui::Selectable("Load Level")) {
-					std::vector<ecs::Entity*> temp = levelParser.GetParsedLevelFromFile("level.txt").entities;
+					m_showLoadLevelWidget = true;
+					m_showSaveLevelWidget = false;
 				}
 
 				ImGui::EndMenu();
 			}
 			if (ImGui::BeginMenu("Invoke")) 
 			{
-				if (ImGui::Selectable("Compile & Run")) {
-
-				}
-				if (ImGui::Selectable("Compile")) {
-
+				if (ImGui::Selectable("Run Game")) {
+					// Run engine.exe here please
 				}
 				ImGui::EndMenu();
 			}
@@ -123,6 +122,27 @@ namespace nano { namespace editor {
 				std::string message = "Saved Level " + std::string(buffer) + " at resources/levels/" + std::string(buffer) + ".txt";
 				EditorWidgetSystem::Instance()->GetEventHandler().AddEvent(BaseEvent(EventTypes::CONSOLE_MESSAGE, message));
 			}
+
+			ImGui::End();
+		}
+		else if (m_showLoadLevelWidget) {
+			static int width = 300;
+			static int height = 200;
+			// Center the window 
+			ImGui::SetNextWindowPos(ImVec2((EditorConfig::Instance()->getWindowSize().x / 2) - (width / 2), (EditorConfig::Instance()->getWindowSize().y / 2) - (height)));
+			ImGui::Begin("Load Level", &m_showLoadLevelWidget, ImVec2(width, height), 1.0f, ImGuiWindowFlags_::ImGuiWindowFlags_NoResize | ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_::ImGuiWindowFlags_NoMove);
+
+			static char buffer[128] = "";
+			ImGui::InputText("Level Name", buffer, 128);
+			if (ImGui::Button("Load")) {
+				// TODO @: Check if file exists before loading it
+				std::string location = "resources\\levels\\" + std::string(buffer) + ".txt";
+				std::vector<ecs::Entity*> temp = levelParser.GetParsedLevelFromFile(location.c_str()).entities;
+				WorldSystem::Instance()->LoadedNewLevel(temp);
+			}
+
+			// Done with loading
+			m_showLoadLevelWidget = false;
 
 			ImGui::End();
 		}

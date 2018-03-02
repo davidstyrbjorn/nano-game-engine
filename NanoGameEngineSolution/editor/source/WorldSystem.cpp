@@ -46,6 +46,18 @@ namespace nano { namespace editor {
 		AddNewEntity(newEntity);
 	}
 
+	void WorldSystem::LoadedNewLevel(std::vector<ecs::Entity*> a_entityList)
+	{
+		// Delete every old entity
+		for (std::vector<ecs::Entity*>::iterator _it = m_entityList.begin(); _it != m_entityList.end(); ++_it) {
+			delete (*_it);
+		}
+		m_entityList.clear();
+
+		// Set the new entity list 
+		m_entityList = a_entityList;
+	}
+
 	void WorldSystem::Start()
 	{
 		for (ecs::Entity* entity : m_entityList) {

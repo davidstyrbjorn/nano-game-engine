@@ -1,32 +1,17 @@
 [LEVEL_CONFIG]
-cam_pos -290, -162
+cam_pos -312, -94
 fps 60
 
 [LEVEL_ENTITIES]
 [ENTITY]
-id cube
+id triangle1
 transform
-pos 308, 99
-size 100, 100
-angle 0
-renderable
-vertex_count 4
-color 0, 1, 1, 1
-path none
-sound component
-none
-fourway move component
-none
-
-[ENTITY]
-id trangle
-transform
-pos 211, 99
+pos 308, 135
 size 100, 100
 angle 0
 renderable
 vertex_count 3
-color 0.867, 1, 0.475, 1
+color 1, 1, 1, 1
 path none
 sound component
 none
@@ -34,4 +19,3 @@ fourway move component
 none
 
 [ENTITIES_END]
-

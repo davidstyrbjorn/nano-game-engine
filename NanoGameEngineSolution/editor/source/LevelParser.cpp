@@ -42,6 +42,11 @@ namespace nano { namespace editor {
 		ParsedLevel parsedLevel;
 
 		std::string levelString = GetLevelStringFromFile(a_levelFileName);
+		if (levelString == "NULL") {
+			std::cout << "Cannot load level file" << std::endl;
+			return parsedLevel;
+		}
+
 		// Here now, [0] will be [LEVEL_CONFIG]
 		std::vector<std::string> segmentedLevelString = GetSegmentedString(levelString);
 		std::vector<ecs::Entity*> entities;
@@ -58,7 +63,7 @@ namespace nano { namespace editor {
 		std::string path;
 
 		for (std::string line : segmentedLevelString) {
-			std::cout << line << std::endl;
+			//std::cout << line << std::endl;
 			if (line == "[ENTITY]") {
 				if (entityToAdd == nullptr) {
 					// This is the first so just create a new entity
@@ -151,7 +156,9 @@ namespace nano { namespace editor {
 
 	std::string LevelParser::GetLevelStringFromFile(const char* a_levelFileName)
 	{
-		OpenInputFile(std::string("resources\\levels\\" + std::string(a_levelFileName)).c_str());
+		if (!OpenInputFile(std::string(std::string(a_levelFileName)).c_str())) {
+			return "NULL";
+		}
 		std::string levelString;
 		GetAllFileContent(levelString);
 		CloseInputFile();
@@ -160,10 +167,7 @@ namespace nano { namespace editor {
 
 	void LevelParser::ParseCurrentLevelToFile(const char* a_levelFileName)
 	{
-		// TODO: 2018/13/02
-		// Parse every entity from the world into the level text file
-		// Parse every config-thing i.e; background-color, camera-stuff etc
-		
+		// Parse every config-thing i.e; background-color, camera-stuff etc		
 		RendererSystem *renderSystem = RendererSystem::Instance();
 		WorldSystem* world = WorldSystem::Instance();
 
