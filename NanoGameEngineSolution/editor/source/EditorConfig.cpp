@@ -35,6 +35,8 @@ namespace nano { namespace editor {
 				m_projectInfo.localPath = _word.substr(11, _word.length());
 			}
 		}
+
+		infoFile.close();
 	}
 
 	EditorConfig::ProjectInfo EditorConfig::getProjectInfo()

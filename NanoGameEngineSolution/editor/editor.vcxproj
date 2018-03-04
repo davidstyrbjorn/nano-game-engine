@@ -82,7 +82,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)\core\include;$(SolutionDir)\dependencies\glew\include;$(SolutionDir)\dependencies\glfw\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\core\include;$(SolutionDir)\dependencies\glew\include;$(SolutionDir)\dependencies\glfw\include;$(SolutionDir)\dependencies\dirent\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -96,7 +96,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)\core\include;$(SolutionDir)\dependencies\glew\include;$(SolutionDir)\dependencies\glfw\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\core\include;$(SolutionDir)\dependencies\glew\include;$(SolutionDir)\dependencies\glfw\include;$(SolutionDir)\dependencies\dirent\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(SolutionDir)\core\Builds\Debug</AdditionalLibraryDirectories>

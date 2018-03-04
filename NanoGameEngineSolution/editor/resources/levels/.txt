@@ -1,5 +1,5 @@
 [LEVEL_CONFIG]
-cam_pos -286, -151
+cam_pos -286, -75
 fps 60
 
 [LEVEL_ENTITIES]
@@ -21,13 +21,14 @@ none
 [ENTITY]
 id unnamed
 transform
-pos 184, 154
-size 150, 150
+pos 163, 138
+size 196, 169
 angle 0
 renderable
 vertex_count 4
 color 1, 1, 1, 1
-path D:\temp\cat.png
+path лллл
+
 sound component
 none
 fourway move component

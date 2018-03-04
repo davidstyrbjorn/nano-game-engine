@@ -1,6 +1,5 @@
 #include"../include/widgets/Widgets.h"
 
-
 #include"../include/DearImGui/imgui.h"
 
 #include"../include/systems/WorldSystem.h"
@@ -10,6 +9,8 @@
 
 #include<iostream>
 #include<fstream>
+#include<dirent.h>
+#include<sys\types.h>
 
 namespace nano { namespace editor {
 
@@ -21,6 +22,16 @@ namespace nano { namespace editor {
 		}
 
 		return false;
+	}
+
+	void ReadDirectory(const std::string& name, std::vector<std::string>& v)
+	{
+		DIR* dirp = opendir(name.c_str());
+		struct dirent * dp;
+		while ((dp = readdir(dirp)) != NULL) {
+			v.push_back(dp->d_name);
+		}
+		closedir(dirp);
 	}
 
 	MenuBarWidget::MenuBarWidget()
@@ -133,16 +144,36 @@ namespace nano { namespace editor {
 			ImGui::Begin("Load Level", &m_showLoadLevelWidget, ImVec2(width, height), 1.0f, ImGuiWindowFlags_::ImGuiWindowFlags_NoResize | ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_::ImGuiWindowFlags_NoMove);
 
 			static char buffer[128] = "";
-			ImGui::InputText("Level Name", buffer, 128);
-			if (ImGui::Button("Load")) {
+			bool enter = ImGui::InputText("Level Name", buffer, 128, ImGuiInputTextFlags_::ImGuiInputTextFlags_EnterReturnsTrue);
+			if (ImGui::Button("Load") || enter) {
 				// TODO @: Check if file exists before loading it
 				std::string location = "resources\\levels\\" + std::string(buffer) + ".txt";
 				std::vector<ecs::Entity*> temp = levelParser.GetParsedLevelFromFile(location.c_str()).entities;
 				WorldSystem::Instance()->LoadedNewLevel(temp);
+
+				// Done with loading
+				m_showLoadLevelWidget = false;
 			}
 
-			// Done with loading
-			m_showLoadLevelWidget = false;
+			ImGui::Separator();
+
+			// List levels inside resources\levels\*
+			std::vector<std::string> fileList;
+			ReadDirectory("resources\\levels\\", fileList);
+			for (std::string i : fileList) {
+				if (i != "." && i != "..") {
+					std::string temp = i.substr(0, i.length() - 4);
+					if (ImGui::Selectable(temp.c_str())) {
+						// TODO @: Check if file exists before loading it
+						std::string location = "resources\\levels\\" + temp + ".txt";
+						std::vector<ecs::Entity*> temp = levelParser.GetParsedLevelFromFile(location.c_str()).entities;
+						WorldSystem::Instance()->LoadedNewLevel(temp);
+
+						// Done with loading
+						m_showLoadLevelWidget = false;
+					}
+				}
+			}
 
 			ImGui::End();
 		}
