@@ -53,16 +53,24 @@ namespace nano { namespace editor {
 		static bool m_showLoadLevelWidget = false;
 		static bool m_showSaveLevelWidget = false;
 		static bool m_showCreditsWidget = false;
+		static bool m_showVersionWidget = false;
 		static LevelParser levelParser;
+		std::string currentLevelName = EditorConfig::Instance()->getCurrentlyLevelName();
 
 		if (ImGui::BeginMainMenuBar()) 
 		{
 
 			if (ImGui::BeginMenu("File")) 
 			{
-				if (ImGui::Selectable("Save Level")) {
+				if (ImGui::Selectable("Save Level As")) {
 					m_showSaveLevelWidget = true;
 					m_showLoadLevelWidget = false;
+				}
+				if (currentLevelName != "none") {
+					std::string temp = "Save Level (" + currentLevelName + ")";
+					if(ImGui::Selectable(temp.c_str())) {
+						SaveLevel(currentLevelName);
+					}
 				}
 				if (ImGui::Selectable("Load Level")) {
 					m_showLoadLevelWidget = true;
@@ -80,10 +88,12 @@ namespace nano { namespace editor {
 			}
 			if (ImGui::BeginMenu("About")) {
 				if (ImGui::Selectable("Version")) {
-
+					m_showVersionWidget = true;
+					m_showCreditsWidget = false;
 				}
 				if (ImGui::Selectable("Credit")) {
 					m_showCreditsWidget = true;
+					m_showVersionWidget = false;
 				}
 				ImGui::EndMenu();
 			}
@@ -100,12 +110,41 @@ namespace nano { namespace editor {
 			ImGui::EndMainMenuBar();
 		}
 
+		// About Widgets
 		if (m_showCreditsWidget) {
+			static int width = 300;
+			static int height = 200;
+			// Center the window 
+			ImGui::SetNextWindowPos(ImVec2((EditorConfig::Instance()->getWindowSize().x / 2) - (width / 2), (EditorConfig::Instance()->getWindowSize().y / 2) - (height)));
 			ImGui::Begin("Credits", &m_showCreditsWidget, ImVec2(300, 200), 1.0f, ImGuiWindowFlags_::ImGuiWindowFlags_NoResize | ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse);
 			ImGui::Text("Programmer: David Styrbjörn");
 			ImGui::Text("License: GNU General Public License v3.0");
+
+			ImGui::Spacing();
+			ImGui::Separator();
+			ImGui::Spacing();
+			
+			ImGui::Text("David Styrbjörn Contact Info");
+			ImGui::Text("Email: davidstyrbjorn@gmail.com");
+			ImGui::Text("GitHub: https://github.com/Mieeh");
+			ImGui::Text("LinkedIn: 'David Styrbjorn'");
+
 			ImGui::End();
 		}
+		else if (m_showVersionWidget) {
+			static int width = 300;
+			static int height = 75;
+			// Center the window 
+			ImGui::SetNextWindowPos(ImVec2((EditorConfig::Instance()->getWindowSize().x / 2) - (width / 2), (EditorConfig::Instance()->getWindowSize().y / 2) - (height*2)));
+			ImGui::Begin("Version", &m_showVersionWidget, ImVec2(width, height), 1.0f, ImGuiWindowFlags_::ImGuiWindowFlags_NoResize | ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse);
+
+			std::string temp = "Version: " + EditorConfig::Instance()->getVersionString();
+			ImGui::Text(temp.c_str());
+
+			ImGui::End();
+		}
+
+		// Saving/Loading Widgets
 		if (m_showSaveLevelWidget) {
 			static int width = 300;
 			static int height = 200;
@@ -116,22 +155,10 @@ namespace nano { namespace editor {
 			static char buffer[128] = "";
 			ImGui::InputText("Level Name", buffer, 128);
 			if (ImGui::Button("Save")) {
-				std::string location = "resources\\levels\\" + std::string(buffer) + ".txt";
-				// Check if there's already a saved level with this name!
-				// @ TODO: Handle if there's already a existing level with said name
-				if (DoesFileExist(location)) {
-					//std::cout << "Hello! This level already exists" << std::endl;
-					levelParser.ParseCurrentLevelToFile(location.c_str());
-				}
-				else {
-					//std::cout << "File does not exist big lol" << std::endl;
-					levelParser.ParseCurrentLevelToFile(location.c_str());
-				}
+				SaveLevel(buffer);
 
 				// Done with saving
 				m_showSaveLevelWidget = false;
-				std::string message = "Saved Level " + std::string(buffer) + " at resources/levels/" + std::string(buffer) + ".txt";
-				EditorWidgetSystem::Instance()->GetEventHandler().AddEvent(BaseEvent(EventTypes::CONSOLE_MESSAGE, message));
 			}
 
 			ImGui::End();
@@ -146,10 +173,7 @@ namespace nano { namespace editor {
 			static char buffer[128] = "";
 			bool enter = ImGui::InputText("Level Name", buffer, 128, ImGuiInputTextFlags_::ImGuiInputTextFlags_EnterReturnsTrue);
 			if (ImGui::Button("Load") || enter) {
-				// TODO @: Check if file exists before loading it
-				std::string location = "resources\\levels\\" + std::string(buffer) + ".txt";
-				std::vector<ecs::Entity*> temp = levelParser.GetParsedLevelFromFile(location.c_str()).entities;
-				WorldSystem::Instance()->LoadedNewLevel(temp);
+				LoadLevel(buffer);
 
 				// Done with loading
 				m_showLoadLevelWidget = false;
@@ -164,10 +188,7 @@ namespace nano { namespace editor {
 				if (i != "." && i != "..") {
 					std::string temp = i.substr(0, i.length() - 4);
 					if (ImGui::Selectable(temp.c_str())) {
-						// TODO @: Check if file exists before loading it
-						std::string location = "resources\\levels\\" + temp + ".txt";
-						std::vector<ecs::Entity*> temp = levelParser.GetParsedLevelFromFile(location.c_str()).entities;
-						WorldSystem::Instance()->LoadedNewLevel(temp);
+						LoadLevel(temp); 
 
 						// Done with loading
 						m_showLoadLevelWidget = false;
@@ -177,6 +198,43 @@ namespace nano { namespace editor {
 
 			ImGui::End();
 		}
+	}
+
+	void MenuBarWidget::SaveLevel(std::string a_name)
+	{
+		static LevelParser levelParser;
+
+		std::string location = "resources\\levels\\" + std::string(a_name) + ".txt";
+		// Check if there's already a saved level with this name!
+		// @ TODO: Handle if there's already a existing level with said name
+		if (DoesFileExist(location)) {
+			levelParser.ParseCurrentLevelToFile(location.c_str());
+		}
+		else {
+			levelParser.ParseCurrentLevelToFile(location.c_str());
+		}
+
+		// We've loaded a new level (name)
+		EditorConfig::Instance()->setCurrentLevelName(a_name);
+
+		std::string message = "Saved Level " + std::string(a_name) + " at resources/levels/" + std::string(a_name) + ".txt";
+		EditorWidgetSystem::Instance()->GetEventHandler().AddEvent(BaseEvent(EventTypes::CONSOLE_MESSAGE, message));
+	}
+
+	void MenuBarWidget::LoadLevel(std::string a_name)
+	{
+		static LevelParser levelParser;
+
+		// TODO @: Check if file exists before loading it
+		// TODO @: More than entities are to be loaded from the file
+		std::string location = "resources\\levels\\" + std::string(a_name) + ".txt";
+		std::vector<ecs::Entity*> temp = levelParser.GetParsedLevelFromFile(location.c_str()).entities;
+		WorldSystem::Instance()->LoadedNewLevel(temp);
+
+		// We've loaded a new level (name)
+		EditorConfig::Instance()->setCurrentLevelName(a_name);
+
+
 	}
 }
 }

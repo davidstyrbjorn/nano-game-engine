@@ -16,6 +16,11 @@ namespace nano { namespace editor {
 		return _instance;
 	}
 
+	const std::string EditorConfig::getVersionString()
+	{
+		return (std::to_string(m_majorVersion) + "." + std::to_string(m_minorVersion));
+	}
+
 	void EditorConfig::loadProjectInfo()
 	{
 		std::ifstream infoFile("nano.txt");
@@ -52,6 +57,16 @@ namespace nano { namespace editor {
 	void EditorConfig::setWindowSize(const math::Vector2 & a_windowSize)
 	{
 		m_windowSize = a_windowSize;
+	}
+
+	std::string EditorConfig::getCurrentlyLevelName()
+	{
+		return m_currentLevelName;
+	}
+
+	void EditorConfig::setCurrentLevelName(std::string a_name)
+	{
+		m_currentLevelName = a_name;
 	}
 
 } } 

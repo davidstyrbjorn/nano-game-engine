@@ -18,10 +18,6 @@
 #define GRID_COUNT 864
 #define GRID_BUFFER_SIZE GRID_COUNT * QUAD_SIZE
 
-namespace nano {
-	class CoreConfig;
-}
-
 namespace nano { namespace graphics { 
 
 	class Renderable;
@@ -43,7 +39,6 @@ namespace nano { namespace graphics {
 
 		int m_triangleCount, m_quadCount;
 
-		CoreConfig* m_config;
 		OrthographicCamera *m_camera;
 		
 		// Private methods

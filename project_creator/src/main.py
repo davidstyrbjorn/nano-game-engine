@@ -12,7 +12,7 @@ def main():
     project_path = input("path for your new project>")
     project_name = input("name for your new project>")    
     
-    shutil.copytree("../empty_project", project_path+project_name)
+    shutil.copytree("../../../empty_project", project_path+project_name)
     
     # Crate nano.txt file with correct info written to it
     project_author = input("name of the project author>")

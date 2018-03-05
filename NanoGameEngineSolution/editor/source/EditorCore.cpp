@@ -39,6 +39,7 @@ namespace nano { namespace editor {
 	{
 		// Start every editor system
 		EditorConfig::Instance()->loadProjectInfo();
+		EditorConfig::Instance()->setCurrentLevelName("none");
 
 		// Window System (1200 by 800)
 		m_windowSystem = WindowSystem::Instance();

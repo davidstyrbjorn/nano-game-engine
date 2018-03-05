@@ -135,6 +135,7 @@
   ('unittest.signals', 'd:\\python32\\lib\\unittest\\signals.py', 'PYMODULE'),
   ('unittest', 'd:\\python32\\lib\\unittest\\__init__.py', 'PYMODULE'),
   ('doctest', 'd:\\python32\\lib\\doctest.py', 'PYMODULE'),
+  ('copy', 'd:\\python32\\lib\\copy.py', 'PYMODULE'),
   ('stat', 'd:\\python32\\lib\\stat.py', 'PYMODULE'),
   ('genericpath', 'd:\\python32\\lib\\genericpath.py', 'PYMODULE'),
   ('posixpath', 'd:\\python32\\lib\\posixpath.py', 'PYMODULE'),
@@ -155,5 +156,4 @@
   ('pickle', 'd:\\python32\\lib\\pickle.py', 'PYMODULE'),
   ('tracemalloc', 'd:\\python32\\lib\\tracemalloc.py', 'PYMODULE'),
   ('warnings', 'd:\\python32\\lib\\warnings.py', 'PYMODULE'),
-  ('copy', 'd:\\python32\\lib\\copy.py', 'PYMODULE'),
   ('shutil', 'd:\\python32\\lib\\shutil.py', 'PYMODULE')])
