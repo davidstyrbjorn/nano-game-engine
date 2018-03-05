@@ -4,6 +4,7 @@ def main():
     project_path = ""
     project_name = ""
     project_author = ""
+    startup_level = ""
 
     print("Welcome to the Nano Game Engine project creator!\n")
     
@@ -16,11 +17,13 @@ def main():
     
     # Crate nano.txt file with correct info written to it
     project_author = input("name of the project author>")
+    startup_level = input("startup level name>")
     
     file = open(project_path + project_name + "/nano.txt", "w")
     file.write("project_name " + project_name + "\n")
     file.write("author " + project_author + "\n")
     file.write("local_path " + project_path + project_name)
+    file.write("startup_level" + startup_level)
 
     file.close()
     

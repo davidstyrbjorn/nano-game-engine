@@ -1,0 +1,37 @@
+[LEVEL_CONFIG]
+cam_pos -286, -75
+fps 60
+
+[LEVEL_ENTITIES]
+[ENTITY]
+id triangle
+transform
+pos 193, 43
+size 215, 264
+angle 0
+renderable
+vertex_count 3
+color 1, 1, 1, 1
+path none
+sound component
+none
+fourway move component
+none
+
+[ENTITY]
+id unnamed
+transform
+pos 163, 138
+size 196, 169
+angle 0
+renderable
+vertex_count 4
+color 1, 1, 1, 1
+path лллл
+
+sound component
+none
+fourway move component
+none
+
+[ENTITIES_END]

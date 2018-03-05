@@ -1,0 +1,5 @@
+[LEVEL_CONFIG]
+cam_pos 0, 0
+fps 60
+
+[LEVEL_ENTITIES]

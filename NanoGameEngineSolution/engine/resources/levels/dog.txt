@@ -1,0 +1,6 @@
+[LEVEL_CONFIG]
+cam_pos -231, -106
+fps 60
+
+[LEVEL_ENTITIES]
+[ENTITIES_END]
