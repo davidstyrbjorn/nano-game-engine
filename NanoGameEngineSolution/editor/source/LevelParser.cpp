@@ -1,6 +1,8 @@
 #include"../include/LevelParser.h"
 #include"../include/systems/RendererSystem.h"
 #include"../include/systems/WorldSystem.h"
+#include"../include/systems/EditorWidgetSystem.h"
+#include"../include/EventHandler.h"
 
 #include<graphics\Simple_Renderer.h>
 #include<graphics\Camera.h>
@@ -44,7 +46,8 @@ namespace nano { namespace editor {
 
 		std::string levelString = GetLevelStringFromFile(a_levelFileName);
 		if (levelString == "NULL") {
-			std::cout << "Cannot load level file" << std::endl;
+			std::string message = "Cannot load level at " + std::string(a_levelFileName);
+			EditorWidgetSystem::Instance()->GetEventHandler().AddEvent(BaseEvent(EventTypes::CONSOLE_MESSAGE, message));
 			return parsedLevel;
 		}
 
@@ -70,8 +73,14 @@ namespace nano { namespace editor {
 		int up, right, down, left;
 		float speed;
 
-		for (std::string line : segmentedLevelString) {
-			//std::cout << line << std::endl;
+		for (std::string line : segmentedLevelString) 
+		{
+			if (line.substr(0, 7) == "cam_pos") {
+				int splitIndex = line.find(',');
+				parsedLevel.camPos.x = std::stof(line.substr(8, splitIndex));
+				parsedLevel.camPos.y = std::stof(line.substr(splitIndex + 1, line.length()));
+			}
+
 			if (line == "[ENTITY]") {
 				if (entityToAdd == nullptr) {
 					// This is the first so just create a new entity
@@ -83,7 +92,7 @@ namespace nano { namespace editor {
 					entityToAdd = new ecs::Entity("untitled");
 				}
 			}
-			if (line == "[ENTITIES_END]") {
+			else if (line == "[ENTITIES_END]") {
 				if (entityToAdd != nullptr) {
 					entities.push_back(entityToAdd);
 					entityToAdd = nullptr;

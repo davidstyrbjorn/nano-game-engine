@@ -4,8 +4,12 @@
 
 #include"../include/systems/WorldSystem.h"
 #include"../include/systems/EditorWidgetSystem.h"
+#include"../include/systems/RendererSystem.h"
 #include"../include/LevelParser.h"
 #include"../include/systems/EditorConfig.h"
+
+#include<graphics\Camera.h>
+#include<graphics\Simple_Renderer.h>
 
 #include<iostream>
 #include<fstream>
@@ -225,11 +229,14 @@ namespace nano { namespace editor {
 	{
 		static LevelParser levelParser;
 
-		// TODO @: Check if file exists before loading it
 		// TODO @: More than entities are to be loaded from the file
 		std::string location = "resources\\levels\\" + std::string(a_name) + ".txt";
-		std::vector<ecs::Entity*> temp = levelParser.GetParsedLevelFromFile(location.c_str()).entities;
+		ParsedLevel level = levelParser.GetParsedLevelFromFile(location.c_str());
+		std::vector<ecs::Entity*> temp = level.entities;
 		WorldSystem::Instance()->LoadedNewLevel(temp);
+
+		// Set camera pos 
+		RendererSystem::Instance()->GetSimpleRenderer().GetCamera()->SetPosition(level.camPos);
 
 		// We've loaded a new level (name)
 		EditorConfig::Instance()->setCurrentLevelName(a_name);

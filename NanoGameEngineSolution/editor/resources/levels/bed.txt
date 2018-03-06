@@ -1,5 +1,21 @@
 [LEVEL_CONFIG]
-cam_pos 0, 0
+cam_pos -609, -357
 fps 60
 
 [LEVEL_ENTITIES]
+[ENTITY]
+id det
+transform
+pos -264, -219
+size 100, 100
+angle 0
+renderable
+vertex_count 3
+color 1, 1, 1, 1
+image_path none
+sound component
+none
+fourway move component
+none
+
+[ENTITIES_END]

@@ -39,6 +39,9 @@ namespace nano { namespace editor {
 			else if (_word.substr(0, 10) == "local_path") {
 				m_projectInfo.localPath = _word.substr(11, _word.length());
 			}
+			else if (_word.substr(0, 12) == "startupLevel") {
+				m_projectInfo.startupLevel = _word.substr(13, _word.length());
+			}
 		}
 
 		infoFile.close();

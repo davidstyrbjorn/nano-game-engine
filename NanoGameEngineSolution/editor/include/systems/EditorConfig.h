@@ -11,6 +11,7 @@ public:
 		std::string projectName;
 		std::string author;
 		std::string localPath;
+		std::string startupLevel;
 	};
 
 private:
