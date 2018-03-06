@@ -1,10 +1,10 @@
 #pragma once
 
-#include"../Component.h"
+#include<ecs\Component.h>
 
-namespace nano { namespace ecs {  
-
-	class FourwayMoveComponent : public Component
+namespace nano { namespace editor { 
+	
+	class FourwayMoveComponentEditor : public ecs::Component
 	{
 	private:
 		float m_velocity;
@@ -12,8 +12,8 @@ namespace nano { namespace ecs {
 
 	public:
 		// Default constructor
-		FourwayMoveComponent(float a_velocity, int a_keys[4]);
-		FourwayMoveComponent();
+		FourwayMoveComponentEditor(float a_velocity, int a_keys[4]);
+		FourwayMoveComponentEditor();
 
 		// Component base methods
 		void Start() override;
@@ -26,5 +26,5 @@ namespace nano { namespace ecs {
 		void SetKey(const char* a_key, int a_keyCode);
 		void SetKeys(int a_keys[4]);
 	};
-
+	
 } }

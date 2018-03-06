@@ -13,7 +13,8 @@
 #include<ecs\components\SoundComponent.h>
 #include<ecs\components\TriangleComponent.h>
 #include<ecs\components\SpriteComponent.h>
-#include<ecs\components\FourwayMoveComponent.h>
+
+#include"../include/components/FourwayMoveComponentEditor.h"
 
 #include"../include/systems/WorldSystem.h"
 #include"../include/systems/InputSystem.h"
@@ -275,7 +276,7 @@ namespace nano { namespace editor {
 				ImGui::Spacing(); ImGui::Separator(); ImGui::Spacing();
 			}
 
-			ecs::FourwayMoveComponent* fwmComponent = m_entityToInspect->GetComponent<ecs::FourwayMoveComponent>();
+			FourwayMoveComponentEditor* fwmComponent = m_entityToInspect->GetComponent<FourwayMoveComponentEditor>();
 			bool hasFwmComponent = fwmComponent == nullptr ? false : true;
 			if (hasFwmComponent) {
 
@@ -353,7 +354,7 @@ namespace nano { namespace editor {
 				}
 				if (ImGui::Selectable("Fourway Move Component")) {
 					if (!hasFwmComponent) {
-						m_entityToInspect->AddComponent(new ecs::FourwayMoveComponent());
+						m_entityToInspect->AddComponent(new FourwayMoveComponentEditor());
 					}
 					else {
 
@@ -525,25 +526,6 @@ namespace nano { namespace editor {
 			ImGui::End();
 		}
 	}
-
-	//void EntityInspectorWidget::OnEntityClick(std::string a_id)
-	//{
-	//	if (!m_renameEntityWindow && !m_showKeycodeWindow) {
-	//		// "-1" - clicked on empty space
-	//		if (a_id == "-1") {
-	//			// Deselect the entity i.e set it to a nullptr
-	//			if (m_entityToInspect != nullptr) {
-	//				highlighEntity.SetNewHighlightedEntity(nullptr);
-	//				m_entityToInspect = nullptr;
-	//			}
-	//			return;
-	//		}
-	//		else {
-	//			m_entityToInspect = WorldSystem::Instance()->GetEntityByID(a_id);
-	//			highlighEntity.SetNewHighlightedEntity(m_entityToInspect);
-	//		}
-	//	}
-	//}
 
 	void EntityInspectorWidget::OnEntityManipulation(std::string a_id, std::string a_id2) 
 	{

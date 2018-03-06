@@ -28,9 +28,9 @@ void EngineCore::mainLoop()
 	// Enter the main loop
 	while (m_windowSystem->getWindow().IsOpen()) 
 	{
-		m_windowSystem->getWindow().Display();
+		m_windowSystem->getWindow().Clear(math::Vector4(0.4f, 0.4f, 0.4f, 0));
 
-		m_windowSystem->getWindow().Clear();
+		m_windowSystem->getWindow().Display();
 	}
 }
 

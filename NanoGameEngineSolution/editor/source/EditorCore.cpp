@@ -1,20 +1,6 @@
 #include"../include/EditorCore.h"
 
-#include<ecs\components\RectangleComponent.h>
-#include<ecs\components\SoundComponent.h>
-#include<ecs\components\TransformComponent.h>
-#include<ecs\components\TriangleComponent.h>
-#include<ecs\components\SpriteComponent.h>
-#include<ecs\components\FourwayMoveComponent.h>
-
-#include<graphics\GraphicsInclude.h>
-
-#include"../include/DearImGui/imgui.h"
-#include"../include/DearImGui/imgui_glfw.h"
-
 #include<GLFW\glfw3.h>
-
-#include<InputDefinitions.h>
 
 #include"../include/LevelParser.h"
 #include"../include/systems/EditorConfig.h"

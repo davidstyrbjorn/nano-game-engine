@@ -11,7 +11,8 @@
 #include<ecs\components\RectangleComponent.h>
 #include<ecs\components\TransformComponent.h>
 #include<ecs\components\SoundComponent.h>
-#include<ecs\components\FourwayMoveComponent.h>
+
+#include"../include/components/FourwayMoveComponentEditor.h"
 
 #include<fstream>
 
@@ -243,7 +244,7 @@ namespace nano { namespace editor {
 			}
 
 			nano::WriteToFile("fourway move component", true);
-			ecs::FourwayMoveComponent *fwmComponent = entity->GetComponent<ecs::FourwayMoveComponent>();
+			FourwayMoveComponentEditor *fwmComponent = entity->GetComponent<FourwayMoveComponentEditor>();
 			if (fwmComponent != nullptr) {
 				std::string upString = "up " + std::to_string(fwmComponent->GetKey("up"));
 				std::string  rightString = "right " + std::to_string(fwmComponent->GetKey("right"));

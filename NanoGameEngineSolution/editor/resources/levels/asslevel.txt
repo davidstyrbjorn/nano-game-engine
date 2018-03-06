@@ -1,0 +1,23 @@
+[LEVEL_CONFIG]
+cam_pos 0, 0
+fps 60
+
+[LEVEL_ENTITIES]
+[ENTITY]
+id aids
+transform
+pos 0, 0
+size 0, 0
+angle 0
+renderable
+none
+sound component
+none
+fourway move component
+up 0
+right 0
+down 65
+left 0
+velocity 4
+
+[ENTITIES_END]

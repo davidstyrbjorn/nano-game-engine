@@ -1,9 +1,9 @@
-#include"../include/ecs/components/FourwayMoveComponent.h"
+#include"../include/components/FourwayMoveComponentEditor.h"
 
+namespace nano { namespace editor {  
 
-namespace nano { namespace ecs {
-
-	ecs::FourwayMoveComponent::FourwayMoveComponent(float a_velocity, int a_keys[4])
+	
+	FourwayMoveComponentEditor::FourwayMoveComponentEditor(float a_velocity, int a_keys[4])
 	{
 		m_velocity = a_velocity;
 		m_keys[0] = a_keys[0];
@@ -12,7 +12,7 @@ namespace nano { namespace ecs {
 		m_keys[3] = a_keys[3];
 	}
 
-	FourwayMoveComponent::FourwayMoveComponent()
+	FourwayMoveComponentEditor::FourwayMoveComponentEditor()
 	{
 		m_velocity = 0;
 		m_keys[0] = 0;
@@ -21,17 +21,17 @@ namespace nano { namespace ecs {
 		m_keys[3] = 0;
 	}
 
-	void ecs::FourwayMoveComponent::Start()
+	void FourwayMoveComponentEditor::Start()
 	{
 
 	}
 
-	void ecs::FourwayMoveComponent::Update()
+	void FourwayMoveComponentEditor::Update()
 	{
 
 	}
 
-	int FourwayMoveComponent::GetKey(const char * a_key)
+	int FourwayMoveComponentEditor::GetKey(const char * a_key)
 	{
 		if (a_key == "up") {
 			return m_keys[0];
@@ -50,7 +50,7 @@ namespace nano { namespace ecs {
 		}
 	}
 
-	void FourwayMoveComponent::SetKey(const char * a_key, int a_keyCode)
+	void FourwayMoveComponentEditor::SetKey(const char * a_key, int a_keyCode)
 	{
 		if (a_key == "up") {
 			m_keys[0] = a_keyCode;
@@ -66,7 +66,7 @@ namespace nano { namespace ecs {
 		}
 	}
 
-	void FourwayMoveComponent::SetKeys(int a_keys[4])
+	void FourwayMoveComponentEditor::SetKeys(int a_keys[4])
 	{
 		m_keys[0] = a_keys[0];
 		m_keys[1] = a_keys[1];
@@ -74,4 +74,4 @@ namespace nano { namespace ecs {
 		m_keys[3] = a_keys[3];
 	}
 
-} }
+} } 

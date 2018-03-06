@@ -135,7 +135,6 @@
     <ClCompile Include="include\ecs\components\SoundComponent.cpp" />
     <ClCompile Include="source\Camera.cpp" />
     <ClCompile Include="source\Clock.cpp" />
-    <ClCompile Include="source\FourwayMoveComponent.cpp" />
     <ClCompile Include="source\Random.cpp" />
     <ClCompile Include="source\SoundBuffer.cpp" />
     <ClCompile Include="source\SoundContextDevice.cpp" />
@@ -168,7 +167,6 @@
     <ClInclude Include="include\Clock.h" />
     <ClInclude Include="include\Core.h" />
     <ClInclude Include="include\ecs\Component.h" />
-    <ClInclude Include="include\ecs\components\FourwayMoveComponent.h" />
     <ClInclude Include="include\ecs\components\RectangleComponent.h" />
     <ClInclude Include="include\ecs\components\SoundComponent.h" />
     <ClInclude Include="include\ecs\components\SpriteComponent.h" />

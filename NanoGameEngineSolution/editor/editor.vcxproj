@@ -134,6 +134,7 @@
     <ClCompile Include="source\EditorCore.cpp" />
     <ClCompile Include="source\EditorWidgetSystem.cpp" />
     <ClCompile Include="source\EntityInspectorWidget.cpp" />
+    <ClCompile Include="source\FourwayMoveComponentEditor.cpp" />
     <ClCompile Include="source\HighlightEntity.cpp" />
     <ClCompile Include="source\LevelParser.cpp" />
     <ClCompile Include="source\SoundSystem.cpp" />
@@ -148,6 +149,7 @@
     <ClCompile Include="source\WindowSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\components\FourwayMoveComponentEditor.h" />
     <ClInclude Include="include\DearImGui\imconfig.h" />
     <ClInclude Include="include\DearImGui\imgui.h" />
     <ClInclude Include="include\DearImGui\imgui_glfw.h" />
