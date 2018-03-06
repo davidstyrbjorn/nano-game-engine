@@ -63,6 +63,11 @@ namespace nano { namespace editor {
 		math::Vector4 color; 
 		std::string path;
 
+		FourwayMoveComponentEditor *fourwayMoveToAdd = nullptr;
+		// Current fourway move info
+		int up, right, down, left;
+		float speed;
+
 		for (std::string line : segmentedLevelString) {
 			//std::cout << line << std::endl;
 			if (line == "[ENTITY]") {
@@ -146,6 +151,29 @@ namespace nano { namespace editor {
 							entityToAdd->AddComponent(new ecs::SpriteComponent(path.c_str()));
 						}
 					}
+				}
+				// FourwayMoveComponentEditor 
+				// 1. up
+				if (line.substr(0, 2) == "up") {
+					up = std::stoi(line.substr(3, line.length()));
+				}
+				// 2. right
+				else if (line.substr(0, 5) == "right") {
+					right = std::stoi(line.substr(6, line.length()));
+				}
+				// 3. down
+				else if (line.substr(0, 4) == "down") {
+					down = std::stoi(line.substr(5, line.length()));
+				}
+				// 4. left
+				else if (line.substr(0, 4) == "left") {
+					left = std::stoi(line.substr(5, line.length()));
+				}
+				// 5. speed (and done now add component)
+				else if (line.substr(0, 5) == "speed") {
+					speed = std::stof(line.substr(6, line.length()));
+					int keys[4] = { up, right, down, left };
+					entityToAdd->AddComponent(new FourwayMoveComponentEditor(speed, keys));
 				}
 			}
 		}
@@ -250,7 +278,8 @@ namespace nano { namespace editor {
 				std::string  rightString = "right " + std::to_string(fwmComponent->GetKey("right"));
 				std::string downString = "down " + std::to_string(fwmComponent->GetKey("down"));
 				std::string leftString = "left " + std::to_string(fwmComponent->GetKey("left"));
-				std::string velocityString = "velocity " + to_string_with_precision<float>(fwmComponent->GetVelocity(), 3);
+				// velocity should be reserved for physics terminology
+				std::string velocityString = "speed " + to_string_with_precision<float>(fwmComponent->GetVelocity(), 3);
 
 				nano::WriteToFile(upString, true);
 				nano::WriteToFile(rightString, true);

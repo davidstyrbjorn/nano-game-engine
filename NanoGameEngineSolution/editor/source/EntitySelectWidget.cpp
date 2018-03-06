@@ -158,6 +158,8 @@ namespace nano { namespace editor {
 				m_leftClickedEntity->SetState(ecs::ECSStates::DESTROYED);
 			}
 			if (ImGui::Selectable("Rename")) {
+				// Making sure we "clicekd" on entity before we rename it
+				// This to know which entity to rename from the entity insepctor widget functions
 				EditorWidgetSystem::Instance()->GetEventHandler().AddEvent(BaseEvent(EventTypes::MANIPULATED_ENTITY, "entity_clicked", m_leftClickedEntity->GetID())); // Message the event handler this happend!
 				EditorWidgetSystem::Instance()->GetEventHandler().AddEvent(BaseEvent(EventTypes::MANIPULATED_ENTITY, "entity_rename", m_leftClickedEntity->GetID()));
 			}

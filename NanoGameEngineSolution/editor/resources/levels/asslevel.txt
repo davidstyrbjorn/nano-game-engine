@@ -14,10 +14,10 @@ none
 sound component
 none
 fourway move component
-up 0
-right 0
+up 1
+right 256
 down 65
-left 0
-velocity 4
+left -100
+speed 123
 
 [ENTITIES_END]
