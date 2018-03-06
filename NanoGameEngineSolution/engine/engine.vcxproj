@@ -127,6 +127,7 @@
     <ClCompile Include="engine\source\EngineConfig.cpp" />
     <ClCompile Include="engine\source\EngineCore.cpp" />
     <ClCompile Include="engine\source\WindowSystem.cpp" />
+    <ClCompile Include="engine\source\WorldSystem.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -134,6 +135,7 @@
     <ClInclude Include="engine\include\EngineCore.h" />
     <ClInclude Include="engine\include\EngineSystemBase.h" />
     <ClInclude Include="engine\include\WindowSystem.h" />
+    <ClInclude Include="engine\include\WorldSystem.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

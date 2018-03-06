@@ -1,3 +1,4 @@
+#include "..\..\engine\engine\include\WorldSystem.h"
 #pragma once
 
 #include"../include/systems/WorldSystem.h"
@@ -67,18 +68,11 @@ namespace nano { namespace editor {
 
 	void WorldSystem::Update()
 	{
-		bool deadEntityExists = false;
 		removeDeadEntities();
 
 		// Call update on all the entities
 		for (ecs::Entity *entity : m_entityList) {
 			entity->Update();
-			if (entity->GetState() == ecs::ECSStates::DESTROYED)
-				deadEntityExists = true;
-		}
-
-		if (deadEntityExists) {
-			//removeDeadEntities();
 		}
 	}
 

@@ -18,6 +18,8 @@ namespace nano { namespace engine {
 
 	void WindowSystem::shutdown() {
 		delete m_window;
+
+		std::cout << "Window system quit correctly" << std::endl;
 	}
 
 	graphics::Window& WindowSystem::getWindow() {

@@ -240,8 +240,6 @@ namespace nano { namespace editor {
 
 		// We've loaded a new level (name)
 		EditorConfig::Instance()->setCurrentLevelName(a_name);
-
-
 	}
 }
 }
