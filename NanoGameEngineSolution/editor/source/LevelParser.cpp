@@ -63,6 +63,8 @@ namespace nano { namespace editor {
 		math::Vector4 color; 
 		std::string path;
 
+		// Sound Component only loads with a sound path so no info saving is needed
+
 		FourwayMoveComponentEditor *fourwayMoveToAdd = nullptr;
 		// Current fourway move info
 		int up, right, down, left;
@@ -132,8 +134,8 @@ namespace nano { namespace editor {
 
 					color = math::Vector4(x, y, z, w);
 				}
-				else if (line.substr(0, 4) == "path") {
-					path = line.substr(5, line.length());
+				else if (line.substr(0, 10) == "image_path") {
+					path = line.substr(11, line.length());
 
 					// Now add component!
 					if (vertex_count == 3) {
@@ -151,6 +153,12 @@ namespace nano { namespace editor {
 							entityToAdd->AddComponent(new ecs::SpriteComponent(path.c_str()));
 						}
 					}
+				}
+				// Sound Component
+				// 1. Sound Path
+				if (line.substr(0, 10) == "sound_path") {
+					std::string path = line.substr(11, line.length());
+					entityToAdd->AddComponent(new ecs::SoundComponent(path.c_str()));
 				}
 				// FourwayMoveComponentEditor 
 				// 1. up
@@ -250,11 +258,11 @@ namespace nano { namespace editor {
 				// Texture path
 				ecs::SpriteComponent *spriteComponent = entity->GetComponent<ecs::SpriteComponent>();
 				if (spriteComponent != nullptr) {
-					std::string imagePathString = "path " + std::string(spriteComponent->GetImagePath());
+					std::string imagePathString = "image_path " + std::string(spriteComponent->GetImagePath());
 					nano::WriteToFile(imagePathString, true);
 				}
 				else {
-					nano::WriteToFile("path none", true);
+					nano::WriteToFile("image_path none", true);
 				}
 			}
 			else {
@@ -264,7 +272,7 @@ namespace nano { namespace editor {
 			nano::WriteToFile("sound component", true);
 			ecs::SoundComponent* soundComponent = entity->GetComponent<ecs::SoundComponent>();
 			if (soundComponent != nullptr) {
-				std::string soundPathString = "path " + std::string(soundComponent->GetSoundPath());
+				std::string soundPathString = "sound_path " + std::string(soundComponent->GetSoundPath());
 				nano::WriteToFile(soundPathString, true);
 			}
 			else {
