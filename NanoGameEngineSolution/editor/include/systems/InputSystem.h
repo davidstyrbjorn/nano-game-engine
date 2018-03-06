@@ -56,7 +56,6 @@ namespace nano { namespace editor {
 		math::Vector2& GetMousePosition();
 		void SetMousePosition(const math::Vector2 &a_pos);
 
-		// GLFW callbacks
 		// GLFW callback functions
 		friend static void character_callback(GLFWwindow* window, unsigned int codepoint);
 		friend static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
