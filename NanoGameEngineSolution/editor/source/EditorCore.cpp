@@ -26,6 +26,7 @@ namespace nano { namespace editor {
 		// Start every editor system
 		EditorConfig::Instance()->loadProjectInfo();
 		EditorConfig::Instance()->setCurrentLevelName("none");
+		EditorConfig::Instance()->setClearColor(math::Vector4(0.2, 0.2f, 0.2f, 0.0f));
 
 		// Window System (1200 by 800)
 		m_windowSystem = WindowSystem::Instance();
@@ -64,6 +65,8 @@ namespace nano { namespace editor {
 		m_frameClock.Reset();
 		m_frameClock.Start();
 
+		EditorConfig *c = EditorConfig::Instance();
+
 		// Main editor loop 
 		// Here we update every system
 		// Here we control the editor at run time
@@ -77,7 +80,7 @@ namespace nano { namespace editor {
 
 			if (m_frameClock.GetTicks() >= MS) {
 				// Pre-frame 
-				m_windowSystem->GetWindow().Clear(math::Vector4(0.2f, 0.2f, 0.2f, 0));
+				m_windowSystem->GetWindow().Clear(c->getClearColor());
 
 				// Events stuff
 				m_inputSystem->Update();

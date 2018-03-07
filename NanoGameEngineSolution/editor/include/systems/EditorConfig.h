@@ -1,6 +1,7 @@
 #pragma once
 
 #include<math\Vector2.h>
+#include<math\Vector4.h>
 
 namespace nano { namespace editor { 
 
@@ -23,6 +24,7 @@ private:
 	const int m_minorVersion = 5;
 
 	math::Vector2 m_windowSize;
+	math::Vector4 m_clearColor;
 	ProjectInfo m_projectInfo;
 
 	std::string m_currentLevelName; // Name of the currently loaded level
@@ -39,6 +41,9 @@ public:
 
 	const math::Vector2 getWindowSize();
 	void setWindowSize(const math::Vector2& a_windowSize);
+
+	const math::Vector4 getClearColor();
+	void setClearColor(const math::Vector4& a_clearColor);
 
 	std::string getCurrentlyLevelName();
 	void setCurrentLevelName(std::string a_name);

@@ -62,6 +62,16 @@ namespace nano { namespace editor {
 		m_windowSize = a_windowSize;
 	}
 
+	const math::Vector4 EditorConfig::getClearColor()
+	{
+		return m_clearColor;
+	}
+
+	void EditorConfig::setClearColor(const math::Vector4 & a_clearColor)
+	{
+		m_clearColor = a_clearColor;
+	}
+
 	std::string EditorConfig::getCurrentlyLevelName()
 	{
 		return m_currentLevelName;
