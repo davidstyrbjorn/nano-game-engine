@@ -13,9 +13,9 @@ EngineCore::~EngineCore()
 void EngineCore::shutdown()
 {
 	// Call shutdown on every system
+	m_inputSystem->shutdown();
 	m_windowSystem->shutdown();
 	m_worldSystem->shutdown();
-	m_inputSystem->shutdown();
 }
 
 void EngineCore::init()

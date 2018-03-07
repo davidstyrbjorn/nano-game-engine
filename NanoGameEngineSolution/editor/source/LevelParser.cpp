@@ -1,11 +1,5 @@
 #include"../include/LevelParser.h"
-#include"../include/systems/RendererSystem.h"
-#include"../include/systems/WorldSystem.h"
-#include"../include/systems/EditorWidgetSystem.h"
-#include"../include/EventHandler.h"
 
-#include<graphics\Simple_Renderer.h>
-#include<graphics\Camera.h>
 #include<ecs\Entity.h>
 #include<graphics\Renderable.h>
 #include<ecs\components\SpriteComponent.h>
@@ -40,24 +34,19 @@ namespace nano { namespace editor {
 	{
 	}
 
-	const ParsedLevel LevelParser::GetParsedLevelFromFile(const char * a_levelFileName)
+	bool LevelParser::GetParsedLevelFromFile(const char* a_levelFileName, ParsedLevel &a_level)
 	{
-		ParsedLevel parsedLevel;
-
 		std::string levelString = GetLevelStringFromFile(a_levelFileName);
 		if (levelString == "NULL") {
-			std::string message = "Cannot load level at " + std::string(a_levelFileName);
-			EditorWidgetSystem::Instance()->GetEventHandler().AddEvent(BaseEvent(EventTypes::CONSOLE_MESSAGE, message));
-			return parsedLevel;
+			return false;
 		}
 
-		// Here now, [0] will be [LEVEL_CONFIG]
+		// [0] will be [LEVEL_CONFIG] if not the text file is not a level
 		std::vector<std::string> segmentedLevelString = GetSegmentedString(levelString);
 		std::vector<ecs::Entity*> entities;
 
 		if (segmentedLevelString[0] != "[LEVEL_CONFIG]") {
-			std::cout << "Invalid level file was loaded";
-			return parsedLevel;
+			return false;
 		}
 
 		ecs::Entity* entityToAdd = nullptr;
@@ -77,8 +66,8 @@ namespace nano { namespace editor {
 		{
 			if (line.substr(0, 7) == "cam_pos") {
 				int splitIndex = line.find(',');
-				parsedLevel.camPos.x = std::stof(line.substr(8, splitIndex));
-				parsedLevel.camPos.y = std::stof(line.substr(splitIndex + 1, line.length()));
+				a_level.camPos.x = std::stof(line.substr(8, splitIndex));
+				a_level.camPos.y = std::stof(line.substr(splitIndex + 1, line.length()));
 			}
 
 			if (line == "[ENTITY]") {
@@ -195,9 +184,9 @@ namespace nano { namespace editor {
 			}
 		}
 
-		parsedLevel.entities = entities;
+		a_level.entities = entities;
 
-		return parsedLevel;
+		return true;
 	}
 
 	std::string LevelParser::GetLevelStringFromFile(const char* a_levelFileName)
@@ -211,13 +200,11 @@ namespace nano { namespace editor {
 		return levelString;
 	}
 
-	void LevelParser::ParseCurrentLevelToFile(const char* a_levelFileName)
+	void LevelParser::ParseCurrentLevelToFile(const char* a_levelFileName, std::vector<ecs::Entity*> a_entities, math::Vector2 a_camPos)
 	{
 		// Parse every config-thing i.e; background-color, camera-stuff etc		
-		RendererSystem *renderSystem = RendererSystem::Instance();
-		WorldSystem* world = WorldSystem::Instance();
 
-		std::vector<ecs::Entity*> entitiesToSave = world->GetEntityList();
+		std::vector<ecs::Entity*> entitiesToSave = a_entities;
 
 		nano::OpenOutputFile(a_levelFileName, OpenMode::TRUNCATE);
 
@@ -225,7 +212,7 @@ namespace nano { namespace editor {
 
 		// Level Config
 		nano::WriteToFile("[LEVEL_CONFIG]", true);
-		std::string camPosString = "cam_pos " + to_string_with_precision<float>(renderSystem->GetSimpleRenderer().GetCamera()->GetPosition().x, 6) + ", " + to_string_with_precision<float>(renderSystem->GetSimpleRenderer().GetCamera()->GetPosition().y, 6);
+		std::string camPosString = "cam_pos " + to_string_with_precision<float>(a_camPos.x, 6) + ", " + to_string_with_precision<float>(a_camPos.y, 6);
 		nano::WriteToFile(camPosString, true);
 		std::string fpsString = "fps 60";
 		nano::WriteToFile(fpsString.c_str(), true);

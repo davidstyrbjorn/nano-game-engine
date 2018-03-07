@@ -6,7 +6,13 @@ namespace nano { namespace engine {
 
 	void InputSystem::shutdown()
 	{
+		glfwSetCharCallback(glfwGetCurrentContext(), nullptr);
+		glfwSetKeyCallback(glfwGetCurrentContext(), nullptr);
+		glfwSetMouseButtonCallback(glfwGetCurrentContext(), nullptr);
+		glfwSetCursorPosCallback(glfwGetCurrentContext(), nullptr);
+		glfwSetWindowUserPointer(glfwGetCurrentContext(), nullptr);
 
+		std::cout << "Input system quti correctly" << std::endl;
 	}
 
 	void InputSystem::start()
@@ -15,7 +21,6 @@ namespace nano { namespace engine {
 		glfwSetKeyCallback(glfwGetCurrentContext(), key_callback);
 		glfwSetMouseButtonCallback(glfwGetCurrentContext(), mouse_button_callback);
 		glfwSetCursorPosCallback(glfwGetCurrentContext(), cursor_position_callback);
-
 		glfwSetWindowUserPointer(glfwGetCurrentContext(), this);
 	}
 
@@ -36,6 +41,7 @@ namespace nano { namespace engine {
 
 	void character_callback(GLFWwindow * window, unsigned int codepoint)
 	{
+		std::cout << codepoint << std::endl;
 	}
 
 	void key_callback(GLFWwindow * window, int key, int scancode, int action, int mods)

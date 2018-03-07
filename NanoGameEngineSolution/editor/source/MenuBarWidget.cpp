@@ -212,10 +212,10 @@ namespace nano { namespace editor {
 		// Check if there's already a saved level with this name!
 		// @ TODO: Handle if there's already a existing level with said name
 		if (DoesFileExist(location)) {
-			levelParser.ParseCurrentLevelToFile(location.c_str());
+			levelParser.ParseCurrentLevelToFile(location.c_str(), WorldSystem::Instance()->GetEntityListCopy(), RendererSystem::Instance()->GetSimpleRenderer().GetCamera()->GetPosition());
 		}
 		else {
-			levelParser.ParseCurrentLevelToFile(location.c_str());
+			levelParser.ParseCurrentLevelToFile(location.c_str(), WorldSystem::Instance()->GetEntityListCopy(), RendererSystem::Instance()->GetSimpleRenderer().GetCamera()->GetPosition());
 		}
 
 		// We've loaded a new level (name)
@@ -231,15 +231,23 @@ namespace nano { namespace editor {
 
 		// TODO @: More than entities are to be loaded from the file
 		std::string location = "resources\\levels\\" + std::string(a_name) + ".txt";
-		ParsedLevel level = levelParser.GetParsedLevelFromFile(location.c_str());
-		std::vector<ecs::Entity*> temp = level.entities;
-		WorldSystem::Instance()->LoadedNewLevel(temp);
+		ParsedLevel level;
+		bool levelResult = levelParser.GetParsedLevelFromFile(location.c_str(), level);
+		if (levelResult) {
+			// Tell the world we have a bunch of new entities
+			WorldSystem::Instance()->LoadedNewLevel(level.entities);
+			// Set camera pos 
+			RendererSystem::Instance()->GetSimpleRenderer().GetCamera()->SetPosition(level.camPos);
+			// Tell the config we have a new level name
+			EditorConfig::Instance()->setCurrentLevelName(a_name);
 
-		// Set camera pos 
-		RendererSystem::Instance()->GetSimpleRenderer().GetCamera()->SetPosition(level.camPos);
-
-		// We've loaded a new level (name)
-		EditorConfig::Instance()->setCurrentLevelName(a_name);
+			std::string message = "Succesfully loaded " + a_name + " at location " + location;
+			EditorWidgetSystem::Instance()->GetEventHandler().AddEvent(BaseEvent(EventTypes::CONSOLE_MESSAGE, message));
+		}
+		else {
+			std::string message = "Failed to load " + a_name + " at location " + location;
+			EditorWidgetSystem::Instance()->GetEventHandler().AddEvent(BaseEvent(EventTypes::CONSOLE_MESSAGE, message));
+		}
 	}
 }
 }
