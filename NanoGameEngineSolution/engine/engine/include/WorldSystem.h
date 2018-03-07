@@ -29,7 +29,7 @@ namespace nano { namespace engine {
 
 		// Entity adding/removing/getter
 		void addEntity(ecs::Entity* a_entity);
-		void createNewEntity(std::string a_id);
+		ecs::Entity* createNewEntity(std::string a_id);
 
 		ecs::Entity* getEntityByID(std::string a_id);
 		std::vector<ecs::Entity*>& getEntityListReference();

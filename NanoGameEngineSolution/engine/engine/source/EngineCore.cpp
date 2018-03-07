@@ -2,6 +2,14 @@
 
 #include<graphics\Window.h>
 #include<math\Vector4.h>
+#include<graphics\Simple_Renderer.h>
+
+#include"../include/RendererSystem.h"
+
+// TEST INCLUDE
+#include<ecs\Entity.h>
+#include<ecs\components\RectangleComponent.h>
+#include<ecs\components\TransformComponent.h>
 
 namespace nano { namespace engine {  
 
@@ -16,6 +24,7 @@ void EngineCore::shutdown()
 	m_inputSystem->shutdown();
 	m_windowSystem->shutdown();
 	m_worldSystem->shutdown();
+	m_rendererSystem->shutdown();
 }
 
 void EngineCore::init()
@@ -33,8 +42,14 @@ void EngineCore::init()
 	m_inputSystem = InputSystem::getInstance();
 	m_inputSystem->start();
 
+	m_rendererSystem = RendererSystem::getInstance();
+	m_rendererSystem->start();
+
 	// TESTING
-	m_worldSystem->createNewEntity("mr.deaf");
+	ecs::Entity* couch = m_worldSystem->createNewEntity("mr.deaf");
+	couch->AddComponent(new ecs::RectangleComponent(math::Vector4(1, 0, 0, 1)));
+	couch->m_transform->size = math::Vector2(100, 100);
+	couch->m_transform->position = math::Vector2(350, 250);
 	m_worldSystem->createNewEntity("player");
 
 	// Start the main loop
@@ -46,28 +61,18 @@ void EngineCore::mainLoop()
 	// Enter the main loop
 	while (m_windowSystem->getWindow().IsOpen()) 
 	{
-		m_windowSystem->getWindow().Clear(math::Vector4(0.4f, 0.4f, 0.4f, 0));
+		m_windowSystem->getWindow().Clear(math::Vector4(0.2f, 0.2f, 0.2f, 0));
 
 		m_worldSystem->update();
 		m_inputSystem->update();
 
-		//for (InputEvent event : m_inputSystem->getPolledEvents()) {
-		//	if (event.type == INPUT_TYPE::MOUSE_RELEASE) {
-		//		std::cout << "mouse released" << std::endl;
-		//	}
-		//	if (event.type == INPUT_TYPE::MOUSE_PRESSED) {
-		//		std::cout << "mouse pressed" << std::endl;
-		//	}			
-		//	if (event.type == INPUT_TYPE::KEY_PRESSED) {
-		//		std::cout << "key pressed" << std::endl;
-		//	}
-		//	if (event.type == INPUT_TYPE::KEY_RELEASE) {
-		//		std::cout << "key release" << std::endl;
-		//	}
-		//	if (event.type == INPUT_TYPE::KEY_HOLD) {
-		//		std::cout << "key hold" << std::endl;
-		//	}
-		//}
+		// Reset the renderer forthis frame
+		m_rendererSystem->getRenderer().Begin();
+
+		m_rendererSystem->update();
+
+		// Flush the renderer (draw calls get called here)
+		m_rendererSystem->getRenderer().Flush();
 
 		m_inputSystem->flushEvents();
 		m_windowSystem->getWindow().Display();

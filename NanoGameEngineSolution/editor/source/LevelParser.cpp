@@ -34,8 +34,6 @@ namespace nano { namespace editor {
 	{
 	}
 
-	//template<class T>
-	/*
 	bool LevelParser::GetParsedLevelFromFile(const char* a_levelFileName, ParsedLevel &a_level)
 	{
 		std::string levelString = GetLevelStringFromFile(a_levelFileName);
@@ -190,7 +188,6 @@ namespace nano { namespace editor {
 
 		return true;
 	}
-	*/
 
 	std::string LevelParser::GetLevelStringFromFile(const char* a_levelFileName)
 	{

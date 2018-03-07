@@ -3,6 +3,7 @@
 #include"WindowSystem.h"
 #include"WorldSystem.h"
 #include"InputSystem.h"
+#include"RendererSystem.h"
 #include"EngineConfig.h"
 
 namespace nano { namespace engine {  
@@ -30,6 +31,7 @@ private:
 	WindowSystem *m_windowSystem;
 	InputSystem *m_inputSystem;
 	WorldSystem *m_worldSystem;
+	RendererSystem *m_rendererSystem;
 };
 
 } }

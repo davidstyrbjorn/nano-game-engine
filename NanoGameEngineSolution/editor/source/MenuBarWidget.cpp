@@ -235,7 +235,7 @@ namespace nano { namespace editor {
 		// TODO @: More than entities are to be loaded from the file
 		std::string location = "resources\\levels\\" + std::string(a_name) + ".txt";
 		ParsedLevel level;
-		bool levelResult = levelParser.GetParsedLevelFromFile<FourwayMoveComponentEditor>(location.c_str(), level);
+		bool levelResult = levelParser.GetParsedLevelFromFile(location.c_str(), level);
 		if (levelResult) {
 			// Tell the world we have a bunch of new entities
 			WorldSystem::Instance()->LoadedNewLevel(level.entities);

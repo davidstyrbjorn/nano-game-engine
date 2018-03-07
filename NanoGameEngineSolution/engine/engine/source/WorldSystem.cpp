@@ -55,11 +55,12 @@ namespace nano { namespace engine {
 		m_entityList.push_back(a_entity);
 	}
 
-	void WorldSystem::createNewEntity(std::string a_id)
+	ecs::Entity* WorldSystem::createNewEntity(std::string a_id)
 	{
 		ecs::Entity* newEntity = new ecs::Entity(a_id);
 		newEntity->Start();
 		addEntity(newEntity);
+		return newEntity;
 	}
 
 	ecs::Entity * nano::engine::WorldSystem::getEntityByID(std::string a_id)
