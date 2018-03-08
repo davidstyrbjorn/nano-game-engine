@@ -10,9 +10,8 @@ namespace nano { namespace engine {
 		glfwSetKeyCallback(glfwGetCurrentContext(), nullptr);
 		glfwSetMouseButtonCallback(glfwGetCurrentContext(), nullptr);
 		glfwSetCursorPosCallback(glfwGetCurrentContext(), nullptr);
-		glfwSetWindowUserPointer(glfwGetCurrentContext(), nullptr);
 
-		std::cout << "Input system quti correctly" << std::endl;
+		std::cout << "Input system quit correctly" << std::endl;
 	}
 
 	void InputSystem::start()
@@ -21,7 +20,6 @@ namespace nano { namespace engine {
 		glfwSetKeyCallback(glfwGetCurrentContext(), key_callback);
 		glfwSetMouseButtonCallback(glfwGetCurrentContext(), mouse_button_callback);
 		glfwSetCursorPosCallback(glfwGetCurrentContext(), cursor_position_callback);
-		glfwSetWindowUserPointer(glfwGetCurrentContext(), this);
 	}
 
 	void InputSystem::update()
@@ -46,7 +44,7 @@ namespace nano { namespace engine {
 
 	void key_callback(GLFWwindow * window, int key, int scancode, int action, int mods)
 	{
-		InputSystem* inputSys = (InputSystem*)glfwGetWindowUserPointer(glfwGetCurrentContext());
+		InputSystem* inputSys = InputSystem::getInstance();
 
 		InputEvent inputEvent;
 		inputEvent.key = key;
@@ -59,7 +57,7 @@ namespace nano { namespace engine {
 
 	void mouse_button_callback(GLFWwindow * window, int button, int action, int mods)
 	{
-		InputSystem* inputSys = (InputSystem*)glfwGetWindowUserPointer(glfwGetCurrentContext());
+		InputSystem* inputSys = InputSystem::getInstance();
 
 		InputEvent inputEvent;
 		inputEvent.key = button;

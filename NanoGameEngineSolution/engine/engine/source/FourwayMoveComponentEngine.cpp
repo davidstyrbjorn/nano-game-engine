@@ -31,8 +31,19 @@ namespace nano { namespace engine {
 	{
 		static InputSystem* i = InputSystem::getInstance();
 		for (InputEvent event : i->getPolledEvents()) {
-			if (event.type == INPUT_TYPE::KEY_PRESSED) {
-				//std::cout << "dundundundun" << std::endl;
+			if (event.type == INPUT_TYPE::KEY_PRESSED || event.type == INPUT_TYPE::KEY_HOLD) {
+				if (event.key == m_keys[0]) {
+					std::cout << "up" << std::endl;
+				}
+				else if (event.key == m_keys[1]) {
+					std::cout << "right" << std::endl;
+				}
+				else if (event.key == m_keys[2]) {
+					std::cout << "down" << std::endl;
+				}
+				else if (event.key == m_keys[3]) {
+					std::cout << "left" << std::endl;
+				}
 			}
 		}
 	}

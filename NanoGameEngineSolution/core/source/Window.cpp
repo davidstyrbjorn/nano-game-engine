@@ -51,6 +51,11 @@ namespace nano { namespace graphics {
 		glfwSwapBuffers(m_glfwWindow);
 	}
 
+	void Window::SetNewWindowSize(math::Vector2 a_size)
+	{
+		glfwSetWindowSize(m_glfwWindow, a_size.x, a_size.y);
+	}
+
 	const bool Window::IsOpen()
 	{
 		return !glfwWindowShouldClose(m_glfwWindow);

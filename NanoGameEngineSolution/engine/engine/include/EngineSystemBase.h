@@ -1,5 +1,14 @@
 #pragma once
 
+namespace nano {
+	namespace ecs {
+		class Entity;
+	}
+	namespace math {
+		class Vector2;
+	}
+}
+
 namespace nano { namespace engine {  
 
 	template <typename T>

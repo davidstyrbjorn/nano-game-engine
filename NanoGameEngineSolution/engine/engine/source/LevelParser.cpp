@@ -69,6 +69,11 @@ namespace nano { namespace engine {
 				a_level.camPos.x = std::stof(line.substr(8, splitIndex));
 				a_level.camPos.y = std::stof(line.substr(splitIndex + 1, line.length()));
 			}
+			if (line.substr(0, 8) == "cam_size") {
+				int splitIndex = line.find(',');
+				a_level.camSize.x = std::stof(line.substr(9, splitIndex));
+				a_level.camSize.y = std::stof(line.substr(splitIndex + 1, line.length()));
+			}
 
 			if (line == "[ENTITY]") {
 				if (entityToAdd == nullptr) {

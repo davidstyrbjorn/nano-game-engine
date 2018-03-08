@@ -26,6 +26,8 @@ namespace nano { namespace engine {
 		void update() override;
 		void shutdown() override;
 
+		void newLevel(math::Vector2 a_camPos, math::Vector2 a_camSize);
+
 		graphics::SimpleRenderer& getRenderer();
 
 	};

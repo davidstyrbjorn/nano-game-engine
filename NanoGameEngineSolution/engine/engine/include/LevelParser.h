@@ -16,6 +16,7 @@ namespace nano { namespace engine {
 	struct ParsedLevel {
 		std::vector<ecs::Entity*> entities;
 		math::Vector2 camPos;
+		math::Vector2 camSize;
 		int fps;
 	};
 

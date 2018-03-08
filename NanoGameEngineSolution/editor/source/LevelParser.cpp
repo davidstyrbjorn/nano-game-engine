@@ -69,6 +69,11 @@ namespace nano { namespace editor {
 				a_level.camPos.x = std::stof(line.substr(8, splitIndex));
 				a_level.camPos.y = std::stof(line.substr(splitIndex + 1, line.length()));
 			}
+			else if (line.substr(0, 8) == "cam_size") {
+				int splitIndex = line.find(',');
+				a_level.camSize.x = std::stof(line.substr(9, splitIndex));
+				a_level.camSize.y = std::stof(line.substr(splitIndex + 1, line.length()));
+			}
 
 			if (line == "[ENTITY]") {
 				if (entityToAdd == nullptr) {
@@ -200,7 +205,7 @@ namespace nano { namespace editor {
 		return levelString;
 	}
 
-	void LevelParser::ParseCurrentLevelToFile(const char* a_levelFileName, std::vector<ecs::Entity*> a_entities, math::Vector2 a_camPos)
+	void LevelParser::ParseCurrentLevelToFile(const char* a_levelFileName, std::vector<ecs::Entity*> a_entities, math::Vector2 a_camPos, math::Vector2 a_camSize)
 	{
 		// Parse every config-thing i.e; background-color, camera-stuff etc		
 
@@ -214,6 +219,8 @@ namespace nano { namespace editor {
 		nano::WriteToFile("[LEVEL_CONFIG]", true);
 		std::string camPosString = "cam_pos " + to_string_with_precision<float>(a_camPos.x, 6) + ", " + to_string_with_precision<float>(a_camPos.y, 6);
 		nano::WriteToFile(camPosString, true);
+		std::string camSizeString = "cam_size " + std::to_string((int)(a_camSize.x+0.5f)) + ", " + std::to_string((int)(a_camSize.y+0.5f));
+		nano::WriteToFile(camSizeString, true);
 		std::string fpsString = "fps 60";
 		nano::WriteToFile(fpsString.c_str(), true);
 

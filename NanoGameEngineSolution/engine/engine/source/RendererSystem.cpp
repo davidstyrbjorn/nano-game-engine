@@ -4,6 +4,8 @@
 #include"../include/WorldSystem.h"
 
 #include<graphics\Simple_Renderer.h>
+#include<graphics\Camera.h>
+#include<math\Vector2.h>
 #include<ecs\Entity.h>
 #include<graphics\Renderable.h>
 #include<ecs\ECS.h>
@@ -13,6 +15,13 @@ namespace nano { namespace engine {
 	void RendererSystem::shutdown()
 	{
 		delete m_renderer;
+		std::cout << "Render system quit correctly" << std::endl;
+	}
+
+	void RendererSystem::newLevel(math::Vector2 a_camPos, math::Vector2 a_camSize)
+	{
+		m_renderer->GetCamera()->SetPosition(a_camPos);
+		m_renderer->GetCamera()->SetSize(a_camSize);
 	}
 
 	void RendererSystem::start()

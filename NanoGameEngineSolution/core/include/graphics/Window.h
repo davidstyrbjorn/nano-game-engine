@@ -33,6 +33,7 @@ namespace nano { namespace graphics {
 		void Clear();
 		void Clear(const math::Vector4 a_clearColor);
 		void Display();
+		void SetNewWindowSize(math::Vector2 a_size);
 
 		// Public methods (getters)
 		const bool IsOpen();
@@ -41,7 +42,7 @@ namespace nano { namespace graphics {
 		// GLFW callbacks
 		static friend void window_size_callback(GLFWwindow* window, int width, int height);
 
-		// This will be either Editor::WindowSystem or Engine::WindowSystem!
+		// This will be either editor::WindowSystem or engine::WindowSystem!
 		WindowOwner *owner;
 
 	private:

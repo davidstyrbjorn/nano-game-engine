@@ -47,8 +47,10 @@ void EngineCore::init()
 
 	LevelParser l;
 	ParsedLevel level;
-	l.GetParsedLevelFromFile("resources\\levels\\shapes.txt", level);
+	l.GetParsedLevelFromFile("resources\\levels\\rectangles.txt", level);
 	m_worldSystem->newLevel(level.entities);
+	m_windowSystem->newLevel(level.camSize);
+	m_rendererSystem->newLevel(level.camPos, level.camSize);
 
 	ecs::Entity* e = m_worldSystem->createNewEntity("L");
 	e->AddComponent(new FourwayMoveComponentEngine());

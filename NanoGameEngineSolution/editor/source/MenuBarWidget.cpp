@@ -7,9 +7,11 @@
 #include"../include/systems/RendererSystem.h"
 #include"../include/LevelParser.h"
 #include"../include/systems/EditorConfig.h"
+#include"../include/systems/WindowSystem.h"
 
 #include"../include/components/FourwayMoveComponentEditor.h"
 
+#include<math\Vector2.h>
 #include<graphics\Camera.h>
 #include<graphics\Simple_Renderer.h>
 
@@ -213,11 +215,12 @@ namespace nano { namespace editor {
 		std::string location = "resources\\levels\\" + std::string(a_name) + ".txt";
 		// Check if there's already a saved level with this name!
 		// @ TODO: Handle if there's already a existing level with said name
+		graphics::OrthographicCamera *c = RendererSystem::Instance()->GetSimpleRenderer().GetCamera();
 		if (DoesFileExist(location)) {
-			levelParser.ParseCurrentLevelToFile(location.c_str(), WorldSystem::Instance()->GetEntityListCopy(), RendererSystem::Instance()->GetSimpleRenderer().GetCamera()->GetPosition());
+			levelParser.ParseCurrentLevelToFile(location.c_str(), WorldSystem::Instance()->GetEntityListCopy(), c->GetPosition(), c->GetSize());
 		}
 		else {
-			levelParser.ParseCurrentLevelToFile(location.c_str(), WorldSystem::Instance()->GetEntityListCopy(), RendererSystem::Instance()->GetSimpleRenderer().GetCamera()->GetPosition());
+			levelParser.ParseCurrentLevelToFile(location.c_str(), WorldSystem::Instance()->GetEntityListCopy(), c->GetPosition(), c->GetSize());
 		}
 
 		// We've loaded a new level (name)
@@ -239,8 +242,12 @@ namespace nano { namespace editor {
 		if (levelResult) {
 			// Tell the world we have a bunch of new entities
 			WorldSystem::Instance()->LoadedNewLevel(level.entities);
-			// Set camera pos 
+			// Set camera pos & window size to saved size
 			RendererSystem::Instance()->GetSimpleRenderer().GetCamera()->SetPosition(level.camPos);
+			WindowSystem::Instance()->GetWindow().SetNewWindowSize(level.camSize);
+			// Camera size
+			RendererSystem::Instance()->GetSimpleRenderer().GetCamera()->SetSize(level.camSize);
+			
 			// Tell the config we have a new level name
 			EditorConfig::Instance()->setCurrentLevelName(a_name);
 

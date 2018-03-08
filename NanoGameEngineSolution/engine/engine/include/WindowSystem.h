@@ -1,15 +1,11 @@
 #pragma once
 
 #include"EngineSystemBase.h"
-
-namespace nano {
-	namespace graphics {
-		class Window;
-} }
+#include<graphics\Window.h>
 
 namespace nano { namespace engine {  
 
-	class WindowSystem : public EngineSystemBase<WindowSystem> {
+	class WindowSystem : public EngineSystemBase<WindowSystem>, public graphics::WindowOwner {
 	friend class EngineSystemBase<WindowSystem>;
 
 	private:
@@ -21,6 +17,7 @@ namespace nano { namespace engine {
 		void start() override;
 		void update() override;
 		void shutdown() override;
+		void newLevel(const math::Vector2& a_camSize);
 
 		// Window routines called from core loop
 		graphics::Window& getWindow();
