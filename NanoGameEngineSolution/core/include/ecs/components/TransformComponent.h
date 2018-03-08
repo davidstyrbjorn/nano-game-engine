@@ -22,6 +22,9 @@ namespace nano { namespace ecs {
 		/////////////
 
 		void SetSize(math::Vector2 a_size);
+
+		// Other
+		void move(math::Vector2 a_direction, float a_speed);
 	};
 
 } }  

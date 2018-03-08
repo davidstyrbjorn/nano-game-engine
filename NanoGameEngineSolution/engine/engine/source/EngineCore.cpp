@@ -8,9 +8,8 @@
 
 // TEST INCLUDE
 #include<ecs\Entity.h>
-#include<ecs\components\RectangleComponent.h>
-#include<ecs\components\TransformComponent.h>
 #include"../include/LevelParser.h"
+#include"../include/components/FourwayMoveComponentEngine.h"
 
 namespace nano { namespace engine {  
 
@@ -48,14 +47,11 @@ void EngineCore::init()
 
 	LevelParser l;
 	ParsedLevel level;
-	l.GetParsedLevelFromFile("resources\\")
+	l.GetParsedLevelFromFile("resources\\levels\\shapes.txt", level);
+	m_worldSystem->newLevel(level.entities);
 
-	// TESTING
-	ecs::Entity* couch = m_worldSystem->createNewEntity("mr.deaf");
-	couch->AddComponent(new ecs::RectangleComponent(math::Vector4(1, 0, 0, 1)));
-	couch->m_transform->size = math::Vector2(100, 100);
-	couch->m_transform->position = math::Vector2(350, 250);
-	m_worldSystem->createNewEntity("player");
+	ecs::Entity* e = m_worldSystem->createNewEntity("L");
+	e->AddComponent(new FourwayMoveComponentEngine());
 
 	// Start the main loop
 	mainLoop();
@@ -66,7 +62,7 @@ void EngineCore::mainLoop()
 	// Enter the main loop
 	while (m_windowSystem->getWindow().IsOpen()) 
 	{
-		m_windowSystem->getWindow().Clear(math::Vector4(0.2f, 0.2f, 0.2f, 0));
+		m_windowSystem->getWindow().Clear(math::Vector4(0.1f, 0.1f, 0.1f, 0));
 
 		m_worldSystem->update();
 		m_inputSystem->update();

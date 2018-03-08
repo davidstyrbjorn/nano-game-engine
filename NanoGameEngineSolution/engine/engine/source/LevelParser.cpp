@@ -8,6 +8,8 @@
 #include<ecs\components\TransformComponent.h>
 #include<ecs\components\SoundComponent.h>
 
+#include"../include/components/FourwayMoveComponentEngine.h"
+
 #include<fstream>
 
 #include<StringHelp.h>
@@ -177,7 +179,7 @@ namespace nano { namespace engine {
 				else if (line.substr(0, 5) == "speed") {
 					speed = std::stof(line.substr(6, line.length()));
 					int keys[4] = { up, right, down, left };
-					//entityToAdd->AddComponent(new FourwayMoveComponentEditor(speed, keys));
+					entityToAdd->AddComponent(new FourwayMoveComponentEngine(speed, keys));
 				}
 			}
 		}

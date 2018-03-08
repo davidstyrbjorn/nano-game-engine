@@ -6,7 +6,7 @@ fps 60
 [ENTITY]
 id unnamed
 transform
-pos 5, -17
+pos 400, 200
 size 150, 150
 angle 0
 renderable

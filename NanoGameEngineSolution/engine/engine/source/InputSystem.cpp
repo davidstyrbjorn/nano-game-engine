@@ -41,7 +41,7 @@ namespace nano { namespace engine {
 
 	void character_callback(GLFWwindow * window, unsigned int codepoint)
 	{
-		std::cout << codepoint << std::endl;
+
 	}
 
 	void key_callback(GLFWwindow * window, int key, int scancode, int action, int mods)
