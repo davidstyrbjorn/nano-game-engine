@@ -1,0 +1,39 @@
+VERY simple interface scripting language/system for manipulating entities 
+inside Nano Game Engine
+
+MUST:
+move entities
+destroy entities
+callbacks for:
+input & collision
+
+EXAMPLE:
+# This so we know which entity this "script" is talking about
+using_entity = "triangle"
+
+# This will be processed somehow into a series of statements inside C++
+# The logic will be ran inside C++ not from file (speed & performance)
+if input(KEYCODE) then move(x,y)
+else (...)
+
+Command String List:
+move(x,y) -> moves entity
+
+Logic:
+System: ScriptingSystem
+
+ScriptCommand{
+  -entity 
+  -commandString
+}
+
+list<ScriptCommand> constantCommands
+list<ScriptLogicBlock>
+void start() -> processScriptLogic() -> if (..) -> insert into ScriptLogicBlock list
+				     -> direct command -> insert into constantCommands list
+
+void update() -> processCommand() -> process logic checks inside ScriptLogicBlock list 
+				  -> runs every command inside constantCommands
+
+At startup/level go through each "script" inside resources\\scripts\\*.txt
+Load script_name.txt

@@ -129,7 +129,9 @@
     <ClCompile Include="engine\source\FourwayMoveComponentEngine.cpp" />
     <ClCompile Include="engine\source\InputSystem.cpp" />
     <ClCompile Include="engine\source\LevelParser.cpp" />
+    <ClCompile Include="engine\source\LevelSystem.cpp" />
     <ClCompile Include="engine\source\RendererSystem.cpp" />
+    <ClCompile Include="engine\source\ScriptingSystem.cpp" />
     <ClCompile Include="engine\source\WindowSystem.cpp" />
     <ClCompile Include="engine\source\WorldSystem.cpp" />
     <ClCompile Include="main.cpp" />
@@ -141,7 +143,9 @@
     <ClInclude Include="engine\include\EngineSystemBase.h" />
     <ClInclude Include="engine\include\InputSystem.h" />
     <ClInclude Include="engine\include\LevelParser.h" />
+    <ClInclude Include="engine\include\LevelSystem.h" />
     <ClInclude Include="engine\include\RendererSystem.h" />
+    <ClInclude Include="engine\include\ScriptingSystem.h" />
     <ClInclude Include="engine\include\SerializerAPI.h" />
     <ClInclude Include="engine\include\WindowSystem.h" />
     <ClInclude Include="engine\include\WorldSystem.h" />

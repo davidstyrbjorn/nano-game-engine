@@ -1,18 +1,19 @@
 [LEVEL_CONFIG]
 cam_pos 0, 0
+cam_size 1008, 692
 fps 60
 
 [LEVEL_ENTITIES]
 [ENTITY]
-id unnamed
+id triangle
 transform
-pos 400, 200
-size 150, 150
+pos 202, 20
+size 201, 228
 angle 0
 renderable
-vertex_count 4
-color 1, 1, 1, 1
-path D:\\temp\\cat.png
+vertex_count 3
+color 0.0196, 1, 0, 1
+image_path none
 sound component
 none
 fourway move component

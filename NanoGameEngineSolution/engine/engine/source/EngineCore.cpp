@@ -4,13 +4,6 @@
 #include<math\Vector4.h>
 #include<graphics\Simple_Renderer.h>
 
-#include"../include/RendererSystem.h"
-
-// TEST INCLUDE
-#include<ecs\Entity.h>
-#include"../include/LevelParser.h"
-#include"../include/components/FourwayMoveComponentEngine.h"
-
 namespace nano { namespace engine {  
 
 EngineCore::~EngineCore()
@@ -25,6 +18,7 @@ void EngineCore::shutdown()
 	m_windowSystem->shutdown();
 	m_worldSystem->shutdown();
 	m_rendererSystem->shutdown();
+	m_levelSystem->shutdown();
 }
 
 void EngineCore::init()
@@ -45,15 +39,8 @@ void EngineCore::init()
 	m_rendererSystem = RendererSystem::getInstance();
 	m_rendererSystem->start();
 
-	LevelParser l;
-	ParsedLevel level;
-	l.GetParsedLevelFromFile("resources\\levels\\rectangles.txt", level);
-	m_worldSystem->newLevel(level.entities);
-	m_windowSystem->newLevel(level.camSize);
-	m_rendererSystem->newLevel(level.camPos, level.camSize);
-
-	ecs::Entity* e = m_worldSystem->createNewEntity("L");
-	e->AddComponent(new FourwayMoveComponentEngine());
+	m_levelSystem = LevelSystem::getInstance();
+	m_levelSystem->start();
 
 	// Start the main loop
 	mainLoop();
