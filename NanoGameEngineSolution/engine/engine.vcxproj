@@ -127,6 +127,7 @@
     <ClCompile Include="engine\source\EngineConfig.cpp" />
     <ClCompile Include="engine\source\EngineCore.cpp" />
     <ClCompile Include="engine\source\InputSystem.cpp" />
+    <ClCompile Include="engine\source\LevelParser.cpp" />
     <ClCompile Include="engine\source\RendererSystem.cpp" />
     <ClCompile Include="engine\source\WindowSystem.cpp" />
     <ClCompile Include="engine\source\WorldSystem.cpp" />
@@ -137,7 +138,9 @@
     <ClInclude Include="engine\include\EngineCore.h" />
     <ClInclude Include="engine\include\EngineSystemBase.h" />
     <ClInclude Include="engine\include\InputSystem.h" />
+    <ClInclude Include="engine\include\LevelParser.h" />
     <ClInclude Include="engine\include\RendererSystem.h" />
+    <ClInclude Include="engine\include\SerializerAPI.h" />
     <ClInclude Include="engine\include\WindowSystem.h" />
     <ClInclude Include="engine\include\WorldSystem.h" />
   </ItemGroup>

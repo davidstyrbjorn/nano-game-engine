@@ -10,6 +10,7 @@
 #include<ecs\Entity.h>
 #include<ecs\components\RectangleComponent.h>
 #include<ecs\components\TransformComponent.h>
+#include"../include/LevelParser.h"
 
 namespace nano { namespace engine {  
 
@@ -44,6 +45,10 @@ void EngineCore::init()
 
 	m_rendererSystem = RendererSystem::getInstance();
 	m_rendererSystem->start();
+
+	LevelParser l;
+	ParsedLevel level;
+	l.GetParsedLevelFromFile("resources\\")
 
 	// TESTING
 	ecs::Entity* couch = m_worldSystem->createNewEntity("mr.deaf");

@@ -84,4 +84,15 @@ namespace nano { namespace engine {
 		return m_entityList;
 	}
 
+	void WorldSystem::newLevel(std::vector<ecs::Entity*> a_entities)
+	{
+		std::vector<ecs::Entity*>::iterator it;
+		for (it = m_entityList.begin(); it != m_entityList.end(); ++it) {
+			delete *it;
+		}
+		m_entityList.clear();
+
+		m_entityList = a_entities;
+	}
+
 } }

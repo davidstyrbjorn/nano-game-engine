@@ -34,6 +34,8 @@ namespace nano { namespace engine {
 		ecs::Entity* getEntityByID(std::string a_id);
 		std::vector<ecs::Entity*>& getEntityListReference();
 		std::vector<ecs::Entity*>  getEntityListCopy();
+
+		void newLevel(std::vector<ecs::Entity*> a_entities);
 	};
 
 
