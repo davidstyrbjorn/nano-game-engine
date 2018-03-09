@@ -1,19 +1,12 @@
 #pragma once
 
-#include"EngineSystemBase.h"
+#include"../EngineSystemBase.h"
 
-#include<ecs\Entity.h>
 #include<vector>
 
-namespace nano { namespace engine {
-	
-	struct ScriptCommand {
-		ecs::Entity* entity;
-		std::string commandString;
+#include"ScriptFile.h"
 
-		std::string arg1, arg2; // std::string being the most primitive type (I'm dumb this just makes it easy for converting)
-		// This to avoid having inheritance and other ugly stuff
-	};
+namespace nano { namespace engine {
 
 	class ScriptingSystem : public EngineSystemBase<ScriptingSystem> {
 	friend class EngineSystemBase<ScriptingSystem>;
@@ -21,7 +14,9 @@ namespace nano { namespace engine {
 	private:
 		ScriptingSystem() { }
 
-		std::vector<ScriptCommand> m_constantCommandsToExecute; 
+		std::vector<ScriptFile> m_scriptFiles;
+
+		void readFilesFromDir(std::string a_dir, std::vector<std::string>& a_list);
 
 	public:
 		void start() override;
