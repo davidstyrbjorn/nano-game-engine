@@ -3,6 +3,8 @@
 #include<ecs\Entity.h>
 #include"nsl_definitions.h"
 
+#include"../InputSystem.h"
+
 namespace nano { namespace engine {
 
 	void moveCommand(ecs::Entity* entity, std::string args) 
@@ -23,6 +25,16 @@ namespace nano { namespace engine {
 	void createCommand(std::string args)
 	{
 		std::cout << "create called with " << args << std::endl;
+	}
+
+	bool isKeyDownExpressionTrue(std::string args) 
+	{
+		int keyCodeLiteral = std::stoi(args.substr(args.find('(') + 1, args.find(')')));
+		static InputSystem* input = InputSystem::getInstance();
+		if (input->isKeyDown(keyCodeLiteral)) {
+			return true;
+		}
+		return false;
 	}
 
 

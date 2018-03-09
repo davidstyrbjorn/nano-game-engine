@@ -84,7 +84,11 @@ namespace nano { namespace engine {
 		}
 		for (ScriptLogicExpression logicExpr : m_logicExpressions) {
 			if (logicExpr.logicString == "keyDown") {
-				std::cout << "keyDown expression found" << std::endl;
+				if (isKeyDownExpressionTrue(logicExpr.args)) {
+					if (logicExpr.command.commandString == "move") {
+						moveCommand(m_targetEntity, logicExpr.command.arg);
+					}
+				}
 			}
 		}
 	}

@@ -1,4 +1,4 @@
 using_entity = $triangle
 
-if: keyDown(65) then: move(0, -1, 3)
-move(0, 1, 2)
+if: keyDown(65) then: move(-1, 0, 3)
+if: keyDown(68) then: move(1, 0, 3)
