@@ -1,0 +1,4 @@
+using_entity = $triangle
+
+move(1,1)
+destroy($rectangle)

@@ -124,6 +124,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="engine\source\ScriptFile.cpp" />
     <ClCompile Include="engine\source\EngineConfig.cpp" />
     <ClCompile Include="engine\source\EngineCore.cpp" />
     <ClCompile Include="engine\source\FourwayMoveComponentEngine.cpp" />
@@ -144,6 +145,8 @@
     <ClInclude Include="engine\include\InputSystem.h" />
     <ClInclude Include="engine\include\LevelParser.h" />
     <ClInclude Include="engine\include\LevelSystem.h" />
+    <ClInclude Include="engine\include\nsl\CommandParser.h" />
+    <ClInclude Include="engine\include\nsl\nsl_definitions.h" />
     <ClInclude Include="engine\include\nsl\nsl_structs.h" />
     <ClInclude Include="engine\include\nsl\ScriptFile.h" />
     <ClInclude Include="engine\include\RendererSystem.h" />

@@ -12,9 +12,7 @@ namespace nano {
 namespace nano { namespace engine {  
 
 	struct ScriptCommand {
-		ecs::Entity* entity;
 		std::string commandString;
-
 		std::string arg;
 	};
 

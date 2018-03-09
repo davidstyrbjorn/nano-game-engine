@@ -2,6 +2,7 @@
 
 #include<dirent.h>
 #include<fstream>
+#include<iostream>
 
 namespace nano { namespace engine {
 
@@ -10,7 +11,8 @@ namespace nano { namespace engine {
 		DIR* dirp = opendir(a_dir.c_str());
 		struct dirent *dp;
 		while ((dp = readdir(dirp)) != NULL) {
-			a_list.push_back(dp->d_name);
+			if(dp->d_name[0] != '.')
+				a_list.push_back(dp->d_name);
 		}
 		closedir(dirp);
 	}
@@ -25,6 +27,20 @@ namespace nano { namespace engine {
 
 		for (std::string scriptFileName : scriptFileNameList) {
 			// Get content from file here 
+			std::ifstream file(dirLocation + scriptFileName);
+			if (!file.is_open()) {
+				std::cout << "Cannot open script file " + dirLocation + scriptFileName << std::endl;
+			}
+			std::vector<std::string> scriptFileContent; // This is where the file content goes
+
+			// Read from the file and fill the scriptFileContent list
+			std::string _word;
+			while (std::getline(file, _word)) {
+				scriptFileContent.push_back(_word);
+			}
+
+			// The file is now read push back to the m_scriptFiles list
+			m_scriptFiles.push_back(ScriptFile(scriptFileName.substr(0, scriptFileName.length()-4), scriptFileContent));
 		}
 	}
 

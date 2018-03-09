@@ -16,6 +16,7 @@ namespace nano { namespace ecs {
 	void Transform::move(math::Vector2 a_direction, float a_speed)
 	{
 		math::Vector2 newPosition = position + (a_direction * a_speed); 
+		position = newPosition;
 	}
 
 }

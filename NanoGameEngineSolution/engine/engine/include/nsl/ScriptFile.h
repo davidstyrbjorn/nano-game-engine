@@ -15,7 +15,7 @@ namespace nano { namespace engine {
 	class ScriptFile {
 	public:
 		// Constructor
-		ScriptFile(const std::string& a_scriptString);
+		ScriptFile(std::string a_hndl, std::vector<std::string> a_scriptStringVector);
 		// Destructor
 		~ScriptFile();
 
@@ -23,11 +23,14 @@ namespace nano { namespace engine {
 		void executeScriptCommands();
 
 	private:
+		bool doesLineContainCmdExpression(std::string a_line, std::string& a_foundCmdExpression);
+
+	private:
 		ecs::Entity* m_targetEntity;
-		std::string m_fileHndl;
+		std::string m_hndl;
 		std::vector<ScriptCommand> m_directCommands;
 
-		const std::string m_scriptString;
+		std::vector<std::string> m_scriptStringVector; // Seperated line by line [0] = first line [1] = second line etc...
 	};
 
 } }

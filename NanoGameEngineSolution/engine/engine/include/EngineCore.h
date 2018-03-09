@@ -5,6 +5,7 @@
 #include"InputSystem.h"
 #include"RendererSystem.h"
 #include"LevelSystem.h"
+#include"nsl\ScriptingSystem.h"
 #include"EngineConfig.h"
 
 namespace nano { namespace engine {  
@@ -32,6 +33,7 @@ private:
 	WindowSystem *m_windowSystem;
 	InputSystem *m_inputSystem;
 	WorldSystem *m_worldSystem;
+	ScriptingSystem* m_scriptingSystem;
 	LevelSystem *m_levelSystem;
 	RendererSystem *m_rendererSystem;
 };

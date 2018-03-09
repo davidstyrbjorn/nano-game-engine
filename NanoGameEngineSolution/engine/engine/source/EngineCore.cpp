@@ -42,6 +42,9 @@ void EngineCore::init()
 	m_levelSystem = LevelSystem::getInstance();
 	m_levelSystem->start();
 
+	m_scriptingSystem = ScriptingSystem::getInstance();
+	m_scriptingSystem->start();
+
 	// Start the main loop
 	mainLoop();
 }
@@ -53,6 +56,7 @@ void EngineCore::mainLoop()
 	{
 		m_windowSystem->getWindow().Clear(math::Vector4(0.1f, 0.1f, 0.1f, 0));
 
+		m_scriptingSystem->update();
 		m_worldSystem->update();
 		m_inputSystem->update();
 
