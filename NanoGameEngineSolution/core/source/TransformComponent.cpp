@@ -18,6 +18,5 @@ namespace nano { namespace ecs {
 		math::Vector2 newPosition = position + (a_direction * a_speed); 
 		position = newPosition;
 	}
-
 }
 }

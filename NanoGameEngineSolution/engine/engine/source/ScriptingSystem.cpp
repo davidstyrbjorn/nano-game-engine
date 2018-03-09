@@ -4,6 +4,8 @@
 #include<fstream>
 #include<iostream>
 
+#include"../include/InputSystem.h"
+
 namespace nano { namespace engine {
 
 	void ScriptingSystem::readFilesFromDir(std::string a_dir, std::vector<std::string>& a_list)
@@ -48,6 +50,16 @@ namespace nano { namespace engine {
 	{
 		for (ScriptFile script : m_scriptFiles) {
 			script.executeScriptCommands();
+		}
+
+		static InputSystem* input = InputSystem::getInstance();
+		for (InputEvent event : input->getPolledEvents()) {
+			if (event.type == INPUT_TYPE::KEY_PRESSED) {
+				m_keysDown[event.key] = true;
+			}
+			else if (event.type == INPUT_TYPE::KEY_RELEASE) {
+				m_keysDown[event.key] = false;
+			}
 		}
 	}
 

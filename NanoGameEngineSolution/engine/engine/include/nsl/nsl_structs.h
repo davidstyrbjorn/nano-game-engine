@@ -2,6 +2,7 @@
 
 #include<string>
 #include<vector>
+#include<functional>
 
 namespace nano {
 	namespace ecs {
@@ -16,8 +17,9 @@ namespace nano { namespace engine {
 		std::string arg;
 	};
 
-	struct LogicScriptCommand {
-
+	struct ScriptLogicExpression {
+		std::string logicString;
+		std::string args;
+		ScriptCommand command;
 	};
-
 } }

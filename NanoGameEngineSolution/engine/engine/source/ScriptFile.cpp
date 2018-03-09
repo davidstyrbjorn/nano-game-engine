@@ -39,6 +39,21 @@ namespace nano { namespace engine {
 					// Now we can parse commands 
 					if (line.substr(0, 2) == "if") {
 						// We don't handle this atm
+						std::string logicExpression;
+						if (doesLineContainLogicExpression(line, logicExpression)) {
+							ScriptLogicExpression logicExpr;
+
+							// Logic expression string
+							logicExpr.logicString = logicExpression;
+							int firstParanthesisIndex = line.find_first_of('(');
+							int firstClosingParanthesisIndex = line.find_first_of(')');
+							logicExpr.args = line.substr(firstParanthesisIndex, firstClosingParanthesisIndex);
+							// Command
+							doesLineContainCmdExpression(line, logicExpr.command.commandString);
+							logicExpr.command.arg = line.substr(line.find_last_of('('), line.length());
+
+							m_logicExpressions.push_back(logicExpr);
+						}
 					}
 					else {
 						// Direct command!
@@ -67,6 +82,11 @@ namespace nano { namespace engine {
 				moveCommand(m_targetEntity, cmd.arg);
 			}
 		}
+		for (ScriptLogicExpression logicExpr : m_logicExpressions) {
+			if (logicExpr.logicString == "keyDown") {
+				std::cout << "keyDown expression found" << std::endl;
+			}
+		}
 	}
 
 	bool ScriptFile::doesLineContainCmdExpression(std::string a_line, std::string & a_foundCmdExpression)
@@ -81,6 +101,16 @@ namespace nano { namespace engine {
 			}
 		}
 		return false;
+	}
+
+	bool ScriptFile::doesLineContainLogicExpression(std::string a_line, std::string & a_foundLogicExpression)
+	{
+		for (std::string logicExpression : logicExpressions) {
+			if (a_line.find(logicExpression) != std::string::npos) {
+				a_foundLogicExpression = logicExpression;
+				return true;
+			}
+		}
 	}
 
 } }

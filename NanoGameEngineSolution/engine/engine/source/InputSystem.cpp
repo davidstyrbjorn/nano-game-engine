@@ -48,9 +48,20 @@ namespace nano { namespace engine {
 
 		InputEvent inputEvent;
 		inputEvent.key = key;
-		if (action == GLFW_PRESS) inputEvent.type = INPUT_TYPE::KEY_PRESSED;
-		else if (action == GLFW_RELEASE) inputEvent.type = INPUT_TYPE::KEY_RELEASE;
-		else if (action == GLFW_REPEAT) inputEvent.type = INPUT_TYPE::KEY_HOLD;
+		if (action == GLFW_PRESS)
+		{
+			inputSys->m_keys[key] = true;
+			inputEvent.type = INPUT_TYPE::KEY_PRESSED;
+		}
+		else if (action == GLFW_RELEASE)
+		{
+			inputSys->m_keys[key] = false;
+			inputEvent.type = INPUT_TYPE::KEY_RELEASE;
+		}
+		else if (action == GLFW_REPEAT) 
+		{
+			inputEvent.type = INPUT_TYPE::KEY_HOLD;
+		}
 
 		inputSys->m_polledEvents.push_back(inputEvent);
 	}

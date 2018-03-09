@@ -31,7 +31,8 @@ namespace nano { namespace engine {
 		InputSystem() { }
 
 		std::deque<InputEvent> m_polledEvents; // List of all the polled events (gets cleared each frame)
-	
+		bool m_keys[1028];
+
 	public:
 		void start() override;
 		void update() override;
@@ -39,6 +40,7 @@ namespace nano { namespace engine {
 
 		void flushEvents();
 		std::deque<InputEvent> &getPolledEvents();
+		bool isKeyDown(int a_keyCode) { return m_keys[a_keyCode]; }
 
 		// GLFW callback functions
 		friend static void character_callback(GLFWwindow* window, unsigned int codepoint);

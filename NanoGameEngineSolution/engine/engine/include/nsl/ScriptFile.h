@@ -24,11 +24,13 @@ namespace nano { namespace engine {
 
 	private:
 		bool doesLineContainCmdExpression(std::string a_line, std::string& a_foundCmdExpression);
+		bool doesLineContainLogicExpression(std::string a_line, std::string& a_foundLogicExpression);
 
 	private:
 		ecs::Entity* m_targetEntity;
 		std::string m_hndl;
 		std::vector<ScriptCommand> m_directCommands;
+		std::vector<ScriptLogicExpression> m_logicExpressions;
 
 		std::vector<std::string> m_scriptStringVector; // Seperated line by line [0] = first line [1] = second line etc...
 	};
