@@ -8,6 +8,8 @@
 
 #include"../include/nsl/CommandParser.h"
 
+#include<assert.h>
+
 namespace nano { namespace engine {  
 
 	ScriptFile::ScriptFile(std::string a_hndl, std::vector<std::string> a_scriptStringVector)
@@ -36,23 +38,42 @@ namespace nano { namespace engine {
 					gotEntity = true;
 				}
 				else if (gotEntity) {
-					// Now we can parse commands 
-					if (line.substr(0, 2) == "if") {
-						// We don't handle this atm
-						std::string logicExpression;
-						if (doesLineContainLogicExpression(line, logicExpression)) {
-							ScriptLogicExpression logicExpr;
+					// Parse in this order, check for parser tokens else assume the line is a direct command
+					std::string parserToken;
+					if (doesLineContainParserToken(line, parserToken)) {
+						if (parserToken == "if") {
+							std::string logicExpression;
+							if (doesLineContainLogicExpression(line, logicExpression)) {
+								ScriptLogicExpression logicExpr;
+								// Logic expression string
+								logicExpr.logicString = logicExpression; // keyDown etc
 
-							// Logic expression string
-							logicExpr.logicString = logicExpression;
-							int firstParanthesisIndex = line.find_first_of('(');
-							int firstClosingParanthesisIndex = line.find_first_of(')');
-							logicExpr.args = line.substr(firstParanthesisIndex, firstClosingParanthesisIndex);
-							// Command
-							doesLineContainCmdExpression(line, logicExpr.command.commandString);
-							logicExpr.command.arg = line.substr(line.find_last_of('('), line.length());
+								// Set the arguments from the example keyDown(args)
+								int startArgIndex = line.find("(");
+								int endArgIndex = line.find(")");
+								logicExpr.args = line.substr(startArgIndex, endArgIndex);
 
-							m_logicExpressions.push_back(logicExpr);
+								// Command
+								if (doesLineContainCmdExpression(line, logicExpr.command.commandString)) {
+									logicExpr.command.arg = line.substr(line.find_last_of('('), line.length());
+								}
+							
+								m_logicExpressions.push_back(logicExpr);
+							}
+						}
+						else if (parserToken == "var") {
+							//std::cout << "found var parser token! " << line << std::endl;
+							int nameEndIndex;
+							int nameStartIndex;
+							for (int i = 0; i < line.length(); i++) {
+								if (line[i] == ':') {
+									nameEndIndex = i;
+								}
+								if (line[i] == '$') {
+									nameStartIndex = i;
+								}
+							}
+							std::cout << line.cop << std::endl;
 						}
 					}
 					else {
@@ -64,17 +85,13 @@ namespace nano { namespace engine {
 							directCmd.arg = line.substr(line.find('('), line.length());
 							m_directCommands.push_back(directCmd);
 						}
-						else {
-							std::cout << "error parsing line from script file with handel " + m_hndl << std::endl;
-							std::cout << "(line: " << line << ")" << std::endl;
-						}
 					}
 				}
 			}
 		}
 	}
 
-	void ScriptFile::executeScriptCommands()
+	void ScriptFile::executeScriptCommands(float a_deltaTime)
 	{
 		for (ScriptCommand cmd : m_directCommands) {
 			if (cmd.commandString == "move") {
@@ -95,9 +112,7 @@ namespace nano { namespace engine {
 
 	bool ScriptFile::doesLineContainCmdExpression(std::string a_line, std::string & a_foundCmdExpression)
 	{
-		// in-arg = line from script file, found expression reference 
-		// Check if that line contains any registered command expression if so return true and the found command expression
-		// If not return false
+		// move, destroy, create etc
 		for (std::string cmdExpression : cmdExpressions) {
 			if (a_line.find(cmdExpression) != std::string::npos) {
 				a_foundCmdExpression = cmdExpression;
@@ -107,14 +122,28 @@ namespace nano { namespace engine {
 		return false;
 	}
 
+	bool ScriptFile::doesLineContainParserToken(std::string a_line, std::string & a_foundParserToken)
+	{
+		// if, then, var
+		for (std::string parserToken : parserTokens) {
+			if (a_line.find(parserToken) != std::string::npos) {
+				a_foundParserToken = parserToken;
+				return true;
+			}
+		}
+		return false;
+	}
+
 	bool ScriptFile::doesLineContainLogicExpression(std::string a_line, std::string & a_foundLogicExpression)
 	{
+		// keyDown etc
 		for (std::string logicExpression : logicExpressions) {
 			if (a_line.find(logicExpression) != std::string::npos) {
 				a_foundLogicExpression = logicExpression;
 				return true;
 			}
 		}
+		return false;
 	}
 
 } }

@@ -51,12 +51,21 @@ void EngineCore::init()
 
 void EngineCore::mainLoop()
 {
+	// Start delta timer clock
+	m_deltaTimer.Start();
+	float deltaTime = 1.0f;
+	float frameStartTime;
+
 	// Enter the main loop
 	while (m_windowSystem->getWindow().IsOpen()) 
 	{
+		// Set the frame start time
+		frameStartTime = m_deltaTimer.GetTicks();
+
+		// Clear the window for new frame
 		m_windowSystem->getWindow().Clear(math::Vector4(0.1f, 0.1f, 0.1f, 0));
 
-		m_scriptingSystem->update();
+		m_scriptingSystem->update(deltaTime);
 		m_worldSystem->update();
 		m_inputSystem->update();
 
@@ -70,6 +79,10 @@ void EngineCore::mainLoop()
 
 		m_inputSystem->flushEvents();
 		m_windowSystem->getWindow().Display();
+
+		// Now measure delta time
+		deltaTime = m_deltaTimer.GetTicks() - frameStartTime;
+		m_deltaTimer.Reset();
 	}
 
 	shutdown();

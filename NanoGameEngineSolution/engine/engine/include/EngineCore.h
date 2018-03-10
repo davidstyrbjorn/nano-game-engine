@@ -8,6 +8,8 @@
 #include"nsl\ScriptingSystem.h"
 #include"EngineConfig.h"
 
+#include<Clock.h>
+
 namespace nano { namespace engine {  
 
 class EngineCore {
@@ -30,12 +32,15 @@ public:
 
 private:
 	EngineConfig *m_engineConfig;
+	// Window System
 	WindowSystem *m_windowSystem;
 	InputSystem *m_inputSystem;
 	WorldSystem *m_worldSystem;
 	ScriptingSystem* m_scriptingSystem;
 	LevelSystem *m_levelSystem;
 	RendererSystem *m_rendererSystem;
+	// Delta-timer Clock
+	Clock m_deltaTimer;
 };
 
 } }

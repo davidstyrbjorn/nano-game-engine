@@ -22,4 +22,9 @@ namespace nano { namespace engine {
 		std::string args;
 		ScriptCommand command;
 	};
+
+	struct ScriptVariable {
+		std::string name;
+		std::string value;
+	};
 } }

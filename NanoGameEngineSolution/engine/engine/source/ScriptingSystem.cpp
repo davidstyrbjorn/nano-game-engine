@@ -46,10 +46,10 @@ namespace nano { namespace engine {
 		}
 	}
 
-	void ScriptingSystem::update()
+	void ScriptingSystem::update(float a_deltaTime)
 	{
 		for (ScriptFile script : m_scriptFiles) {
-			script.executeScriptCommands();
+			script.executeScriptCommands(a_deltaTime);
 		}
 
 		static InputSystem* input = InputSystem::getInstance();

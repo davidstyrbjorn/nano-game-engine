@@ -21,7 +21,7 @@ namespace nano { namespace engine {
 
 	public:
 		void start() override;
-		void update() override;
+		void update(float a_deltaTime) override;
 		void shutdown() override;
 
 		void parseScriptFiles();

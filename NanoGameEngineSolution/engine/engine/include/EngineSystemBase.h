@@ -25,7 +25,8 @@ namespace nano { namespace engine {
 		virtual void start() {}
 
 		// Virtual update method
-		virtual void update() {}
+		virtual void update() { printf("Calling update on non-implemented update method!"); }
+		virtual void update(float a_deltaTime) { printf("Calling update on non-implemented update method!"); }
 
 		// Virtual shutdown method
 		virtual void shutdown() {}

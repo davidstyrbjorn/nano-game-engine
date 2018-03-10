@@ -1,4 +1,6 @@
 using_entity = $triangle
 
-if: keyDown(65) then: move(-1, 0, 3)
-if: keyDown(68) then: move(1, 0, 3)
+var $speed: 1
+
+if: keyDown(65): move(-1, 0, 3)
+if: keyDown(68): move(1, 0, 3)
