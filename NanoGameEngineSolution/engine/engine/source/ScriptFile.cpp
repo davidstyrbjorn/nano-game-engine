@@ -50,8 +50,8 @@ namespace nano { namespace engine {
 
 								// Set the arguments from the example keyDown(args)
 								int startArgIndex = line.find("(");
-								int endArgIndex = line.find(")");
-								logicExpr.args = line.substr(startArgIndex, endArgIndex);
+								int endArgIndex = line.find(")")+1;
+								logicExpr.args = line.substr(startArgIndex, endArgIndex-startArgIndex);
 
 								// Command
 								if (doesLineContainCmdExpression(line, logicExpr.command.commandString)) {
@@ -63,17 +63,15 @@ namespace nano { namespace engine {
 						}
 						else if (parserToken == "var") {
 							//std::cout << "found var parser token! " << line << std::endl;
-							int nameEndIndex;
-							int nameStartIndex;
-							for (int i = 0; i < line.length(); i++) {
-								if (line[i] == ':') {
-									nameEndIndex = i;
-								}
-								if (line[i] == '$') {
-									nameStartIndex = i;
-								}
+							// Get variable name
+							int end = line.find(':');
+							int start = line.find('$') + 1;
+							std::string name = line.substr(start, end - start);
+							std::string value;
+							if (line[end + 1] == ' ') {
+								std::cout << "white space" << std::endl;
 							}
-							std::cout << line.cop << std::endl;
+							
 						}
 					}
 					else {
