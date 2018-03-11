@@ -28,6 +28,8 @@ namespace nano { namespace engine {
 		bool doesLineContainCmdExpression(std::string a_line, std::string& a_foundCmdExpression);
 		bool doesLineContainVariable(std::string a_line, ScriptVariable& a_foundVariable);
 
+		void replaceVariableWithLiteralValues(std::string &a_subject);
+
 	private:
 		ecs::Entity* m_targetEntity;
 		std::string m_hndl;

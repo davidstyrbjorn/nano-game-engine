@@ -1,9 +1,9 @@
 using_entity = $triangle
 
 var $speed: 124
+var $leftKey: 68
 
-if: keyDown(speed): move(-1, 0, 3)
-if: keyDown(68): move(1, 0, 3)
+if: keyDown(leftKey): move(-1, 0, 3)
 
 #goal is:
-#if: keyDown($leftKey): move(-1, 0, $speed)
+#if: keyDown(leftKey): move(-1, 0, 3)

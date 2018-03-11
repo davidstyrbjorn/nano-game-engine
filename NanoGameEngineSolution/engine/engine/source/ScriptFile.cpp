@@ -151,6 +151,21 @@ namespace nano { namespace engine {
 		return false;
 	}
 
+	void ScriptFile::replaceVariableWithLiteralValues(std::string & a_subject)
+	{
+		struct VariableInString { int startIndex; int endIndex; };
+		std::vector<VariableInString> variablesToReplace;
+
+		int i = 0;
+		for (char c : a_subject) {
+			if (c == '$') {
+				VariableInString foundVariable;
+				foundVariable.startIndex = i;
+			}
+			i++;
+		}
+	}
+
 	bool ScriptFile::doesLineContainParserToken(std::string a_line, std::string & a_foundParserToken)
 	{
 		// if, then, var
