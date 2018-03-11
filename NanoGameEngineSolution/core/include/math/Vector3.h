@@ -20,7 +20,7 @@ namespace nano { namespace math {
 
 		// Getters
 		const float GetMagnitude() const;
-		const Vector3& Normalized() const;
+		const Vector3 Normalized() const;
 		const Vector3& Dot() const;
 		const Vector3& Cross() const;
 

@@ -5,10 +5,11 @@
 
 #include"../include/WorldSystem.h"
 #include"../include/nsl/nsl_definitions.h"
-
 #include"../include/nsl/CommandParser.h"
 
 #include<assert.h>
+
+#include<StringHelp.h>
 
 namespace nano { namespace engine {  
 
@@ -40,7 +41,12 @@ namespace nano { namespace engine {
 				else if (gotEntity) {
 					// Parse in this order, check for parser tokens else assume the line is a direct command
 					std::string parserToken;
-					if (doesLineContainParserToken(line, parserToken)) {
+					std::string command;
+
+					if (line[0] == '#') {
+						
+					}
+					else if (doesLineContainParserToken(line, parserToken)) {
 						if (parserToken == "if") {
 							std::string logicExpression;
 							if (doesLineContainLogicExpression(line, logicExpression)) {
@@ -51,11 +57,21 @@ namespace nano { namespace engine {
 								// Set the arguments from the example keyDown(args)
 								int startArgIndex = line.find("(");
 								int endArgIndex = line.find(")")+1;
+								std::string argTemp = line.substr(startArgIndex, endArgIndex - startArgIndex);
+								// Check if argument is a registered variable
+								ScriptVariable variable;
+								if (doesLineContainVariable(argTemp, variable)) {
+									// Replace argTemp with variable.value?
+
+								}
 								logicExpr.args = line.substr(startArgIndex, endArgIndex-startArgIndex);
 
 								// Command
 								if (doesLineContainCmdExpression(line, logicExpr.command.commandString)) {
 									logicExpr.command.arg = line.substr(line.find_last_of('('), line.length());
+								}
+								else {
+									std::cout << "Was not able to parse line: " << line << " within file: " << m_hndl << std::endl;
 								}
 							
 								m_logicExpressions.push_back(logicExpr);
@@ -64,25 +80,28 @@ namespace nano { namespace engine {
 						else if (parserToken == "var") {
 							//std::cout << "found var parser token! " << line << std::endl;
 							// Get variable name
+							ScriptVariable sv;
+
+							remove_space<std::string>(line);
+
 							int end = line.find(':');
-							int start = line.find('$') + 1;
-							std::string name = line.substr(start, end - start);
-							std::string value;
-							if (line[end + 1] == ' ') {
-								std::cout << "white space" << std::endl;
-							}
-							
+							int start = line.find('$')+1;
+
+							sv.name = line.substr(start, end - start);
+							sv.value = line.substr(end+1);
+
+							m_scriptVariables.push_back(sv);
 						}
 					}
-					else {
+					else if(doesLineContainCmdExpression(line, command)){
 						// Direct command!
-						std::string command;
-						if (doesLineContainCmdExpression(line, command)) {
-							ScriptCommand directCmd;
-							directCmd.commandString = command;
-							directCmd.arg = line.substr(line.find('('), line.length());
-							m_directCommands.push_back(directCmd);
-						}
+						ScriptCommand directCmd;
+						directCmd.commandString = command;
+						directCmd.arg = line.substr(line.find('('), line.length());
+						m_directCommands.push_back(directCmd);	
+					}
+					else {
+						std::cout << "Was not able to parse line: " << line << " within file: " << m_hndl << std::endl;
 					}
 				}
 			}
@@ -91,21 +110,21 @@ namespace nano { namespace engine {
 
 	void ScriptFile::executeScriptCommands(float a_deltaTime)
 	{
-		for (ScriptCommand cmd : m_directCommands) {
-			if (cmd.commandString == "move") {
-				// Process move command please
-				moveCommand(m_targetEntity, cmd.arg);
-			}
-		}
-		for (ScriptLogicExpression logicExpr : m_logicExpressions) {
-			if (logicExpr.logicString == "keyDown") {
-				if (isKeyDownExpressionTrue(logicExpr.args)) {
-					if (logicExpr.command.commandString == "move") {
-						moveCommand(m_targetEntity, logicExpr.command.arg);
-					}
-				}
-			}
-		}
+		//for (ScriptCommand cmd : m_directCommands) {
+		//	if (cmd.commandString == "move") {
+		//		// Process move command please
+		//		moveCommand(m_targetEntity, cmd.arg);
+		//	}
+		//}
+		//for (ScriptLogicExpression logicExpr : m_logicExpressions) {
+		//	if (logicExpr.logicString == "keyDown") {
+		//		if (isKeyDownExpressionTrue(logicExpr.args)) {
+		//			if (logicExpr.command.commandString == "move") {
+		//				moveCommand(m_targetEntity, logicExpr.command.arg);
+		//			}
+		//		}
+		//	}
+		//}
 	}
 
 	bool ScriptFile::doesLineContainCmdExpression(std::string a_line, std::string & a_foundCmdExpression)
@@ -114,6 +133,18 @@ namespace nano { namespace engine {
 		for (std::string cmdExpression : cmdExpressions) {
 			if (a_line.find(cmdExpression) != std::string::npos) {
 				a_foundCmdExpression = cmdExpression;
+				return true;
+			}
+		}
+		return false;
+	}
+
+	bool ScriptFile::doesLineContainVariable(std::string a_line, ScriptVariable& a_foundVariable)
+	{
+		// $speed, $keyLeft etc
+		for (ScriptVariable variable : m_scriptVariables) {
+			if (a_line.find(variable.name) != std::string::npos) {
+				a_foundVariable = variable;
 				return true;
 			}
 		}

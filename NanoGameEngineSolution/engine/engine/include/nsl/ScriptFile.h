@@ -26,6 +26,7 @@ namespace nano { namespace engine {
 		bool doesLineContainParserToken(std::string a_line, std::string& a_foundParserToken);
 		bool doesLineContainLogicExpression(std::string a_line, std::string& a_foundLogicExpression);
 		bool doesLineContainCmdExpression(std::string a_line, std::string& a_foundCmdExpression);
+		bool doesLineContainVariable(std::string a_line, ScriptVariable& a_foundVariable);
 
 	private:
 		ecs::Entity* m_targetEntity;

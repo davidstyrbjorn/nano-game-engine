@@ -2,7 +2,6 @@
 
 #include<sstream>
 #include<iomanip>
-#include<vector>
 
 namespace nano {
 
@@ -12,6 +11,17 @@ namespace nano {
 		std::ostringstream out;
 		out << std::setprecision(n) << a_value;
 		return out.str();
+	}
+
+	template<typename T>
+	void remove_space(T &a_subject) 
+	{
+		T subjectCopy = a_subject;
+		a_subject = "";
+		for (char c : subjectCopy) {
+			if (c != ' ')
+				a_subject += c;
+		}
 	}
 
 }

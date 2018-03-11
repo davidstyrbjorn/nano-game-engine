@@ -25,7 +25,7 @@ namespace nano { namespace math {
 		return sqrt(powf(this->x, 2) + powf(this->y, 2) + powf(this->z, 2));
 	}
 
-	const Vector3 & Vector3::Normalized() const
+	const Vector3 Vector3::Normalized() const
 	{
 		math::Vector3 normalizedVector;
 		math::Vector3 vector = *this;
