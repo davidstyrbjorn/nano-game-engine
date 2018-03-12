@@ -50,6 +50,8 @@ namespace nano { namespace engine {
 						if (parserToken == "if") {
 							std::string logicExpression;
 							if (doesLineContainLogicExpression(line, logicExpression)) {
+								remove_space<std::string>(line);
+
 								ScriptLogicExpression logicExpr;
 								// Logic expression string
 								logicExpr.logicString = logicExpression; // keyDown etc
@@ -58,11 +60,12 @@ namespace nano { namespace engine {
 								int startArgIndex = line.find("(");
 								int endArgIndex = line.find(")")+1;
 								std::string argTemp = line.substr(startArgIndex, endArgIndex - startArgIndex);
-								// Check if argument is a registered variable
 								ScriptVariable variable;
 								if (doesLineContainVariable(argTemp, variable)) {
 									// Replace argTemp with variable.value?
-
+									std::cout << argTemp << std::endl;
+									replaceVariableWithLiteralValues(argTemp);
+									std::cout << argTemp << std::endl;
 								}
 								logicExpr.args = line.substr(startArgIndex, endArgIndex-startArgIndex);
 
@@ -89,6 +92,8 @@ namespace nano { namespace engine {
 
 							sv.name = line.substr(start, end - start);
 							sv.value = line.substr(end+1);
+
+							std::cout << "Registered variable " << sv.name << " with value " << sv.value << std::endl;
 
 							m_scriptVariables.push_back(sv);
 						}
@@ -153,16 +158,36 @@ namespace nano { namespace engine {
 
 	void ScriptFile::replaceVariableWithLiteralValues(std::string & a_subject)
 	{
-		struct VariableInString { int startIndex; int endIndex; };
-		std::vector<VariableInString> variablesToReplace;
-
-		int i = 0;
-		for (char c : a_subject) {
+		int numOfVariables = 0;
+		int variableStartIndex[10];
+		
+		int i = 0; for (char c : a_subject) {
 			if (c == '$') {
-				VariableInString foundVariable;
-				foundVariable.startIndex = i;
+				variableStartIndex[numOfVariables] = i;
+				numOfVariables++;
 			}
 			i++;
+		}
+		if (numOfVariables == 0) {
+			// Found no variables when going through the subject string
+			return;
+		}
+		while (numOfVariables > 0) {
+			// Here we loop through and to the procedure to remove the variable and replace it with its corresponding value
+			int startIndex, endIndex;
+			int i = 0; for (char c : a_subject) {
+				if (c == '$') {
+					startIndex = i;
+				}
+				else if (c == ',' || c == ')') {
+					endIndex = i;
+					// Remove the varibale string given the limits within a_subject
+					a_subject.erase(startIndex, endIndex);
+					numOfVariables--;
+				}
+
+				i++;
+			}
 		}
 	}
 
