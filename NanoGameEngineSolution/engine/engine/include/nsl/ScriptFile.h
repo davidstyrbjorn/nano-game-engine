@@ -30,6 +30,8 @@ namespace nano { namespace engine {
 
 		void replaceVariableWithLiteralValues(std::string &a_subject);
 
+		const ScriptVariable getVariableFromName(std::string a_name);
+
 	private:
 		ecs::Entity* m_targetEntity;
 		std::string m_hndl;

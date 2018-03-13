@@ -50,6 +50,7 @@ namespace nano { namespace engine {
 						if (parserToken == "if") {
 							std::string logicExpression;
 							if (doesLineContainLogicExpression(line, logicExpression)) {
+								// Removing any spaces from the line 
 								remove_space<std::string>(line);
 
 								ScriptLogicExpression logicExpr;
@@ -63,9 +64,7 @@ namespace nano { namespace engine {
 								ScriptVariable variable;
 								if (doesLineContainVariable(argTemp, variable)) {
 									// Replace argTemp with variable.value?
-									std::cout << argTemp << std::endl;
 									replaceVariableWithLiteralValues(argTemp);
-									std::cout << argTemp << std::endl;
 								}
 								logicExpr.args = line.substr(startArgIndex, endArgIndex-startArgIndex);
 
@@ -158,37 +157,49 @@ namespace nano { namespace engine {
 
 	void ScriptFile::replaceVariableWithLiteralValues(std::string & a_subject)
 	{
-		int numOfVariables = 0;
-		int variableStartIndex[10];
-		
+		bool isVariable[32];
+		std::vector<std::string> variableSubStrings;
+		int startIndex, endIndex;
+
 		int i = 0; for (char c : a_subject) {
+			if (c == '(') {
+				if (a_subject[i + 1] != '$') {
+					std::cout << "First argument is not a variable" << std::endl;
+				}
+			}
 			if (c == '$') {
-				variableStartIndex[numOfVariables] = i;
-				numOfVariables++;
+				startIndex = i-1;
+			}
+			if (c == ',' || c == ')') {
+				endIndex = i;
+				variableSubStrings.push_back(a_subject.substr(startIndex, endIndex - startIndex));
 			}
 			i++;
 		}
-		if (numOfVariables == 0) {
-			// Found no variables when going through the subject string
-			return;
-		}
-		while (numOfVariables > 0) {
-			// Here we loop through and to the procedure to remove the variable and replace it with its corresponding value
-			int startIndex, endIndex;
-			int i = 0; for (char c : a_subject) {
-				if (c == '$') {
-					startIndex = i;
-				}
-				else if (c == ',' || c == ')') {
-					endIndex = i;
-					// Remove the varibale string given the limits within a_subject
-					a_subject.erase(startIndex, endIndex);
-					numOfVariables--;
-				}
 
-				i++;
+		int z = 0;
+		for (std::string &subVariableString : variableSubStrings) {
+			int j = 0; for (char c : subVariableString) {
+				if (c == '$') {
+					ScriptVariable var = getVariableFromName(subVariableString.substr(j + 1));
+					subVariableString.erase(j);
+					subVariableString.insert(j, var.value);
+					std::cout << subVariableString << std::endl;
+				}
+				j++;
 			}
+			z++;
 		}
+	}
+
+	const ScriptVariable ScriptFile::getVariableFromName(std::string a_name)
+	{
+		for (ScriptVariable var : m_scriptVariables) {
+			if (var.name == a_name)
+				return var;
+		}
+		std::cout << "Variable not found" << std::endl;
+		return ScriptVariable();
 	}
 
 	bool ScriptFile::doesLineContainParserToken(std::string a_line, std::string & a_foundParserToken)
