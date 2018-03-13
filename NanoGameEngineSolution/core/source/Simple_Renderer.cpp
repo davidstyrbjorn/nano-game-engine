@@ -270,7 +270,7 @@ namespace nano { namespace graphics {
 		math::Vector2 camPos = m_camera->GetPosition();
 		math::Vector2 camSize = m_camera->GetSize();
 
-		for (int y = 0; y < 27; y++) {
+		for (int y = 0; y < (int)(camSize.y/30); y++) {
 			gridDataVector.push_back({ camPos + math::Vector2(0, (y*lineOffset)), color, uv });
 			gridDataVector.push_back({ camPos + math::Vector2(0, gridThickness + (y*lineOffset)), color, uv });
 			gridDataVector.push_back({ camPos + math::Vector2(camSize.x, gridThickness + (y*lineOffset)), color, uv });
@@ -278,7 +278,7 @@ namespace nano { namespace graphics {
 
 			m_quadCount++;
 		}
-		for (int x = 0; x < 32; x++) {
+		for (int x = 0; x < (int)(camSize.x/37); x++) {
 			gridDataVector.push_back({ camPos + math::Vector2((x*lineOffset), 0), color, uv });
 			gridDataVector.push_back({ camPos + math::Vector2((x*lineOffset), camSize.y), color, uv });
 			gridDataVector.push_back({ camPos + math::Vector2(gridThickness + (x*lineOffset), camSize.y), color, uv });
@@ -286,6 +286,12 @@ namespace nano { namespace graphics {
 
 			m_quadCount++;
 		}
+		
+
+		gridDataVector.push_back({ camPos + math::Vector2(0, 0), color, uv });
+		gridDataVector.push_back({ camPos + math::Vector2(0, camSize.y), color, uv });
+		gridDataVector.push_back({ camPos + math::Vector2(gridThickness, camSize.y), color, uv });
+		gridDataVector.push_back({ camPos + math::Vector2(gridThickness, 0), color, uv });
 
 		m_quadVAO->Bind();
 		m_quadVBO->Bind();

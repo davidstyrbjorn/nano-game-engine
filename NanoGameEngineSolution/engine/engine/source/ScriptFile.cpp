@@ -121,19 +121,21 @@ namespace nano { namespace engine {
 	void ScriptFile::executeScriptCommands(float a_deltaTime)
 	{
 		for (ScriptCommand cmd : m_directCommands) {
-			if (cmd.commandString == "move") {
-				// Process move command please
-				moveCommand(m_targetEntity, cmd.arg);
-			}
+			commandGate(cmd.commandString, cmd.arg);
 		}
 		for (ScriptLogicExpression logicExpr : m_logicExpressions) {
 			if (logicExpr.logicString == "keyDown") {
 				if (isKeyDownExpressionTrue(logicExpr.args)) {
-					if (logicExpr.command.commandString == "move") {
-						moveCommand(m_targetEntity, logicExpr.command.arg);
-					}
+					commandGate(logicExpr.command.commandString, logicExpr.command.arg);
 				}
 			}
+		}
+	}
+
+	void ScriptFile::commandGate(std::string a_command, std::string a_argument)
+	{
+		if (a_command == "move") {
+			moveCommand(m_targetEntity, a_argument);
 		}
 	}
 

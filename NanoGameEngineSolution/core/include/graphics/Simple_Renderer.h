@@ -15,7 +15,7 @@
 #define QUAD_BUFFER_SIZE QUAD_SIZE * MAX_PRIMITIVES
 #define INDICES_COUNT MAX_PRIMITIVES*6
 
-#define GRID_COUNT 864
+#define GRID_COUNT 864+2 // @TODO: What is this?
 #define GRID_BUFFER_SIZE GRID_COUNT * QUAD_SIZE
 
 namespace nano { namespace graphics { 
