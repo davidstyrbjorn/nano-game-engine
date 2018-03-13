@@ -29,7 +29,6 @@ namespace nano { namespace engine {
 		bool doesLineContainVariable(std::string a_line, ScriptVariable& a_foundVariable);
 
 		void replaceVariableWithLiteralValues(std::string &a_subject);
-
 		const ScriptVariable getVariableFromName(std::string a_name);
 
 	private:

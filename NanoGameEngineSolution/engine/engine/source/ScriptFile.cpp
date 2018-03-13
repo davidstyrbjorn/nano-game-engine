@@ -47,7 +47,23 @@ namespace nano { namespace engine {
 						
 					}
 					else if (doesLineContainParserToken(line, parserToken)) {
-						if (parserToken == "if") {
+						if (parserToken == "var") {
+							//std::cout << "found var parser token! " << line << std::endl;
+							// Get variable name
+							ScriptVariable sv;
+
+							remove_space<std::string>(line);
+
+							int end = line.find(':');
+							int start = line.find('$') + 1;
+
+							sv.name = line.substr(start, end - start);
+							sv.value = line.substr(end + 1);
+
+							//std::cout << "Registered variable " << sv.name << " with value " << sv.value << std::endl;
+							m_scriptVariables.push_back(sv);
+						}
+						else if (parserToken == "if") {
 							std::string logicExpression;
 							if (doesLineContainLogicExpression(line, logicExpression)) {
 								// Removing any spaces from the line 
@@ -61,16 +77,18 @@ namespace nano { namespace engine {
 								int startArgIndex = line.find("(");
 								int endArgIndex = line.find(")")+1;
 								std::string argTemp = line.substr(startArgIndex, endArgIndex - startArgIndex);
-								ScriptVariable variable;
-								if (doesLineContainVariable(argTemp, variable)) {
-									// Replace argTemp with variable.value?
+								if (doesLineContainVariable(argTemp, ScriptVariable())) {
 									replaceVariableWithLiteralValues(argTemp);
 								}
-								logicExpr.args = line.substr(startArgIndex, endArgIndex-startArgIndex);
+								logicExpr.args = argTemp;
 
 								// Command
 								if (doesLineContainCmdExpression(line, logicExpr.command.commandString)) {
-									logicExpr.command.arg = line.substr(line.find_last_of('('), line.length());
+									std::string argTemp = line.substr(line.find_last_of('('), line.length());
+									if (doesLineContainVariable(argTemp, ScriptVariable())) {
+										replaceVariableWithLiteralValues(argTemp);
+									}
+									logicExpr.command.arg = argTemp;
 								}
 								else {
 									std::cout << "Was not able to parse line: " << line << " within file: " << m_hndl << std::endl;
@@ -79,29 +97,17 @@ namespace nano { namespace engine {
 								m_logicExpressions.push_back(logicExpr);
 							}
 						}
-						else if (parserToken == "var") {
-							//std::cout << "found var parser token! " << line << std::endl;
-							// Get variable name
-							ScriptVariable sv;
-
-							remove_space<std::string>(line);
-
-							int end = line.find(':');
-							int start = line.find('$')+1;
-
-							sv.name = line.substr(start, end - start);
-							sv.value = line.substr(end+1);
-
-							std::cout << "Registered variable " << sv.name << " with value " << sv.value << std::endl;
-
-							m_scriptVariables.push_back(sv);
-						}
 					}
 					else if(doesLineContainCmdExpression(line, command)){
 						// Direct command!
+						remove_space<std::string>(line);
 						ScriptCommand directCmd;
 						directCmd.commandString = command;
-						directCmd.arg = line.substr(line.find('('), line.length());
+						std::string argTemp = line.substr(line.find('('), line.length());
+						if (doesLineContainVariable(argTemp, ScriptVariable())) {
+							replaceVariableWithLiteralValues(argTemp);
+						}
+						directCmd.arg = argTemp;
 						m_directCommands.push_back(directCmd);	
 					}
 					else {
@@ -114,21 +120,21 @@ namespace nano { namespace engine {
 
 	void ScriptFile::executeScriptCommands(float a_deltaTime)
 	{
-		//for (ScriptCommand cmd : m_directCommands) {
-		//	if (cmd.commandString == "move") {
-		//		// Process move command please
-		//		moveCommand(m_targetEntity, cmd.arg);
-		//	}
-		//}
-		//for (ScriptLogicExpression logicExpr : m_logicExpressions) {
-		//	if (logicExpr.logicString == "keyDown") {
-		//		if (isKeyDownExpressionTrue(logicExpr.args)) {
-		//			if (logicExpr.command.commandString == "move") {
-		//				moveCommand(m_targetEntity, logicExpr.command.arg);
-		//			}
-		//		}
-		//	}
-		//}
+		for (ScriptCommand cmd : m_directCommands) {
+			if (cmd.commandString == "move") {
+				// Process move command please
+				moveCommand(m_targetEntity, cmd.arg);
+			}
+		}
+		for (ScriptLogicExpression logicExpr : m_logicExpressions) {
+			if (logicExpr.logicString == "keyDown") {
+				if (isKeyDownExpressionTrue(logicExpr.args)) {
+					if (logicExpr.command.commandString == "move") {
+						moveCommand(m_targetEntity, logicExpr.command.arg);
+					}
+				}
+			}
+		}
 	}
 
 	bool ScriptFile::doesLineContainCmdExpression(std::string a_line, std::string & a_foundCmdExpression)
@@ -161,10 +167,12 @@ namespace nano { namespace engine {
 		std::vector<std::string> variableSubStrings;
 		int startIndex, endIndex;
 
+		// This just fucking goes in and splits the shit into substrings
+		// @TODO: Clean this mess up please
 		int i = 0; for (char c : a_subject) {
 			if (c == '(') {
 				if (a_subject[i + 1] != '$') {
-					std::cout << "First argument is not a variable" << std::endl;
+					startIndex = i;
 				}
 			}
 			if (c == '$') {
@@ -173,22 +181,41 @@ namespace nano { namespace engine {
 			if (c == ',' || c == ')') {
 				endIndex = i;
 				variableSubStrings.push_back(a_subject.substr(startIndex, endIndex - startIndex));
+				if (c == ',') {
+					if (a_subject[i + 1] != '$') {
+						startIndex = i;
+					}
+				}
 			}
 			i++;
 		}
 
-		int z = 0;
-		for (std::string &subVariableString : variableSubStrings) {
+		// Go through each fucking substring and replace all the $ literal with its variable value
+		std::vector<std::string> correctValueSubStrings;
+
+		for (auto subVariableString : variableSubStrings) {
 			int j = 0; for (char c : subVariableString) {
+				if (c == ',' || c == '(') {
+					if (subVariableString[j + 1] != '$') {
+						correctValueSubStrings.push_back(subVariableString);
+					}
+				}
 				if (c == '$') {
 					ScriptVariable var = getVariableFromName(subVariableString.substr(j + 1));
-					subVariableString.erase(j);
-					subVariableString.insert(j, var.value);
-					std::cout << subVariableString << std::endl;
+					std::string copy = subVariableString;
+					copy.erase(j);
+					copy.insert(j, var.value);
+					correctValueSubStrings.push_back(copy);
 				}
 				j++;
 			}
-			z++;
+		}
+
+		a_subject = "";
+		for (int i = 0; i < correctValueSubStrings.size(); i++) {
+			a_subject += correctValueSubStrings.at(i);
+			if (i == correctValueSubStrings.size()-1)
+				a_subject += ")";
 		}
 	}
 
