@@ -107,6 +107,9 @@ namespace nano { namespace editor {
 
 	// Main menu bar "file, invoke, about" upper
 	class MenuBarWidget : EditorWidget {
+	private:
+		InputSystem *input;
+
 	public:
 		// Default constructor
 		MenuBarWidget();

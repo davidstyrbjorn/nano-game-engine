@@ -55,6 +55,7 @@ namespace nano { namespace editor {
 	void EditorWidgetSystem::Quit()
 	{
 		ImGui_ImplGlfwGL3_Shutdown();
+		delete m_eventHandler;
 		std::cout << "Editor Widget system quit correctly" << std::endl;
 	}
 
@@ -68,16 +69,27 @@ namespace nano { namespace editor {
 	{
 		// Tell every widget to render their shit
 		m_menuBarWidget.Render();
-		m_consoleWidget.Render();
-		
-		m_utilitySelectWidget.Render();
-		m_utilityWidget.Render();
-		
-		m_entitySelectWidget.Render();
-		m_entityInspectorWidget.Render();
+
+		if (m_renderWidgets) {
+			m_consoleWidget.Render();
+			m_utilitySelectWidget.Render();
+			m_utilityWidget.Render();
+			m_entitySelectWidget.Render();
+			m_entityInspectorWidget.Render();
+		}
 
 		// Tell ImGui to render 
 		ImGui::Render();
+	}
+
+	bool EditorWidgetSystem::GetRenderWidgets()
+	{
+		return m_renderWidgets;
+	}
+
+	void EditorWidgetSystem::SetRenderWidgets(bool a_value)
+	{
+		m_renderWidgets = a_value;
 	}
 
 	EventHandler & EditorWidgetSystem::GetEventHandler()

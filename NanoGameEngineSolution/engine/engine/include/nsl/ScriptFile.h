@@ -6,9 +6,13 @@
 #include"nsl_structs.h"
 
 namespace nano {
+	namespace engine {
+		class InputSystem;
+	}
 	namespace ecs {
 		class Entity;
-} }
+	} 
+}
 
 namespace nano { namespace engine {  
 
@@ -27,6 +31,7 @@ namespace nano { namespace engine {
 		bool doesLineContainLogicExpression(std::string a_line, std::string& a_foundLogicExpression);
 		bool doesLineContainCmdExpression(std::string a_line, std::string& a_foundCmdExpression);
 		bool doesLineContainVariable(std::string a_line, ScriptVariable& a_foundVariable);
+		bool isLogicExpressionPassive(std::string a_expression);
 
 		void replaceVariableWithLiteralValues(std::string &a_subject);
 		const ScriptVariable getVariableFromName(std::string a_name);
@@ -36,8 +41,11 @@ namespace nano { namespace engine {
 	private:
 		ecs::Entity* m_targetEntity;
 		std::string m_hndl;
+		InputSystem *m_input;
+
 		std::vector<ScriptCommand> m_directCommands;
 		std::vector<ScriptLogicExpression> m_logicExpressions;
+		std::vector<ScriptLogicExpression> m_passiveLogicExpressions;
 		std::vector<ScriptVariable> m_scriptVariables;
 
 		std::vector<std::string> m_scriptStringVector; // Seperated line by line [0] = first line [1] = second line etc...

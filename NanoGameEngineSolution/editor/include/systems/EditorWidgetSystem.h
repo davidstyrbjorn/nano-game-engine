@@ -17,6 +17,8 @@ namespace nano { namespace editor {
 		// The one sole instance
 		static EditorWidgetSystem *_instance;
 
+		bool m_renderWidgets = true;
+
 	public:
 		// Singleton connection
 		static EditorWidgetSystem *Instance();
@@ -46,7 +48,9 @@ namespace nano { namespace editor {
 		void Begin();
 		void Flush();
 
-		// Other methods
+		// Other
+		bool GetRenderWidgets();
+		void SetRenderWidgets(bool a_value);
 		EventHandler& GetEventHandler();
 	};
 

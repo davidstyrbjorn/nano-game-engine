@@ -4,6 +4,7 @@
 #include<ecs\components\TransformComponent.h>
 
 #include"../include/WorldSystem.h"
+#include"../include/InputSystem.h"
 #include"../include/nsl/nsl_definitions.h"
 #include"../include/nsl/CommandParser.h"
 
@@ -17,6 +18,7 @@ namespace nano { namespace engine {
 	{
 		m_hndl = a_hndl;
 		m_scriptStringVector = a_scriptStringVector;
+		m_input = InputSystem::getInstance();
 		parseScriptString();
 	}
 
@@ -44,7 +46,7 @@ namespace nano { namespace engine {
 					std::string command;
 
 					if (line[0] == '#') {
-						
+						// Comment
 					}
 					else if (doesLineContainParserToken(line, parserToken)) {
 						if (parserToken == "var") {
@@ -94,7 +96,16 @@ namespace nano { namespace engine {
 									std::cout << "Was not able to parse line: " << line << " within file: " << m_hndl << std::endl;
 								}
 							
-								m_logicExpressions.push_back(logicExpr);
+								if (isLogicExpressionPassive(logicExpression)) {
+									//std::cout << "added passive expression: " << std::endl;
+									//std::cout << logicExpr.logicString << " with arguments " << logicExpr.args << std::endl;
+									m_passiveLogicExpressions.push_back(logicExpr);
+								}
+								else {
+									//std::cout << "added normal logic expression: " << std::endl;
+									//std::cout << logicExpr.logicString << " with arguments " << logicExpr.args << std::endl;
+									m_logicExpressions.push_back(logicExpr);
+								}
 							}
 						}
 					}
@@ -120,13 +131,26 @@ namespace nano { namespace engine {
 
 	void ScriptFile::executeScriptCommands(float a_deltaTime)
 	{
+		// Go through direct commands
 		for (ScriptCommand cmd : m_directCommands) {
 			commandGate(cmd.commandString, cmd.arg);
 		}
+		// Go through the normal logic expressions
 		for (ScriptLogicExpression logicExpr : m_logicExpressions) {
 			if (logicExpr.logicString == "keyDown") {
 				if (isKeyDownExpressionTrue(logicExpr.args)) {
 					commandGate(logicExpr.command.commandString, logicExpr.command.arg);
+				}
+			}
+		}
+		for (InputEvent event : m_input->getPolledEvents()) {
+			if (event.type == INPUT_TYPE::KEY_PRESSED) {
+				for (ScriptLogicExpression passiveExpression : m_passiveLogicExpressions) {
+					if (passiveExpression.logicString == "keyPressed") {
+						if (event.key == getKeyCodeLiteralFromArg(passiveExpression.args)) {
+							commandGate(passiveExpression.command.commandString, passiveExpression.command.arg);
+						}
+					}
 				}
 			}
 		}
@@ -136,6 +160,12 @@ namespace nano { namespace engine {
 	{
 		if (a_command == "move") {
 			moveCommand(m_targetEntity, a_argument);
+		}
+		else if (a_command == "setPosition") {
+			setPositionCommand(m_targetEntity, a_argument);
+		}
+		else if (a_command == "setSize") {
+			setSizeCommand(m_targetEntity, a_argument);
 		}
 	}
 
@@ -159,6 +189,15 @@ namespace nano { namespace engine {
 				a_foundVariable = variable;
 				return true;
 			}
+		}
+		return false;
+	}
+
+	bool ScriptFile::isLogicExpressionPassive(std::string a_expression)
+	{
+		for (std::string passiveExpression : passiveLogicExpressions) {
+			if (a_expression == passiveExpression)
+				return true;
 		}
 		return false;
 	}

@@ -8,12 +8,14 @@
 #include"../include/LevelParser.h"
 #include"../include/systems/EditorConfig.h"
 #include"../include/systems/WindowSystem.h"
+#include"../include/systems/InputSystem.h"
 
 #include"../include/components/FourwayMoveComponentEditor.h"
 
 #include<math\Vector2.h>
 #include<graphics\Camera.h>
 #include<graphics\Simple_Renderer.h>
+#include<InputDefinitions.h>
 
 #include<iostream>
 #include<fstream>
@@ -48,12 +50,18 @@ namespace nano { namespace editor {
 
 	void MenuBarWidget::Start()
 	{
-
+		input = InputSystem::Instance();
 	}
 
 	void MenuBarWidget::Update()
 	{
-
+		for (InputEvent event : input->GetPolledEvents()) {
+			if (event.type == InputEventType::KEY_PRESSED) {
+				if (event.key == NANO_KEY_F) {
+					EditorWidgetSystem::Instance()->SetRenderWidgets(!EditorWidgetSystem::Instance()->GetRenderWidgets());
+				}
+			}
+		}
 	}
 
 	void MenuBarWidget::Render()

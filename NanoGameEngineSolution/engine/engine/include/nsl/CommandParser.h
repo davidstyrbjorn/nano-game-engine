@@ -17,6 +17,16 @@ namespace nano { namespace engine {
 		entity->m_transform->move(math::Vector2(xLiteral, yLiteral), speedLiteral);
 	}
 
+	void setPositionCommand(ecs::Entity* entity, std::string args) 
+	{
+		std::cout << "set position called with " << args << std::endl;
+	}
+
+	void setSizeCommand(ecs::Entity* entity, std::string args) 
+	{
+		std::cout << "set size called with " << args << std::endl;
+	}
+
 	void destroyCommand(std::string args)
 	{
 		std::cout << "destroy called with " << args << std::endl;
@@ -35,6 +45,11 @@ namespace nano { namespace engine {
 			return true;
 		}
 		return false;
+	}
+
+	int getKeyCodeLiteralFromArg(std::string arg)
+	{
+		return std::stoi(arg.substr(arg.find('(') + 1, arg.find(')')));
 	}
 
 } }

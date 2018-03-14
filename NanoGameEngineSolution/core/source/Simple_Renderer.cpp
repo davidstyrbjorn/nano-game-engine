@@ -270,7 +270,7 @@ namespace nano { namespace graphics {
 		math::Vector2 camPos = m_camera->GetPosition();
 		math::Vector2 camSize = m_camera->GetSize();
 
-		for (int y = 0; y < (int)(camSize.y/30); y++) {
+		for (int y = 0; y < (int)(camSize.y/28); y++) {
 			gridDataVector.push_back({ camPos + math::Vector2(0, (y*lineOffset)), color, uv });
 			gridDataVector.push_back({ camPos + math::Vector2(0, gridThickness + (y*lineOffset)), color, uv });
 			gridDataVector.push_back({ camPos + math::Vector2(camSize.x, gridThickness + (y*lineOffset)), color, uv });
@@ -278,7 +278,7 @@ namespace nano { namespace graphics {
 
 			m_quadCount++;
 		}
-		for (int x = 0; x < (int)(camSize.x/37); x++) {
+		for (int x = 0; x < (int)(camSize.x/30); x++) {
 			gridDataVector.push_back({ camPos + math::Vector2((x*lineOffset), 0), color, uv });
 			gridDataVector.push_back({ camPos + math::Vector2((x*lineOffset), camSize.y), color, uv });
 			gridDataVector.push_back({ camPos + math::Vector2(gridThickness + (x*lineOffset), camSize.y), color, uv });
@@ -286,12 +286,23 @@ namespace nano { namespace graphics {
 
 			m_quadCount++;
 		}
-		
+		std::cout << m_quadCount << std::endl;
 
-		gridDataVector.push_back({ camPos + math::Vector2(0, 0), color, uv });
-		gridDataVector.push_back({ camPos + math::Vector2(0, camSize.y), color, uv });
-		gridDataVector.push_back({ camPos + math::Vector2(gridThickness, camSize.y), color, uv });
-		gridDataVector.push_back({ camPos + math::Vector2(gridThickness, 0), color, uv });
+		
+		static math::Vector4 originColorX = math::Vector4(1, 0, 0, 1);
+		static math::Vector4 originColorY = math::Vector4(0, 0, 1, 1);
+		// Red X origin axis
+		gridDataVector.push_back({math::Vector2(0, 0), originColorX, uv });
+		gridDataVector.push_back({math::Vector2(0, camPos.y+camSize.y), originColorX, uv });
+		gridDataVector.push_back({math::Vector2(gridThickness, camPos.y+camSize.y), originColorX, uv });
+		gridDataVector.push_back({math::Vector2(gridThickness, 0), originColorX, uv });
+		m_quadCount++; 
+		// Blue Y origin axis
+		gridDataVector.push_back({math::Vector2(0, 0), originColorY, uv });
+		gridDataVector.push_back({math::Vector2(0, gridThickness), originColorY, uv });
+		gridDataVector.push_back({math::Vector2(camPos.x+camSize.x, gridThickness), originColorY, uv });
+		gridDataVector.push_back({math::Vector2(camPos.x+camSize.x, 0), originColorY, uv });
+		m_quadCount++;
 
 		m_quadVAO->Bind();
 		m_quadVBO->Bind();
