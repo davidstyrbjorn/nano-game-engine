@@ -6,8 +6,6 @@ var $leftKey: 65
 var $downKey: 83
 var $upKey: 87
 var $speed: 0.1
-var $right: 1
-var $left: -1
 
-if keyDown($rightKey): move($right, 0, $speed)
-if keyDown($leftKey): move($left, 0, $speed)
+if keyDown($rightKey): move(1, 0, $speed)
+if keyDown($leftKey): move(-1, 0, $speed)
