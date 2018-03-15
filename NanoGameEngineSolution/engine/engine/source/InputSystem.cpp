@@ -2,6 +2,8 @@
 
 #include<GLFW\glfw3.h>
 
+#include"../include/InputListener.h"
+
 namespace nano { namespace engine {
 
 	void InputSystem::shutdown()
@@ -24,7 +26,28 @@ namespace nano { namespace engine {
 
 	void InputSystem::update()
 	{
-
+		for (InputEvent event : m_polledEvents) {
+			if (event.type == INPUT_TYPE::KEY_PRESSED) {
+				for (InputListener *il : m_inputListeners) {
+					il->onKeyPressed(event.key);
+				}
+			}
+			else if (event.type == INPUT_TYPE::KEY_RELEASE) {
+				for (InputListener *il : m_inputListeners) {
+					il->onKeyReleased(event.key);
+				}
+			}
+			else if (event.type == INPUT_TYPE::MOUSE_PRESSED) {
+				for (InputListener *il : m_inputListeners) {
+					il->onMousePressed(event.key);
+				}
+			}
+			else if (event.type == INPUT_TYPE::MOUSE_RELEASE) {
+				for (InputListener *il : m_inputListeners) {
+					il->onMouseRelease(event.key);
+				}
+			}
+		}
 	}
 
 	void InputSystem::flushEvents()

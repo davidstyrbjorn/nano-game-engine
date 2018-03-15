@@ -19,7 +19,6 @@ namespace nano { namespace engine {
 		m_hndl = a_hndl;
 		m_scriptStringVector = a_scriptStringVector;
 		m_input = InputSystem::getInstance();
-		parseScriptString();
 	}
 
 	ScriptFile::~ScriptFile()
@@ -143,23 +142,47 @@ namespace nano { namespace engine {
 				}
 			}
 		}
-		for (InputEvent event : m_input->getPolledEvents()) {
-			if (event.type == INPUT_TYPE::KEY_PRESSED) {
-				for (ScriptLogicExpression passiveExpression : m_passiveLogicExpressions) {
-					if (passiveExpression.logicString == "keyPressed") {
-						if (event.key == getKeyCodeLiteralFromArg(passiveExpression.args)) {
-							commandGate(passiveExpression.command.commandString, passiveExpression.command.arg);
-						}
-					}
+	}
+
+	void ScriptFile::onKeyPressed(int a_key)
+	{
+		for (ScriptLogicExpression passiveExpression : m_passiveLogicExpressions) {
+			if (passiveExpression.logicString == "keyPressed") {
+				if (getKeyCodeLiteralFromArg(passiveExpression.args) == a_key) {
+					commandGate(passiveExpression.command.commandString, passiveExpression.command.arg);
 				}
 			}
-			else if (event.type == INPUT_TYPE::MOUSE_PRESSED) {
-				for (ScriptLogicExpression passiveExpression : m_passiveLogicExpressions) {
-					if (passiveExpression.logicString == "mousePressed") {
-						if (event.key == getKeyCodeLiteralFromArg(passiveExpression.args)) {
-							commandGate(passiveExpression.command.commandString, passiveExpression.command.arg);
-						}
-					}
+		}
+	}
+
+	void ScriptFile::onMousePressed(int a_key)
+	{
+		for (ScriptLogicExpression passiveExpression : m_passiveLogicExpressions) {
+			if (passiveExpression.logicString == "mousePressed") {
+				if (getKeyCodeLiteralFromArg(passiveExpression.args) == a_key) {
+					commandGate(passiveExpression.command.commandString, passiveExpression.command.arg);
+				}
+			}
+		}
+	}
+
+	void ScriptFile::onMouseRelease(int a_key)
+	{
+		for (ScriptLogicExpression passiveExpression : m_passiveLogicExpressions) {
+			if (passiveExpression.logicString == "mouseReleased") {
+				if (getKeyCodeLiteralFromArg(passiveExpression.args) == a_key) {
+					commandGate(passiveExpression.command.commandString, passiveExpression.command.arg);
+				}
+			}
+		}
+	}
+
+	void ScriptFile::onKeyReleased(int a_key)
+	{
+		for (ScriptLogicExpression passiveExpression : m_passiveLogicExpressions) {
+			if (passiveExpression.logicString == "keyReleased") {
+				if (getKeyCodeLiteralFromArg(passiveExpression.args) == a_key) {
+					commandGate(passiveExpression.command.commandString, passiveExpression.command.arg);
 				}
 			}
 		}

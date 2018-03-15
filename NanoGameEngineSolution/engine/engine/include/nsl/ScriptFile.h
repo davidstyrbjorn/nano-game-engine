@@ -5,6 +5,8 @@
 
 #include"nsl_structs.h"
 
+#include"../InputListener.h"
+
 namespace nano {
 	namespace engine {
 		class InputSystem;
@@ -16,7 +18,7 @@ namespace nano {
 
 namespace nano { namespace engine {  
 
-	class ScriptFile {
+	class ScriptFile : public InputListener {
 	public:
 		// Constructor
 		ScriptFile(std::string a_hndl, std::vector<std::string> a_scriptStringVector);
@@ -25,6 +27,12 @@ namespace nano { namespace engine {
 
 		void parseScriptString();
 		void executeScriptCommands(float a_deltaTime);
+
+	public:
+		void onKeyPressed(int a_key) override;
+		void onMousePressed(int a_key) override;
+		void onMouseRelease(int a_key) override;
+		void onKeyReleased(int a_key) override;
 
 	private:
 		bool doesLineContainParserToken(std::string a_line, std::string& a_foundParserToken);

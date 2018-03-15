@@ -14,7 +14,7 @@ namespace nano { namespace engine {
 	private:
 		ScriptingSystem() { }
 
-		std::vector<ScriptFile> m_scriptFiles;
+		std::vector<ScriptFile*> m_scriptFiles;
 		bool m_keysDown[1028];
 
 		void readFilesFromDir(std::string a_dir, std::vector<std::string>& a_list);

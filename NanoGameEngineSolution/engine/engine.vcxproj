@@ -142,6 +142,7 @@
     <ClInclude Include="engine\include\EngineConfig.h" />
     <ClInclude Include="engine\include\EngineCore.h" />
     <ClInclude Include="engine\include\EngineSystemBase.h" />
+    <ClInclude Include="engine\include\InputListener.h" />
     <ClInclude Include="engine\include\InputSystem.h" />
     <ClInclude Include="engine\include\LevelParser.h" />
     <ClInclude Include="engine\include\LevelSystem.h" />

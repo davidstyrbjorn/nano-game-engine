@@ -42,14 +42,18 @@ namespace nano { namespace engine {
 			}
 
 			// The file is now read push back to the m_scriptFiles list
-			m_scriptFiles.push_back(ScriptFile(scriptFileName.substr(0, scriptFileName.length()-4), scriptFileContent));
+			ScriptFile* scriptFile = new ScriptFile(scriptFileName.substr(0, scriptFileName.length() - 4), scriptFileContent);
+			m_scriptFiles.push_back(scriptFile);
+			InputSystem::getInstance()->addInputListener(scriptFile);
 		}
+
+		parseScriptFiles();
 	}
 
 	void ScriptingSystem::update(float a_deltaTime)
 	{
-		for (ScriptFile script : m_scriptFiles) {
-			script.executeScriptCommands(a_deltaTime);
+		for (ScriptFile *script : m_scriptFiles) {
+			script->executeScriptCommands(a_deltaTime);
 		}
 
 		static InputSystem* input = InputSystem::getInstance();
@@ -65,17 +69,19 @@ namespace nano { namespace engine {
 
 	void ScriptingSystem::shutdown()
 	{
+		std::vector<ScriptFile*>::iterator it;
+		for (it = m_scriptFiles.begin(); it != m_scriptFiles.end(); it++) {
+			delete *it;
+		}
 
+		std::cout << "Scripting system quit correctly" << std::endl;
 	}
 
 	void ScriptingSystem::parseScriptFiles()
 	{
-
-	}
-
-	void ScriptingSystem::processScriptCommands()
-	{
-
+		for (ScriptFile* scriptFile : m_scriptFiles) {
+			scriptFile->parseScriptString();
+		}
 	}
 	
 } }

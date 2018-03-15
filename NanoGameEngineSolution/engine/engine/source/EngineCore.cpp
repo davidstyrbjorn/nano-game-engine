@@ -19,6 +19,7 @@ void EngineCore::shutdown()
 	m_worldSystem->shutdown();
 	m_rendererSystem->shutdown();
 	m_levelSystem->shutdown();
+	m_scriptingSystem->shutdown();
 }
 
 void EngineCore::init()
