@@ -21,11 +21,6 @@ namespace nano { namespace engine {
 		m_input = InputSystem::getInstance();
 	}
 
-	ScriptFile::~ScriptFile()
-	{
-
-	}
-
 	void ScriptFile::parseScriptString()
 	{
 		bool gotEntity = false;

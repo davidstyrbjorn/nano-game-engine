@@ -23,8 +23,8 @@ namespace nano { namespace engine {
 		// Constructor
 		ScriptFile(std::string a_hndl, std::vector<std::string> a_scriptStringVector);
 		// Destructor
-		~ScriptFile();
-
+		~ScriptFile() {}
+ 
 		void parseScriptString();
 		void executeScriptCommands(float a_deltaTime);
 

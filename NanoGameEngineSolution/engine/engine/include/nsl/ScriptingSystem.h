@@ -25,7 +25,6 @@ namespace nano { namespace engine {
 		void shutdown() override;
 
 		void parseScriptFiles();
-		void processScriptCommands();
 
 	};
 
