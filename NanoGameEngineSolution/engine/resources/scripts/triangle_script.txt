@@ -10,5 +10,5 @@ var $speed: 0.1
 #if keyDown($rightKey): move(1, 0, $speed)
 #if keyDown($leftKey): move(-1, 0, $speed)
 
-if keyPressed($leftKey): setPosition(0, 0)
+if keyPressed($leftKey): setSize(10, 10)
 if keyPressed($rightKey): setSize(100, 100)

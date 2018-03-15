@@ -19,12 +19,18 @@ namespace nano { namespace engine {
 
 	void setPositionCommand(ecs::Entity* entity, std::string args) 
 	{
-		std::cout << "set position called with " << args << std::endl;
+		int identifierIndex = args.find(identifierSplit);
+		float xLiteral = std::stof(args.substr(1, identifierIndex));
+		float yLiteral = std::stof(args.substr(identifierIndex+1, args.length()-identifierIndex+1));
+		entity->m_transform->position = math::Vector2(xLiteral, yLiteral);
 	}
 
 	void setSizeCommand(ecs::Entity* entity, std::string args) 
 	{
-		std::cout << "set size called with " << args << std::endl;
+		int identifierIndex = args.find(identifierSplit);
+		float xLiteral = std::stof(args.substr(1, identifierIndex));
+		float yLiteral = std::stof(args.substr(identifierIndex + 1, args.length() - identifierIndex + 1));
+		entity->m_transform->size = math::Vector2(xLiteral, yLiteral);
 	}
 
 	void destroyCommand(std::string args)
