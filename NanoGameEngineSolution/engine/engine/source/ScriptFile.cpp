@@ -153,6 +153,15 @@ namespace nano { namespace engine {
 					}
 				}
 			}
+			else if (event.type == INPUT_TYPE::MOUSE_PRESSED) {
+				for (ScriptLogicExpression passiveExpression : m_passiveLogicExpressions) {
+					if (passiveExpression.logicString == "mousePressed") {
+						if (event.key == getKeyCodeLiteralFromArg(passiveExpression.args)) {
+							commandGate(passiveExpression.command.commandString, passiveExpression.command.arg);
+						}
+					}
+				}
+			}
 		}
 	}
 

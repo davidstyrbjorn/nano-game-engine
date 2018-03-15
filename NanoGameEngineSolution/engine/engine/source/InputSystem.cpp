@@ -37,6 +37,21 @@ namespace nano { namespace engine {
 		return m_polledEvents;
 	}
 
+	void InputSystem::addInputListener(InputListener * a_inputListener)
+	{
+		m_inputListeners.push_back(a_inputListener);
+	}
+
+	void InputSystem::removeInputListener(InputListener * a_inputListener)
+	{
+		std::vector<InputListener*> newList;
+		for (InputListener *il : m_inputListeners) {
+			if (il != nullptr)
+				newList.push_back(il);
+		}
+		m_inputListeners = newList;
+	}
+
 	void character_callback(GLFWwindow * window, unsigned int codepoint)
 	{
 

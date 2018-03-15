@@ -4,10 +4,19 @@
 
 #include<math\Vector2.h>
 #include<deque>
+#include<vector>
 
 struct GLFWwindow;
 
 namespace nano { namespace engine { 
+
+	// Abstract class for other classes that want to be notified when something is pressed
+	class InputListener {
+		virtual void onKeyPressed(int a_key){}
+		virtual void onMousePressed(int a_key){}
+		virtual void onMouseRelease(int a_key){}
+		virtual void onKeyReleased(int a_key){}
+	};
 
 	enum INPUT_TYPE {
 		// Key
@@ -33,6 +42,8 @@ namespace nano { namespace engine {
 		std::deque<InputEvent> m_polledEvents; // List of all the polled events (gets cleared each frame)
 		bool m_keys[1028];
 
+		std::vector<InputListener*> m_inputListeners;
+
 	public:
 		void start() override;
 		void update() override;
@@ -41,6 +52,10 @@ namespace nano { namespace engine {
 		void flushEvents();
 		std::deque<InputEvent> &getPolledEvents();
 		bool isKeyDown(int a_keyCode) { return m_keys[a_keyCode]; }
+
+		// Input listener methods
+		void addInputListener(InputListener* a_inputListener);
+		void removeInputListener(InputListener* a_inputListener);
 
 		// GLFW callback functions
 		friend static void character_callback(GLFWwindow* window, unsigned int codepoint);
