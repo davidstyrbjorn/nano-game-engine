@@ -9,6 +9,7 @@
 #include"../include/systems/EditorConfig.h"
 #include"../include/systems/WindowSystem.h"
 #include"../include/systems/InputSystem.h"
+#include"../include/systems/LevelSystem.h"
 
 #include"../include/components/FourwayMoveComponentEditor.h"
 
@@ -23,16 +24,6 @@
 #include<sys\types.h>
 
 namespace nano { namespace editor {
-
-	bool DoesFileExist(std::string a_filePath)
-	{
-		std::ifstream stream(a_filePath);
-		if (stream.is_open()) {
-			return true;
-		}
-
-		return false;
-	}
 
 	void ReadDirectory(const std::string& name, std::vector<std::string>& v)
 	{
@@ -50,7 +41,7 @@ namespace nano { namespace editor {
 
 	void MenuBarWidget::Start()
 	{
-		input = InputSystem::Instance();
+		input = InputSystem::getInstance();
 	}
 
 	void MenuBarWidget::Update()
@@ -58,7 +49,7 @@ namespace nano { namespace editor {
 		for (InputEvent event : input->GetPolledEvents()) {
 			if (event.type == InputEventType::KEY_PRESSED) {
 				if (event.key == NANO_KEY_F) {
-					EditorWidgetSystem::Instance()->SetRenderWidgets(!EditorWidgetSystem::Instance()->GetRenderWidgets());
+					EditorWidgetSystem::getInstance()->SetRenderWidgets(!EditorWidgetSystem::getInstance()->GetRenderWidgets());
 				}
 			}
 		}
@@ -71,6 +62,7 @@ namespace nano { namespace editor {
 		static bool m_showCreditsWidget = false;
 		static bool m_showVersionWidget = false;
 		static LevelParser levelParser;
+		static LevelSystem *levelSystem = LevelSystem::getInstance();
 		std::string currentLevelName = EditorConfig::Instance()->getCurrentlyLevelName();
 
 		if (ImGui::BeginMainMenuBar()) 
@@ -85,7 +77,7 @@ namespace nano { namespace editor {
 				if (currentLevelName != "none") {
 					std::string temp = "Save Level (" + currentLevelName + ")";
 					if(ImGui::Selectable(temp.c_str())) {
-						SaveLevel(currentLevelName);
+						levelSystem->saveLevel(currentLevelName);
 					}
 				}
 				if (ImGui::Selectable("Load Level")) {
@@ -116,9 +108,9 @@ namespace nano { namespace editor {
 			if (ImGui::BeginMenu("Entity"))
 			{
 				if (ImGui::Selectable("Create New")) {
-					WorldSystem::Instance()->CreateNewEntity("unnamed");
+					WorldSystem::getInstance()->CreateNewEntity("unnamed");
 					// Send this event to the event handler!
-					EditorWidgetSystem::Instance()->GetEventHandler().AddEvent(BaseEvent(EventTypes::MANIPULATED_ENTITY, "entity_created", "unnamed"));
+					EditorWidgetSystem::getInstance()->GetEventHandler().AddEvent(BaseEvent(EventTypes::MANIPULATED_ENTITY, "entity_created", "unnamed"));
 				}
 				ImGui::EndMenu();
 			}
@@ -171,7 +163,7 @@ namespace nano { namespace editor {
 			static char buffer[128] = "";
 			ImGui::InputText("Level Name", buffer, 128);
 			if (ImGui::Button("Save")) {
-				SaveLevel(buffer);
+				levelSystem->saveLevel(buffer);
 
 				// Done with saving
 				m_showSaveLevelWidget = false;
@@ -189,7 +181,7 @@ namespace nano { namespace editor {
 			static char buffer[128] = "";
 			bool enter = ImGui::InputText("Level Name", buffer, 128, ImGuiInputTextFlags_::ImGuiInputTextFlags_EnterReturnsTrue);
 			if (ImGui::Button("Load") || enter) {
-				LoadLevel(buffer);
+				levelSystem->loadLevel(buffer);
 
 				// Done with loading
 				m_showLoadLevelWidget = false;
@@ -204,7 +196,7 @@ namespace nano { namespace editor {
 				if (i != "." && i != "..") {
 					std::string temp = i.substr(0, i.length() - 4);
 					if (ImGui::Selectable(temp.c_str())) {
-						LoadLevel(temp); 
+						levelSystem->loadLevel(temp); 
 
 						// Done with loading
 						m_showLoadLevelWidget = false;
@@ -213,58 +205,6 @@ namespace nano { namespace editor {
 			}
 
 			ImGui::End();
-		}
-	}
-
-	void MenuBarWidget::SaveLevel(std::string a_name)
-	{
-		static LevelParser levelParser;
-
-		std::string location = "resources\\levels\\" + std::string(a_name) + ".txt";
-		// Check if there's already a saved level with this name!
-		// @ TODO: Handle if there's already a existing level with said name
-		graphics::OrthographicCamera *c = RendererSystem::Instance()->GetSimpleRenderer().GetCamera();
-		if (DoesFileExist(location)) {
-			levelParser.ParseCurrentLevelToFile(location.c_str(), WorldSystem::Instance()->GetEntityListCopy(), c->GetPosition(), c->GetSize());
-		}
-		else {
-			levelParser.ParseCurrentLevelToFile(location.c_str(), WorldSystem::Instance()->GetEntityListCopy(), c->GetPosition(), c->GetSize());
-		}
-
-		// We've loaded a new level (name)
-		EditorConfig::Instance()->setCurrentLevelName(a_name);
-
-		std::string message = "Saved Level " + std::string(a_name) + " at resources/levels/" + std::string(a_name) + ".txt";
-		EditorWidgetSystem::Instance()->GetEventHandler().AddEvent(BaseEvent(EventTypes::CONSOLE_MESSAGE, message));
-	}
-
-	void MenuBarWidget::LoadLevel(std::string a_name)
-	{
-		static LevelParser levelParser;
-
-
-		// TODO @: More than entities are to be loaded from the file
-		std::string location = "resources\\levels\\" + std::string(a_name) + ".txt";
-		ParsedLevel level;
-		bool levelResult = levelParser.GetParsedLevelFromFile(location.c_str(), level);
-		if (levelResult) {
-			// Tell the world we have a bunch of new entities
-			WorldSystem::Instance()->LoadedNewLevel(level.entities);
-			// Set camera pos & window size to saved size
-			RendererSystem::Instance()->GetSimpleRenderer().GetCamera()->SetPosition(level.camPos);
-			WindowSystem::Instance()->GetWindow().SetNewWindowSize(level.camSize);
-			// Camera size
-			RendererSystem::Instance()->GetSimpleRenderer().GetCamera()->SetSize(level.camSize);
-			
-			// Tell the config we have a new level name
-			EditorConfig::Instance()->setCurrentLevelName(a_name);
-
-			std::string message = "Succesfully loaded " + a_name + " at location " + location;
-			EditorWidgetSystem::Instance()->GetEventHandler().AddEvent(BaseEvent(EventTypes::CONSOLE_MESSAGE, message));
-		}
-		else {
-			std::string message = "Failed to load " + a_name + " at location " + location;
-			EditorWidgetSystem::Instance()->GetEventHandler().AddEvent(BaseEvent(EventTypes::CONSOLE_MESSAGE, message));
 		}
 	}
 }

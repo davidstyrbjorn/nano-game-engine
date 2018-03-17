@@ -11,14 +11,6 @@
 
 namespace nano { namespace editor {
 
-	InputSystem* InputSystem::_instance = nullptr;
-	InputSystem* InputSystem::Instance()
-	{
-		if (_instance == nullptr)
-			_instance = new InputSystem();
-		return _instance;
-	}
-
 	void InputSystem::Start()
 	{
 		// Set the GLFW callback functions
@@ -87,7 +79,7 @@ namespace nano { namespace editor {
 		ImGui_ImplGlfwGL3_KeyCallback(window, key, scancode, action, mods);
 
 		if (action == GLFW_PRESS || action == GLFW_REPEAT) {
-			InputSystem* temp = InputSystem::Instance();
+			static InputSystem* temp = InputSystem::getInstance();
 
 			// Create the event
 			InputEvent _event;
@@ -105,7 +97,7 @@ namespace nano { namespace editor {
 		// Calling for imgui
 		ImGui_ImplGlfwGL3_MouseButtonCallback(window, button, action, mods);
 
-		InputSystem* temp = InputSystem::Instance();
+		static InputSystem* temp = InputSystem::getInstance();
 		if (action == GLFW_PRESS || action == GLFW_REPEAT) {
 
 			// Create the event
@@ -143,7 +135,7 @@ namespace nano { namespace editor {
 
 	void editor::cursor_position_callback(GLFWwindow * window, double xpos, double ypos)
 	{
-		InputSystem *instance = InputSystem::Instance();
+		static InputSystem *instance = InputSystem::getInstance();
 		instance->SetMousePosition(math::Vector2(xpos, ypos));
 	}
 

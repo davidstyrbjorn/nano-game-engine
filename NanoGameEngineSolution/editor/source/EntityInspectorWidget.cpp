@@ -25,7 +25,6 @@
 
 #include"../include/DearImGui/imgui.h"
 
-
 #include<stb\stb_image.h>
 
 #include<InputDefinitions.h>
@@ -34,19 +33,19 @@ namespace nano { namespace editor {
 
 	EntityInspectorWidget::EntityInspectorWidget()
 	{
-		m_inputSystem = InputSystem::Instance();
+		m_inputSystem = InputSystem::getInstance();
+		m_renderSystem = RendererSystem::getInstance();
 	}
 
 	void EntityInspectorWidget::Start()
 	{
-		m_renderSystem = RendererSystem::Instance();
 	}
 
 	void EntityInspectorWidget::Update()
 	{
 		highlighEntity.Update();
 		if(highlighEntity.ShouldHighlight())
-			RendererSystem::Instance()->GetSimpleRenderer().Submit(highlighEntity.GetRenderable());
+			RendererSystem::getInstance()->GetSimpleRenderer().Submit(highlighEntity.GetRenderable());
 
 		math::Vector2 mousePos = m_inputSystem->GetMousePosition() + m_renderSystem->GetSimpleRenderer().GetCamera()->GetPosition();
 		// Dragging input
@@ -63,7 +62,7 @@ namespace nano { namespace editor {
 						m_entityToInspect->SetState(ecs::ECSStates::DESTROYED);
 						highlighEntity.SetNewHighlightedEntity(nullptr);
 						m_entityToInspect = nullptr;
-						EditorWidgetSystem::Instance()->GetEventHandler().AddEvent(BaseEvent(EventTypes::MANIPULATED_ENTITY, "entity_destroyed", temp));
+						EditorWidgetSystem::getInstance()->GetEventHandler().AddEvent(BaseEvent(EventTypes::MANIPULATED_ENTITY, "entity_destroyed", temp));
 					}
 				}
 				if (_event.type == InputEventType::MOUSE_PRESSED) {
@@ -174,7 +173,7 @@ namespace nano { namespace editor {
 							m_entityToInspect->GetComponent<ecs::RectangleComponent>()->SetState(ecs::ECSStates::DESTROYED);
 						// Event Handler
 						BaseEvent _event(EventTypes::MANIPULATED_COMPONENT, m_entityToInspect->GetID(), "Renderable Component", "Destroyed");
-						EditorWidgetSystem::Instance()->GetEventHandler().AddEvent(_event);
+						EditorWidgetSystem::getInstance()->GetEventHandler().AddEvent(_event);
 					}
 					ImGui::EndPopup();
 				}
@@ -229,7 +228,7 @@ namespace nano { namespace editor {
 						soundComponent->SetState(ecs::ECSStates::DESTROYED);
 						// Event handler
 						BaseEvent _event(EventTypes::MANIPULATED_COMPONENT, m_entityToInspect->GetID(), "Sound Component", "Destroyed");
-						EditorWidgetSystem::Instance()->GetEventHandler().AddEvent(_event);
+						EditorWidgetSystem::getInstance()->GetEventHandler().AddEvent(_event);
 					}
 					ImGui::EndPopup();
 				}
@@ -541,7 +540,7 @@ namespace nano { namespace editor {
 					return;
 				}
 				else {
-					m_entityToInspect = WorldSystem::Instance()->GetEntityByID(a_id2);
+					m_entityToInspect = WorldSystem::getInstance()->GetEntityByID(a_id2);
 					highlighEntity.SetNewHighlightedEntity(m_entityToInspect);
 				}
 			}
@@ -549,7 +548,7 @@ namespace nano { namespace editor {
 		if (a_id == "entity_destroyed") {
 			// Check if the destroyed entity is the entity we inspect
 			if (m_entityToInspect != nullptr) {
-				if (WorldSystem::Instance()->Instance()->GetEntityByID(a_id2) == m_entityToInspect) {
+				if (WorldSystem::getInstance()->GetEntityByID(a_id2) == m_entityToInspect) {
 					highlighEntity.SetNewHighlightedEntity(nullptr);
 					m_entityToInspect = nullptr;
 				}

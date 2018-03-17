@@ -29,27 +29,27 @@ namespace nano { namespace editor {
 		EditorConfig::Instance()->setClearColor(math::Vector4(0.2, 0.2f, 0.2f, 0.0f));
 
 		// Window System (1200 by 800)
-		m_windowSystem = WindowSystem::Instance();
+		m_windowSystem = WindowSystem::getInstance();
 		m_windowSystem->Start();
 
 		// Create input system now that the window is up and running
-		m_inputSystem = InputSystem::Instance();
+		m_inputSystem = InputSystem::getInstance();
 		m_inputSystem->Start();
 
 		// Sound system (OpenAL device&context)
-		m_soundSystem = SoundSystem::Instance();
+		m_soundSystem = SoundSystem::getInstance();
 		m_soundSystem->Start();
 
 		// Entity Manager System
-		m_WorldSystem = WorldSystem::Instance();
+		m_WorldSystem = WorldSystem::getInstance();
 		m_WorldSystem->Start();
 
 		// Renderer System
-		m_rendererSystem = RendererSystem::Instance();
+		m_rendererSystem = RendererSystem::getInstance();
 		m_rendererSystem->Start("resources//vertex.txt", "resources//fragment.txt");
 
 		// Editor Widget System
-		m_editorWidgetSystem = EditorWidgetSystem::Instance();
+		m_editorWidgetSystem = EditorWidgetSystem::getInstance();
 		m_editorWidgetSystem->Start();
 
 		// Start the main loop method

@@ -9,19 +9,13 @@
 
 namespace nano { namespace editor { 
 
-	class EditorWidgetSystem : public EditorSystem {
+	class EditorWidgetSystem : public EditorSystem<EditorWidgetSystem> {
+		friend class EditorSystem<EditorWidgetSystem>;
 	private:
 		// Private constructor (singleton)
 		EditorWidgetSystem() { }
 
-		// The one sole instance
-		static EditorWidgetSystem *_instance;
-
 		bool m_renderWidgets = true;
-
-	public:
-		// Singleton connection
-		static EditorWidgetSystem *Instance();
 
 	private:
 		// Widgets

@@ -6,15 +6,6 @@
 
 namespace nano { namespace editor {  
 
-	SoundSystem::SoundSystem() { }
-	SoundSystem* SoundSystem::_instance = nullptr;
-	SoundSystem* SoundSystem::Instance()
-	{
-		if (_instance == nullptr)
-			_instance = new SoundSystem();
-		return _instance;
-	}
-
 	void SoundSystem::Start()
 	{
 		m_contextDevice = new openal::ContextDevice();

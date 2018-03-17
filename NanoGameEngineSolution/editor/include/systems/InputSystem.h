@@ -22,7 +22,8 @@ namespace nano { namespace editor {
 		int key;
 	};
 
-	class InputSystem : EditorSystem {
+	class InputSystem : public EditorSystem<InputSystem> {
+		friend class EditorSystem<InputSystem>;
 	private:
 		std::deque<InputEvent> m_polledEvents; // list for current frames polled events
 
@@ -34,12 +35,7 @@ namespace nano { namespace editor {
 		// Private contructor (singleton)
 		InputSystem() { }
 
-		// One sole instance
-		static InputSystem* _instance;
-
 	public:
-		// Singleton connection
-		static InputSystem* Instance();
 
 		// Base class methods
 		void Start() override;

@@ -9,14 +9,6 @@
 
 namespace nano { namespace editor { 
 
-	EditorWidgetSystem* EditorWidgetSystem::_instance = nullptr;
-	EditorWidgetSystem* EditorWidgetSystem::Instance()
-	{
-		if (_instance == nullptr)
-			_instance = new EditorWidgetSystem();
-		return _instance;
-	}
-
 	void EditorWidgetSystem::Start()
 	{
 		// Create event handler

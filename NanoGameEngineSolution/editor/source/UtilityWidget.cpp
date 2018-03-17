@@ -18,7 +18,7 @@ namespace nano { namespace editor {
 
 	UtilityWidget::UtilityWidget()
 	{
-		m_renderSystem = RendererSystem::Instance();
+		m_renderSystem = RendererSystem::getInstance();
 	}
 
 	void UtilityWidget::Start()

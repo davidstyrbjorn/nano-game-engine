@@ -9,21 +9,13 @@
 
 namespace nano { namespace editor { 
 
-	RendererSystem* RendererSystem::_instance = nullptr;
-	RendererSystem* RendererSystem::Instance()
-	{
-		if (_instance == nullptr)
-			_instance = new RendererSystem();
-		return _instance;
-	}
-
 	void RendererSystem::Start(const char* a_vertexPath, const char* a_fragmentPath)
 	{
 		// Create the renderer (from core)
 		m_renderer = new graphics::SimpleRenderer(a_vertexPath, a_fragmentPath, math::Vector2(1200,800));
 	
 		// Get the entity manager
-		m_entityManager = WorldSystem::Instance();
+		m_entityManager = WorldSystem::getInstance();
 	}
 
 	void RendererSystem::Update()

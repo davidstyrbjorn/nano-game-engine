@@ -8,16 +8,7 @@
 #include"../include/systems/RendererSystem.h"
 
 namespace nano { namespace editor { 
-	
-	WindowSystem* WindowSystem::_instance = nullptr;
 
-	WindowSystem * WindowSystem::Instance()
-	{
-		if (_instance == nullptr)
-			_instance = new WindowSystem();
-		return _instance;
-		return nullptr;
-	}
 
 	void WindowSystem::Start()
 	{

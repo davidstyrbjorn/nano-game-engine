@@ -14,17 +14,11 @@ namespace nano {
 
 namespace nano { namespace editor { 
 
-	class RendererSystem : public EditorSystem {
+	class RendererSystem : public EditorSystem<RendererSystem> {
+		friend class EditorSystem<RendererSystem>;
 	private:
 		// Private constructor (singleton)
 		RendererSystem() { }
-		
-		// The one sole instance
-		static RendererSystem* _instance;
-
-	public:
-		// Singleton connection
-		static RendererSystem* Instance();
 
 	private:
 		graphics::SimpleRenderer* m_renderer;

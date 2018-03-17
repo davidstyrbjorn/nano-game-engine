@@ -118,10 +118,6 @@ namespace nano { namespace editor {
 		void Start() override;
 		void Update() override;
 		void Render() override;
-
-		// Save/Load
-		void SaveLevel(std::string a_name);
-		void LoadLevel(std::string a_name);
 	};
 
 	// middle-left

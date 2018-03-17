@@ -10,16 +10,11 @@ namespace nano {
 
 namespace nano { namespace editor {
 
-	class SoundSystem : public EditorSystem {
+	class SoundSystem : public EditorSystem<SoundSystem> {
+		friend class EditorSystem<SoundSystem>;
 	private:
 		// Private constructor (singleton)
-		SoundSystem();
-
-		// One sole instance
-		static SoundSystem* _instance;
-
-	public:
-		static SoundSystem* Instance();
+		SoundSystem() { }
 
 	private:
 		// System members

@@ -15,16 +15,11 @@ namespace nano { namespace editor {
 	*
 	*/
 
-	class WorldSystem : EditorSystem
-	{
+	class WorldSystem : public EditorSystem<WorldSystem> {
+		friend class EditorSystem<WorldSystem>;
 	private:
 		// Private Constructor (singleton)
 		WorldSystem() { }
-
-		static WorldSystem *_instance;
-
-	public:
-		static WorldSystem* Instance();
 
 	private:
 		std::vector<ecs::Entity*> m_entityList;

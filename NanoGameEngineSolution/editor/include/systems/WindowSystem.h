@@ -6,17 +6,12 @@
 
 namespace nano { namespace editor { 
 
-	class WindowSystem : EditorSystem, graphics::WindowOwner {
+	class WindowSystem : public EditorSystem<WindowSystem>, graphics::WindowOwner {
+		friend class EditorSystem<WindowSystem>;
 	private:
 		// Private constructor (singleton)
 		WindowSystem() { }
 
-		static WindowSystem* _instance;
-
-	public:
-		// Singleton connection
-		static WindowSystem* Instance();
-		
 	private:
 		// Window system members
 		graphics::Window* m_window;

@@ -1,17 +1,8 @@
 #include "..\..\engine\engine\include\WorldSystem.h"
-#pragma once
 
 #include"../include/systems/WorldSystem.h"
 
 namespace nano { namespace editor {
-
-	WorldSystem* WorldSystem::_instance = nullptr;
-	WorldSystem* WorldSystem::Instance()
-	{
-		if (_instance == nullptr)
-			_instance = new WorldSystem();
-		return _instance;
-	}
 
 	void WorldSystem::AddNewEntity(ecs::Entity * a_entityToAdd)
 	{

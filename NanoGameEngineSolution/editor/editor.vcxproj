@@ -140,6 +140,7 @@
     <ClCompile Include="source\FourwayMoveComponentEditor.cpp" />
     <ClCompile Include="source\HighlightEntity.cpp" />
     <ClCompile Include="source\LevelParser.cpp" />
+    <ClCompile Include="source\LevelSystem.cpp" />
     <ClCompile Include="source\SoundSystem.cpp" />
     <ClCompile Include="source\WorldSystem.cpp" />
     <ClCompile Include="source\EntitySelectWidget.cpp" />
@@ -170,6 +171,7 @@
     <ClInclude Include="include\systems\EditorSystem.h" />
     <ClInclude Include="include\systems\EditorWidgetSystem.h" />
     <ClInclude Include="include\LevelParser.h" />
+    <ClInclude Include="include\systems\LevelSystem.h" />
     <ClInclude Include="include\systems\SoundSystem.h" />
     <ClInclude Include="include\systems\WorldSystem.h" />
     <ClInclude Include="include\systems\InputSystem.h" />

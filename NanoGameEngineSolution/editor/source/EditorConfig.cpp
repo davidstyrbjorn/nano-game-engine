@@ -25,7 +25,7 @@ namespace nano { namespace editor {
 	{
 		std::ifstream infoFile("nano.txt");
 		if (!infoFile.is_open()) {
-			EditorWidgetSystem::Instance()->GetEventHandler().AddEvent(BaseEvent(EventTypes::CONSOLE_MESSAGE, "FATAL: CANNOT LOAD NANO.TXT"));
+			EditorWidgetSystem::getInstance()->GetEventHandler().AddEvent(BaseEvent(EventTypes::CONSOLE_MESSAGE, "FATAL: CANNOT LOAD NANO.TXT"));
 		}
 
 		std::string _word;
