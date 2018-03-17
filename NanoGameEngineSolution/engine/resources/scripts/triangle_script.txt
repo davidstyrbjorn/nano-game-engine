@@ -5,10 +5,10 @@ var $rightKey: 68
 var $leftKey: 65
 var $downKey: 83
 var $upKey: 87
-var $speed: 0.3
+var $speed: 3
 
 if keyDown($rightKey): move(1, 0, $speed)
 if keyDown($leftKey): move(-1, 0, $speed)
 
-if mousePressed(0): setSize(10, 10)
-if mouseReleased(0): setSize(100, 100)
+if mousePressed(0): create($triangle)
+if mouseReleased(0): destroy($triangle)

@@ -16,9 +16,11 @@
 #define FPS -1
 #define MS 1000/FPS
 
+#define NANO_EDITOR_API __declspec(dllexport)
+
 namespace nano { namespace editor { 
 
-	class EditorCore {
+	class NANO_EDITOR_API EditorCore {
 	private:
 		// Editor systems 
 		WindowSystem *m_windowSystem;

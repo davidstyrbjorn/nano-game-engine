@@ -194,6 +194,12 @@ namespace nano { namespace engine {
 		else if (a_command == "setSize") {
 			setSizeCommand(m_targetEntity, a_argument);
 		}
+		else if (a_command == "create") {
+			createCommand(a_argument);
+		}
+		else if (a_command == "destroy") {
+			destroyCommand(a_argument);
+		}
 	}
 
 	bool ScriptFile::doesLineContainCmdExpression(std::string a_line, std::string & a_foundCmdExpression)
@@ -231,12 +237,10 @@ namespace nano { namespace engine {
 
 	void ScriptFile::replaceVariableWithLiteralValues(std::string & a_subject)
 	{
-		bool isVariable[32];
 		std::vector<std::string> variableSubStrings;
-		int startIndex, endIndex;
 
-		// This just fucking goes in and splits the shit into substrings
-		// @TODO: Clean this mess up please
+		// @TODO: Clean this mess up, looks dirty
+		int startIndex, endIndex;
 		int i = 0; for (char c : a_subject) {
 			if (c == '(') {
 				if (a_subject[i + 1] != '$') {
@@ -257,10 +261,8 @@ namespace nano { namespace engine {
 			}
 			i++;
 		}
-
 		// Go through each fucking substring and replace all the $ literal with its variable value
 		std::vector<std::string> correctValueSubStrings;
-
 		for (auto subVariableString : variableSubStrings) {
 			int j = 0; for (char c : subVariableString) {
 				if (c == ',' || c == '(') {

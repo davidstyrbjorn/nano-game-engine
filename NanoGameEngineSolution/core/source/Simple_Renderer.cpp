@@ -275,7 +275,6 @@ namespace nano { namespace graphics {
 			gridDataVector.push_back({ camPos + math::Vector2(0, gridThickness + (y*lineOffset)), color, uv });
 			gridDataVector.push_back({ camPos + math::Vector2(camSize.x, gridThickness + (y*lineOffset)), color, uv });
 			gridDataVector.push_back({ camPos + math::Vector2(camSize.x, (y*lineOffset)), color, uv });
-
 			m_quadCount++;
 		}
 		for (int x = 0; x < (int)(camSize.x/30); x++) {
@@ -283,11 +282,8 @@ namespace nano { namespace graphics {
 			gridDataVector.push_back({ camPos + math::Vector2((x*lineOffset), camSize.y), color, uv });
 			gridDataVector.push_back({ camPos + math::Vector2(gridThickness + (x*lineOffset), camSize.y), color, uv });
 			gridDataVector.push_back({ camPos + math::Vector2(gridThickness + (x*lineOffset), 0), color, uv });
-
 			m_quadCount++;
 		}
-		std::cout << m_quadCount << std::endl;
-
 		
 		static math::Vector4 originColorX = math::Vector4(1, 0, 0, 1);
 		static math::Vector4 originColorY = math::Vector4(0, 0, 1, 1);

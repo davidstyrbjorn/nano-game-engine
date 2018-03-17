@@ -1,0 +1,13 @@
+id triangle
+transform
+pos 202, 20
+size 201, 228
+angle 0
+renderable
+vertex_count 3
+color 0.0196, 1, 0, 1
+image_path none
+sound component
+none
+fourway move component
+none
