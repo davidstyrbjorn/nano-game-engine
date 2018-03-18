@@ -14,7 +14,17 @@
 
 namespace nano { namespace editor {
 
-	void LevelSystem::loadLevel(std::string a_name)
+	void LevelSystem::Start()
+	{
+		EditorConfig* c = EditorConfig::Instance();
+		static EditorWidgetSystem *widgetSystem = EditorWidgetSystem::getInstance();
+
+		if (!loadLevel(c->getProjectInfo().startupLevel)) {
+			widgetSystem->GetEventHandler().AddEvent(BaseEvent(EventTypes::CONSOLE_MESSAGE, "Failed to load startup level!"));
+		}
+	}
+
+	bool LevelSystem::loadLevel(std::string a_name)
 	{
 		static LevelParser levelParser;
 		static WorldSystem *world = WorldSystem::getInstance();
@@ -35,9 +45,11 @@ namespace nano { namespace editor {
 			EditorConfig::Instance()->setCurrentLevelName(a_name);
 
 			widgetSystem->GetEventHandler().AddEvent(BaseEvent(EventTypes::CONSOLE_MESSAGE, "Managed to load level " + a_name));
+			return true;
 		}
 		else {
 			widgetSystem->GetEventHandler().AddEvent(BaseEvent(EventTypes::CONSOLE_MESSAGE, "Failed to load level " + a_name));
+			return false;
 		}
 	}
 

@@ -9,11 +9,11 @@ namespace nano { namespace editor {
 		friend class EditorSystem<LevelSystem>;
 
 	public:
-		void Start() override {}
+		void Start() override;
 		void Update() override {}
 		void Quit() override {}
 
-		void loadLevel(std::string a_name);
+		bool loadLevel(std::string a_name);
 		void saveLevel(std::string a_name);
 	};
 

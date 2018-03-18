@@ -14,6 +14,7 @@ namespace nano { namespace editor {
 		m_WorldSystem->Quit();
 		m_editorWidgetSystem->Quit();
 		m_soundSystem->Quit();
+		m_levelSystem->Quit();
 	}
 
 	EditorCore::EditorCore()
@@ -51,6 +52,10 @@ namespace nano { namespace editor {
 		// Editor Widget System
 		m_editorWidgetSystem = EditorWidgetSystem::getInstance();
 		m_editorWidgetSystem->Start();
+
+		// Level System
+		m_levelSystem = LevelSystem::getInstance();
+		m_levelSystem->Start();
 
 		// Start the main loop method
 		this->MainLoop();
