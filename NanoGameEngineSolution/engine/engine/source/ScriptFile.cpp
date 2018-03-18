@@ -54,6 +54,7 @@ namespace nano { namespace engine {
 							int start = line.find('$') + 1;
 
 							sv.name = line.substr(start, end - start);
+							std::cout << sv.name << std::endl;
 							sv.value = line.substr(end + 1);
 
 							//std::cout << "Registered variable " << sv.name << " with value " << sv.value << std::endl;
