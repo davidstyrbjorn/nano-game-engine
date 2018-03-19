@@ -27,7 +27,7 @@ namespace nano { namespace editor {
 		if (!infoFile.is_open()) {
 			EditorWidgetSystem::getInstance()->GetEventHandler().AddEvent(BaseEvent(EventTypes::CONSOLE_MESSAGE, "FATAL: CANNOT LOAD NANO.TXT"));
 		}
-
+		
 		std::string _word;
 		while (std::getline(infoFile, _word)) {
 			if (_word.substr(0, 12) == "project_name") {
