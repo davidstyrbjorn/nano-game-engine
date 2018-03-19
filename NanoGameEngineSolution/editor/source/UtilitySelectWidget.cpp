@@ -29,8 +29,8 @@ namespace nano { namespace editor {
 
 		// Calculate size
 		ImVec2 size;
-		size.y = (_windowSize.y * UNNAMED_WIDGET_HEIGHT_RATIO); // Make sure height is the ratio based on the current window height
-		size.x = UNNAMED_WIDGET_WIDTH;
+		size.y = (_windowSize.y * ASSET_WIDGET_HEIGHT_RATIO); // Make sure height is the ratio based on the current window height
+		size.x = ASSET_WIDGET_WIDTH;
 
 		// Calculate position
 		ImVec2 pos;
@@ -39,13 +39,11 @@ namespace nano { namespace editor {
 
 		ImGui::SetNextWindowPos(pos);
 		ImGui::SetNextWindowSize(size);
-		ImGui::Begin("Utility Select", false, size, 1.0f,
+		ImGui::Begin("Asset Browser", false, size, 1.0f,
 			ImGuiWindowFlags_::ImGuiWindowFlags_NoResize |
 			ImGuiWindowFlags_::ImGuiWindowFlags_NoMove |
 			ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse
 		);
-
-		ImGui::Text("test");
 
 		ImGui::End();
 	}

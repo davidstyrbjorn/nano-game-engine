@@ -45,7 +45,7 @@ namespace nano { namespace editor {
 		// Calculate position
 		ImVec2 pos;
 		pos.x = 0;
-		pos.y = MAIN_MENU_BAR_HEIGHT + (_windowSize.y * ENTITY_SELECT_HEIGHT_RATIO) + (_windowSize.y * UNNAMED_WIDGET_HEIGHT_RATIO);
+		pos.y = MAIN_MENU_BAR_HEIGHT + (_windowSize.y * ENTITY_SELECT_HEIGHT_RATIO) + (_windowSize.y * ASSET_WIDGET_HEIGHT_RATIO);
 
 		ImGui::SetNextWindowPos(pos);
 		ImGui::SetNextWindowSize(size);

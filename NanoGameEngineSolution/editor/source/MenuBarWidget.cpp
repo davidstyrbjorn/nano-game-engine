@@ -22,6 +22,35 @@
 #include<fstream>
 #include<dirent.h>
 #include<sys\types.h>
+#include<windows.h>
+
+void startup(LPCTSTR lpApplicationName)
+{
+	// additional information
+	STARTUPINFO si;
+	PROCESS_INFORMATION pi;
+
+	// set the size of the structures
+	ZeroMemory(&si, sizeof(si));
+	si.cb = sizeof(si);
+	ZeroMemory(&pi, sizeof(pi));
+
+	// start the program up
+	CreateProcess(lpApplicationName,   // the path
+		NULL,        // Command line
+		NULL,           // Process handle not inheritable
+		NULL,           // Thread handle not inheritable
+		FALSE,          // Set handle inheritance to FALSE
+		0,              // No creation flags
+		NULL,           // Use parent's environment block
+		NULL,           // Use parent's starting directory 
+		&si,            // Pointer to STARTUPINFO structure
+		&pi             // Pointer to PROCESS_INFORMATION structure (removed extra parentheses)
+	);
+	// Close process and thread handles. 
+	CloseHandle(pi.hProcess);
+	CloseHandle(pi.hThread);
+}
 
 namespace nano { namespace editor {
 
@@ -90,7 +119,8 @@ namespace nano { namespace editor {
 			if (ImGui::BeginMenu("Invoke")) 
 			{
 				if (ImGui::Selectable("Run Game")) {
-					// Run engine.exe here please
+					// Run engine.exe 
+					startup("engine.exe");
 				}
 				ImGui::EndMenu();
 			}

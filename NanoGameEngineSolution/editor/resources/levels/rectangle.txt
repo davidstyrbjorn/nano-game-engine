@@ -4,4 +4,18 @@ cam_size 800, 600
 fps 60
 
 [LEVEL_ENTITIES]
+id triangle
+transform
+pos 7, 16
+size 201, 228
+angle 0
+renderable
+vertex_count 4
+color 1, 0, 1, 1
+image_path none
+sound component
+none
+fourway move component
+none
+
 [ENTITIES_END]

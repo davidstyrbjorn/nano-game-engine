@@ -11,8 +11,8 @@ namespace nano { namespace editor {
 
 // Utility Select Widget
 // Position: middle left
-#define UNNAMED_WIDGET_HEIGHT_RATIO 3/10 // --||--
-#define UNNAMED_WIDGET_WIDTH 200
+#define ASSET_WIDGET_HEIGHT_RATIO 3/10 // --||--
+#define ASSET_WIDGET_WIDTH 200
 
 // Utility Widget
 // Position: bottom left

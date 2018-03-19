@@ -24,6 +24,7 @@ namespace nano { namespace engine {
 	void ScriptFile::parseScriptString()
 	{
 		bool gotEntity = false;
+		addBuiltInVariables(m_scriptVariables);
 
 		for (std::string line : m_scriptStringVector)
 		{
@@ -54,7 +55,6 @@ namespace nano { namespace engine {
 							int start = line.find('$') + 1;
 
 							sv.name = line.substr(start, end - start);
-							std::cout << sv.name << std::endl;
 							sv.value = line.substr(end + 1);
 
 							//std::cout << "Registered variable " << sv.name << " with value " << sv.value << std::endl;
@@ -92,13 +92,9 @@ namespace nano { namespace engine {
 								}
 							
 								if (isLogicExpressionPassive(logicExpression)) {
-									//std::cout << "added passive expression: " << std::endl;
-									//std::cout << logicExpr.logicString << " with arguments " << logicExpr.args << std::endl;
 									m_passiveLogicExpressions.push_back(logicExpr);
 								}
 								else {
-									//std::cout << "added normal logic expression: " << std::endl;
-									//std::cout << logicExpr.logicString << " with arguments " << logicExpr.args << std::endl;
 									m_logicExpressions.push_back(logicExpr);
 								}
 							}

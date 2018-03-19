@@ -104,7 +104,7 @@
     <OutDir>$(SolutionDir)$(ProjectName)\Builds\Release\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='build_central|Win32'">
-    <OutDir>$(SolutionDir)$(ProjectName)\Builds\Release\</OutDir>
+    <OutDir>$(SolutionDir)build_central\engine\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
