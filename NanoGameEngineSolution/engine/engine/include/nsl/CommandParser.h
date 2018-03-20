@@ -10,9 +10,6 @@ namespace nano { namespace engine {
 	void moveCommand(ecs::Entity* entity, int xDir, int yDir, float speed) 
 	{
 		// Move the given entity with the given direction and speed 
-		std::cout << xDir << std::endl;
-		std::cout << yDir << std::endl;
-		std::cout << speed << std::endl;
 		entity->m_transform->move(math::Vector2(xDir, yDir), speed);
 	}
 

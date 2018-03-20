@@ -81,11 +81,16 @@ namespace nano { namespace engine {
 
 								// Command
 								if (doesLineContainCmdExpression(line, logicExpr.command.commandString)) {
-									std::string argTemp = line.substr(line.find_last_of('('), line.length());
-									if (doesLineContainVariable(argTemp, ScriptVariable())) {
-										replaceVariableWithLiteralValues(argTemp);
-									}
-									logicExpr.command.arg = argTemp;
+									// Assumed format is command(arg)
+									std::string temp = line.substr(line.find(':')+1, line.length());
+									ScriptCommand cmd = getCommandFromString(temp);
+									logicExpr.command = cmd;
+
+									//std::string argTemp = line.substr(line.find_last_of('('), line.length());
+									//if (doesLineContainVariable(argTemp, ScriptVariable())) {
+									//	replaceVariableWithLiteralValues(argTemp);
+									//}
+									//logicExpr.command.arg = argTemp;
 								}
 								else {
 									std::cout << "Was not able to parse line: " << line << " within file: " << m_hndl << std::endl;
@@ -236,20 +241,23 @@ namespace nano { namespace engine {
 
 		command.commandString = a_line.substr(0, a_line.find('('));
 
-		std::string tempArg = a_line.substr(a_line.find('(', a_line.length()));
+		std::string tempArg = a_line.substr(a_line.find('('), a_line.length());
 		if (doesLineContainVariable(a_line, ScriptVariable())) {
 			replaceVariableWithLiteralValues(tempArg);
-			dawj
 		}
 		command.arg = tempArg;
 
 		// Here we replace arg(string) with numbers-ish if the command has those parameters
-		if (command.commandString == "move") {
-			// Set command.integerArg please
-			// Get the number literals from the argument string
+		if (command.commandString == "move") { // move(int, int, float)
 			command.integerArg[0] = std::stoi(tempArg.substr(1, tempArg.find_first_of(identifierSplit)));
 			command.integerArg[1] = std::stoi(tempArg.substr(tempArg.find_first_of(identifierSplit) + 1, tempArg.find_last_of(identifierSplit)));
 			command.floatArg[0] = std::stof(tempArg.substr(tempArg.find_last_of(identifierSplit) + 1, tempArg.length() - 1));
+		}
+		if (command.commandString == "setPosition" || command.commandString == "setSize") { // setPos&SetSize(a, b)
+			int start = tempArg.find(',');
+			int end = tempArg.find(')');
+			command.floatArg[0] = std::stof(tempArg.substr(1, start));
+			command.floatArg[1] = std::stof(tempArg.substr(start + 1, end - (start + 1)));
 		}
 
 		return command; // Return copy of command created
