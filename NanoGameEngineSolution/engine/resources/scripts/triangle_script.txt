@@ -7,7 +7,9 @@ var $downKey: 83
 var $upKey: 87
 var $speed: 3
 
-if keyDown($KEY_D): move(1, 0, $speed)
+move(1, 0, 0.1)
+
+if keyDown($rightKey): move(1, 0, $speed)
 if keyDown($leftKey): move(-1, 0, $speed)
 
 if mousePressed(0): create($triangle)

@@ -104,12 +104,6 @@ namespace nano { namespace engine {
 						// Direct command!
 						remove_space<std::string>(line);
 						ScriptCommand directCmd = getCommandFromString(line);
-						//directCmd.commandString = command;
-						//std::string argTemp = line.substr(line.find('('), line.length());
-						//if (doesLineContainVariable(argTemp, ScriptVariable())) {
-						//	replaceVariableWithLiteralValues(argTemp);
-						//}
-						//directCmd.arg = argTemp;
 						m_directCommands.push_back(directCmd);	
 					}
 					else {
@@ -124,13 +118,13 @@ namespace nano { namespace engine {
 	{
 		// Go through direct commands
 		for (ScriptCommand cmd : m_directCommands) {
-			commandGate(cmd.commandString, cmd.arg);
+			commandGate(cmd);
 		}
 		// Go through the normal logic expressions
 		for (ScriptLogicExpression logicExpr : m_logicExpressions) {
 			if (logicExpr.logicString == "keyDown") {
 				if (isKeyDownExpressionTrue(logicExpr.args)) {
-					commandGate(logicExpr.command.commandString, logicExpr.command.arg);
+					commandGate(logicExpr.command);
 				}
 			}
 		}
@@ -141,7 +135,7 @@ namespace nano { namespace engine {
 		for (ScriptLogicExpression passiveExpression : m_passiveLogicExpressions) {
 			if (passiveExpression.logicString == "keyPressed") {
 				if (getKeyCodeLiteralFromArg(passiveExpression.args) == a_key) {
-					commandGate(passiveExpression.command.commandString, passiveExpression.command.arg);
+					commandGate(passiveExpression.command);
 				}
 			}
 		}
@@ -152,7 +146,7 @@ namespace nano { namespace engine {
 		for (ScriptLogicExpression passiveExpression : m_passiveLogicExpressions) {
 			if (passiveExpression.logicString == "mousePressed") {
 				if (getKeyCodeLiteralFromArg(passiveExpression.args) == a_key) {
-					commandGate(passiveExpression.command.commandString, passiveExpression.command.arg);
+					commandGate(passiveExpression.command);
 				}
 			}
 		}
@@ -163,7 +157,7 @@ namespace nano { namespace engine {
 		for (ScriptLogicExpression passiveExpression : m_passiveLogicExpressions) {
 			if (passiveExpression.logicString == "mouseReleased") {
 				if (getKeyCodeLiteralFromArg(passiveExpression.args) == a_key) {
-					commandGate(passiveExpression.command.commandString, passiveExpression.command.arg);
+					commandGate(passiveExpression.command);
 				}
 			}
 		}
@@ -174,28 +168,28 @@ namespace nano { namespace engine {
 		for (ScriptLogicExpression passiveExpression : m_passiveLogicExpressions) {
 			if (passiveExpression.logicString == "keyReleased") {
 				if (getKeyCodeLiteralFromArg(passiveExpression.args) == a_key) {
-					commandGate(passiveExpression.command.commandString, passiveExpression.command.arg);
+					commandGate(passiveExpression.command);
 				}
 			}
 		}
 	}
 
-	void ScriptFile::commandGate(std::string a_command, std::string a_argument)
+	void ScriptFile::commandGate(const ScriptCommand &a_command)
 	{
-		if (a_command == "move") {
-			moveCommand(m_targetEntity, a_argument);
+		if (a_command.commandString == "move") {
+			moveCommand(m_targetEntity, a_command.integerArg[0], a_command.integerArg[1], a_command.floatArg[0]);
 		}
-		else if (a_command == "setPosition") {
-			setPositionCommand(m_targetEntity, a_argument);
+		else if (a_command.commandString == "setPosition") {
+			setPositionCommand(m_targetEntity, a_command.arg);
 		}
-		else if (a_command == "setSize") {
-			setSizeCommand(m_targetEntity, a_argument);
+		else if (a_command.commandString == "setSize") {
+			setSizeCommand(m_targetEntity, a_command.arg);
 		}
-		else if (a_command == "create") {
-			createCommand(a_argument);
+		else if (a_command.commandString == "create") {
+			createCommand(a_command.arg);
 		}
-		else if (a_command == "destroy") {
-			destroyCommand(a_argument);
+		else if (a_command.commandString == "destroy") {
+			destroyCommand(a_command.arg);
 		}
 	}
 
@@ -245,12 +239,20 @@ namespace nano { namespace engine {
 		std::string tempArg = a_line.substr(a_line.find('(', a_line.length()));
 		if (doesLineContainVariable(a_line, ScriptVariable())) {
 			replaceVariableWithLiteralValues(tempArg);
+			dawj
 		}
+		command.arg = tempArg;
+
+		// Here we replace arg(string) with numbers-ish if the command has those parameters
 		if (command.commandString == "move") {
-
+			// Set command.integerArg please
+			// Get the number literals from the argument string
+			command.integerArg[0] = std::stoi(tempArg.substr(1, tempArg.find_first_of(identifierSplit)));
+			command.integerArg[1] = std::stoi(tempArg.substr(tempArg.find_first_of(identifierSplit) + 1, tempArg.find_last_of(identifierSplit)));
+			command.floatArg[0] = std::stof(tempArg.substr(tempArg.find_last_of(identifierSplit) + 1, tempArg.length() - 1));
 		}
 
-		return ScriptCommand();
+		return command; // Return copy of command created
 	}
 
 	void ScriptFile::replaceVariableWithLiteralValues(std::string & a_subject)

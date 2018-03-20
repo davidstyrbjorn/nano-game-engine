@@ -45,7 +45,7 @@ namespace nano { namespace engine {
 		void replaceVariableWithLiteralValues(std::string &a_subject);
 		const ScriptVariable getVariableFromName(std::string a_name);
 
-		void commandGate(std::string a_command, std::string a_argument);
+		void commandGate(const ScriptCommand &a_command);
 
 	private:
 		ecs::Entity* m_targetEntity;
