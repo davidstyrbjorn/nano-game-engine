@@ -12,14 +12,19 @@ namespace nano {
 namespace nano { namespace engine {  
 
 	struct ScriptCommand {
+		ScriptCommand(std::string a_commandString, std::string a_arg) : commandString(a_commandString), arg(a_arg) { } 
+		ScriptCommand(std::string a_commandString, int a_integerArg) : commandString(a_commandString), integerArg(a_integerArg) { }
+		ScriptCommand() {}
+
 		std::string commandString;
 		std::string arg;
+		int integerArg;
 	};
 
 	struct ScriptLogicExpression {
+		ScriptCommand command;
 		std::string logicString;
 		std::string args;
-		ScriptCommand command;
 	};
 
 	struct ScriptVariable {

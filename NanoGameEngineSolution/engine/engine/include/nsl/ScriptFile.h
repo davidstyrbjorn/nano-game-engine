@@ -41,6 +41,7 @@ namespace nano { namespace engine {
 		bool doesLineContainVariable(std::string a_line, ScriptVariable& a_foundVariable);
 		bool isLogicExpressionPassive(std::string a_expression);
 
+		ScriptCommand getCommandFromString(std::string a_line);
 		void replaceVariableWithLiteralValues(std::string &a_subject);
 		const ScriptVariable getVariableFromName(std::string a_name);
 

@@ -7,12 +7,12 @@ fps 60
 [ENTITY]
 id triangle
 transform
-pos 7, 16
+pos 104, 31
 size 201, 228
 angle 0
 renderable
 vertex_count 3
-color 0.0118, 0, 1, 1
+color 0.0118, 0, 0.322, 1
 image_path none
 sound component
 none

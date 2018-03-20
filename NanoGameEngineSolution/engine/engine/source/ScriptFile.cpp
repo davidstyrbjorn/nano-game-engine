@@ -103,13 +103,13 @@ namespace nano { namespace engine {
 					else if(doesLineContainCmdExpression(line, command)){
 						// Direct command!
 						remove_space<std::string>(line);
-						ScriptCommand directCmd;
-						directCmd.commandString = command;
-						std::string argTemp = line.substr(line.find('('), line.length());
-						if (doesLineContainVariable(argTemp, ScriptVariable())) {
-							replaceVariableWithLiteralValues(argTemp);
-						}
-						directCmd.arg = argTemp;
+						ScriptCommand directCmd = getCommandFromString(line);
+						//directCmd.commandString = command;
+						//std::string argTemp = line.substr(line.find('('), line.length());
+						//if (doesLineContainVariable(argTemp, ScriptVariable())) {
+						//	replaceVariableWithLiteralValues(argTemp);
+						//}
+						//directCmd.arg = argTemp;
 						m_directCommands.push_back(directCmd);	
 					}
 					else {
@@ -230,6 +230,27 @@ namespace nano { namespace engine {
 				return true;
 		}
 		return false;
+	}
+
+	ScriptCommand ScriptFile::getCommandFromString(std::string a_line)
+	{
+		// Assumed format 
+		// command(arg)
+		// arg can be whatever but if it's supposed to be interperted as an integer set command.argInteger 
+		// Else just set command.arg
+		ScriptCommand command;
+
+		command.commandString = a_line.substr(0, a_line.find('('));
+
+		std::string tempArg = a_line.substr(a_line.find('(', a_line.length()));
+		if (doesLineContainVariable(a_line, ScriptVariable())) {
+			replaceVariableWithLiteralValues(tempArg);
+		}
+		if (command.commandString == "move") {
+
+		}
+
+		return ScriptCommand();
 	}
 
 	void ScriptFile::replaceVariableWithLiteralValues(std::string & a_subject)
