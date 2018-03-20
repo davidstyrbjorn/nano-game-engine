@@ -5,8 +5,8 @@
 
 #include"../include/opengl/Texture.h"
 
-#define STB_IMAGE_IMPLEMENTATION
-#include"../include/stb/stb_image.h"
+//#define STB_IMAGE_IMPLEMENTATION
+//#include"../include/stb/stb_image.h"
 
 namespace nano { namespace ecs {
 
@@ -21,30 +21,40 @@ namespace nano { namespace ecs {
 
 		// Get the format of the image to load
 		GLenum format;
-		std::string extension = GetFileExtension(m_imagePath);
-		if (extension == ".png")
+		//std::string extension = GetFileExtension(m_imagePath);
+		//if (extension == ".png")
+		//	format = GL_RGBA;
+		//else if (extension == ".jpg")
+		//	format = GL_RGB;
+		//else
+		//	format = GL_RGB; // Default format if unkown extension
+		//
+		//int width, height, n;
+		//unsigned char *data = stbi_load(m_imagePath, &width, &height, &n, 0);
+		//if (data == NULL) {
+		//	data = stbi_load("resources\\error_texture.png", &width, &height, &n, 0);
+		//	format = GL_RGBA;
+		//}
+		//
+		//m_texture = new opengl::Texture(data, width, height, format);
+		//
+		//stbi_image_free(data);
+
+		// Test with image asset object
+		std::string suffix = m_imageAsset->getAssetInfo().file.suffix;
+		if (suffix == "png")
 			format = GL_RGBA;
-		else if (extension == ".jpg")
+		else if (suffix == "jpg")
 			format = GL_RGB;
 		else
 			format = GL_RGB; // Default format if unkown extension
-
-		int width, height, n;
-		unsigned char *data = stbi_load(m_imagePath, &width, &height, &n, 0);
-		if (data == NULL) {
-			data = stbi_load("resources\\error_texture.png", &width, &height, &n, 0);
-			format = GL_RGBA;
-		}
-
-		m_texture = new opengl::Texture(data, width, height, format);
-
-		stbi_image_free(data);
-
-		m_transform->size = math::Vector2(width, height);
+		m_texture = new opengl::Texture(m_imageAsset->getImageData(), m_imageAsset->getAssetInfo().width, m_imageAsset->getAssetInfo().height, format);
+		m_transform->size = math::Vector2(m_imageAsset->getAssetInfo().width, m_imageAsset->getAssetInfo().height);
 	}
 
 	void SpriteComponent::OnStateChange(ECSStates a_newState)
 	{
+
 		if (a_newState == ECSStates::DESTROYED) {
 			m_owner->SetRenderableComponent(nullptr);
 		}
@@ -52,35 +62,37 @@ namespace nano { namespace ecs {
 
 	SpriteComponent::SpriteComponent()
 	{
-		m_imagePath = "resources\\error_texture.png";
+		m_imageAsset = new asset::ImageAsset();
+		m_imageAsset->loadNew("resources\\error_texture.png");
 	}
 
 	SpriteComponent::SpriteComponent(const char * a_imagePath)
 	{
-		m_imagePath = a_imagePath;
+		m_imageAsset = new asset::ImageAsset();
+		m_imageAsset->loadNew(a_imagePath);
 	}
 
 	void SpriteComponent::LoadNewTexture(const char * a_imagePath)
 	{
 		m_imagePath = a_imagePath;
 
-		int width, height, n;
-		unsigned char *data = stbi_load(a_imagePath, &width, &height, &n, 0);
-		if (data == NULL) {
-			data = stbi_load("resources\\error_texture.png", &width, &height, &n, 0);
-			m_imagePath = "resources\\error_texture.png";
-		}
-
-		std::string extension = GetFileExtension(a_imagePath);
-
-		m_texture->Bind();
-		if (extension == ".png")
-			m_texture->SetTextureData(data, width, height, GL_RGBA);
-		else if (extension == ".jpg")
-			m_texture->SetTextureData(data, width, height, GL_RGB);
-		m_texture->Unbind();
-
-		stbi_image_free(data);
+		//int width, height, n;
+		//unsigned char *data = stbi_load(a_imagePath, &width, &height, &n, 0);
+		//if (data == NULL) {
+		//	data = stbi_load("resources\\error_texture.png", &width, &height, &n, 0);
+		//	m_imagePath = "resources\\error_texture.png";
+		//}
+		//
+		//std::string extension = GetFileExtension(a_imagePath);
+		//
+		//m_texture->Bind();
+		//if (extension == ".png")
+		//	m_texture->SetTextureData(data, width, height, GL_RGBA);
+		//else if (extension == ".jpg")
+		//	m_texture->SetTextureData(data, width, height, GL_RGB);
+		//m_texture->Unbind();
+		//
+		//stbi_image_free(data);
 	}
 
 	std::string SpriteComponent::GetFileExtension(const char * a_string)

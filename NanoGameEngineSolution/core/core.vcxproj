@@ -197,8 +197,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="include\ecs\components\SoundComponent.cpp" />
+    <ClCompile Include="source\Asset.cpp" />
     <ClCompile Include="source\Camera.cpp" />
     <ClCompile Include="source\Clock.cpp" />
+    <ClCompile Include="source\ImageAsset.cpp" />
     <ClCompile Include="source\Random.cpp" />
     <ClCompile Include="source\SoundBuffer.cpp" />
     <ClCompile Include="source\SoundContextDevice.cpp" />
@@ -229,6 +231,8 @@
     <ClCompile Include="source\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\asset\Asset.h" />
+    <ClInclude Include="include\asset\ImageAsset.h" />
     <ClInclude Include="include\Clock.h" />
     <ClInclude Include="include\Core.h" />
     <ClInclude Include="include\ecs\Component.h" />

@@ -6,11 +6,15 @@
 #include"../../math/Vector2.h"
 #include"../../math/Vector4.h"
 
+// Test
+#include"../../asset/ImageAsset.h"
+
 namespace nano { namespace ecs {
 
 	class SpriteComponent : public graphics::Renderable, public Component
 	{
 	private:
+		asset::ImageAsset *m_imageAsset;
 		const char* m_imagePath;
 
 		// Private methods

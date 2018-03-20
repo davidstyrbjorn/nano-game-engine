@@ -24,4 +24,10 @@ namespace nano {
 		}
 	}
 
+	static std::string getFileSuffix(std::string a_subject) 
+	{
+		int i = a_subject.find_last_of('.');
+		return a_subject.substr(i+1);
+	}
+
 }
