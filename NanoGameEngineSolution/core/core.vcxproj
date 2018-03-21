@@ -111,7 +111,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)\dependencies\glfw\include;$(SolutionDir)\dependencies\glew\include;$(SolutionDir)\dependencies\OpenAL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\dependencies\glfw\include;$(SolutionDir)\dependencies\glew\include;$(SolutionDir)\dependencies\OpenAL\include;$(SolutionDir)\dependencies\dr_libs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(SolutionDir)\dependencies\glfw\lib-vc2015\;$(SolutionDir)\dependencies\glew\lib\Release\Win32;D:\NanoGameEngine\NanoGameEngine\NanoGameEngineSolution\dependencies\OpenAL\libs\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -136,7 +136,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)\dependencies\glfw\include;$(SolutionDir)\dependencies\glew\include;$(SolutionDir)\dependencies\OpenAL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\dependencies\glfw\include;$(SolutionDir)\dependencies\glew\include;$(SolutionDir)\dependencies\OpenAL\include;$(SolutionDir)\dependencies\dr_libs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -156,7 +156,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)\dependencies\glfw\include;$(SolutionDir)\dependencies\glew\include;$(SolutionDir)\dependencies\OpenAL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\dependencies\glfw\include;$(SolutionDir)\dependencies\glew\include;$(SolutionDir)\dependencies\OpenAL\include;$(SolutionDir)\dependencies\dr_libs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>

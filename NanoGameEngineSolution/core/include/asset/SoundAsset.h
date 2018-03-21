@@ -15,7 +15,6 @@ namespace nano { namespace asset {
 	public:
 		SoundAsset();
 
-
 	};
 
 

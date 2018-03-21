@@ -85,3 +85,23 @@ char* loadWAV(const char* fn, int& chan, int& samplerate, int& bps, int& size, i
 	// Return the waveform data
 	return data;
 }
+
+static int to_al_format(short channels, short samples)
+{
+	bool stereo = (channels > 1);
+
+	switch (samples) {
+	case 16:
+		if (stereo)
+			return AL_FORMAT_STEREO16;
+		else
+			return AL_FORMAT_MONO16;
+	case 8:
+		if (stereo)
+			return AL_FORMAT_STEREO8;
+		else
+			return AL_FORMAT_MONO8;
+	default:
+		return -1;
+	}
+}
