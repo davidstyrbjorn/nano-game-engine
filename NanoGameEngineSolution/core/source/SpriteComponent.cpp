@@ -54,7 +54,6 @@ namespace nano { namespace ecs {
 
 	void SpriteComponent::OnStateChange(ECSStates a_newState)
 	{
-
 		if (a_newState == ECSStates::DESTROYED) {
 			m_owner->SetRenderableComponent(nullptr);
 		}
@@ -68,6 +67,8 @@ namespace nano { namespace ecs {
 
 	SpriteComponent::SpriteComponent(const char * a_imagePath)
 	{
+		if (m_imageAsset != nullptr)
+			m_imageAsset->freeData();
 		m_imageAsset = new asset::ImageAsset();
 		m_imageAsset->loadNew(a_imagePath);
 	}
@@ -75,6 +76,15 @@ namespace nano { namespace ecs {
 	void SpriteComponent::LoadNewTexture(const char * a_imagePath)
 	{
 		m_imagePath = a_imagePath;
+
+		if (m_imageAsset != nullptr)
+			m_imageAsset->freeData();
+		m_imageAsset = new asset::ImageAsset();
+		m_imageAsset->loadNew(m_imagePath);
+
+		m_texture->Bind();
+		m_texture->SetTextureData(m_imageAsset->getImageData(), m_imageAsset->getAssetInfo().width, m_imageAsset->getAssetInfo().height, GL_RGBA);
+		m_texture->Unbind();
 
 		//int width, height, n;
 		//unsigned char *data = stbi_load(a_imagePath, &width, &height, &n, 0);

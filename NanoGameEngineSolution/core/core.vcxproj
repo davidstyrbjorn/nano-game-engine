@@ -233,6 +233,7 @@
   <ItemGroup>
     <ClInclude Include="include\asset\Asset.h" />
     <ClInclude Include="include\asset\ImageAsset.h" />
+    <ClInclude Include="include\asset\SoundAsset.h" />
     <ClInclude Include="include\Clock.h" />
     <ClInclude Include="include\Core.h" />
     <ClInclude Include="include\ecs\Component.h" />
