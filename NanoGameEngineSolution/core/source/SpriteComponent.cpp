@@ -105,6 +105,13 @@ namespace nano { namespace ecs {
 		//stbi_image_free(data);
 	}
 
+	void SpriteComponent::LoadNewAsset(asset::ImageAsset * a_imageAsset)
+	{
+		m_texture->Bind();
+		m_texture->SetTextureData(a_imageAsset->getImageData(), a_imageAsset->getAssetInfo().width, a_imageAsset->getAssetInfo().height, GL_RGBA);
+		m_texture->Unbind();
+	}
+
 	std::string SpriteComponent::GetFileExtension(const char * a_string)
 	{
 		std::string temp = std::string(a_string);

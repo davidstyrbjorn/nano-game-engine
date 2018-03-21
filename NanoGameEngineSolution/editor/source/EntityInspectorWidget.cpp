@@ -22,11 +22,11 @@
 #include"../include/systems/EditorWidgetSystem.h"
 #include"../include/EventHandler.h"
 #include"../include/systems/EditorConfig.h"
+#include"../include/systems/AssetSystem.h"
 
 #include"../include/DearImGui/imgui.h"
 
-#include<stb\stb_image.h>
-
+#include<asset\ImageAsset.h>
 #include<InputDefinitions.h>
 
 namespace nano { namespace editor {
@@ -93,6 +93,9 @@ namespace nano { namespace editor {
 
 	void EntityInspectorWidget::Render()
 	{
+		static bool showImageAssetWindow;
+		static AssetSystem *assetSystem = AssetSystem::getInstance();
+
 		math::Vector2 _windowSize = EditorConfig::Instance()->getWindowSize();
 
 		// Calculate size
@@ -200,10 +203,13 @@ namespace nano { namespace editor {
 					ImGui::Image((ImTextureID*)renderableComponent->GetTexture()->GetTextureID(), ImVec2(150,150));
 
 					// Input for changing texture
-					static char texturePath[128] = "";
-					ImGui::InputText("Texture Path", texturePath, 128);
-					if (ImGui::Button("Load Texture")) {
-						m_entityToInspect->GetComponent<ecs::SpriteComponent>()->LoadNewTexture(texturePath);
+					//static char texturePath[128] = "";
+					//ImGui::InputText("Texture Path", texturePath, 128);
+					//if (ImGui::Button("Load Texture")) {
+					//	m_entityToInspect->GetComponent<ecs::SpriteComponent>()->LoadNewTexture(texturePath);
+					//}
+					if (ImGui::Button("Set Image")) {
+						showImageAssetWindow = true;
 					}
 				}	
 				
@@ -375,6 +381,21 @@ namespace nano { namespace editor {
 			{
 				m_entityToInspect->SetID(buffer);
 				m_renameEntityWindow = false;
+			}
+
+			ImGui::End();
+		}
+
+		if (m_entityToInspect != nullptr && showImageAssetWindow) 
+		{
+			static ImVec2 windowSize = ImVec2(250, 400);
+			ImGui::Begin("Assets", &showImageAssetWindow, ImGuiWindowFlags_::ImGuiWindowFlags_NoResize);
+
+			for (asset::Asset* asset : assetSystem->getAssetContainer()) {
+				if (ImGui::Selectable(asset->getFileName().c_str())) {
+					std::cout << "got one" << std::endl;
+					m_entityToInspect->GetComponent<ecs::SpriteComponent>()->LoadNewAsset(static_cast<asset::ImageAsset*>(asset));
+				}
 			}
 
 			ImGui::End();

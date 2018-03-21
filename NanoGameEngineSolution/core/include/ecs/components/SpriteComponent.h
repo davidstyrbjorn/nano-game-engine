@@ -34,6 +34,7 @@ namespace nano { namespace ecs {
 
 		// Loads new texture for sprite component
 		void LoadNewTexture(const char* a_imagePath);
+		void LoadNewAsset(asset::ImageAsset* a_imageAsset);
 
 		// Override for the renderer 
 		int GetVertexCount() override { return 4; }
