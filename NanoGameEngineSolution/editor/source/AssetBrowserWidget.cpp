@@ -1,30 +1,36 @@
 #include"../include/widgets/Widgets.h"
 
+#include<asset\Asset.h>
+#include<asset\ImageAsset.h>
+#include<asset\SoundAsset.h>
 #include<math\Vector2.h>
 
 #include"../include/systems/EditorConfig.h"
+#include"../include/systems/AssetSystem.h"
 
 #include"../include/DearImGui/imgui.h"
 
 namespace nano { namespace editor {
 
-	UtilitySelectWidget::UtilitySelectWidget()
+	AssetBrowserWidget::AssetBrowserWidget()
 	{
 
 	}
 
-	void UtilitySelectWidget::Start()
+	void AssetBrowserWidget::Start()
 	{
 
 	}
 
-	void UtilitySelectWidget::Update()
+	void AssetBrowserWidget::Update()
 	{
 
 	}
 
-	void UtilitySelectWidget::Render()
+	void AssetBrowserWidget::Render()
 	{
+		static AssetSystem* assetSystem = AssetSystem::getInstance();
+
 		math::Vector2 _windowSize = EditorConfig::Instance()->getWindowSize();
 
 		// Calculate size
@@ -44,6 +50,10 @@ namespace nano { namespace editor {
 			ImGuiWindowFlags_::ImGuiWindowFlags_NoMove |
 			ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse
 		);
+
+		for (asset::Asset *asset : assetSystem->getAssetContainer()) {
+			ImGui::Text(asset->getFileName().c_str());
+		}
 
 		ImGui::End();
 	}

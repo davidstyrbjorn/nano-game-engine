@@ -1,12 +1,7 @@
 #include "SoundComponent.h"
 
-#include"../../sound/NanoOpenAL.h"
-
 #include"../../sound/SoundBuffer.h"
 #include"../../sound/SoundSource.h"
-
-#define DR_MP3_IMPLEMENTATION
-#include<dr_mp3.h>
 
 namespace nano { namespace ecs { 
 
@@ -14,21 +9,18 @@ namespace nano { namespace ecs {
 	{
 		m_soundPath = a_soundFilePath;
 
-		//int format, size, sampleRate, channel, bps;
-		//char* data = loadWAV(a_soundFilePath, channel, sampleRate, bps, size, format);
-		drmp3 mp3;
-		if (!drmp3_init_file(&mp3, "C:\\temp\\mp3sound.mp3", NULL)) {
-			// Failed to open file
-		}
-		int format = to_al_format(mp3.channels, mp3.sampleRate);
+		m_soundAsset = new asset::SoundAsset();
+		m_soundAsset->loadNew(a_soundFilePath);
+
 		m_buffer = new openal::SoundBuffer();
-		m_buffer->SetData(format, mp3.pData, mp3.dataSize, mp3.sampleRate);
+		m_buffer->SetData(m_soundAsset->getAssetInfo().format, m_soundAsset->getSoundData(), m_soundAsset->getAssetInfo().size, m_soundAsset->getAssetInfo().sampleRate);
 		m_source = new openal::SoundSource(m_buffer->GetBufferId());
 	}
 
 	SoundComponent::SoundComponent()
 	{
 		m_source = new openal::SoundSource();
+		m_soundAsset = new asset::SoundAsset();
 	}
 
 	SoundComponent::~SoundComponent()
@@ -41,15 +33,11 @@ namespace nano { namespace ecs {
 	{
 		m_soundPath = a_soundFilePath;
 
-		//int format, size, sampleRate, channel, bps;
-		//char* data = loadWAV(a_soundFilePath, channel, sampleRate, bps, size, format);
-		drmp3 mp3;
-		if (!drmp3_init_file(&mp3, "C:\\temp\\mp3sound.mp3", NULL)) {
-			// Failed to open file
-		}
-		int format = to_al_format(mp3.channels, mp3.sampleRate);
+		m_soundAsset->freeData();
+		m_soundAsset->loadNew(a_soundFilePath);
+
 		if (m_buffer == nullptr) m_buffer = new openal::SoundBuffer();
-		m_buffer->SetData(format, mp3.pData, mp3.dataSize, mp3.sampleRate);
+		m_buffer->SetData(m_soundAsset->getAssetInfo().format, m_soundAsset->getSoundData(), m_soundAsset->getAssetInfo().size, m_soundAsset->getAssetInfo().sampleRate);
 
 		m_source->SetBuffer(m_buffer->GetBufferId());
 	}

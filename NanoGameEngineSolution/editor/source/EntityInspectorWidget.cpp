@@ -345,7 +345,7 @@ namespace nano { namespace editor {
 				}
 				if (ImGui::Selectable("Sound Component")) {
 					if (!hasSoundComponent) {
-						m_entityToInspect->AddComponent(new ecs::SoundComponent("dadoy"));
+						m_entityToInspect->AddComponent(new ecs::SoundComponent());
 					}
 					else {
 						// Already have sound component

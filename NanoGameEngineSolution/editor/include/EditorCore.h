@@ -13,6 +13,7 @@
 #include"systems\InputSystem.h"
 #include"systems\SoundSystem.h"
 #include"systems\LevelSystem.h"
+#include"systems\AssetSystem.h"
 
 #define FPS -1
 #define MS 1000/FPS
@@ -31,6 +32,7 @@ namespace nano { namespace editor {
 		EditorWidgetSystem *m_editorWidgetSystem;
 		SoundSystem *m_soundSystem;
 		LevelSystem *m_levelSystem;
+		AssetSystem* m_assetSystem;
 		CoreConfig *m_config;
 
 		// Other

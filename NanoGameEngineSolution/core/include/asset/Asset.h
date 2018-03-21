@@ -1,7 +1,6 @@
 #pragma once
 
 #include<string>
-#include<vector>
 
 namespace nano { namespace asset {  
 
@@ -21,6 +20,15 @@ namespace nano { namespace asset {
 
 		// Loads new asset file
 		virtual void loadNew(std::string a_filePath) = 0;
+
+		// Sets m_fileName
+		void setFileName(std::string a_name);
+
+		// Returns m_fileName
+		std::string getFileName();
+
+	protected:
+		std::string m_fileName;
 	};
 
 } }

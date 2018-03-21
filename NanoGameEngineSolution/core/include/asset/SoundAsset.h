@@ -8,13 +8,27 @@ namespace nano { namespace asset {
 
 	struct SoundAssetInfo {
 		AssetInfo file;
-
+		int format;
+		int size;
+		int sampleRate;
+		int channel;
+		int bps;
 	};
 
 	class SoundAsset : public Asset {
 	public:
 		SoundAsset();
+		~SoundAsset();
 
+		void freeData() override;
+		void loadNew(std::string a_path) override;
+
+		void* getSoundData();
+		SoundAssetInfo getAssetInfo();
+
+	private:
+		void* m_soundData;
+		SoundAssetInfo m_assetInfo;
 	};
 
 

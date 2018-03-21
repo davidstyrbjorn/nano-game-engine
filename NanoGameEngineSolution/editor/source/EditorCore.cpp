@@ -15,6 +15,7 @@ namespace nano { namespace editor {
 		m_editorWidgetSystem->Quit();
 		m_soundSystem->Quit();
 		m_levelSystem->Quit();
+		m_assetSystem->Quit();
 	}
 
 	EditorCore::EditorCore()
@@ -28,6 +29,10 @@ namespace nano { namespace editor {
 		EditorConfig::Instance()->loadProjectInfo();
 		EditorConfig::Instance()->setCurrentLevelName("none");
 		EditorConfig::Instance()->setClearColor(math::Vector4(0.2, 0.2f, 0.2f, 0.0f));
+
+		// Asset System
+		m_assetSystem = AssetSystem::getInstance();
+		m_assetSystem->Start();
 
 		// Window System (1200 by 800)
 		m_windowSystem = WindowSystem::getInstance();

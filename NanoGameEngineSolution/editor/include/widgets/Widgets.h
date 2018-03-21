@@ -121,10 +121,10 @@ namespace nano { namespace editor {
 	};
 
 	// middle-left
-	class UtilitySelectWidget : EditorWidget, public EventObserver {
+	class AssetBrowserWidget : EditorWidget, public EventObserver {
 
 	public:
-		UtilitySelectWidget();
+		AssetBrowserWidget();
 
 		// Base methods
 		void Start() override;

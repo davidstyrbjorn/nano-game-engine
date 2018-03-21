@@ -24,7 +24,7 @@ namespace nano { namespace editor {
 		m_menuBarWidget.Start();
 		m_consoleWidget.Start();
 		
-		m_utilitySelectWidget.Start();
+		m_assetBrowserWidget.Start();
 		m_utilityWidget.Start();
 
 		m_entitySelectWidget.Start();
@@ -37,7 +37,7 @@ namespace nano { namespace editor {
 		m_menuBarWidget.Update();
 		m_consoleWidget.Update();
 
-		m_utilitySelectWidget.Update();
+		m_assetBrowserWidget.Update();
 		m_utilityWidget.Update();
 
 		m_entitySelectWidget.Update();
@@ -64,7 +64,7 @@ namespace nano { namespace editor {
 
 		if (m_renderWidgets) {
 			m_consoleWidget.Render();
-			m_utilitySelectWidget.Render();
+			m_assetBrowserWidget.Render();
 			m_utilityWidget.Render();
 			m_entitySelectWidget.Render();
 			m_entityInspectorWidget.Render();

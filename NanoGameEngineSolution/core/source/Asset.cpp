@@ -12,4 +12,14 @@ namespace nano { namespace asset {
 
 	}
 
+	void Asset::setFileName(std::string a_name)
+	{
+		m_fileName = a_name;
+	}
+
+	std::string Asset::getFileName()
+	{
+		return m_fileName;
+	}
+
 }}

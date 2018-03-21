@@ -2,6 +2,8 @@
 
 #include"../Component.h"
 
+#include"../../asset/SoundAsset.h"
+
 namespace nano {
 	namespace openal {
 		class SoundSource;
@@ -16,6 +18,7 @@ namespace nano { namespace ecs {
 		openal::SoundSource *m_source;
 		openal::SoundBuffer *m_buffer;
 		const char* m_soundPath;
+		asset::SoundAsset *m_soundAsset;
 		
 	public:
 		// Constructor with path to sound to load

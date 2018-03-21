@@ -27,7 +27,7 @@ int convertToInt(char* buffer, int len)
 	return a;
 }
 
-char* loadWAV(const char* fn, int& chan, int& samplerate, int& bps, int& size, int& format)
+static char* loadWAV(const char* fn, int& chan, int& samplerate, int& bps, int& size, int& format)
 {
 	char buffer[4];
 	std::ifstream in(fn, std::ios::binary);

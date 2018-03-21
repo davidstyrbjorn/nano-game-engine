@@ -193,6 +193,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='build_central|Win32'">false</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="source\AssetSystem.cpp" />
     <ClCompile Include="source\ConsoleWidget.cpp" />
     <ClCompile Include="source\EditorConfig.cpp" />
     <ClCompile Include="source\EditorCore.cpp" />
@@ -209,7 +210,7 @@
     <ClCompile Include="source\InputSystem.cpp" />
     <ClCompile Include="source\MenuBarWidget.cpp" />
     <ClCompile Include="source\RendererSystem.cpp" />
-    <ClCompile Include="source\UtilitySelectWidget.cpp" />
+    <ClCompile Include="source\AssetBrowserWidget.cpp" />
     <ClCompile Include="source\UtilityWidget.cpp" />
     <ClCompile Include="source\WindowSystem.cpp" />
   </ItemGroup>
@@ -228,6 +229,7 @@
     <ClInclude Include="include\Events.h" />
     <ClInclude Include="include\HighlightEntity.h" />
     <ClInclude Include="include\SerializerAPI.h" />
+    <ClInclude Include="include\systems\AssetSystem.h" />
     <ClInclude Include="include\systems\EditorConfig.h" />
     <ClInclude Include="include\systems\EditorSystem.h" />
     <ClInclude Include="include\systems\EditorWidgetSystem.h" />

@@ -21,7 +21,7 @@ namespace nano { namespace editor {
 		// Widgets
 		MenuBarWidget m_menuBarWidget;
 		UtilityWidget m_utilityWidget;
-		UtilitySelectWidget m_utilitySelectWidget;
+		AssetBrowserWidget m_assetBrowserWidget;
 		EntitySelectWidget m_entitySelectWidget;
 		EntityInspectorWidget m_entityInspectorWidget;
 		ConsoleWidget m_consoleWidget;
