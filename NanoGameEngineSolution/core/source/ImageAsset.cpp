@@ -5,6 +5,8 @@
 
 #include"../include/StringHelp.h"
 
+#include"../include/Core.h"
+
 namespace nano { namespace asset {  
 
 	ImageAsset::ImageAsset()
@@ -23,6 +25,13 @@ namespace nano { namespace asset {
 		m_assetInfo.file.hndl = a_filePath;
 		m_assetInfo.file.byteSize = m_assetInfo.width * m_assetInfo.height;
 		m_assetInfo.file.suffix = getFileSuffix(a_filePath);
+
+		if (m_assetInfo.file.suffix == "png" || m_assetInfo.file.suffix == "PNG") {
+			m_assetInfo.format = GL_RGBA;
+		}
+		else {
+			m_assetInfo.format = GL_RGB;
+		}
 	}
 
 	void * ImageAsset::getImageData()

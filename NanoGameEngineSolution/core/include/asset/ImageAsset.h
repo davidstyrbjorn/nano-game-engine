@@ -9,6 +9,7 @@ namespace nano { namespace asset {
 						// size
 						// suffix
 		int width, height;
+		int format;
 	};
 
 	class ImageAsset : public Asset {

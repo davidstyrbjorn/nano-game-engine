@@ -153,7 +153,7 @@ namespace nano { namespace editor {
 						}
 						else {
 							// Sprite
-							entityToAdd->AddComponent(new ecs::SpriteComponent(path.c_str()));
+							entityToAdd->AddComponent(new ecs::SpriteComponent());
 						}
 					}
 				}
@@ -261,7 +261,8 @@ namespace nano { namespace editor {
 				// Texture path
 				ecs::SpriteComponent *spriteComponent = entity->GetComponent<ecs::SpriteComponent>();
 				if (spriteComponent != nullptr) {
-					std::string imagePathString = "image_path " + std::string(spriteComponent->GetImagePath());
+					//std::string imagePathString = "image_path " + std::string(spriteComponent->GetImagePath());
+					std::string imagePathString = "image_path deprecated!";
 					nano::WriteToFile(imagePathString, true);
 				}
 				else {

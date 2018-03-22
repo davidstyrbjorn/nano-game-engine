@@ -6,6 +6,7 @@
 namespace nano {
 	namespace asset {
 		class Asset;
+		class ImageAsset;
 } }
 
 namespace nano { namespace editor {  
@@ -16,6 +17,7 @@ namespace nano { namespace editor {
 		AssetSystem() { }
 
 		std::vector<asset::Asset*> m_assetContainer;
+		asset::ImageAsset *m_highlightTextureAsset;
 
 		// Helper
 		void ReadDirectory(const std::string& name, std::vector<std::string>& v);
@@ -26,6 +28,7 @@ namespace nano { namespace editor {
 		void Quit() override;
 
 		std::vector<asset::Asset*>& getAssetContainer();
+		asset::ImageAsset* getHighlightAsset();
 	};
 
 } }

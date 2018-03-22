@@ -3,6 +3,8 @@
 #include<ecs\components\SpriteComponent.h>
 #include<ecs\components\TransformComponent.h>
 
+#include"../include/systems/AssetSystem.h"
+
 namespace nano { namespace editor {  
 
 	HighlightEntity::HighlightEntity()
@@ -10,7 +12,8 @@ namespace nano { namespace editor {
 		m_thisEntity = new ecs::Entity("entity");
 		m_thisEntity->Start();
 
-		m_thisEntity->AddComponent(new ecs::SpriteComponent("resources\\rect.png"));
+		m_thisEntity->AddComponent(new ecs::SpriteComponent());
+		m_thisEntity->GetComponent<ecs::SpriteComponent>()->LoadNewAsset(AssetSystem::getInstance()->getHighlightAsset());
 		m_thisRenderable = m_thisEntity->GetRenderableComponent();
 	}
 

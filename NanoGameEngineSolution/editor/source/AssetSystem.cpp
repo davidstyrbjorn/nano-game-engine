@@ -12,6 +12,10 @@ namespace nano { namespace editor {
 
 	void AssetSystem::Start()
 	{
+		// Read in the highlight texture asset
+		m_highlightTextureAsset = new asset::ImageAsset();
+		m_highlightTextureAsset->loadNew("resources\\rect.png");
+
 		// Read every asset file from resources\assets\ directory
 		std::vector<std::string> _files;
 		ReadDirectory("resources\\assets\\", _files);
@@ -38,12 +42,20 @@ namespace nano { namespace editor {
 
 	void AssetSystem::Quit()
 	{
+		// TODO@:
+		// Delete every asset pointer here!
+		delete m_highlightTextureAsset;
 		std::cout << "Asset system quit correctly" << std::endl;
 	}
 
 	std::vector<asset::Asset*>& AssetSystem::getAssetContainer()
 	{
 		return m_assetContainer;
+	}
+
+	asset::ImageAsset * AssetSystem::getHighlightAsset()
+	{
+		return m_highlightTextureAsset;
 	}
 
 	void AssetSystem::Update()
