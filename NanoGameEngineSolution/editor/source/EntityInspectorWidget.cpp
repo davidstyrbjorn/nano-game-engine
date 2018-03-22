@@ -93,7 +93,6 @@ namespace nano { namespace editor {
 
 	void EntityInspectorWidget::Render()
 	{
-		static bool showImageAssetWindow;
 		static AssetSystem *assetSystem = AssetSystem::getInstance();
 
 		math::Vector2 _windowSize = EditorConfig::Instance()->getWindowSize();
@@ -201,17 +200,10 @@ namespace nano { namespace editor {
 				{
 					// Display the sprite image
 					ImGui::Image((ImTextureID*)renderableComponent->GetTexture()->GetTextureID(), ImVec2(150,150));
-
-					// Input for changing texture
-					//static char texturePath[128] = "";
-					//ImGui::InputText("Texture Path", texturePath, 128);
-					//if (ImGui::Button("Load Texture")) {
-					//	m_entityToInspect->GetComponent<ecs::SpriteComponent>()->LoadNewTexture(texturePath);
-					//}
-					if (ImGui::Button("Set Image")) {
-						showImageAssetWindow = true;
+					if (ImGui::Button("Change Image Asset")) {
+						m_showImageAssetWindow = true;
 					}
-				}	
+				}					
 				
 				ImGui::Spacing(); ImGui::Separator(); ImGui::Spacing();
 			}
@@ -386,14 +378,13 @@ namespace nano { namespace editor {
 			ImGui::End();
 		}
 
-		if (m_entityToInspect != nullptr && showImageAssetWindow) 
+		if (m_entityToInspect != nullptr && m_showImageAssetWindow) 
 		{
 			static ImVec2 windowSize = ImVec2(250, 400);
-			ImGui::Begin("Assets", &showImageAssetWindow, ImGuiWindowFlags_::ImGuiWindowFlags_NoResize);
+			ImGui::Begin("Assets", &m_showImageAssetWindow, ImGuiWindowFlags_::ImGuiWindowFlags_NoResize);
 
 			for (asset::Asset* asset : assetSystem->getAssetContainer()) {
 				if (ImGui::Selectable(asset->getFileName().c_str())) {
-					std::cout << "got one" << std::endl;
 					m_entityToInspect->GetComponent<ecs::SpriteComponent>()->LoadNewAsset(static_cast<asset::ImageAsset*>(asset));
 				}
 			}
@@ -550,7 +541,7 @@ namespace nano { namespace editor {
 	void EntityInspectorWidget::OnEntityManipulation(std::string a_id, std::string a_id2) 
 	{
 		if (a_id == "entity_clicked") {
-			if (!m_renameEntityWindow && !m_showKeycodeWindow) {
+			if (!m_renameEntityWindow && !m_showKeycodeWindow && !m_showImageAssetWindow) {
 				// "-1" - clicked on empty space
 				if (a_id2 == "-1") {
 					// Deselect the entity i.e set it to a nullptr

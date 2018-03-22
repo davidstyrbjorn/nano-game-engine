@@ -107,6 +107,9 @@ namespace nano { namespace ecs {
 
 	void SpriteComponent::LoadNewAsset(asset::ImageAsset * a_imageAsset)
 	{
+		if (a_imageAsset == nullptr) {
+			std::cout << "Asset is nullptr" << std::endl;
+		}
 		m_texture->Bind();
 		m_texture->SetTextureData(a_imageAsset->getImageData(), a_imageAsset->getAssetInfo().width, a_imageAsset->getAssetInfo().height, GL_RGBA);
 		m_texture->Unbind();
