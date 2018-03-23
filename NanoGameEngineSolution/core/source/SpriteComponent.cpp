@@ -9,6 +9,12 @@
 
 namespace nano { namespace ecs {
 
+
+	SpriteComponent::SpriteComponent()
+	{
+		// Ignore here, do init code in init function
+	}
+
 	void SpriteComponent::Start()
 	{
 
@@ -16,6 +22,8 @@ namespace nano { namespace ecs {
 
 	void SpriteComponent::Init()
 	{
+		static asset::ImageAsset* s_errorTextureAsset;
+
 		m_transform = m_owner->m_transform;
 		s_errorTextureAsset = new asset::ImageAsset();
 		s_errorTextureAsset->loadNew("resources\\error_texture.png");
@@ -25,27 +33,24 @@ namespace nano { namespace ecs {
 		m_transform->size = math::Vector2(s_errorTextureAsset->getAssetInfo().width, s_errorTextureAsset->getAssetInfo().height);
 	}
 
+	bool SpriteComponent::LoadAsset(asset::Asset * a_imageAsset)
+	{
+		asset::ImageAsset* castAsset = dynamic_cast<asset::ImageAsset*>(a_imageAsset);
+		if (castAsset == nullptr) {
+			// Failed to cast to correct asset type!
+			return false;
+		}
+		m_texture->Bind();
+		m_texture->SetTextureData(castAsset->getImageData(), castAsset->getAssetInfo().width, castAsset->getAssetInfo().height, castAsset->getAssetInfo().format);
+		m_texture->Unbind();
+		return true;
+	}
+
 	void SpriteComponent::OnStateChange(ECSStates a_newState)
 	{
 		if (a_newState == ECSStates::DESTROYED) {
 			m_owner->SetRenderableComponent(nullptr);
 		}
-	}
-
-	SpriteComponent::SpriteComponent()
-	{
-		//m_imageAsset = new asset::ImageAsset();
-		//m_imageAsset->loadNew("resources\\error_texture.png");
-	}
-
-	void SpriteComponent::LoadNewAsset(asset::ImageAsset * a_imageAsset)
-	{
-		if (a_imageAsset == nullptr) {
-			std::cout << "Asset is nullptr" << std::endl;
-		}
-		m_texture->Bind();
-		m_texture->SetTextureData(a_imageAsset->getImageData(), a_imageAsset->getAssetInfo().width, a_imageAsset->getAssetInfo().height, a_imageAsset->getAssetInfo().format);
-		m_texture->Unbind();
 	}
 
 } }

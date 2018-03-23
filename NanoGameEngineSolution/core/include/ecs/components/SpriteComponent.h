@@ -8,16 +8,13 @@
 
 namespace nano {
 	namespace asset {
-		class ImageAsset;
+		class Asset;
 } }
 
 namespace nano { namespace ecs {
 
 	class SpriteComponent : public graphics::Renderable, public Component
 	{
-	private:
-		asset::ImageAsset* s_errorTextureAsset;
-
 	public:
 		// Inits the neccesary data
 		void Start() override;
@@ -28,7 +25,7 @@ namespace nano { namespace ecs {
 		SpriteComponent();
 
 		// Loads new texture for sprite component
-		void LoadNewAsset(asset::ImageAsset* a_imageAsset);
+		bool LoadAsset(asset::Asset* a_imageAsset) override;
 
 		// Override for the renderer 
 		int GetVertexCount() override { return 4; }

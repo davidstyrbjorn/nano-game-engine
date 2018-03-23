@@ -13,7 +13,7 @@ namespace nano { namespace editor {
 		m_thisEntity->Start();
 
 		m_thisEntity->AddComponent(new ecs::SpriteComponent());
-		m_thisEntity->GetComponent<ecs::SpriteComponent>()->LoadNewAsset(AssetSystem::getInstance()->getHighlightAsset());
+		m_thisEntity->GetComponent<ecs::SpriteComponent>()->LoadAsset((asset::Asset*)AssetSystem::getInstance()->getHighlightAsset());
 		m_thisRenderable = m_thisEntity->GetRenderableComponent();
 	}
 

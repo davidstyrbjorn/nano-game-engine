@@ -385,7 +385,10 @@ namespace nano { namespace editor {
 
 			for (asset::Asset* asset : assetSystem->getAssetContainer()) {
 				if (ImGui::Selectable(asset->getFileName().c_str())) {
-					m_entityToInspect->GetComponent<ecs::SpriteComponent>()->LoadNewAsset(static_cast<asset::ImageAsset*>(asset));
+					if (!m_entityToInspect->GetComponent<ecs::SpriteComponent>()->LoadAsset(asset)) {
+						// Failed to load asset for some reason (clicked on wrong formated asset probably)
+						EditorWidgetSystem::getInstance()->GetEventHandler().AddEvent(BaseEvent(EventTypes::CONSOLE_MESSAGE, "Failed to load asset!"));
+					}
 				}
 			}
 

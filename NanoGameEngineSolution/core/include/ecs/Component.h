@@ -3,6 +3,11 @@
 #include"ECS.h"
 #include"Entity.h"
 
+namespace nano {
+	namespace asset {
+		class Asset;
+} }
+
 namespace nano { namespace ecs { 
 
 	class Component {
@@ -27,6 +32,11 @@ namespace nano { namespace ecs {
 		// \brief Update called by entity owner
 		//
 		virtual void Update() { } 
+
+		//////////
+		// \brief Called on new asset load on component
+		//
+		virtual bool LoadAsset(asset::Asset* a_assetPtr) { return false; }
 
 		//////////
 		// \brief Gets called on component state change
