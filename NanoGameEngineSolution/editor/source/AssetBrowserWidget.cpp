@@ -11,6 +11,8 @@
 #include"../include/DearImGui/imgui.h"
 
 #include<Windows.h>
+#include<fstream>
+
 #include<FileHelp.h>
 #include<StringHelp.h>
 
@@ -69,11 +71,11 @@ namespace nano { namespace editor {
 	void AssetBrowserWidget::OpenExplorerWindow()
 	{
 		OPENFILENAME ofn;       // common dialog box structure
-		HWND hwnd;     // owner window
+		HWND hwnd;				// owner window
 		hwnd = GetActiveWindow();
 		HANDLE hf;              // file handle
 
-								// Initialize OPENFILENAME
+		// Initialize OPENFILENAME
 		ZeroMemory(&ofn, sizeof(ofn));
 		ofn.lStructSize = sizeof(ofn);
 		ofn.hwndOwner = hwnd;
@@ -88,26 +90,33 @@ namespace nano { namespace editor {
 		ofn.nMaxFileTitle = 0;
 		ofn.lpstrInitialDir = NULL;
 		ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
+		
+		if (GetOpenFileName(&ofn) == TRUE) 
+		{
+			std::string fileName = getFileName(m_fileNameBuffer);
+			std::string temp = EditorConfig::Instance()->getProjectInfo().localPath + "\\resources\\assets\\" + fileName;
+			std::string temp2 = m_fileNameBuffer;
+			std::string newThing = "";
 
-		if (GetOpenFileName(&ofn) == TRUE)
-			hf = CreateFile(ofn.lpstrFile,
-				GENERIC_READ,
-				0,
-				(LPSECURITY_ATTRIBUTES)NULL,
-				OPEN_EXISTING,
-				FILE_ATTRIBUTE_NORMAL,
-				(HANDLE)NULL);
+			// Format m_fileNameBuffer
+			for (int i = 0; i < temp2.length(); i++) {
+				newThing += temp2.at(i);
+				if (temp2.at(i) == '\\') {
+					newThing += "\\";
+				}
+			}
 
-		//std::cout << getFileName(m_fileNameBuffer) << std::endl;
-		std::string temp = EditorConfig::Instance()->getProjectInfo().localPath + "\\resources\\assets\\ohshit.png"; //getFileName(m_fileNameBuffer);
-	
-		//std::cout << temp << std::endl;
-		//std::cout << m_fileNameBuffer << std::endl;
+			// Copy happends here
+			std::ifstream src(newThing, std::ios::binary);
+			std::ofstream dst(temp, std::ios::binary);			   
+			dst << src.rdbuf();
 
-		if (!CopyFile(m_fileNameBuffer, temp.c_str(), FALSE)) {
-			std::cout << "well shit" << std::endl;
+			// Tell asset system what happend
+			AssetSystem::getInstance()->newAssetImported(fileName);
 		}
-		//NANO_CopyFile("C:\temp\ass.png", "C:\temp\cat.png");
+		else {
+			// Cancel in dialogue box (getting file failed)
+		}
 	}
 
 } }

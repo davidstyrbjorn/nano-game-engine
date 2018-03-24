@@ -8,6 +8,8 @@
 #include<dirent.h>
 #include<iostream>
 
+#include<FileHelp.h>
+
 namespace nano { namespace editor {
 
 	void AssetSystem::Start()
@@ -23,14 +25,14 @@ namespace nano { namespace editor {
 		for (std::string fileName : _files) {
 			std::string suffix = getFileSuffix(fileName);
 			// Check for file type
-			if (suffix == "png" || suffix == "PNG" || suffix == "jpg" || suffix == "JPG") {
+			if(isSuffixImage(suffix)){
 				// Add found image asset
 				asset::ImageAsset* imageAsset = new asset::ImageAsset();
 				imageAsset->setFileName(fileName);
 				imageAsset->loadNew("resources\\assets\\" + fileName);
 				m_assetContainer.push_back(imageAsset);
 			}
-			else if (suffix == "wav") {
+			else if (isSuffixSound(suffix)) {
 				// Add found sound asset
 				asset::SoundAsset* soundAsset = new asset::SoundAsset();
 				soundAsset->setFileName(fileName);
@@ -56,6 +58,25 @@ namespace nano { namespace editor {
 	asset::ImageAsset * AssetSystem::getHighlightAsset()
 	{
 		return m_highlightTextureAsset;
+	}
+
+	void AssetSystem::newAssetImported(const std::string & a_fileName)
+	{
+		std::string suffix = getFileSuffix(a_fileName);
+		if (isSuffixImage(suffix)) {
+			// Add found image asset
+			asset::ImageAsset* imageAsset = new asset::ImageAsset();
+			imageAsset->setFileName(a_fileName);
+			imageAsset->loadNew("resources\\assets\\" + a_fileName);
+			m_assetContainer.push_back(imageAsset);
+		}
+		else if (isSuffixSound(suffix)) {
+			// Add found sound asset
+			asset::SoundAsset* soundAsset = new asset::SoundAsset();
+			soundAsset->setFileName(a_fileName);
+			soundAsset->loadNew("resources\\assets\\" + a_fileName);
+			m_assetContainer.push_back(soundAsset);
+		}
 	}
 
 	void AssetSystem::Update()

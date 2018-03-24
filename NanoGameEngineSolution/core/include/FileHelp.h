@@ -1,24 +1,26 @@
 #pragma once
 
-#include<fstream>
-#include<Windows.h>
+#include<string>
 
 namespace nano {
 
-	enum OS {
-		WINDOWS,
-		UNIX
-	};
+	static std::string IMAGE_SUFFIX_ARRAY[] = { "png", "PNG", "jpg", "JPG", "pdf", "PDF" };
+	static std::string SOUND_SUFFIX_ARRAY[] = { "wav", "WAV" };
 
-	static void NANO_CopyFile(const char* a_src, const char* a_dst) {
-		//std::ifstream src(a_src, std::ios::binary);
-		//std::ofstream dst(a_dst, std::ios::binary);
-		//
-		//// Perform copy operation
-		//dst << src.rdbuf();
-		CopyFile(a_src, a_dst, FALSE);
+	static bool isSuffixImage(std::string a_subject) {
+		for (std::string _x : IMAGE_SUFFIX_ARRAY) {
+			if (_x == a_subject)
+				return true;
+		}
+		return false;
+	}
 
-		return void();
+	static bool isSuffixSound(std::string a_subject) {
+		for (std::string _x : SOUND_SUFFIX_ARRAY) {
+			if (_x == a_subject)
+				return true;
+		}
+		return false;
 	}
 
 }

@@ -29,6 +29,8 @@ namespace nano { namespace editor {
 
 		std::vector<asset::Asset*>& getAssetContainer();
 		asset::ImageAsset* getHighlightAsset();
+
+		void newAssetImported(const std::string &a_fileName);
 	};
 
 } }

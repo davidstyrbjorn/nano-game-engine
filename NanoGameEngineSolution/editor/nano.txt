@@ -1,4 +1,4 @@
 project_name Pongerino
 author davidstyrbjorn@gmail.com
-local_path C:\NanoGameEngine_folder\NanoGameEngine\NanoGameEngineSolution\editor
+local_path D:\NanoGameEngine\NanoGameEngine\NanoGameEngineSolution\editor
 startup_level main
