@@ -13,6 +13,7 @@
 namespace nano {
 	namespace ecs {
 		class Entity;
+		class Component;
 	}
 	namespace editor {
 		class InputSystem;
@@ -71,6 +72,8 @@ namespace nano { namespace editor {
 		bool m_showKeycodeWindow = false;
 		bool m_showImageAssetWindow = false; 
 
+		ecs::Component *m_assetComponent;
+
 	public:
 		EntityInspectorWidget();
 
@@ -123,6 +126,8 @@ namespace nano { namespace editor {
 
 	// middle-left
 	class AssetBrowserWidget : EditorWidget, public EventObserver {
+	private:
+		char m_fileNameBuffer[260]; // Buffer for file name
 
 	public:
 		AssetBrowserWidget();
@@ -131,6 +136,8 @@ namespace nano { namespace editor {
 		void Start() override;
 		void Update() override;
 		void Render() override;
+
+		void OpenExplorerWindow();
 	};
 
 	// Utility manipulation widget bottom-left

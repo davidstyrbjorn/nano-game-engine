@@ -245,6 +245,7 @@
     <ClInclude Include="include\ecs\components\TriangleComponent.h" />
     <ClInclude Include="include\ecs\ECS.h" />
     <ClInclude Include="include\ecs\Entity.h" />
+    <ClInclude Include="include\FileHelp.h" />
     <ClInclude Include="include\graphics\Camera.h" />
     <ClInclude Include="include\graphics\GraphicsInclude.h" />
     <ClInclude Include="include\graphics\Renderable.h" />

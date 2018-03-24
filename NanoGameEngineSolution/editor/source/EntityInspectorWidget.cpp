@@ -201,6 +201,7 @@ namespace nano { namespace editor {
 					// Display the sprite image
 					ImGui::Image((ImTextureID*)renderableComponent->GetTexture()->GetTextureID(), ImVec2(150,150));
 					if (ImGui::Button("Change Image Asset")) {
+						m_assetComponent = m_entityToInspect->GetComponent<ecs::SpriteComponent>();
 						m_showImageAssetWindow = true;
 					}
 				}					
@@ -231,11 +232,10 @@ namespace nano { namespace editor {
 					ImGui::EndPopup();
 				}
 
-				// Load sound
-				static char soundPath[128] = "";
-				ImGui::InputText("Sound Path", soundPath, 128);
-				if (ImGui::Button("Load Sound")) {
-					soundComponent->LoadNewSound(soundPath);
+				// Load sound asset
+				if (ImGui::Button("Load Sound Asset")) {
+					m_assetComponent = soundComponent;
+					m_showImageAssetWindow = true;
 				}
 
 				// Data modifiers
@@ -385,7 +385,7 @@ namespace nano { namespace editor {
 
 			for (asset::Asset* asset : assetSystem->getAssetContainer()) {
 				if (ImGui::Selectable(asset->getFileName().c_str())) {
-					if (!m_entityToInspect->GetComponent<ecs::SpriteComponent>()->LoadAsset(asset)) {
+					if (m_assetComponent->LoadAsset(asset)) {
 						// Failed to load asset for some reason (clicked on wrong formated asset probably)
 						EditorWidgetSystem::getInstance()->GetEventHandler().AddEvent(BaseEvent(EventTypes::CONSOLE_MESSAGE, "Failed to load asset!"));
 					}

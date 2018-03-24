@@ -161,7 +161,7 @@ namespace nano { namespace editor {
 				// 1. Sound Path
 				if (line.substr(0, 10) == "sound_path") {
 					std::string path = line.substr(11, line.length());
-					entityToAdd->AddComponent(new ecs::SoundComponent(path.c_str()));
+					entityToAdd->AddComponent(new ecs::SoundComponent());
 				}
 				// FourwayMoveComponentEditor 
 				// 1. up

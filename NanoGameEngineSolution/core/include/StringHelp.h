@@ -30,4 +30,11 @@ namespace nano {
 		return a_subject.substr(i+1);
 	}
 
+	static std::string getFileName(std::string a_fullPath) {
+		// D:\\path\\to\\image\\image.png
+		//                     i
+		int i = a_fullPath.find_last_of("\\");
+		return a_fullPath.substr(i+1);
+	}
+
 }

@@ -22,13 +22,13 @@ none
 [ENTITY]
 id unnamed
 transform
-pos 0, 0
-size 377, 370
+pos 24, 278
+size 100, 100
 angle 0
 renderable
 vertex_count 4
-color 1, 1, 1, 1
-image_path deprecated!
+color 1, 0.459, 1, 1
+image_path none
 sound component
 none
 fourway move component

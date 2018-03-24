@@ -5,6 +5,8 @@
 #include"../include/LevelParser.h"
 #include"../include/systems/EditorConfig.h"
 
+#include<Windows.h>
+
 namespace nano { namespace editor { 
 
 	EditorCore::~EditorCore()
