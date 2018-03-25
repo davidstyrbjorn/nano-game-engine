@@ -16,6 +16,8 @@
 #include<FileHelp.h>
 #include<StringHelp.h>
 
+#include<opengl\Texture.h>
+
 namespace nano { namespace editor {
 
 	AssetBrowserWidget::AssetBrowserWidget()
@@ -36,6 +38,8 @@ namespace nano { namespace editor {
 	void AssetBrowserWidget::Render()
 	{
 		static AssetSystem* assetSystem = AssetSystem::getInstance();
+		static std::string currentImageFileName = "";
+		static opengl::Texture* currentImageTexture = new opengl::Texture(nullptr, 0, 0, GL_RGB);
 
 		math::Vector2 _windowSize = EditorConfig::Instance()->getWindowSize();
 
@@ -63,6 +67,12 @@ namespace nano { namespace editor {
 
 		for (asset::Asset *asset : assetSystem->getAssetContainer()) {
 			ImGui::Text(asset->getFileName().c_str());
+			if (ImGui::IsItemHovered()) {
+				if (asset->getFileName() != currentImageFileName) {
+					currentImageFileName = asset->getFileName();
+					//currentImageTexture->SetTextureData()
+				}
+			}
 		}
 
 		ImGui::End();

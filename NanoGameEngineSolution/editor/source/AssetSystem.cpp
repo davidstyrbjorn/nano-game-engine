@@ -30,14 +30,14 @@ namespace nano { namespace editor {
 				asset::ImageAsset* imageAsset = new asset::ImageAsset();
 				imageAsset->setFileName(fileName);
 				imageAsset->loadNew("resources\\assets\\" + fileName);
-				m_assetContainer.push_back(imageAsset);
+				m_imageAssetContainer.push_back(imageAsset);
 			}
 			else if (isSuffixSound(suffix)) {
 				// Add found sound asset
 				asset::SoundAsset* soundAsset = new asset::SoundAsset();
 				soundAsset->setFileName(fileName);
 				soundAsset->loadNew("resources\\assets\\" + fileName);
-				m_assetContainer.push_back(soundAsset);
+				m_soundAssetContainer.push_back(soundAsset);
 			}
 		}
 	}
@@ -67,15 +67,15 @@ namespace nano { namespace editor {
 			// Add found image asset
 			asset::ImageAsset* imageAsset = new asset::ImageAsset();
 			imageAsset->setFileName(a_fileName);
-			imageAsset->loadNew("resources\\assets\\" + a_fileName);
-			m_assetContainer.push_back(imageAsset);
+			imageAsset->loadNew(a_fileName);
+			m_imageAssetContainer.push_back(imageAsset);
 		}
 		else if (isSuffixSound(suffix)) {
 			// Add found sound asset
 			asset::SoundAsset* soundAsset = new asset::SoundAsset();
 			soundAsset->setFileName(a_fileName);
-			soundAsset->loadNew("resources\\assets\\" + a_fileName);
-			m_assetContainer.push_back(soundAsset);
+			soundAsset->loadNew(a_fileName);
+			m_soundAssetContainer.push_back(soundAsset);
 		}
 	}
 

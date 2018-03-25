@@ -380,12 +380,13 @@ namespace nano { namespace editor {
 
 		if (m_entityToInspect != nullptr && m_showImageAssetWindow) 
 		{
-			static ImVec2 windowSize = ImVec2(250, 400);
+			static ImVec2 windowSize = ImVec2(200, 300);
+			ImGui::SetNextWindowSize(windowSize);
 			ImGui::Begin("Assets", &m_showImageAssetWindow, ImGuiWindowFlags_::ImGuiWindowFlags_NoResize);
 
 			for (asset::Asset* asset : assetSystem->getAssetContainer()) {
 				if (ImGui::Selectable(asset->getFileName().c_str())) {
-					if (m_assetComponent->LoadAsset(asset)) {
+					if (!m_assetComponent->LoadAsset(asset)) {
 						// Failed to load asset for some reason (clicked on wrong formated asset probably)
 						EditorWidgetSystem::getInstance()->GetEventHandler().AddEvent(BaseEvent(EventTypes::CONSOLE_MESSAGE, "Failed to load asset!"));
 					}
