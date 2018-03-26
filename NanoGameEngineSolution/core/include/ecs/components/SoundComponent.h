@@ -8,11 +8,9 @@ namespace nano {
 		class SoundBuffer;
 	}
 	namespace asset {
-		class Asset;
+		class SoundAsset;
 	}
 }
-
-
 
 namespace nano { namespace ecs { 
 
@@ -20,7 +18,7 @@ namespace nano { namespace ecs {
 	private:
 		openal::SoundSource *m_source;
 		openal::SoundBuffer *m_buffer;
-		const char* m_soundPath;
+		asset::SoundAsset *m_soundAsset;
 		
 	public:
 		// Empty constructor, creates source but no buffer
@@ -30,10 +28,10 @@ namespace nano { namespace ecs {
 		~SoundComponent();
 
 		bool LoadAsset(asset::Asset *a_assetPtr) override;
+		asset::SoundAsset* getSoundAsset();
 
 		// Getters
 		openal::SoundSource *GetSource();
-		const char* GetSoundPath();
 	};
 
 } }

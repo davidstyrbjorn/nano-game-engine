@@ -27,6 +27,7 @@
 #include"../include/DearImGui/imgui.h"
 
 #include<asset\ImageAsset.h>
+#include<asset\SoundAsset.h>
 #include<InputDefinitions.h>
 
 namespace nano { namespace editor {
@@ -156,9 +157,8 @@ namespace nano { namespace editor {
 			// Start listing components
 			graphics::Renderable* renderableComponent = m_entityToInspect->GetRenderableComponent();
 			bool hasRenderableComponent = renderableComponent == nullptr ? false : true;
-			if (hasRenderableComponent) {
+			if (hasRenderableComponent && ImGui::CollapsingHeader("Render Component")) {
 				// Shape type
-				ImGui::Text("Renderable Component");
 				// Right click component name
 				if (ImGui::IsItemHovered()) {
 					if (ImGui::GetIO().MouseClicked[1]) {
@@ -211,11 +211,10 @@ namespace nano { namespace editor {
 
 			ecs::SoundComponent* soundComponent = m_entityToInspect->GetComponent<ecs::SoundComponent>();
 			bool hasSoundComponent = soundComponent == nullptr ? false : true;
-			if (hasSoundComponent) {
+			if (hasSoundComponent && ImGui::CollapsingHeader("Sound Component")) {
 
 				openal::SoundSource *source = soundComponent->GetSource();
 
-				ImGui::Text("Sound Component");
 				// Right click component name
 				if (ImGui::IsItemHovered()) {
 					if (ImGui::GetIO().MouseClicked[1]) {
@@ -275,9 +274,7 @@ namespace nano { namespace editor {
 
 			FourwayMoveComponentEditor* fwmComponent = m_entityToInspect->GetComponent<FourwayMoveComponentEditor>();
 			bool hasFwmComponent = fwmComponent == nullptr ? false : true;
-			if (hasFwmComponent) {
-
-				ImGui::Text("FourwayMove Component");
+			if (hasFwmComponent && ImGui::CollapsingHeader("Fourway Move Component")) {
 
 				int up, right, down, left;
 				up = fwmComponent->GetKey("up");
@@ -384,24 +381,25 @@ namespace nano { namespace editor {
 			ImGui::SetNextWindowSize(windowSize);
 			ImGui::Begin("Assets", &m_showImageAssetWindow, ImGuiWindowFlags_::ImGuiWindowFlags_NoResize);
 
-			ImGui::Text("Image Assets");
-			ImGui::Separator();
-			for (asset::Asset* asset : assetSystem->getImageAssetContainer()) {
-				if (ImGui::Selectable(asset->getFileName().c_str())) {
-					if (!m_assetComponent->LoadAsset(asset)) {
-						// Failed to load asset for some reason (clicked on wrong formated asset probably)
-						EditorWidgetSystem::getInstance()->GetEventHandler().AddEvent(BaseEvent(EventTypes::CONSOLE_MESSAGE, "Failed to load asset!"));
+			// Listing image asset
+			if (ImGui::CollapsingHeader("Image Assets")) {
+				for (asset::Asset* asset : assetSystem->getImageAssetContainer()) {
+					if (ImGui::Selectable(asset->getFileName().c_str())) {
+						if (!m_assetComponent->LoadAsset(asset)) {
+							// Failed to load asset for some reason (clicked on wrong formated asset probably)
+							EditorWidgetSystem::getInstance()->GetEventHandler().AddEvent(BaseEvent(EventTypes::CONSOLE_MESSAGE, "Failed to load image asset!"));
+						}
 					}
 				}
 			}
-			ImGui::Separator();
-			ImGui::Text("Sound Assets");
-			ImGui::Separator();
-			for (asset::Asset* asset : assetSystem->getSoundAssetContainer()) {
-				if (ImGui::Selectable(asset->getFileName().c_str())) {
-					if (!m_assetComponent->LoadAsset(asset)) {
-						// Failed to load asset for some reason (clicked on wrong formated asset probably)
-						EditorWidgetSystem::getInstance()->GetEventHandler().AddEvent(BaseEvent(EventTypes::CONSOLE_MESSAGE, "Failed to load asset!"));
+			// Listing sound asset
+			if (ImGui::CollapsingHeader("Sound Assets")) {
+				for (asset::Asset* asset : assetSystem->getSoundAssetContainer()) {
+					if (ImGui::Selectable(asset->getFileName().c_str())) {
+						if (!m_assetComponent->LoadAsset(asset)) {
+							// Failed to load asset for some reason (clicked on wrong formated asset probably)
+							EditorWidgetSystem::getInstance()->GetEventHandler().AddEvent(BaseEvent(EventTypes::CONSOLE_MESSAGE, "Failed to load sound asset!"));
+						}
 					}
 				}
 			}

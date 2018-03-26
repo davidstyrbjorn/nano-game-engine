@@ -39,7 +39,7 @@ namespace nano { namespace editor {
 	{
 		static asset::ASSET_TYPE currentAssetType = asset::ASSET_TYPE::IMAGE;
 		static AssetSystem* assetSystem = AssetSystem::getInstance();
-		static std::string currentImageFileName = "";
+		static asset::ImageAsset* currentHoveringImageAsset = nullptr;
 		static opengl::Texture* currentImageTexture = new opengl::Texture(nullptr, 0, 0, GL_RGB);
 
 		math::Vector2 _windowSize = EditorConfig::Instance()->getWindowSize();
@@ -82,17 +82,21 @@ namespace nano { namespace editor {
 		if (currentAssetType == asset::ASSET_TYPE::IMAGE) {
 			ImGui::Text("Image Assets");
 			ImGui::Separator();
+			// List image assets
 			for (asset::ImageAsset *asset : assetSystem->getImageAssetContainer()) {
 				ImGui::Text(asset->getFileName().c_str());
 				if (ImGui::IsItemHovered()) {
-					if (asset->getFileName() != currentImageFileName) {
-						currentImageFileName = asset->getFileName();
-						//currentImageTexture->SetTextureData()
+					if (currentHoveringImageAsset != asset) {
+						currentHoveringImageAsset = asset;
+						currentImageTexture->Bind();
+						currentImageTexture->SetTextureData(currentHoveringImageAsset->getImageData(), 100, 100, currentHoveringImageAsset->getAssetInfo().format);
+						currentImageTexture->Unbind();
 					}
 				}
 			}
 		}
 		else if (currentAssetType == asset::ASSET_TYPE::SOUND) {
+			// List sound assets
 			ImGui::Text("Sounds Assets");
 			ImGui::Separator();
 			for (asset::SoundAsset *asset : assetSystem->getSoundAssetContainer()) {

@@ -8,7 +8,7 @@
 
 namespace nano {
 	namespace asset {
-		class Asset;
+		class ImageAsset;
 } }
 
 namespace nano { namespace ecs {
@@ -26,9 +26,13 @@ namespace nano { namespace ecs {
 
 		// Loads new texture for sprite component
 		bool LoadAsset(asset::Asset* a_imageAsset) override;
+		asset::ImageAsset* getImageAsset();
 
 		// Override for the renderer 
 		int GetVertexCount() override { return 4; }
+
+	private:
+		asset::ImageAsset* m_imageAsset;
 	};
 
 } }

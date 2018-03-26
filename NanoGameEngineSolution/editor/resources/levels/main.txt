@@ -7,15 +7,15 @@ fps 60
 [ENTITY]
 id triangle
 transform
-pos 104, 31
+pos 211, 1
 size 201, 228
 angle 0
 renderable
 vertex_count 3
 color 0.0118, 0, 0.322, 1
-image_path none
+image_asset none
 sound component
-none
+sound_asset sound.wav
 fourway move component
 none
 
@@ -23,12 +23,10 @@ none
 id unnamed
 transform
 pos 0, 0
-size 377, 370
+size 150, 150
 angle 0
 renderable
-vertex_count 4
-color 1, 1, 1, 1
-image_path deprecated!
+none
 sound component
 none
 fourway move component

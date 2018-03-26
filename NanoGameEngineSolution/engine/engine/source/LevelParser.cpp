@@ -153,7 +153,8 @@ namespace nano { namespace engine {
 						}
 						else {
 							// Sprite
-							entityToAdd->AddComponent(new ecs::SpriteComponent(path.c_str()));
+							// Get asset using asset name here
+							//entityToAdd->AddComponent(new ecs::SpriteComponent(path.c_str()));
 						}
 					}
 				}
@@ -161,7 +162,8 @@ namespace nano { namespace engine {
 				// 1. Sound Path
 				if (line.substr(0, 10) == "sound_path") {
 					std::string path = line.substr(11, line.length());
-					entityToAdd->AddComponent(new ecs::SoundComponent(path.c_str()));
+					// Get sound asset using asset name here
+					//entityToAdd->AddComponent(new ecs::SoundComponent(path.c_str()));
 				}
 				// FourwayMoveComponentEditor 
 				// 1. up

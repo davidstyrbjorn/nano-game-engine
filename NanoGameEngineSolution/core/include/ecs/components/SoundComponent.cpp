@@ -11,6 +11,7 @@ namespace nano { namespace ecs {
 	{
 		m_source = new openal::SoundSource();
 		m_buffer = new openal::SoundBuffer();
+		m_soundAsset = nullptr;
 	}
 
 	SoundComponent::~SoundComponent()
@@ -26,20 +27,23 @@ namespace nano { namespace ecs {
 			// Failed to cast asset to correct sound format
 			return false;
 		}
+
+		m_soundAsset = castAsset;
+
 		m_buffer->SetData(castAsset->getAssetInfo().format, castAsset->getSoundData(), castAsset->getAssetInfo().size, castAsset->getAssetInfo().sampleRate);
 		m_source->SetBuffer(m_buffer->GetBufferId());
 
 		return true;
 	}
 
+	asset::SoundAsset * SoundComponent::getSoundAsset()
+	{
+		return m_soundAsset;
+	}
+
 	openal::SoundSource * nano::ecs::SoundComponent::GetSource()
 	{
 		return m_source;
-	}
-
-	const char * SoundComponent::GetSoundPath()
-	{
-		return m_soundPath;
 	}
 
 } } 

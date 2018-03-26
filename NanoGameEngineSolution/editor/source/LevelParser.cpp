@@ -8,6 +8,9 @@
 #include<ecs\components\TransformComponent.h>
 #include<ecs\components\SoundComponent.h>
 
+#include<asset\SoundAsset.h>
+#include<asset\ImageAsset.h>
+
 #include"../include/components/FourwayMoveComponentEditor.h"
 
 #include<fstream>
@@ -261,12 +264,11 @@ namespace nano { namespace editor {
 				// Texture path
 				ecs::SpriteComponent *spriteComponent = entity->GetComponent<ecs::SpriteComponent>();
 				if (spriteComponent != nullptr) {
-					//std::string imagePathString = "image_path " + std::string(spriteComponent->GetImagePath());
-					std::string imagePathString = "image_path deprecated!";
+					std::string imagePathString = "asset_name " + spriteComponent->getImageAsset()->getFileName();
 					nano::WriteToFile(imagePathString, true);
 				}
 				else {
-					nano::WriteToFile("image_path none", true);
+					nano::WriteToFile("image_asset none", true);
 				}
 			}
 			else {
@@ -276,7 +278,7 @@ namespace nano { namespace editor {
 			nano::WriteToFile("sound component", true);
 			ecs::SoundComponent* soundComponent = entity->GetComponent<ecs::SoundComponent>();
 			if (soundComponent != nullptr) {
-				std::string soundPathString = "sound_path " + std::string(soundComponent->GetSoundPath());
+				std::string soundPathString = "sound_asset " + std::string(soundComponent->getSoundAsset()->getFileName());
 				nano::WriteToFile(soundPathString, true);
 			}
 			else {

@@ -27,6 +27,7 @@ namespace nano { namespace ecs {
 		m_transform = m_owner->m_transform;
 		s_errorTextureAsset = new asset::ImageAsset();
 		s_errorTextureAsset->loadNew("resources\\error_texture.png");
+		m_imageAsset = s_errorTextureAsset; // Default asset pointer
 
 		// Test with image asset object
 		m_texture = new opengl::Texture(s_errorTextureAsset->getImageData(), s_errorTextureAsset->getAssetInfo().width, s_errorTextureAsset->getAssetInfo().height, s_errorTextureAsset->getAssetInfo().format);
@@ -40,10 +41,18 @@ namespace nano { namespace ecs {
 			// Failed to cast to correct asset type!
 			return false;
 		}
+
+		m_imageAsset = castAsset;
+
 		m_texture->Bind();
 		m_texture->SetTextureData(castAsset->getImageData(), castAsset->getAssetInfo().width, castAsset->getAssetInfo().height, castAsset->getAssetInfo().format);
 		m_texture->Unbind();
 		return true;
+	}
+
+	asset::ImageAsset * SpriteComponent::getImageAsset()
+	{
+		return m_imageAsset;
 	}
 
 	void SpriteComponent::OnStateChange(ECSStates a_newState)
