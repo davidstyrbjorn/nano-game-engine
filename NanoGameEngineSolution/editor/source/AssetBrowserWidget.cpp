@@ -37,6 +37,7 @@ namespace nano { namespace editor {
 
 	void AssetBrowserWidget::Render()
 	{
+		static asset::ASSET_TYPE currentAssetType = asset::ASSET_TYPE::IMAGE;
 		static AssetSystem* assetSystem = AssetSystem::getInstance();
 		static std::string currentImageFileName = "";
 		static opengl::Texture* currentImageTexture = new opengl::Texture(nullptr, 0, 0, GL_RGB);
@@ -64,14 +65,34 @@ namespace nano { namespace editor {
 		if (ImGui::Button("Import")) {
 			OpenExplorerWindow();
 		}
+		ImGui::SameLine(50);
+		std::string temp = asset::asset_type_to_strig(currentAssetType);
+		if (ImGui::Button(temp.c_str())) {
+			ImGui::OpenPopup("asset_type_dropdown");
+		}
+		if (ImGui::BeginPopup("asset_type_dropdown")) {
+			if (ImGui::Selectable("Image"))
+				currentAssetType = asset::ASSET_TYPE::IMAGE;
+			else if (ImGui::Selectable("Sound"))
+				currentAssetType = asset::ASSET_TYPE::SOUND;
+		}
 
-		for (asset::Asset *asset : assetSystem->getAssetContainer()) {
-			ImGui::Text(asset->getFileName().c_str());
-			if (ImGui::IsItemHovered()) {
-				if (asset->getFileName() != currentImageFileName) {
-					currentImageFileName = asset->getFileName();
-					//currentImageTexture->SetTextureData()
+		if (currentAssetType == asset::ASSET_TYPE::IMAGE) {
+			ImGui::Text("Image Assets");
+			for (asset::ImageAsset *asset : assetSystem->getImageAssetContainer()) {
+				ImGui::Text(asset->getFileName().c_str());
+				if (ImGui::IsItemHovered()) {
+					if (asset->getFileName() != currentImageFileName) {
+						currentImageFileName = asset->getFileName();
+						//currentImageTexture->SetTextureData()
+					}
 				}
+			}
+		}
+		else if (currentAssetType == asset::ASSET_TYPE::SOUND) {
+			ImGui::Begin("Sounds Assets");
+			for (asset::SoundAsset *asset : assetSystem->getSoundAssetContainer()) {
+				ImGui::Text(asset->getFileName().c_str());
 			}
 		}
 

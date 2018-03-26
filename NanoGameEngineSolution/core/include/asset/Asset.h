@@ -4,6 +4,18 @@
 
 namespace nano { namespace asset {  
 
+	enum ASSET_TYPE {
+		IMAGE,
+		SOUND
+	};
+
+	static std::string asset_type_to_strig(ASSET_TYPE a_type) {
+		if (a_type == ASSET_TYPE::IMAGE)
+			return "Image";
+		else if (a_type == ASSET_TYPE::SOUND)
+			return "Sound";
+	}
+
 	struct AssetInfo {
 		std::string hndl;
 		size_t byteSize;

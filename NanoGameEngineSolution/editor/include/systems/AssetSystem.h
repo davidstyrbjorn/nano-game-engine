@@ -31,8 +31,8 @@ namespace nano { namespace editor {
 		void Quit() override;
 
 		//std::vector<asset::Asset*>& getAssetContainer();
-		std::vector<asset::ImageAsset*> getImageAssetContainer();
-		std::vector<asset::SoundAsset*> getSoundAssetContainer();
+		std::vector<asset::ImageAsset*> &getImageAssetContainer();
+		std::vector<asset::SoundAsset*> &getSoundAssetContainer();
 		asset::ImageAsset* getHighlightAsset();
 
 		void newAssetImported(const std::string &a_fileName);

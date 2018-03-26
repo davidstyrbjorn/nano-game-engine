@@ -384,7 +384,7 @@ namespace nano { namespace editor {
 			ImGui::SetNextWindowSize(windowSize);
 			ImGui::Begin("Assets", &m_showImageAssetWindow, ImGuiWindowFlags_::ImGuiWindowFlags_NoResize);
 
-			for (asset::Asset* asset : assetSystem->getAssetContainer()) {
+			for (asset::Asset* asset : assetSystem->getImageAssetContainer()) {
 				if (ImGui::Selectable(asset->getFileName().c_str())) {
 					if (!m_assetComponent->LoadAsset(asset)) {
 						// Failed to load asset for some reason (clicked on wrong formated asset probably)

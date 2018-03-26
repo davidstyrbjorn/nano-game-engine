@@ -50,9 +50,14 @@ namespace nano { namespace editor {
 		std::cout << "Asset system quit correctly" << std::endl;
 	}
 
-	std::vector<asset::Asset*>& AssetSystem::getAssetContainer()
+	std::vector<asset::ImageAsset*> &AssetSystem::getImageAssetContainer()
 	{
-		return m_assetContainer;
+		return m_imageAssetContainer;
+	}
+
+	std::vector<asset::SoundAsset*> &AssetSystem::getSoundAssetContainer()
+	{
+		return m_soundAssetContainer;
 	}
 
 	asset::ImageAsset * AssetSystem::getHighlightAsset()
