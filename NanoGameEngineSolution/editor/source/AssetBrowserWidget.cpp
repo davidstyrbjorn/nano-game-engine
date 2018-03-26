@@ -65,7 +65,7 @@ namespace nano { namespace editor {
 		if (ImGui::Button("Import")) {
 			OpenExplorerWindow();
 		}
-		ImGui::SameLine(50);
+		ImGui::SameLine(100);
 		std::string temp = asset::asset_type_to_strig(currentAssetType);
 		if (ImGui::Button(temp.c_str())) {
 			ImGui::OpenPopup("asset_type_dropdown");
@@ -75,10 +75,13 @@ namespace nano { namespace editor {
 				currentAssetType = asset::ASSET_TYPE::IMAGE;
 			else if (ImGui::Selectable("Sound"))
 				currentAssetType = asset::ASSET_TYPE::SOUND;
+
+			ImGui::EndPopup();
 		}
 
 		if (currentAssetType == asset::ASSET_TYPE::IMAGE) {
 			ImGui::Text("Image Assets");
+			ImGui::Separator();
 			for (asset::ImageAsset *asset : assetSystem->getImageAssetContainer()) {
 				ImGui::Text(asset->getFileName().c_str());
 				if (ImGui::IsItemHovered()) {
@@ -90,7 +93,8 @@ namespace nano { namespace editor {
 			}
 		}
 		else if (currentAssetType == asset::ASSET_TYPE::SOUND) {
-			ImGui::Begin("Sounds Assets");
+			ImGui::Text("Sounds Assets");
+			ImGui::Separator();
 			for (asset::SoundAsset *asset : assetSystem->getSoundAssetContainer()) {
 				ImGui::Text(asset->getFileName().c_str());
 			}
