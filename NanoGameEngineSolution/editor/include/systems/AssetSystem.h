@@ -17,7 +17,6 @@ namespace nano { namespace editor {
 	private:
 		AssetSystem() { }
 
-		//std::vector<asset::Asset*> m_assetContainer;
 		std::vector<asset::ImageAsset*> m_imageAssetContainer;
 		std::vector<asset::SoundAsset*> m_soundAssetContainer;
 		asset::ImageAsset *m_highlightTextureAsset;
@@ -30,7 +29,7 @@ namespace nano { namespace editor {
 		void Update() override;
 		void Quit() override;
 
-		//std::vector<asset::Asset*>& getAssetContainer();
+		asset::ImageAsset* getImageAssetByHndl(std::string a_hndl);
 		std::vector<asset::ImageAsset*> &getImageAssetContainer();
 		std::vector<asset::SoundAsset*> &getSoundAssetContainer();
 		asset::ImageAsset* getHighlightAsset();

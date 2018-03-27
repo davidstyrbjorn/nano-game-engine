@@ -50,6 +50,14 @@ namespace nano { namespace editor {
 		std::cout << "Asset system quit correctly" << std::endl;
 	}
 
+	asset::ImageAsset * AssetSystem::getImageAssetByHndl(std::string a_hndl)
+	{
+		for (asset::ImageAsset* asset : m_imageAssetContainer) {
+			if (asset->getFileName() == a_hndl)
+				return asset;
+		}
+	}
+
 	std::vector<asset::ImageAsset*> &AssetSystem::getImageAssetContainer()
 	{
 		return m_imageAssetContainer;
