@@ -31,6 +31,7 @@ namespace nano { namespace editor {
 
 		asset::ImageAsset* getImageAssetByHndl(std::string a_hndl);
 		std::vector<asset::ImageAsset*> &getImageAssetContainer();
+		asset::SoundAsset* getSoundAssetByHndl(std::string a_hndl);
 		std::vector<asset::SoundAsset*> &getSoundAssetContainer();
 		asset::ImageAsset* getHighlightAsset();
 

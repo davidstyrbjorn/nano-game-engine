@@ -166,8 +166,11 @@ namespace nano { namespace editor {
 				// Sound Component
 				// 1. Sound Path
 				if (line.substr(0, 16) == "sound_asset_name") {
-					std::string path = line.substr(17, line.length());
-					entityToAdd->AddComponent(new ecs::SoundComponent());
+					std::string assetName = line.substr(17, line.length());
+					if (assetName != "none") {
+						entityToAdd->AddComponent(new ecs::SoundComponent());
+						entityToAdd->GetComponent<ecs::SoundComponent>()->LoadAsset(AssetSystem::getInstance()->getSoundAssetByHndl(assetName));
+					}
 				}
 				// FourwayMoveComponentEditor 
 				// 1. up
@@ -281,6 +284,7 @@ namespace nano { namespace editor {
 			nano::WriteToFile("sound component", true);
 			ecs::SoundComponent* soundComponent = entity->GetComponent<ecs::SoundComponent>();
 			if (soundComponent != nullptr) {
+				std::cout << "wait what" << std::endl;
 				std::string soundPathString = "sound_asset_name " + std::string(soundComponent->getSoundAsset()->getFileName());
 				nano::WriteToFile(soundPathString, true);
 			}

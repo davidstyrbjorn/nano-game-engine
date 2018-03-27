@@ -1,0 +1,22 @@
+[LEVEL_CONFIG]
+cam_pos -72, -24
+cam_size 1008, 692
+fps 60
+
+[LEVEL_ENTITIES]
+[ENTITY]
+id triangle
+transform
+pos 202, 20
+size 201, 228
+angle 0
+renderable
+vertex_count 3
+color 0.0196, 1, 0, 1
+image_asset_name none
+sound component
+sound_asset_name none
+fourway move component
+none
+
+[ENTITIES_END]

@@ -63,6 +63,14 @@ namespace nano { namespace editor {
 		return m_imageAssetContainer;
 	}
 
+	asset::SoundAsset * AssetSystem::getSoundAssetByHndl(std::string a_hndl)
+	{
+		for (asset::SoundAsset* asset : m_soundAssetContainer) {
+			if (asset->getFileName() == a_hndl)
+				return asset;
+		}
+	}
+
 	std::vector<asset::SoundAsset*> &AssetSystem::getSoundAssetContainer()
 	{
 		return m_soundAssetContainer;
