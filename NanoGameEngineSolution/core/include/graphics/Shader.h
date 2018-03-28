@@ -2,6 +2,7 @@
 
 #include<string>
 #include"../Core.h"
+#include<map>
 
 namespace nano {
 	namespace math {
@@ -45,6 +46,8 @@ namespace nano { namespace graphics {
 	private:
 		bool didCompile(GLuint a_shader);
 		GLint getUniformLocation(const char* a_name);
+		// Caching the uniform location to save performance 
+		std::map<const char*, GLint> m_uniformMap;
 
 	private:
 		// OpenGL handle to the shaders program
