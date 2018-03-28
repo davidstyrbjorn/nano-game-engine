@@ -1,6 +1,7 @@
 #pragma once
 
 #include"WindowSystem.h"
+#include"AssetSystem.h"
 #include"WorldSystem.h"
 #include"InputSystem.h"
 #include"RendererSystem.h"
@@ -34,6 +35,7 @@ private:
 	EngineConfig *m_engineConfig;
 	// Window System
 	WindowSystem *m_windowSystem;
+	AssetSystem *m_assetSystem;
 	InputSystem *m_inputSystem;
 	WorldSystem *m_worldSystem;
 	ScriptingSystem* m_scriptingSystem;

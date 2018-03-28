@@ -9,6 +9,7 @@
 #include<iostream>
 
 #include<FileHelp.h>
+#include<asset\AssetUtility.h>
 
 namespace nano { namespace editor {
 
@@ -19,27 +20,7 @@ namespace nano { namespace editor {
 		m_highlightTextureAsset->loadNew("resources\\rect.png");
 
 		// Read every asset file from resources\assets\ directory
-		std::vector<std::string> _files;
-		ReadDirectory("resources\\assets\\", _files);
-
-		for (std::string fileName : _files) {
-			std::string suffix = getFileSuffix(fileName);
-			// Check for file type
-			if(isSuffixImage(suffix)){
-				// Add found image asset
-				asset::ImageAsset* imageAsset = new asset::ImageAsset();
-				imageAsset->setFileName(fileName);
-				imageAsset->loadNew("resources\\assets\\" + fileName);
-				m_imageAssetContainer.push_back(imageAsset);
-			}
-			else if (isSuffixSound(suffix)) {
-				// Add found sound asset
-				asset::SoundAsset* soundAsset = new asset::SoundAsset();
-				soundAsset->setFileName(fileName);
-				soundAsset->loadNew("resources\\assets\\" + fileName);
-				m_soundAssetContainer.push_back(soundAsset);
-			}
-		}
+		asset::loadAssetsFromFolder("resources\\assets\\", m_imageAssetContainer, m_soundAssetContainer);
 	}
 
 	void AssetSystem::Quit()
@@ -103,16 +84,6 @@ namespace nano { namespace editor {
 	void AssetSystem::Update()
 	{
 
-	}
-
-	void AssetSystem::ReadDirectory(const std::string & name, std::vector<std::string>& v)
-	{
-		DIR* dirp = opendir(name.c_str());
-		struct dirent * dp;
-		while ((dp = readdir(dirp)) != NULL) {
-				v.push_back(dp->d_name);
-		}
-		closedir(dirp);
 	}
 
 } }

@@ -9,11 +9,15 @@
 #include<ecs\components\SoundComponent.h>
 
 #include"../include/components/FourwayMoveComponentEngine.h"
+#include"../include/AssetSystem.h"
 
 #include<fstream>
 
 #include<StringHelp.h>
 #include"../include/SerializerAPI.h"
+
+#include<asset\ImageAsset.h>
+#include<asset\SoundAsset.h>
 
 namespace nano { namespace engine {
 
@@ -36,6 +40,8 @@ namespace nano { namespace engine {
 
 	bool LevelParser::GetParsedLevelFromFile(const char* a_levelFileName, ParsedLevel &a_level)
 	{
+		static AssetSystem *assetSystem = AssetSystem::getInstance();
+
 		std::string levelString = GetLevelStringFromFile(a_levelFileName);
 		if (levelString == "NULL") {
 			return false;
@@ -137,10 +143,10 @@ namespace nano { namespace engine {
 
 					color = math::Vector4(x, y, z, w);
 				}
-				else if (line.substr(0, 10) == "image_path") {
-					path = line.substr(11, line.length());
+				// Now add component!
 
-					// Now add component!
+				else if (line.substr(0, 16) == "image_asset_name") {
+					path = line.substr(17, line.length());
 					if (vertex_count == 3) {
 						// Triangle 
 						entityToAdd->AddComponent(new ecs::TriangleComponent(color));
@@ -154,16 +160,18 @@ namespace nano { namespace engine {
 						else {
 							// Sprite
 							// Get asset using asset name here
-							//entityToAdd->AddComponent(new ecs::SpriteComponent(path.c_str()));
+							entityToAdd->AddComponent(new ecs::SpriteComponent());
+							entityToAdd->GetComponent<ecs::SpriteComponent>()->LoadAsset(assetSystem->getImageAssetByHndl(path));
 						}
 					}
 				}
 				// Sound Component
 				// 1. Sound Path
-				if (line.substr(0, 10) == "sound_path") {
-					std::string path = line.substr(11, line.length());
+				if (line.substr(0, 16) == "sound_asset_name") {
+					std::string path = line.substr(17, line.length());
 					// Get sound asset using asset name here
-					//entityToAdd->AddComponent(new ecs::SoundComponent(path.c_str()));
+					entityToAdd->AddComponent(new ecs::SoundComponent());
+					entityToAdd->GetComponent<ecs::SoundComponent>()->LoadAsset(assetSystem->getSoundAssetByHndl(path));
 				}
 				// FourwayMoveComponentEditor 
 				// 1. up

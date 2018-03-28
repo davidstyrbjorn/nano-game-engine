@@ -289,7 +289,7 @@ namespace nano { namespace editor {
 				nano::WriteToFile(soundPathString, true);
 			}
 			else {
-				nano::WriteToFile("sound_asset_name none", true);
+				nano::WriteToFile("none", true);
 			}
 
 			nano::WriteToFile("fourway move component", true);
