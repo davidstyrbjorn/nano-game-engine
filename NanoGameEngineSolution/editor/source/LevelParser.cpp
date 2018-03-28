@@ -159,7 +159,6 @@ namespace nano { namespace editor {
 							// Sprite
 							entityToAdd->AddComponent(new ecs::SpriteComponent());
 							entityToAdd->GetComponent<ecs::SpriteComponent>()->LoadAsset(AssetSystem::getInstance()->getImageAssetByHndl(assetName));
-
 						}
 					}
 				}
@@ -167,8 +166,8 @@ namespace nano { namespace editor {
 				// 1. Sound Path
 				if (line.substr(0, 16) == "sound_asset_name") {
 					std::string assetName = line.substr(17, line.length());
+					entityToAdd->AddComponent(new ecs::SoundComponent());
 					if (assetName != "none") {
-						entityToAdd->AddComponent(new ecs::SoundComponent());
 						entityToAdd->GetComponent<ecs::SoundComponent>()->LoadAsset(AssetSystem::getInstance()->getSoundAssetByHndl(assetName));
 					}
 				}
@@ -284,9 +283,13 @@ namespace nano { namespace editor {
 			nano::WriteToFile("sound component", true);
 			ecs::SoundComponent* soundComponent = entity->GetComponent<ecs::SoundComponent>();
 			if (soundComponent != nullptr) {
-				std::cout << "wait what" << std::endl;
-				std::string soundPathString = "sound_asset_name " + std::string(soundComponent->getSoundAsset()->getFileName());
-				nano::WriteToFile(soundPathString, true);
+				if (soundComponent->getSoundAsset() != nullptr) {
+					std::string soundPathString = "sound_asset_name " + std::string(soundComponent->getSoundAsset()->getFileName());
+					nano::WriteToFile(soundPathString, true);
+				}
+				else {
+					nano::WriteToFile("sound_asset_name none", true);
+				}
 			}
 			else {
 				nano::WriteToFile("none", true);

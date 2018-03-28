@@ -171,7 +171,9 @@ namespace nano { namespace engine {
 					std::string path = line.substr(17, line.length());
 					// Get sound asset using asset name here
 					entityToAdd->AddComponent(new ecs::SoundComponent());
-					entityToAdd->GetComponent<ecs::SoundComponent>()->LoadAsset(assetSystem->getSoundAssetByHndl(path));
+					if (path != "none") {
+						entityToAdd->GetComponent<ecs::SoundComponent>()->LoadAsset(assetSystem->getSoundAssetByHndl(path));
+					}
 				}
 				// FourwayMoveComponentEditor 
 				// 1. up
