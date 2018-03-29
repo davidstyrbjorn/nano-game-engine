@@ -22,4 +22,4 @@ namespace nano { namespace asset {
 		return m_fileName;
 	}
 
-}}
+}} 

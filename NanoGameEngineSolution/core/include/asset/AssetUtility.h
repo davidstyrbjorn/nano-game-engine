@@ -26,7 +26,7 @@ namespace nano { namespace asset {
 		}
 		closedir(dirp);
 
-		for (std::string file : _files) {
+		for (std::string file : _files) { 
 			std::string suffix = getFileSuffix(file);
 			// Check file type
 			if (isSuffixImage(suffix)) {
