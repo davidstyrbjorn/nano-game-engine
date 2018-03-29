@@ -11,6 +11,13 @@
 
 namespace nano { namespace asset {
 
+	static std::string asset_type_to_strig(ASSET_TYPE a_type) {
+		if (a_type == ASSET_TYPE::IMAGE)
+			return "Image";
+		else if (a_type == ASSET_TYPE::SOUND)
+			return "Sound";
+	}
+
 	static void loadAssetsFromFolder(const std::string &a_dir,
 		std::vector<asset::ImageAsset*> &a_imageContainer,
 		std::vector<asset::SoundAsset*> &a_soundContainer)

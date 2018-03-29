@@ -15,6 +15,7 @@
 
 #include<FileHelp.h>
 #include<StringHelp.h>
+#include<asset\AssetUtility.h>
 
 #include<opengl\Texture.h>
 
