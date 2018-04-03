@@ -20,6 +20,7 @@ void EngineCore::shutdown()
 	m_rendererSystem->shutdown();
 	m_levelSystem->shutdown();
 	m_scriptingSystem->shutdown();
+	m_assetSystem->shutdown();
 }
 
 void EngineCore::init()
@@ -27,6 +28,9 @@ void EngineCore::init()
 	// Init every system
 	m_engineConfig = EngineConfig::getInstance();
 	m_engineConfig->loadProjectInfo();
+
+	m_assetSystem = AssetSystem::getInstance();
+	m_assetSystem->start();
 
 	m_windowSystem = WindowSystem::getInstance();
 	m_windowSystem->start();

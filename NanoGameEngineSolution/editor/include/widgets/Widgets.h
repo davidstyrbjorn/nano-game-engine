@@ -11,13 +11,22 @@
 
 // FWD
 namespace nano {
+	namespace graphics {
+		class Renderable;
+		//  -> class TriangleComponent;
+		//  -> class RectangleComponent;
+		//  -> class SpriteComponent;
+	}
 	namespace ecs {
 		class Entity;
+		class Component;
+		class SoundComponent;
 	}
 	namespace editor {
 		class InputSystem;
 		class RendererSystem;
 		class WorldSystem;
+		class FourwayMoveComponentEditor;
 	}
 }
 
@@ -66,9 +75,15 @@ namespace nano { namespace editor {
 		const math::Vector2 m_addComponentSize = math::Vector2(100, 100);
 		const math::Vector4 m_addComponentColor = math::Vector4(1, 1, 1, 1);
 
-		// Rename
+		// Other
 		bool m_renameEntityWindow = false;
 		bool m_showKeycodeWindow = false;
+		bool m_showImageAssetWindow = false; 
+
+		ecs::Component *m_assetComponent;
+		graphics::Renderable *m_renderableComponent;
+		ecs::SoundComponent *m_soundComponent;
+		FourwayMoveComponentEditor *m_fourwayMoveComponent;
 
 	public:
 		EntityInspectorWidget();
@@ -77,6 +92,14 @@ namespace nano { namespace editor {
 		void Start() override;
 		void Update() override;
 		void Render() override;
+
+		// Inspection ImGui routines
+		void displayTransformComponentGraphics();
+		void displayRenderableComponentGraphics();
+		void displaySoundComponentGraphics();
+		void displayFourwayMoveComponentGraphics();
+
+		void clickedOnNewEntity(ecs::Entity* a_entity);
 
 		void OnEntityManipulation(std::string a_id, std::string a_id2);
 	};
@@ -121,15 +144,19 @@ namespace nano { namespace editor {
 	};
 
 	// middle-left
-	class UtilitySelectWidget : EditorWidget, public EventObserver {
+	class AssetBrowserWidget : EditorWidget, public EventObserver {
+	private:
+		char m_fileNameBuffer[260]; // Buffer for file name
 
 	public:
-		UtilitySelectWidget();
+		AssetBrowserWidget();
 
 		// Base methods
 		void Start() override;
 		void Update() override;
 		void Render() override;
+
+		void OpenExplorerWindow();
 	};
 
 	// Utility manipulation widget bottom-left

@@ -102,7 +102,11 @@ void Shader::CompileShader()
 
 GLint Shader::getUniformLocation(const char * a_name)
 {
-	return glGetUniformLocation(m_shaderProgram, a_name);
+	if (m_uniformMap.find(a_name) == m_uniformMap.end()) {
+		// a_name does not exists as uniform location
+		m_uniformMap.insert(std::pair<const char*, GLint>(a_name, glGetUniformLocation(m_shaderProgram, a_name)));
+	}
+	return m_uniformMap.at(a_name);
 }
 
 void Shader::SetUniform1f(const char * a_name, float a_value)

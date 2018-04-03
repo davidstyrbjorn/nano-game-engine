@@ -8,7 +8,11 @@
 #include<ecs\components\TransformComponent.h>
 #include<ecs\components\SoundComponent.h>
 
+#include<asset\SoundAsset.h>
+#include<asset\ImageAsset.h>
+
 #include"../include/components/FourwayMoveComponentEditor.h"
+#include"../include/systems/AssetSystem.h"
 
 #include<fstream>
 
@@ -53,7 +57,7 @@ namespace nano { namespace editor {
 		// Current Renderable info
 		int vertex_count;
 		math::Vector4 color; 
-		std::string path;
+		std::string assetName;
 
 		// Sound Component only loads with a sound path so no info saving is needed
 
@@ -137,8 +141,8 @@ namespace nano { namespace editor {
 
 					color = math::Vector4(x, y, z, w);
 				}
-				else if (line.substr(0, 10) == "image_path") {
-					path = line.substr(11, line.length());
+				else if (line.substr(0, 16) == "image_asset_name") {
+					assetName = line.substr(17, line.length());
 
 					// Now add component!
 					if (vertex_count == 3) {
@@ -147,21 +151,25 @@ namespace nano { namespace editor {
 					}
 					else if (vertex_count == 4) {
 						// Rectangle OR Sprite
-						if (path == "none") {
+						if (assetName == "none") {
 							// Rectangle
 							entityToAdd->AddComponent(new ecs::RectangleComponent(color));
 						}
 						else {
 							// Sprite
-							entityToAdd->AddComponent(new ecs::SpriteComponent(path.c_str()));
+							entityToAdd->AddComponent(new ecs::SpriteComponent());
+							entityToAdd->GetComponent<ecs::SpriteComponent>()->LoadAsset(AssetSystem::getInstance()->getImageAssetByHndl(assetName));
 						}
 					}
 				}
 				// Sound Component
 				// 1. Sound Path
-				if (line.substr(0, 10) == "sound_path") {
-					std::string path = line.substr(11, line.length());
-					entityToAdd->AddComponent(new ecs::SoundComponent(path.c_str()));
+				if (line.substr(0, 16) == "sound_asset_name") {
+					std::string assetName = line.substr(17, line.length());
+					entityToAdd->AddComponent(new ecs::SoundComponent());
+					if (assetName != "none") {
+						entityToAdd->GetComponent<ecs::SoundComponent>()->LoadAsset(AssetSystem::getInstance()->getSoundAssetByHndl(assetName));
+					}
 				}
 				// FourwayMoveComponentEditor 
 				// 1. up
@@ -237,7 +245,7 @@ namespace nano { namespace editor {
 
 			// Transform
 			nano::WriteToFile("transform", true);
-			// dereferencing null pointer is a null-proble, we know every entity has a m_transform component on it
+			// dereferencing null pointer is a null-problem, we know every entity has a m_transform component on it
 			ecs::Transform transform = *entity->m_transform;
 			std::string posString = "pos " + transform.position.ToString();
 			std::string sizeString = "size " + transform.size.ToString();
@@ -261,11 +269,11 @@ namespace nano { namespace editor {
 				// Texture path
 				ecs::SpriteComponent *spriteComponent = entity->GetComponent<ecs::SpriteComponent>();
 				if (spriteComponent != nullptr) {
-					std::string imagePathString = "image_path " + std::string(spriteComponent->GetImagePath());
+					std::string imagePathString = "image_asset_name " + spriteComponent->getImageAsset()->getFileName();
 					nano::WriteToFile(imagePathString, true);
 				}
 				else {
-					nano::WriteToFile("image_path none", true);
+					nano::WriteToFile("image_asset_name none", true);
 				}
 			}
 			else {
@@ -275,8 +283,13 @@ namespace nano { namespace editor {
 			nano::WriteToFile("sound component", true);
 			ecs::SoundComponent* soundComponent = entity->GetComponent<ecs::SoundComponent>();
 			if (soundComponent != nullptr) {
-				std::string soundPathString = "sound_path " + std::string(soundComponent->GetSoundPath());
-				nano::WriteToFile(soundPathString, true);
+				if (soundComponent->getSoundAsset() != nullptr) {
+					std::string soundPathString = "sound_asset_name " + std::string(soundComponent->getSoundAsset()->getFileName());
+					nano::WriteToFile(soundPathString, true);
+				}
+				else {
+					nano::WriteToFile("sound_asset_name none", true);
+				}
 			}
 			else {
 				nano::WriteToFile("none", true);

@@ -111,7 +111,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)\dependencies\glfw\include;$(SolutionDir)\dependencies\glew\include;$(SolutionDir)\dependencies\OpenAL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\dependencies\glfw\include;$(SolutionDir)\dependencies\glew\include;$(SolutionDir)\dependencies\OpenAL\include;$(SolutionDir)\dependencies\dr_libs;$(SolutionDir)\dependencies\dirent\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(SolutionDir)\dependencies\glfw\lib-vc2015\;$(SolutionDir)\dependencies\glew\lib\Release\Win32;D:\NanoGameEngine\NanoGameEngine\NanoGameEngineSolution\dependencies\OpenAL\libs\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -136,7 +136,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)\dependencies\glfw\include;$(SolutionDir)\dependencies\glew\include;$(SolutionDir)\dependencies\OpenAL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\dependencies\glfw\include;$(SolutionDir)\dependencies\glew\include;$(SolutionDir)\dependencies\OpenAL\include;$(SolutionDir)\dependencies\dr_libs;$(SolutionDir)\dependencies\dirent\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -156,7 +156,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(SolutionDir)\dependencies\glfw\include;$(SolutionDir)\dependencies\glew\include;$(SolutionDir)\dependencies\OpenAL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\dependencies\glfw\include;$(SolutionDir)\dependencies\glew\include;$(SolutionDir)\dependencies\OpenAL\include;$(SolutionDir)\dependencies\dr_libs;$(SolutionDir)\dependencies\dirent\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -197,9 +197,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="include\ecs\components\SoundComponent.cpp" />
+    <ClCompile Include="source\Asset.cpp" />
     <ClCompile Include="source\Camera.cpp" />
     <ClCompile Include="source\Clock.cpp" />
+    <ClCompile Include="source\ImageAsset.cpp" />
     <ClCompile Include="source\Random.cpp" />
+    <ClCompile Include="source\SoundAsset.cpp" />
     <ClCompile Include="source\SoundBuffer.cpp" />
     <ClCompile Include="source\SoundContextDevice.cpp" />
     <ClCompile Include="source\SoundSource.cpp" />
@@ -229,6 +232,10 @@
     <ClCompile Include="source\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\asset\Asset.h" />
+    <ClInclude Include="include\asset\AssetUtility.h" />
+    <ClInclude Include="include\asset\ImageAsset.h" />
+    <ClInclude Include="include\asset\SoundAsset.h" />
     <ClInclude Include="include\Clock.h" />
     <ClInclude Include="include\Core.h" />
     <ClInclude Include="include\ecs\Component.h" />
@@ -239,6 +246,7 @@
     <ClInclude Include="include\ecs\components\TriangleComponent.h" />
     <ClInclude Include="include\ecs\ECS.h" />
     <ClInclude Include="include\ecs\Entity.h" />
+    <ClInclude Include="include\FileHelp.h" />
     <ClInclude Include="include\graphics\Camera.h" />
     <ClInclude Include="include\graphics\GraphicsInclude.h" />
     <ClInclude Include="include\graphics\Renderable.h" />

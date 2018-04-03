@@ -14,7 +14,7 @@ namespace nano { namespace openal {
 		~SoundBuffer();
 		
 		// Sets the sound buffers data 
-		void SetData(int a_format, char* a_data, int a_size, int a_sampleRate);
+		void SetData(int a_format, void* a_data, int a_size, int a_sampleRate);
 		
 		// Returns sound buffer
 		unsigned int GetBufferId() const { return buffer; }

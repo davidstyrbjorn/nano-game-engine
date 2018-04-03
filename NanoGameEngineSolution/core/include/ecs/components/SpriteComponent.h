@@ -6,16 +6,15 @@
 #include"../../math/Vector2.h"
 #include"../../math/Vector4.h"
 
+namespace nano {
+	namespace asset {
+		class ImageAsset;
+} }
+
 namespace nano { namespace ecs {
 
 	class SpriteComponent : public graphics::Renderable, public Component
 	{
-	private:
-		const char* m_imagePath;
-
-		// Private methods
-		std::string GetFileExtension(const char* a_string);
-
 	public:
 		// Inits the neccesary data
 		void Start() override;
@@ -25,17 +24,16 @@ namespace nano { namespace ecs {
 		// Empty constructor
 		SpriteComponent();
 
-		// Constructor with arguments
-		SpriteComponent(const char* a_imagePath);
-
 		// Loads new texture for sprite component
-		void LoadNewTexture(const char* a_imagePath);
+		bool LoadAsset(asset::Asset* a_imageAsset) override;
+		asset::ImageAsset* getImageAsset();
+		void setTransformSizeToAssetSize();
 
 		// Override for the renderer 
 		int GetVertexCount() override { return 4; }
 
-		// Get texture path
-		const char* GetImagePath() { return m_imagePath; }
+	private:
+		asset::ImageAsset* m_imageAsset;
 	};
 
 } }

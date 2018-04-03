@@ -1,27 +1,17 @@
 #include "SoundComponent.h"
 
-#include"../../sound/NanoOpenAL.h"
-
 #include"../../sound/SoundBuffer.h"
 #include"../../sound/SoundSource.h"
 
+#include"../../asset/SoundAsset.h"
+
 namespace nano { namespace ecs { 
-
-	SoundComponent::SoundComponent(const char * a_soundFilePath)
-	{
-		m_soundPath = a_soundFilePath;
-
-		int format, size, sampleRate, channel, bps;
-		char* data = loadWAV(a_soundFilePath, channel, sampleRate, bps, size, format);
-
-		m_buffer = new openal::SoundBuffer();
-		m_buffer->SetData(format, data, size, sampleRate);
-		m_source = new openal::SoundSource(m_buffer->GetBufferId());
-	}
 
 	SoundComponent::SoundComponent()
 	{
 		m_source = new openal::SoundSource();
+		m_buffer = new openal::SoundBuffer();
+		m_soundAsset = nullptr;
 	}
 
 	SoundComponent::~SoundComponent()
@@ -30,27 +20,30 @@ namespace nano { namespace ecs {
 		delete m_source;
 	}
 
-	void SoundComponent::LoadNewSound(const char * a_soundFilePath)
+	bool SoundComponent::LoadAsset(asset::Asset * a_assetPtr)
 	{
-		m_soundPath = a_soundFilePath;
+		asset::SoundAsset* castAsset = dynamic_cast<asset::SoundAsset*>(a_assetPtr);
+		if (castAsset == nullptr) {
+			// Failed to cast asset to correct sound format
+			return false;
+		}
 
-		int format, size, sampleRate, channel, bps;
-		char* data = loadWAV(a_soundFilePath, channel, sampleRate, bps, size, format);
+		m_soundAsset = castAsset;
 
-		if (m_buffer == nullptr) m_buffer = new openal::SoundBuffer();
-		m_buffer->SetData(format, data, size, sampleRate);
-
+		m_buffer->SetData(castAsset->getAssetInfo().format, castAsset->getSoundData(), castAsset->getAssetInfo().size, castAsset->getAssetInfo().sampleRate);
 		m_source->SetBuffer(m_buffer->GetBufferId());
+
+		return true;
+	}
+
+	asset::SoundAsset * SoundComponent::getSoundAsset()
+	{
+		return m_soundAsset;
 	}
 
 	openal::SoundSource * nano::ecs::SoundComponent::GetSource()
 	{
 		return m_source;
-	}
-
-	const char * SoundComponent::GetSoundPath()
-	{
-		return m_soundPath;
 	}
 
 } } 

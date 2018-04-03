@@ -184,6 +184,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="engine\source\AssetSystem.cpp" />
     <ClCompile Include="engine\source\ScriptFile.cpp" />
     <ClCompile Include="engine\source\EngineConfig.cpp" />
     <ClCompile Include="engine\source\EngineCore.cpp" />
@@ -198,6 +199,7 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="engine\include\AssetSystem.h" />
     <ClInclude Include="engine\include\components\FourwayMoveComponentEngine.h" />
     <ClInclude Include="engine\include\EngineConfig.h" />
     <ClInclude Include="engine\include\EngineCore.h" />

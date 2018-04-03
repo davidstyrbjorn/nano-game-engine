@@ -271,21 +271,12 @@ namespace nano { namespace engine {
 		int startIndex, endIndex;
 		int i = 0; for (char c : a_subject) {
 			if (c == '(') {
-				if (a_subject[i + 1] != '$') {
-					startIndex = i;
-				}
-			}
-			if (c == '$') {
-				startIndex = i-1;
+				startIndex = i;
 			}
 			if (c == ',' || c == ')') {
 				endIndex = i;
 				variableSubStrings.push_back(a_subject.substr(startIndex, endIndex - startIndex));
-				if (c == ',') {
-					if (a_subject[i + 1] != '$') {
-						startIndex = i;
-					}
-				}
+				startIndex = i;
 			}
 			i++;
 		}
@@ -293,11 +284,13 @@ namespace nano { namespace engine {
 		std::vector<std::string> correctValueSubStrings;
 		for (auto subVariableString : variableSubStrings) {
 			int j = 0; for (char c : subVariableString) {
+				// Make sure we add non-variable literal values as well to the correct return string
 				if (c == ',' || c == '(') {
 					if (subVariableString[j + 1] != '$') {
 						correctValueSubStrings.push_back(subVariableString);
 					}
 				}
+				// Found variable now replace it with its value and insert into correct return string
 				if (c == '$') {
 					ScriptVariable var = getVariableFromName(subVariableString.substr(j + 1));
 					std::string copy = subVariableString;
