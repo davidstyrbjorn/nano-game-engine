@@ -118,187 +118,24 @@ namespace nano { namespace editor {
 
 		if (m_entityToInspect != nullptr) 
 		{
-			// ID section
-			std::string nameString = "ID: " + m_entityToInspect->GetID();
-			ImGui::Text(nameString.c_str());
-			if (ImGui::IsItemHovered()) {
-				if (ImGui::GetIO().MouseClicked[1]) {
-					ImGui::OpenPopup("rename_entity");
-				}
-			}
-			if (ImGui::BeginPopup("rename_entity")) {
-				if (ImGui::Selectable("Rename")) {
-					m_renameEntityWindow = true;
-				}
-				ImGui::EndPopup();
-			}
-			// State
-			std::string stateString;
-			if (m_entityToInspect->GetState() == ecs::ECSStates::ACTIVE) {
-				stateString = "State: Active";
-			}
-			else {
-				stateString = "State: Disabled";
-			}
-			ImGui::Text(stateString.c_str());
-
-			ImGui::Separator(); ImGui::Spacing();
-			
-			ImGui::Text("Transform Component");
-			// Position
-			ImGui::DragFloat2("Position", (float*)&m_entityToInspect->m_transform->position, 0.5f, 0, 0,"%.2f");
-			// Size
-			ImGui::DragFloat2("Size", (float*)&m_entityToInspect->m_transform->size, 0.5f, 0, 0, "%.2f");
-			// Angle
-			ImGui::SliderAngle("Angle", (float*)&m_entityToInspect->m_transform->angle);
+			displayTransformComponentGraphics();
 
 			ImGui::Spacing(); ImGui::Separator(); ImGui::Spacing();
 
-			// Start listing components
-			graphics::Renderable* renderableComponent = m_entityToInspect->GetRenderableComponent();
-			bool hasRenderableComponent = renderableComponent == nullptr ? false : true;
-			if (hasRenderableComponent && ImGui::CollapsingHeader("Render Component")) {
-				// Shape type
-				// Right click component name
-				if (ImGui::IsItemHovered()) {
-					if (ImGui::GetIO().MouseClicked[1]) {
-						ImGui::OpenPopup("right_click_component_renderable");
-					}
-				}
-				if (ImGui::BeginPopup("right_click_component_renderable")) {
-					if (ImGui::Selectable("Destroy")) {
-						if (renderableComponent->GetTexture() != nullptr)
-							m_entityToInspect->GetComponent<ecs::SpriteComponent>()->SetState(ecs::ECSStates::DESTROYED);
-						else if (renderableComponent->GetVertexCount() == 3)
-							m_entityToInspect->GetComponent<ecs::TriangleComponent>()->SetState(ecs::ECSStates::DESTROYED);
-						else
-							m_entityToInspect->GetComponent<ecs::RectangleComponent>()->SetState(ecs::ECSStates::DESTROYED);
-						// Event Handler
-						BaseEvent _event(EventTypes::MANIPULATED_COMPONENT, m_entityToInspect->GetID(), "Renderable Component", "Destroyed");
-						EditorWidgetSystem::getInstance()->GetEventHandler().AddEvent(_event);
-					}
-					ImGui::EndPopup();
-				}
-
-				if (renderableComponent->GetTexture() != nullptr) {
-					ImGui::Text("Type: Sprite");
-				}
-				else if (renderableComponent->GetVertexCount() == 3) {
-					ImGui::Text("Type: Triangle");
-				}
-				else if (renderableComponent->GetVertexCount() == 4) {
-					ImGui::Text("Type: Rectangle");
-				}
-
-				// Color
-				math::Vector4 renderableColor = renderableComponent->GetColor();
-				ImGui::ColorEdit4("Color", (float*)&renderableColor);
-				renderableComponent->SetColor(renderableColor);
-
-				// Image if there is any
-				if (renderableComponent->GetTexture() != nullptr) 
-				{
-					// Display the sprite image
-					ImGui::Image((ImTextureID*)renderableComponent->GetTexture()->GetTextureID(), ImVec2(150,150));
-					if (ImGui::Button("Change Image Asset")) {
-						m_assetComponent = m_entityToInspect->GetComponent<ecs::SpriteComponent>();
-						m_showImageAssetWindow = true;
-					}
-				}					
-				
-				ImGui::Spacing(); ImGui::Separator(); ImGui::Spacing();
+			// Renderable
+			bool hasRenderableComponent = m_renderableComponent == nullptr ? false : true;
+			if (hasRenderableComponent) {
+				displayRenderableComponentGraphics();
 			}
-
-			ecs::SoundComponent* soundComponent = m_entityToInspect->GetComponent<ecs::SoundComponent>();
-			bool hasSoundComponent = soundComponent == nullptr ? false : true;
-			if (hasSoundComponent && ImGui::CollapsingHeader("Sound Component")) {
-
-				openal::SoundSource *source = soundComponent->GetSource();
-
-				// Right click component name
-				if (ImGui::IsItemHovered()) {
-					if (ImGui::GetIO().MouseClicked[1]) {
-						ImGui::OpenPopup("right_click_component_sound");
-					}
-				}
-				if (ImGui::BeginPopup("right_click_component_sound")) {
-					if (ImGui::Selectable("Destroy")) {
-						soundComponent->SetState(ecs::ECSStates::DESTROYED);
-						// Event handler
-						BaseEvent _event(EventTypes::MANIPULATED_COMPONENT, m_entityToInspect->GetID(), "Sound Component", "Destroyed");
-						EditorWidgetSystem::getInstance()->GetEventHandler().AddEvent(_event);
-					}
-					ImGui::EndPopup();
-				}
-
-				// Load sound asset
-				if (ImGui::Button("Load Sound Asset")) {
-					m_assetComponent = soundComponent;
-					m_showImageAssetWindow = true;
-				}
-
-				// Data modifiers
-				// Volume/Gain
-				static float gain = source->GetVolume();
-				ImGui::SliderFloat("Gain", &gain, 0, 5, "%.1f");
-				source->SetVolume(gain);
-
-				// Pitch
-				static float pitch = source->GetPitch();
-				ImGui::SliderFloat("Pitch", &pitch, 0, 5, "%.1f");
-				source->SetPitch(pitch);
-
-				// Looping
-				static bool looping;
-				ImGui::Checkbox("Looping", &looping);
-				source->SetLooping(looping);
-
-				// State modifiers
-				if (ImGui::Button("Play")) {
-					source->Play();
-				}
-				ImGui::SameLine(100);
-				if (ImGui::Button("Stop")) {
-					source->Stop();
-				}
-				if (ImGui::Button("Pause")) {
-					source->Pause();
-				}
-				ImGui::SameLine(100);
-				if (ImGui::Button("Continue")) {
-					source->Continue();
-				}
-
-				ImGui::Spacing(); ImGui::Separator(); ImGui::Spacing();
+			// Sound
+			bool hasSoundComponent = m_soundComponent == nullptr ? false : true;
+			if (hasSoundComponent) {
+				displaySoundComponentGraphics();
 			}
-
-			FourwayMoveComponentEditor* fwmComponent = m_entityToInspect->GetComponent<FourwayMoveComponentEditor>();
-			bool hasFwmComponent = fwmComponent == nullptr ? false : true;
-			if (hasFwmComponent && ImGui::CollapsingHeader("Fourway Move Component")) {
-
-				int up, right, down, left;
-				up = fwmComponent->GetKey("up");
-				right = fwmComponent->GetKey("right");
-				down = fwmComponent->GetKey("down");
-				left = fwmComponent->GetKey("left");
-
-				ImGui::InputInt("Up", &up);
-				ImGui::InputInt("Right", &right);
-				ImGui::InputInt("Down", &down);
-				ImGui::InputInt("Left", &left);
-
-				int returnKeys[] = { up,right,down,left };
-				fwmComponent->SetKeys(returnKeys);
-
-				if (ImGui::Button("Show Keycodes")) {
-					m_showKeycodeWindow = !m_showKeycodeWindow;
-				}
-
-				float velocity = fwmComponent->GetVelocity();
-				ImGui::InputFloat("Velocity", &velocity, 0, 0, 2);
-				fwmComponent->SetVelocity(velocity);
-
-				ImGui::Spacing(); ImGui::Separator(); ImGui::Spacing();
+			// Fourway Move
+			bool hasFwmComponent = m_fourwayMoveComponent == nullptr ? false : true;
+			if (hasFwmComponent) {
+				displayFourwayMoveComponentGraphics();
 			}
 
 			// Add component
@@ -311,6 +148,7 @@ namespace nano { namespace editor {
 				if (ImGui::Selectable("Sprite Component")) {
 					if (!hasRenderableComponent) {
 						m_entityToInspect->AddComponent(new ecs::SpriteComponent());
+						m_renderableComponent = m_entityToInspect->GetRenderableComponent();
 					}
 					else {
 						// Already have renderable component
@@ -319,6 +157,8 @@ namespace nano { namespace editor {
 				if (ImGui::Selectable("Rectangle Component")) {
 					if (!hasRenderableComponent) {
 						m_entityToInspect->AddComponent(new ecs::RectangleComponent(m_addComponentColor));
+						m_renderableComponent = m_entityToInspect->GetRenderableComponent();
+						// Make sure it's initially visibile
 						if (m_entityToInspect->m_transform->size == math::Vector2(0, 0)) {
 							m_entityToInspect->m_transform->size = m_addComponentSize;
 						}
@@ -330,6 +170,8 @@ namespace nano { namespace editor {
 				if (ImGui::Selectable("Triangle Component")) {
 					if (!hasRenderableComponent) {
 						m_entityToInspect->AddComponent(new ecs::TriangleComponent(m_addComponentColor));
+						m_renderableComponent = m_entityToInspect->GetRenderableComponent();
+						// Make sure it's initially visibile
 						if (m_entityToInspect->m_transform->size == math::Vector2(0, 0)) {
 							m_entityToInspect->m_transform->size = m_addComponentSize;
 						}
@@ -338,21 +180,11 @@ namespace nano { namespace editor {
 						// Already have renderable component
 					}
 				}
-				if (ImGui::Selectable("Sound Component")) {
-					if (!hasSoundComponent) {
-						m_entityToInspect->AddComponent(new ecs::SoundComponent());
-					}
-					else {
-						// Already have sound component
-					}
+				if (ImGui::Selectable("Sound Component") && !hasSoundComponent) {
+					m_soundComponent = static_cast<ecs::SoundComponent*>(m_entityToInspect->AddComponent(new ecs::SoundComponent()));
 				}
-				if (ImGui::Selectable("Fourway Move Component")) {
-					if (!hasFwmComponent) {
-						m_entityToInspect->AddComponent(new FourwayMoveComponentEditor());
-					}
-					else {
-
-					}
+				if (ImGui::Selectable("Fourway Move Component") && !hasFwmComponent) {
+					m_fourwayMoveComponent = static_cast<FourwayMoveComponentEditor*>(m_entityToInspect->AddComponent(new FourwayMoveComponentEditor()));
 				}
 				ImGui::EndPopup();
 			}
@@ -553,6 +385,206 @@ namespace nano { namespace editor {
 		}
 	}
 
+	void EntityInspectorWidget::displayTransformComponentGraphics()
+	{
+		// ID section
+		std::string nameString = "ID: " + m_entityToInspect->GetID();
+		ImGui::Text(nameString.c_str());
+		if (ImGui::IsItemHovered()) {
+			if (ImGui::GetIO().MouseClicked[1]) {
+				ImGui::OpenPopup("rename_entity");
+			}
+		}
+		if (ImGui::BeginPopup("rename_entity")) {
+			if (ImGui::Selectable("Rename")) {
+				m_renameEntityWindow = true;
+			}
+			ImGui::EndPopup();
+		}
+		// State
+		std::string stateString;
+		if (m_entityToInspect->GetState() == ecs::ECSStates::ACTIVE) {
+			stateString = "State: Active";
+		}
+		else {
+			stateString = "State: Disabled";
+		}
+		ImGui::Text(stateString.c_str());
+
+		ImGui::Separator(); ImGui::Spacing();
+
+		ImGui::Text("Transform Component");
+		// Position
+		ImGui::DragFloat2("Position", (float*)&m_entityToInspect->m_transform->position, 0.5f, 0, 0, "%.2f");
+		// Size
+		ImGui::DragFloat2("Size", (float*)&m_entityToInspect->m_transform->size, 0.5f, 0, 0, "%.2f");
+		// Angle
+		ImGui::SliderAngle("Angle", (float*)&m_entityToInspect->m_transform->angle);
+	}
+
+	void EntityInspectorWidget::displayRenderableComponentGraphics()
+	{
+		if (ImGui::CollapsingHeader("Renderable Component")) {
+			// Right click component name
+			if (ImGui::IsItemHovered()) {
+				if (ImGui::GetIO().MouseClicked[1]) {
+					ImGui::OpenPopup("right_click_component_renderable");
+				}
+			}
+			if (ImGui::BeginPopup("right_click_component_renderable")) {
+				if (ImGui::Selectable("Destroy")) {
+					if (m_renderableComponent->GetTexture() != nullptr)
+						m_entityToInspect->GetComponent<ecs::SpriteComponent>()->SetState(ecs::ECSStates::DESTROYED);
+					else if (m_renderableComponent->GetVertexCount() == 3)
+						m_entityToInspect->GetComponent<ecs::TriangleComponent>()->SetState(ecs::ECSStates::DESTROYED);
+					else
+						m_entityToInspect->GetComponent<ecs::RectangleComponent>()->SetState(ecs::ECSStates::DESTROYED);
+					// Event Handler
+					BaseEvent _event(EventTypes::MANIPULATED_COMPONENT, m_entityToInspect->GetID(), "Renderable Component", "Destroyed");
+					EditorWidgetSystem::getInstance()->GetEventHandler().AddEvent(_event);
+				}
+				ImGui::EndPopup();
+			}
+
+			if (m_renderableComponent->GetTexture() != nullptr) {
+				ImGui::Text("Type: Sprite");
+			}
+			else if (m_renderableComponent->GetVertexCount() == 3) {
+				ImGui::Text("Type: Triangle");
+			}
+			else if (m_renderableComponent->GetVertexCount() == 4) {
+				ImGui::Text("Type: Rectangle");
+			}
+
+			// Color
+			math::Vector4 renderableColor = m_renderableComponent->GetColor();
+			ImGui::ColorEdit4("Color", (float*)&renderableColor);
+			m_renderableComponent->SetColor(renderableColor);
+
+			// Image if there is any
+			if (m_renderableComponent->GetTexture() != nullptr)
+			{
+				// Display the sprite image
+				ImGui::Image((ImTextureID*)m_renderableComponent->GetTexture()->GetTextureID(), ImVec2(150, 150));
+				if (ImGui::Button("Change Image Asset")) {
+					m_assetComponent = m_entityToInspect->GetComponent<ecs::SpriteComponent>();
+					m_showImageAssetWindow = true;
+				}
+				if (ImGui::Button("Match Transform Size")) {
+					m_entityToInspect->GetComponent<ecs::SpriteComponent>()->setTransformSizeToAssetSize();
+				}
+			}
+			ImGui::Spacing(); ImGui::Separator(); ImGui::Spacing();
+		}
+	}
+
+	void EntityInspectorWidget::displaySoundComponentGraphics()
+	{
+		if (ImGui::CollapsingHeader("Sound Component")) {
+			openal::SoundSource *source = m_soundComponent->GetSource();
+
+			// Right click component name
+			if (ImGui::IsItemHovered()) {
+				if (ImGui::GetIO().MouseClicked[1]) {
+					ImGui::OpenPopup("right_click_component_sound");
+				}
+			}
+			if (ImGui::BeginPopup("right_click_component_sound")) {
+				if (ImGui::Selectable("Destroy")) {
+					m_soundComponent->SetState(ecs::ECSStates::DESTROYED);
+					// Event handler
+					BaseEvent _event(EventTypes::MANIPULATED_COMPONENT, m_entityToInspect->GetID(), "Sound Component", "Destroyed");
+					EditorWidgetSystem::getInstance()->GetEventHandler().AddEvent(_event);
+				}
+				ImGui::EndPopup();
+			}
+
+			// Load sound asset
+			if (ImGui::Button("Load Sound Asset")) {
+				m_assetComponent = m_soundComponent;
+				m_showImageAssetWindow = true;
+			}
+
+			// Data modifiers
+			// Volume/Gain
+			static float gain = source->GetVolume();
+			ImGui::SliderFloat("Gain", &gain, 0, 5, "%.1f");
+			source->SetVolume(gain);
+
+			// Pitch
+			static float pitch = source->GetPitch();
+			ImGui::SliderFloat("Pitch", &pitch, 0, 5, "%.1f");
+			source->SetPitch(pitch);
+
+			// Looping
+			static bool looping;
+			ImGui::Checkbox("Looping", &looping);
+			source->SetLooping(looping);
+
+			// State modifiers
+			if (ImGui::Button("Play")) {
+				source->Play();
+			}
+			ImGui::SameLine(100);
+			if (ImGui::Button("Stop")) {
+				source->Stop();
+			}
+			if (ImGui::Button("Pause")) {
+				source->Pause();
+			}
+			ImGui::SameLine(100);
+			if (ImGui::Button("Continue")) {
+				source->Continue();
+			}
+
+			ImGui::Spacing(); ImGui::Separator(); ImGui::Spacing();
+		}
+	}
+
+	void EntityInspectorWidget::displayFourwayMoveComponentGraphics()
+	{
+		if (ImGui::CollapsingHeader("Fourway Move Component")) {
+			int up, right, down, left;
+			up = m_fourwayMoveComponent->GetKey("up");
+			right = m_fourwayMoveComponent->GetKey("right");
+			down = m_fourwayMoveComponent->GetKey("down");
+			left = m_fourwayMoveComponent->GetKey("left");
+
+			ImGui::InputInt("Up", &up);
+			ImGui::InputInt("Right", &right);
+			ImGui::InputInt("Down", &down);
+			ImGui::InputInt("Left", &left);
+
+			int returnKeys[] = { up,right,down,left };
+			m_fourwayMoveComponent->SetKeys(returnKeys);
+
+			if (ImGui::Button("Show Keycodes")) {
+				m_showKeycodeWindow = !m_showKeycodeWindow;
+			}
+
+			float velocity = m_fourwayMoveComponent->GetVelocity();
+			ImGui::InputFloat("Velocity", &velocity, 0, 0, 2);
+			m_fourwayMoveComponent->SetVelocity(velocity);
+
+			ImGui::Spacing(); ImGui::Separator(); ImGui::Spacing();
+		}
+	}
+
+	void EntityInspectorWidget::clickedOnNewEntity(ecs::Entity * a_entity)
+	{
+		if (a_entity == nullptr) {
+			m_renderableComponent = nullptr;
+			m_soundComponent = nullptr;
+			m_fourwayMoveComponent = nullptr;
+			return void();
+		}
+
+		m_renderableComponent = a_entity->GetRenderableComponent();
+		m_soundComponent = a_entity->GetComponent<ecs::SoundComponent>();
+		m_fourwayMoveComponent = a_entity->GetComponent<FourwayMoveComponentEditor>();
+
+	}
+
 	void EntityInspectorWidget::OnEntityManipulation(std::string a_id, std::string a_id2) 
 	{
 		if (a_id == "entity_clicked") {
@@ -563,12 +595,14 @@ namespace nano { namespace editor {
 					if (m_entityToInspect != nullptr) {
 						highlighEntity.SetNewHighlightedEntity(nullptr);
 						m_entityToInspect = nullptr;
+						clickedOnNewEntity(nullptr);
 					}
 					return;
 				}
 				else {
 					m_entityToInspect = WorldSystem::getInstance()->GetEntityByID(a_id2);
 					highlighEntity.SetNewHighlightedEntity(m_entityToInspect);
+					clickedOnNewEntity(m_entityToInspect);
 				}
 			}
 		}

@@ -11,14 +11,22 @@
 
 // FWD
 namespace nano {
+	namespace graphics {
+		class Renderable;
+		//  -> class TriangleComponent;
+		//  -> class RectangleComponent;
+		//  -> class SpriteComponent;
+	}
 	namespace ecs {
 		class Entity;
 		class Component;
+		class SoundComponent;
 	}
 	namespace editor {
 		class InputSystem;
 		class RendererSystem;
 		class WorldSystem;
+		class FourwayMoveComponentEditor;
 	}
 }
 
@@ -73,6 +81,9 @@ namespace nano { namespace editor {
 		bool m_showImageAssetWindow = false; 
 
 		ecs::Component *m_assetComponent;
+		graphics::Renderable *m_renderableComponent;
+		ecs::SoundComponent *m_soundComponent;
+		FourwayMoveComponentEditor *m_fourwayMoveComponent;
 
 	public:
 		EntityInspectorWidget();
@@ -81,6 +92,14 @@ namespace nano { namespace editor {
 		void Start() override;
 		void Update() override;
 		void Render() override;
+
+		// Inspection ImGui routines
+		void displayTransformComponentGraphics();
+		void displayRenderableComponentGraphics();
+		void displaySoundComponentGraphics();
+		void displayFourwayMoveComponentGraphics();
+
+		void clickedOnNewEntity(ecs::Entity* a_entity);
 
 		void OnEntityManipulation(std::string a_id, std::string a_id2);
 	};

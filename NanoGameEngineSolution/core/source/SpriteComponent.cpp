@@ -31,7 +31,7 @@ namespace nano { namespace ecs {
 
 		// Test with image asset object
 		m_texture = new opengl::Texture(s_errorTextureAsset->getImageData(), s_errorTextureAsset->getAssetInfo().width, s_errorTextureAsset->getAssetInfo().height, s_errorTextureAsset->getAssetInfo().format);
-		m_transform->size = math::Vector2(s_errorTextureAsset->getAssetInfo().width, s_errorTextureAsset->getAssetInfo().height);
+		setTransformSizeToAssetSize();
 	}
 
 	bool SpriteComponent::LoadAsset(asset::Asset * a_imageAsset)
@@ -53,6 +53,13 @@ namespace nano { namespace ecs {
 	asset::ImageAsset * SpriteComponent::getImageAsset()
 	{
 		return m_imageAsset;
+	}
+
+	void SpriteComponent::setTransformSizeToAssetSize()
+	{
+		float x = m_imageAsset->getAssetInfo().width;
+		float y = m_imageAsset->getAssetInfo().height;
+		m_owner->m_transform->size = math::Vector2(x, y);
 	}
 
 	void SpriteComponent::OnStateChange(ECSStates a_newState)
