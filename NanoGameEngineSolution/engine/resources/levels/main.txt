@@ -1,5 +1,5 @@
 [LEVEL_CONFIG]
-cam_pos -240, -125
+cam_pos -374, -104
 cam_size 1008, 692
 fps 60
 
@@ -7,13 +7,28 @@ fps 60
 [ENTITY]
 id triangle
 transform
-pos 202, 20
-size 201, 228
+pos 2, 147
+size 150, 150
 angle 0
 renderable
-vertex_count 3
-color 0.0196, 1, 0, 1
-image_asset_name none
+vertex_count 4
+color 1, 1, 1, 1
+image_asset_name cat.png
+sound component
+sound_asset_name sound.wav
+fourway move component
+none
+
+[ENTITY]
+id square
+transform
+pos -2, -1
+size 689, 150
+angle 0
+renderable
+vertex_count 4
+color 1, 1, 1, 1
+image_asset_name square.png
 sound component
 none
 fourway move component
@@ -22,13 +37,13 @@ none
 [ENTITY]
 id unnamed
 transform
-pos 0, 0
-size 150, 150
+pos 155, 5
+size 100, 400
 angle 0
 renderable
 vertex_count 4
-color 1, 1, 1, 1
-image_asset_name cat.png
+color 0.275, 0.655, 0.0863, 1
+image_asset_name none
 sound component
 none
 fourway move component

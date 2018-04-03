@@ -31,7 +31,8 @@ namespace nano { namespace ecs {
 
 		// Test with image asset object
 		m_texture = new opengl::Texture(s_errorTextureAsset->getImageData(), s_errorTextureAsset->getAssetInfo().width, s_errorTextureAsset->getAssetInfo().height, s_errorTextureAsset->getAssetInfo().format);
-		setTransformSizeToAssetSize();
+		if(m_transform->size == math::Vector2::Zero())
+			setTransformSizeToAssetSize();
 	}
 
 	bool SpriteComponent::LoadAsset(asset::Asset * a_imageAsset)

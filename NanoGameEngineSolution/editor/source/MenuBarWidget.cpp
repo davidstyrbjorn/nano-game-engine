@@ -17,6 +17,7 @@
 #include<graphics\Camera.h>
 #include<graphics\Simple_Renderer.h>
 #include<InputDefinitions.h>
+#include<StringHelp.h>
 
 #include<iostream>
 #include<fstream>
@@ -90,6 +91,7 @@ namespace nano { namespace editor {
 		static bool m_showSaveLevelWidget = false;
 		static bool m_showCreditsWidget = false;
 		static bool m_showVersionWidget = false;
+		static bool m_showEntityLoadWidget = false;
 		static LevelParser levelParser;
 		static LevelSystem *levelSystem = LevelSystem::getInstance();
 		std::string currentLevelName = EditorConfig::Instance()->getCurrentlyLevelName();
@@ -141,6 +143,9 @@ namespace nano { namespace editor {
 					WorldSystem::getInstance()->CreateNewEntity("unnamed");
 					// Send this event to the event handler!
 					EditorWidgetSystem::getInstance()->GetEventHandler().AddEvent(BaseEvent(EventTypes::MANIPULATED_ENTITY, "entity_created", "unnamed"));
+				}
+				if (ImGui::Selectable("Load Entity")) {
+					m_showEntityLoadWidget = true;
 				}
 				ImGui::EndMenu();
 			}
@@ -194,7 +199,6 @@ namespace nano { namespace editor {
 			ImGui::InputText("Level Name", buffer, 128);
 			if (ImGui::Button("Save")) {
 				levelSystem->saveLevel(buffer);
-
 				// Done with saving
 				m_showSaveLevelWidget = false;
 			}
@@ -230,6 +234,29 @@ namespace nano { namespace editor {
 
 						// Done with loading
 						m_showLoadLevelWidget = false;
+					}
+				}
+			}
+
+			ImGui::End();
+		}
+		else if (m_showEntityLoadWidget) {
+			static int width = 300;
+			static int height = 200;
+			// Center the window
+			ImGui::SetNextWindowPos(ImVec2((EditorConfig::Instance()->getWindowSize().x / 2) - (width / 2), (EditorConfig::Instance()->getWindowSize().y / 2) - (height)));
+			ImGui::Begin("Load Entity", &m_showEntityLoadWidget, ImVec2(width, height), 1.0f, ImGuiWindowFlags_::ImGuiWindowFlags_NoResize | ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_::ImGuiWindowFlags_NoMove);
+
+			std::vector<std::string> entityFileList;
+			ReadDirectory("resources\\assets\\", entityFileList);
+			for (std::string i : entityFileList) {
+				if (i != "." && i != ".." && getFileSuffix(i) == "txt") {
+					std::string temp = i.substr(0, i.length() - 4);
+					if (ImGui::Selectable(temp.c_str())) {
+						std::string loc = "resources\\assets\\" + i;
+						ecs::Entity* loadedEntity = levelParser.getParsedEntityFromFile(loc.c_str());
+						WorldSystem::getInstance()->AddNewEntity(loadedEntity);
+						m_showEntityLoadWidget = false;
 					}
 				}
 			}

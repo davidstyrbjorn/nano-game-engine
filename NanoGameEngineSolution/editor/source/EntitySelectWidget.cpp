@@ -10,6 +10,7 @@
 #include"../include/systems/InputSystem.h"
 #include"../include/systems/RendererSystem.h"
 #include"../include/systems/EditorConfig.h"
+#include"../include/LevelParser.h"
 
 #include<graphics\Simple_Renderer.h>
 #include<InputDefinitions.h>
@@ -162,6 +163,10 @@ namespace nano { namespace editor {
 				// This to know which entity to rename from the entity insepctor widget functions
 				EditorWidgetSystem::getInstance()->GetEventHandler().AddEvent(BaseEvent(EventTypes::MANIPULATED_ENTITY, "entity_clicked", m_leftClickedEntity->GetID())); // Message the event handler this happend!
 				EditorWidgetSystem::getInstance()->GetEventHandler().AddEvent(BaseEvent(EventTypes::MANIPULATED_ENTITY, "entity_rename", m_leftClickedEntity->GetID()));
+			}
+			if (ImGui::Selectable("Save Entity")) {
+				static LevelParser levelParser;
+				levelParser.saveEntityAsAsset(m_leftClickedEntity);
 			}
 			
 			ImGui::EndPopup();

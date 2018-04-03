@@ -470,7 +470,7 @@ namespace nano { namespace editor {
 					m_assetComponent = m_entityToInspect->GetComponent<ecs::SpriteComponent>();
 					m_showImageAssetWindow = true;
 				}
-				if (ImGui::Button("Match Transform Size")) {
+				if (ImGui::Button("Match Native Size")) {
 					m_entityToInspect->GetComponent<ecs::SpriteComponent>()->setTransformSizeToAssetSize();
 				}
 			}
@@ -606,6 +606,7 @@ namespace nano { namespace editor {
 				}
 			}
 		}
+		
 		if (a_id == "entity_destroyed") {
 			// Check if the destroyed entity is the entity we inspect
 			if (m_entityToInspect != nullptr) {

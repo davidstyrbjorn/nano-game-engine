@@ -28,6 +28,8 @@ namespace nano { namespace editor {
 	public:
 		LevelParser();
 
+		ecs::Entity* getParsedEntityFromFile(const char* a_fileName);
+		void saveEntityAsAsset(ecs::Entity* a_entity);
 		bool GetParsedLevelFromFile(const char* a_levelFileName, ParsedLevel &a_level);
 		std::string GetLevelStringFromFile(const char* a_levelFileName);
 

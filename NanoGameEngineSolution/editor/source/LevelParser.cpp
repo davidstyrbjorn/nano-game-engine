@@ -38,6 +38,214 @@ namespace nano { namespace editor {
 	{
 	}
 
+	ecs::Entity * LevelParser::getParsedEntityFromFile(const char * a_fileName)
+	{
+		// Hehe
+		ecs::Entity* baby = new ecs::Entity("unnamed");
+		if (!nano::OpenInputFile(a_fileName)) {
+			return nullptr;
+		}
+
+		// Get the file string
+		std::string fileContent;
+		GetAllFileContent(fileContent);
+		std::vector<std::string> segmentedString = GetSegmentedString(fileContent);
+
+		static math::Vector4 color;
+		static int vertex_count, up, right, down, left;
+
+		for (std::string line : segmentedString) {
+			if (line.substr(0, 2) == "id") {
+				std::string id = line.substr(3, line.length() - 3);
+				baby->SetID(id);
+			}
+			// Position
+			else if (line.substr(0, 3) == "pos") {
+				int splitIndex = line.find(',');
+				float x = std::stof(line.substr(4, splitIndex));
+				float y = std::stof(line.substr(splitIndex + 1, line.length()));
+				baby->m_transform->position = math::Vector2(x, y);
+			}
+			// Size
+			else if (line.substr(0, 4) == "size") {
+				int splitIndex = line.find(',');
+				float x = std::stof(line.substr(5, splitIndex));
+				float y = std::stof(line.substr(splitIndex + 1, line.length()));
+				baby->m_transform->size = math::Vector2(x, y);
+			}
+			// Angle
+			else if (line.substr(0, 5) == "angle") {
+				float angle = std::stoi(line.substr(6, line.length()));
+				baby->m_transform->angle = angle;
+			}
+			// Renderable 
+			// 1. vertex_count
+			else if (line.substr(0, 12) == "vertex_count") {
+				vertex_count = std::stoi(line.substr(13, line.length()));
+			}
+			else if (line.substr(0, 5) == "color") {
+				float x, y, z, w;
+				int splitIndex1, splitIndex2, splitIndex3;
+				std::string string = line.substr(6, line.length());
+				x = std::stof(string.substr(0, line.find_first_of(',')));
+				string = line.substr(line.find_first_of(',') + 1, line.length());
+
+				// String should now be y, z, w
+				y = std::stof(string.substr(0, string.find_first_of(',')));
+				z = std::stof(string.substr(string.find_first_of(',') + 1, string.find_last_of(',')));
+				w = std::stof(string.substr(string.find_last_of(',') + 1, string.length()));
+
+				color = math::Vector4(x, y, z, w);
+			}
+			else if (line.substr(0, 16) == "image_asset_name") {
+				std::string assetName = line.substr(17, line.length());
+
+				// Now add component!
+				if (vertex_count == 3) {
+					// Triangle 
+					baby->AddComponent(new ecs::TriangleComponent(color));
+				}
+				else if (vertex_count == 4) {
+					// Rectangle OR Sprite
+					if (assetName == "none") {
+						// Rectangle
+						baby->AddComponent(new ecs::RectangleComponent(color));
+					}
+					else {
+						// Sprite
+						baby->AddComponent(new ecs::SpriteComponent());
+						baby->GetComponent<ecs::SpriteComponent>()->LoadAsset(AssetSystem::getInstance()->getImageAssetByHndl(assetName));
+					}
+				}
+			}
+			// Sound Component
+			// 1. Sound Path
+			if (line.substr(0, 16) == "sound_asset_name") {
+				std::string assetName = line.substr(17, line.length());
+				baby->AddComponent(new ecs::SoundComponent());
+				if (assetName != "none") {
+					baby->GetComponent<ecs::SoundComponent>()->LoadAsset(AssetSystem::getInstance()->getSoundAssetByHndl(assetName));
+				}
+			}
+			// FourwayMoveComponentEditor 
+			// 1. up
+			if (line.substr(0, 2) == "up") {
+				up = std::stoi(line.substr(3, line.length()));
+			}
+			// 2. right
+			else if (line.substr(0, 5) == "right") {
+				right = std::stoi(line.substr(6, line.length()));
+			}
+			// 3. down
+			else if (line.substr(0, 4) == "down") {
+				down = std::stoi(line.substr(5, line.length()));
+			}
+			// 4. left
+			else if (line.substr(0, 4) == "left") {
+				left = std::stoi(line.substr(5, line.length()));
+			}
+			// 5. speed (and done now add component)
+			else if (line.substr(0, 5) == "speed") {
+				float speed = std::stof(line.substr(6, line.length()));
+				int keys[4] = { up, right, down, left };
+				baby->AddComponent(new FourwayMoveComponentEditor(speed, keys));
+			}
+		}
+
+		nano::CloseInputFile();
+		return baby;
+	}
+
+	void LevelParser::saveEntityAsAsset(ecs::Entity * a_entity)
+	{
+		std::string fileName = a_entity->GetID() + ".txt";
+		std::string filePath = "resources\\assets\\" + fileName;
+		if (DoesFileExist("resources\\assets\\" + fileName)) {
+			std::cout << "Entity already exists as saved entity" << std::endl;
+		}
+
+		// Open entity save file, discard content if there is any
+		nano::OpenOutputFile(filePath);
+
+		// ID
+		std::string entityIdString = "id " + a_entity->GetID();
+		nano::WriteToFile(entityIdString.c_str(), true);
+
+		// Transform
+		nano::WriteToFile("transform", true);
+		// dereferencing null pointer is a null-problem, we know every entity has a m_transform component on it
+		ecs::Transform transform = *a_entity->m_transform;
+		std::string posString = "pos " + transform.position.ToString();
+		std::string sizeString = "size " + transform.size.ToString();
+		std::string angleString = "angle " + to_string_with_precision<float>(transform.angle, 3);
+		nano::WriteToFile(posString, true);
+		nano::WriteToFile(sizeString, true);
+		nano::WriteToFile(angleString, true);
+
+		// 1. Renderable, sound component, fourwaymove component
+		nano::WriteToFile("renderable", true);
+		graphics::Renderable* renderable = a_entity->GetRenderableComponent();
+		if (renderable != nullptr) {
+			// Vertex count
+			std::string vertexCountString = "vertex_count " + std::to_string(renderable->GetVertexCount());
+			nano::WriteToFile(vertexCountString.c_str(), true);
+
+			// Color
+			std::string colorString = "color " + renderable->GetColor().ToString();
+			nano::WriteToFile(colorString.c_str(), true);
+
+			// Texture path
+			ecs::SpriteComponent *spriteComponent = a_entity->GetComponent<ecs::SpriteComponent>();
+			if (spriteComponent != nullptr) {
+				std::string imagePathString = "image_asset_name " + spriteComponent->getImageAsset()->getFileName();
+				nano::WriteToFile(imagePathString, true);
+			}
+			else {
+				nano::WriteToFile("image_asset_name none", true);
+			}
+		}
+		else {
+			nano::WriteToFile("none", true);
+		}
+
+		nano::WriteToFile("sound component", true);
+		ecs::SoundComponent* soundComponent = a_entity->GetComponent<ecs::SoundComponent>();
+		if (soundComponent != nullptr) {
+			if (soundComponent->getSoundAsset() != nullptr) {
+				std::string soundPathString = "sound_asset_name " + std::string(soundComponent->getSoundAsset()->getFileName());
+				nano::WriteToFile(soundPathString, true);
+			}
+			else {
+				nano::WriteToFile("sound_asset_name none", true);
+			}
+		}
+		else {
+			nano::WriteToFile("none", true);
+		}
+
+		nano::WriteToFile("fourway move component", true);
+		FourwayMoveComponentEditor *fwmComponent = a_entity->GetComponent<FourwayMoveComponentEditor>();
+		if (fwmComponent != nullptr) {
+			std::string upString = "up " + std::to_string(fwmComponent->GetKey("up"));
+			std::string  rightString = "right " + std::to_string(fwmComponent->GetKey("right"));
+			std::string downString = "down " + std::to_string(fwmComponent->GetKey("down"));
+			std::string leftString = "left " + std::to_string(fwmComponent->GetKey("left"));
+			// velocity should be reserved for physics terminology
+			std::string velocityString = "speed " + to_string_with_precision<float>(fwmComponent->GetVelocity(), 3);
+
+			nano::WriteToFile(upString, true);
+			nano::WriteToFile(rightString, true);
+			nano::WriteToFile(downString, true);
+			nano::WriteToFile(leftString, true);
+			nano::WriteToFile(velocityString, true);
+		}
+		else {
+			nano::WriteToFile("none", true);
+		}
+
+		nano::CloseOutputFile();
+	}
+
 	bool LevelParser::GetParsedLevelFromFile(const char* a_levelFileName, ParsedLevel &a_level)
 	{
 		std::string levelString = GetLevelStringFromFile(a_levelFileName);
