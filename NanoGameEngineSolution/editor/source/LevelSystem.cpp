@@ -24,6 +24,21 @@ namespace nano { namespace editor {
 		}
 	}
 
+	void LevelSystem::newLevel()
+	{
+		// Clear for new level
+		static WorldSystem *world = WorldSystem::getInstance();
+		static RendererSystem *renderer = RendererSystem::getInstance();
+		static WindowSystem *window = WindowSystem::getInstance();
+		static EditorWidgetSystem *widgetSystem = EditorWidgetSystem::getInstance();
+
+		EditorConfig::Instance()->setCurrentLevelName("none");
+		world->clearEntityList();
+		renderer->GetSimpleRenderer().GetCamera()->SetPosition(math::Vector2(0, 0)); 
+		renderer->GetSimpleRenderer().GetCamera()->SetSize(math::Vector2(1200, 700));
+		window->GetWindow().SetNewWindowSize(math::Vector2(1200, 700));
+	}
+
 	bool LevelSystem::loadLevel(std::string a_name)
 	{
 		static LevelParser levelParser;

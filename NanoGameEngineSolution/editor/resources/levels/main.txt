@@ -1,6 +1,6 @@
 [LEVEL_CONFIG]
 cam_pos -374, -104
-cam_size 1008, 692
+cam_size 500, 400
 fps 60
 
 [LEVEL_ENTITIES]

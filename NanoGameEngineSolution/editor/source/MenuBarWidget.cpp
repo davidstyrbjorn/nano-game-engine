@@ -101,6 +101,9 @@ namespace nano { namespace editor {
 
 			if (ImGui::BeginMenu("File")) 
 			{
+				if (ImGui::Selectable("New Level")) {
+					levelSystem->newLevel();
+				}
 				if (ImGui::Selectable("Save Level As")) {
 					m_showSaveLevelWidget = true;
 					m_showLoadLevelWidget = false;

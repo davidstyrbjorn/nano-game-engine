@@ -37,6 +37,7 @@ namespace nano { namespace editor {
 		void CreateNewEntity(std::string a_entityName);
 		// Loaded new level
 		void LoadedNewLevel(std::vector<ecs::Entity*> a_entityList); // Called when a new level is loaded
+		void clearEntityList();
 
 		// EditorSystem base class
 		void Start() override;

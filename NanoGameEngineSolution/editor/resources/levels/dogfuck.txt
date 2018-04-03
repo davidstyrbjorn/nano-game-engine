@@ -1,0 +1,37 @@
+[LEVEL_CONFIG]
+cam_pos -333, -101
+cam_size 1200, 700
+fps 60
+
+[LEVEL_ENTITIES]
+[ENTITY]
+id unnamed
+transform
+pos 73, 61
+size 100, 100
+angle 0
+renderable
+vertex_count 3
+color 1, 1, 1, 1
+image_asset_name none
+sound component
+none
+fourway move component
+none
+
+[ENTITY]
+id triangle
+transform
+pos 225, 76
+size 150, 150
+angle 0
+renderable
+vertex_count 4
+color 1, 1, 1, 1
+image_asset_name cat.png
+sound component
+sound_asset_name sound.wav
+fourway move component
+none
+
+[ENTITIES_END]

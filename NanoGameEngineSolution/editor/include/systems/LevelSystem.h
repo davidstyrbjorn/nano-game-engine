@@ -13,6 +13,7 @@ namespace nano { namespace editor {
 		void Update() override {}
 		void Quit() override {}
 
+		void newLevel();
 		bool loadLevel(std::string a_name);
 		void saveLevel(std::string a_name);
 	};
