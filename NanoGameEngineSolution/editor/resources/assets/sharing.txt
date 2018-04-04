@@ -1,0 +1,13 @@
+id sharing
+transform
+pos 0, 0
+size 242, 355
+angle 0
+renderable
+vertex_count 4
+color 0.337, 0.322, 0.702, 1
+image_asset_name none
+sound component
+none
+fourway move component
+none

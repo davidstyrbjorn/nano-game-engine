@@ -38,12 +38,12 @@ namespace nano { namespace engine {
 		bool doesLineContainParserToken(std::string a_line, std::string& a_foundParserToken);
 		bool doesLineContainLogicExpression(std::string a_line, std::string& a_foundLogicExpression);
 		bool doesLineContainCmdExpression(std::string a_line, std::string& a_foundCmdExpression);
-		bool doesLineContainVariable(std::string a_line, ScriptVariable& a_foundVariable);
+		//bool doesLineContainVariable(std::string a_line, ScriptVariable& a_foundVariable);
 		bool isLogicExpressionPassive(std::string a_expression);
 
 		ScriptCommand getCommandFromString(std::string a_line);
-		void replaceVariableWithLiteralValues(std::string &a_subject);
-		const ScriptVariable getVariableFromName(std::string a_name);
+		//void replaceVariableWithLiteralValues(std::string &a_subject);
+		//const ScriptVariable getVariableFromName(std::string a_name);
 
 		void commandGate(const ScriptCommand &a_command);
 
@@ -55,7 +55,7 @@ namespace nano { namespace engine {
 		std::vector<ScriptCommand> m_directCommands;
 		std::vector<ScriptLogicExpression> m_logicExpressions;
 		std::vector<ScriptLogicExpression> m_passiveLogicExpressions;
-		std::vector<ScriptVariable> m_scriptVariables;
+		//std::vector<ScriptVariable> m_scriptVariables;
 
 		std::vector<std::string> m_scriptStringVector; // Seperated line by line [0] = first line [1] = second line etc...
 	};

@@ -36,6 +36,10 @@ namespace nano { namespace engine {
 
 	void createCommand(std::string args)
 	{
+		// Format: ($name)
+		int start = args.find('$') + 1;
+		int end = args.length() - 1;
+		std::string temp = args.substr(start, end - start);
 		std::cout << "create called with " << args << std::endl;
 	}
 

@@ -7,7 +7,7 @@ fps 60
 [ENTITY]
 id unnamed
 transform
-pos 73, 61
+pos 0, 0
 size 100, 100
 angle 0
 renderable
@@ -22,7 +22,7 @@ none
 [ENTITY]
 id triangle
 transform
-pos 225, 76
+pos 0, 100
 size 150, 150
 angle 0
 renderable

@@ -24,7 +24,7 @@ namespace nano { namespace engine {
 	void ScriptFile::parseScriptString()
 	{
 		bool gotEntity = false;
-		addBuiltInVariables(m_scriptVariables);
+		//addBuiltInVariables(m_scriptVariables);
 
 		for (std::string line : m_scriptStringVector)
 		{
@@ -44,23 +44,7 @@ namespace nano { namespace engine {
 						// Comment
 					}
 					else if (doesLineContainParserToken(line, parserToken)) {
-						if (parserToken == "var") {
-							//std::cout << "found var parser token! " << line << std::endl;
-							// Get variable name
-							ScriptVariable sv;
-
-							remove_space<std::string>(line);
-
-							int end = line.find(':');
-							int start = line.find('$') + 1;
-
-							sv.name = line.substr(start, end - start);
-							sv.value = line.substr(end + 1);
-
-							//std::cout << "Registered variable " << sv.name << " with value " << sv.value << std::endl;
-							m_scriptVariables.push_back(sv);
-						}
-						else if (parserToken == "if") {
+						if (parserToken == "if") {
 							std::string logicExpression;
 							if (doesLineContainLogicExpression(line, logicExpression)) {
 								// Removing any spaces from the line 
@@ -74,9 +58,6 @@ namespace nano { namespace engine {
 								int startArgIndex = line.find("(");
 								int endArgIndex = line.find(")")+1;
 								std::string argTemp = line.substr(startArgIndex, endArgIndex - startArgIndex);
-								if (doesLineContainVariable(argTemp, ScriptVariable())) {
-									replaceVariableWithLiteralValues(argTemp);
-								}
 								logicExpr.args = argTemp;
 
 								// Command
@@ -85,12 +66,6 @@ namespace nano { namespace engine {
 									std::string temp = line.substr(line.find(':')+1, line.length());
 									ScriptCommand cmd = getCommandFromString(temp);
 									logicExpr.command = cmd;
-
-									//std::string argTemp = line.substr(line.find_last_of('('), line.length());
-									//if (doesLineContainVariable(argTemp, ScriptVariable())) {
-									//	replaceVariableWithLiteralValues(argTemp);
-									//}
-									//logicExpr.command.arg = argTemp;
 								}
 								else {
 									std::cout << "Was not able to parse line: " << line << " within file: " << m_hndl << std::endl;
@@ -210,18 +185,6 @@ namespace nano { namespace engine {
 		return false;
 	}
 
-	bool ScriptFile::doesLineContainVariable(std::string a_line, ScriptVariable& a_foundVariable)
-	{
-		// $speed, $keyLeft etc
-		for (ScriptVariable variable : m_scriptVariables) {
-			if (a_line.find(variable.name) != std::string::npos) {
-				a_foundVariable = variable;
-				return true;
-			}
-		}
-		return false;
-	}
-
 	bool ScriptFile::isLogicExpressionPassive(std::string a_expression)
 	{
 		for (std::string passiveExpression : passiveLogicExpressions) {
@@ -236,15 +199,12 @@ namespace nano { namespace engine {
 		// Assumed format 
 		// command(arg)
 		// arg can be whatever but if it's supposed to be interperted as an integer set command.argInteger 
-		// Else just set command.arg
+		// But always set command.arg
 		ScriptCommand command;
 
 		command.commandString = a_line.substr(0, a_line.find('('));
 
 		std::string tempArg = a_line.substr(a_line.find('('), a_line.length());
-		if (doesLineContainVariable(a_line, ScriptVariable())) {
-			replaceVariableWithLiteralValues(tempArg);
-		}
 		command.arg = tempArg;
 
 		// Here we replace arg(string) with numbers-ish if the command has those parameters
@@ -261,63 +221,6 @@ namespace nano { namespace engine {
 		}
 
 		return command; // Return copy of command created
-	}
-
-	void ScriptFile::replaceVariableWithLiteralValues(std::string & a_subject)
-	{
-		std::vector<std::string> variableSubStrings;
-
-		// @TODO: Clean this mess up, looks dirty
-		int startIndex, endIndex;
-		int i = 0; for (char c : a_subject) {
-			if (c == '(') {
-				startIndex = i;
-			}
-			if (c == ',' || c == ')') {
-				endIndex = i;
-				variableSubStrings.push_back(a_subject.substr(startIndex, endIndex - startIndex));
-				startIndex = i;
-			}
-			i++;
-		}
-		// Go through each fucking substring and replace all the $ literal with its variable value
-		std::vector<std::string> correctValueSubStrings;
-		for (auto subVariableString : variableSubStrings) {
-			int j = 0; for (char c : subVariableString) {
-				// Make sure we add non-variable literal values as well to the correct return string
-				if (c == ',' || c == '(') {
-					if (subVariableString[j + 1] != '$') {
-						correctValueSubStrings.push_back(subVariableString);
-					}
-				}
-				// Found variable now replace it with its value and insert into correct return string
-				if (c == '$') {
-					ScriptVariable var = getVariableFromName(subVariableString.substr(j + 1));
-					std::string copy = subVariableString;
-					copy.erase(j);
-					copy.insert(j, var.value);
-					correctValueSubStrings.push_back(copy);
-				}
-				j++;
-			}
-		}
-
-		a_subject = "";
-		for (int i = 0; i < correctValueSubStrings.size(); i++) {
-			a_subject += correctValueSubStrings.at(i);
-			if (i == correctValueSubStrings.size()-1)
-				a_subject += ")";
-		}
-	}
-
-	const ScriptVariable ScriptFile::getVariableFromName(std::string a_name)
-	{
-		for (ScriptVariable var : m_scriptVariables) {
-			if (var.name == a_name)
-				return var;
-		}
-		std::cout << "Variable not found" << std::endl;
-		return ScriptVariable();
 	}
 
 	bool ScriptFile::doesLineContainParserToken(std::string a_line, std::string & a_foundParserToken)

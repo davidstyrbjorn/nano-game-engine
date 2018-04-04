@@ -3,9 +3,11 @@
 #include<math\Vector2.h>
 #include<graphics\Camera.h>
 #include<graphics\Simple_Renderer.h>
+#include<graphics\Window.h>
 
 #include"../include/DearImGui/imgui.h"
 #include"../include/systems/RendererSystem.h"
+#include"../include/systems/WindowSystem.h"
 #include"../include/systems/EditorConfig.h"
 
 namespace nano { namespace editor {
@@ -34,6 +36,8 @@ namespace nano { namespace editor {
 	void UtilityWidget::Render()
 	{
 		static UtilityType utilityType = UtilityType::CAMERA;
+		static WindowSystem *windowSystem = WindowSystem::getInstance();
+		static EditorConfig *config = EditorConfig::Instance();
 
 		math::Vector2 _windowSize = EditorConfig::Instance()->getWindowSize();
 	
@@ -105,6 +109,9 @@ namespace nano { namespace editor {
 		}
 		if (utilityType == UtilityType::WINDOW) {
 			// Window utility stuff
+			math::Vector2 size = config->getWindowSize();
+			ImGui::DragFloat2("Size", (float*)&size, 1.0f, 0.0f, 0.0f, "%.0f");
+			windowSystem->GetWindow().SetNewWindowSize(size);
 		}
 
 		ImGui::End();
