@@ -4,6 +4,8 @@
 #include"nsl_definitions.h"
 
 #include"../InputSystem.h"
+#include"../LevelParser.h"
+#include"../WorldSystem.h"
 
 namespace nano { namespace engine {
 
@@ -13,20 +15,16 @@ namespace nano { namespace engine {
 		entity->m_transform->move(math::Vector2(xDir, yDir), speed);
 	}
 
-	void setPositionCommand(ecs::Entity* entity, std::string args) 
+	void setPositionCommand(ecs::Entity* entity, float x, float y) 
 	{
-		int identifierIndex = args.find(identifierSplit);
-		float xLiteral = std::stof(args.substr(1, identifierIndex));
-		float yLiteral = std::stof(args.substr(identifierIndex+1, args.length()-identifierIndex+1));
-		entity->m_transform->position = math::Vector2(xLiteral, yLiteral);
+		// Set position
+		entity->m_transform->position = math::Vector2(x, y);
 	}
 
-	void setSizeCommand(ecs::Entity* entity, std::string args) 
+	void setSizeCommand(ecs::Entity* entity, float width, float height) 
 	{
-		int identifierIndex = args.find(identifierSplit);
-		float xLiteral = std::stof(args.substr(1, identifierIndex));
-		float yLiteral = std::stof(args.substr(identifierIndex + 1, args.length() - identifierIndex + 1));
-		entity->m_transform->size = math::Vector2(xLiteral, yLiteral);
+		// Set size
+		entity->m_transform->size = math::Vector2(width, height);
 	}
 
 	void destroyCommand(std::string args)
@@ -40,6 +38,12 @@ namespace nano { namespace engine {
 		int start = args.find('$') + 1;
 		int end = args.length() - 1;
 		std::string temp = args.substr(start, end - start);
+		// Use the level parser to get the given entity
+		static LevelParser lp;
+		std::string loc = "resources\\assets\\" + temp + ".txt";
+		ecs::Entity* babyEntity = lp.getParsedEntityFromFile(loc.c_str());
+		WorldSystem::getInstance()->addEntity(babyEntity);
+
 		std::cout << "create called with " << args << std::endl;
 	}
 

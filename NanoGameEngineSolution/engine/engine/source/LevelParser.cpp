@@ -38,6 +38,124 @@ namespace nano { namespace engine {
 	{
 	}
 
+	ecs::Entity * LevelParser::getParsedEntityFromFile(const char * a_fileName)
+	{
+		// Hehe
+		ecs::Entity* baby = new ecs::Entity("unnamed");
+		if (!nano::OpenInputFile(a_fileName)) {
+			return nullptr;
+		}
+
+		// Get the file string
+		std::string fileContent;
+		GetAllFileContent(fileContent);
+		std::vector<std::string> segmentedString = GetSegmentedString(fileContent);
+
+		static math::Vector4 color;
+		static int vertex_count, up, right, down, left;
+
+		for (std::string line : segmentedString) {
+			if (line.substr(0, 2) == "id") {
+				std::string id = line.substr(3, line.length() - 3);
+				baby->SetID(id);
+			}
+			// Position
+			else if (line.substr(0, 3) == "pos") {
+				int splitIndex = line.find(',');
+				float x = std::stof(line.substr(4, splitIndex));
+				float y = std::stof(line.substr(splitIndex + 1, line.length()));
+				baby->m_transform->position = math::Vector2(x, y);
+			}
+			// Size
+			else if (line.substr(0, 4) == "size") {
+				int splitIndex = line.find(',');
+				float x = std::stof(line.substr(5, splitIndex));
+				float y = std::stof(line.substr(splitIndex + 1, line.length()));
+				baby->m_transform->size = math::Vector2(x, y);
+			}
+			// Angle
+			else if (line.substr(0, 5) == "angle") {
+				float angle = std::stoi(line.substr(6, line.length()));
+				baby->m_transform->angle = angle;
+			}
+			// Renderable 
+			// 1. vertex_count
+			else if (line.substr(0, 12) == "vertex_count") {
+				vertex_count = std::stoi(line.substr(13, line.length()));
+			}
+			else if (line.substr(0, 5) == "color") {
+				float x, y, z, w;
+				int splitIndex1, splitIndex2, splitIndex3;
+				std::string string = line.substr(6, line.length());
+				x = std::stof(string.substr(0, line.find_first_of(',')));
+				string = line.substr(line.find_first_of(',') + 1, line.length());
+
+				// String should now be y, z, w
+				y = std::stof(string.substr(0, string.find_first_of(',')));
+				z = std::stof(string.substr(string.find_first_of(',') + 1, string.find_last_of(',')));
+				w = std::stof(string.substr(string.find_last_of(',') + 1, string.length()));
+
+				color = math::Vector4(x, y, z, w);
+			}
+			else if (line.substr(0, 16) == "image_asset_name") {
+				std::string assetName = line.substr(17, line.length());
+
+				// Now add component!
+				if (vertex_count == 3) {
+					// Triangle 
+					baby->AddComponent(new ecs::TriangleComponent(color));
+				}
+				else if (vertex_count == 4) {
+					// Rectangle OR Sprite
+					if (assetName == "none") {
+						// Rectangle
+						baby->AddComponent(new ecs::RectangleComponent(color));
+					}
+					else {
+						// Sprite
+						baby->AddComponent(new ecs::SpriteComponent());
+						baby->GetComponent<ecs::SpriteComponent>()->LoadAsset(AssetSystem::getInstance()->getImageAssetByHndl(assetName));
+					}
+				}
+			}
+			// Sound Component
+			// 1. Sound Path
+			if (line.substr(0, 16) == "sound_asset_name") {
+				std::string assetName = line.substr(17, line.length());
+				baby->AddComponent(new ecs::SoundComponent());
+				if (assetName != "none") {
+					baby->GetComponent<ecs::SoundComponent>()->LoadAsset(AssetSystem::getInstance()->getSoundAssetByHndl(assetName));
+				}
+			}
+			// FourwayMoveComponentEditor 
+			// 1. up
+			if (line.substr(0, 2) == "up") {
+				up = std::stoi(line.substr(3, line.length()));
+			}
+			// 2. right
+			else if (line.substr(0, 5) == "right") {
+				right = std::stoi(line.substr(6, line.length()));
+			}
+			// 3. down
+			else if (line.substr(0, 4) == "down") {
+				down = std::stoi(line.substr(5, line.length()));
+			}
+			// 4. left
+			else if (line.substr(0, 4) == "left") {
+				left = std::stoi(line.substr(5, line.length()));
+			}
+			// 5. speed (and done now add component)
+			else if (line.substr(0, 5) == "speed") {
+				float speed = std::stof(line.substr(6, line.length()));
+				int keys[4] = { up, right, down, left };
+				baby->AddComponent(new FourwayMoveComponentEngine(speed, keys));
+			}
+		}
+
+		nano::CloseInputFile();
+		return baby;
+	}
+
 	bool LevelParser::GetParsedLevelFromFile(const char* a_levelFileName, ParsedLevel &a_level)
 	{
 		static AssetSystem *assetSystem = AssetSystem::getInstance();

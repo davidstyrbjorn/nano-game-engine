@@ -160,10 +160,10 @@ namespace nano { namespace engine {
 			moveCommand(m_targetEntity, a_command.integerArg[0], a_command.integerArg[1], a_command.floatArg[0]);
 		}
 		else if (a_command.commandString == "setPosition") {
-			setPositionCommand(m_targetEntity, a_command.arg);
+			setPositionCommand(m_targetEntity, a_command.floatArg[0], a_command.floatArg[1]);
 		}
 		else if (a_command.commandString == "setSize") {
-			setSizeCommand(m_targetEntity, a_command.arg);
+			setSizeCommand(m_targetEntity, a_command.floatArg[0], a_command.floatArg[1]);
 		}
 		else if (a_command.commandString == "create") {
 			createCommand(a_command.arg);

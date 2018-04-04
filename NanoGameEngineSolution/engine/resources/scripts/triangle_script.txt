@@ -5,4 +5,4 @@ move(1, 0, 0.05)
 if keyDown(65): move(-1, 0, 0.1)
 if keyDown(68): move(1, 0, 0.1)
 
-if keyPressed(88):create($savedEntity)
+if keyPressed(88):create($cat)

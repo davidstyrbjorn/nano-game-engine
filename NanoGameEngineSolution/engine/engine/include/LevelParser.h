@@ -29,6 +29,7 @@ namespace nano { namespace engine {
 	public:
 		LevelParser();
 
+		ecs::Entity* getParsedEntityFromFile(const char* a_name);
 		bool GetParsedLevelFromFile(const char* a_levelFileName, ParsedLevel &a_level);
 		std::string GetLevelStringFromFile(const char* a_levelFileName);
 	};
