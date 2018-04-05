@@ -7,6 +7,8 @@
 
 #include<Windows.h>
 
+#include"../include/components/ScriptComponentEditor.h"
+
 namespace nano { namespace editor { 
 
 	EditorCore::~EditorCore()
@@ -63,6 +65,10 @@ namespace nano { namespace editor {
 		// Level System
 		m_levelSystem = LevelSystem::getInstance();
 		m_levelSystem->Start();
+
+		ecs::Entity* camp = new ecs::Entity("camp");
+		camp->AddComponent(new ScriptComponent());
+		m_WorldSystem->AddNewEntity(camp);
 
 		// Start the main loop method
 		this->MainLoop();

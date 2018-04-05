@@ -15,6 +15,7 @@
 #include<ecs\components\SpriteComponent.h>
 
 #include"../include/components/FourwayMoveComponentEditor.h"
+#include"../include/components/ScriptComponentEditor.h"
 
 #include"../include/systems/WorldSystem.h"
 #include"../include/systems/InputSystem.h"
@@ -136,6 +137,11 @@ namespace nano { namespace editor {
 			bool hasFwmComponent = m_fourwayMoveComponent == nullptr ? false : true;
 			if (hasFwmComponent) {
 				displayFourwayMoveComponentGraphics();
+			}
+			// Script Component
+			bool hasScriptComponent = m_scriptComponent == nullptr ? false : true;
+			if (hasScriptComponent) {
+				displayScriptComponentGraphics();
 			}
 
 			// Add component
@@ -570,19 +576,36 @@ namespace nano { namespace editor {
 		}
 	}
 
+	void EntityInspectorWidget::displayScriptComponentGraphics()
+	{
+		if (ImGui::CollapsingHeader("Script Component")) {
+
+			std::string scriptHndl = m_scriptComponent->getScriptHndl();
+			ImGui::SetNextWindowContentWidth(140);
+			bool browse = ImGui::Button("Browse");
+			ImGui::Text(scriptHndl.c_str());
+
+			if (browse)
+				m_scriptComponent->setScriptHndl();
+
+			ImGui::Spacing(); ImGui::Separator(); ImGui::Spacing();
+		}
+	}
+
 	void EntityInspectorWidget::clickedOnNewEntity(ecs::Entity * a_entity)
 	{
 		if (a_entity == nullptr) {
 			m_renderableComponent = nullptr;
 			m_soundComponent = nullptr;
 			m_fourwayMoveComponent = nullptr;
+			m_scriptComponent = nullptr;
 			return void();
 		}
 
 		m_renderableComponent = a_entity->GetRenderableComponent();
 		m_soundComponent = a_entity->GetComponent<ecs::SoundComponent>();
 		m_fourwayMoveComponent = a_entity->GetComponent<FourwayMoveComponentEditor>();
-
+		m_scriptComponent = a_entity->GetComponent<ScriptComponent>();
 	}
 
 	void EntityInspectorWidget::OnEntityManipulation(std::string a_id, std::string a_id2) 

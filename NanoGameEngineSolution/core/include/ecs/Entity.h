@@ -55,7 +55,7 @@ namespace nano { namespace ecs {
 			static std::string _componentName = typeid(ComponentType).name(); // Unique for each version of this methods
 			for (int i = 0; i < m_componentsBag.size(); i++) {
 				if (_componentName == typeid(*m_componentsBag[i]).name()) {
-					return dynamic_cast<ComponentType*>(m_componentsBag[i]);
+					return static_cast<ComponentType*>(m_componentsBag[i]);
 				}
 			}
 

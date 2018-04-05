@@ -1,0 +1,6 @@
+using_entity = $triangle
+
+var $x: 10
+var $z: 10
+
+if keyDown($x, $z): move(1, 0, 3)

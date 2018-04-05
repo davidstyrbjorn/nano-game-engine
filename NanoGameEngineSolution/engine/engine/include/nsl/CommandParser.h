@@ -43,8 +43,6 @@ namespace nano { namespace engine {
 		std::string loc = "resources\\assets\\" + temp + ".txt";
 		ecs::Entity* babyEntity = lp.getParsedEntityFromFile(loc.c_str());
 		WorldSystem::getInstance()->addEntity(babyEntity);
-
-		std::cout << "create called with " << args << std::endl;
 	}
 
 	bool isKeyDownExpressionTrue(std::string args) 

@@ -4,6 +4,8 @@
 #include<fstream>
 #include<iostream>
 
+#include<StringHelp.h>
+
 #include"../include/InputSystem.h"
 
 namespace nano { namespace engine {
@@ -29,22 +31,26 @@ namespace nano { namespace engine {
 
 		for (std::string scriptFileName : scriptFileNameList) {
 			// Get content from file here 
-			std::ifstream file(dirLocation + scriptFileName);
-			if (!file.is_open()) {
-				std::cout << "Cannot open script file " + dirLocation + scriptFileName << std::endl;
-			}
-			std::vector<std::string> scriptFileContent; // This is where the file content goes
+			// Check for correct formating
 
-			// Read from the file and fill the scriptFileContent list
-			std::string _word;
-			while (std::getline(file, _word)) {
-				scriptFileContent.push_back(_word);
+			if (getFileSuffix(scriptFileName) == "nsl") {
+				std::ifstream file(dirLocation + scriptFileName);
+				if (!file.is_open()) {
+					std::cout << "Cannot open script file " + dirLocation + scriptFileName << std::endl;
+				}
+				std::vector<std::string> scriptFileContent; // This is where the file content goes
+				
+				// Read from the file and fill the scriptFileContent list
+				std::string _word;
+				while (std::getline(file, _word)) {
+					scriptFileContent.push_back(_word);
+				}
+				
+				// The file is now read push back to the m_scriptFiles list
+				ScriptFile* scriptFile = new ScriptFile(scriptFileName.substr(0, scriptFileName.length() - 4), scriptFileContent);
+				m_scriptFiles.push_back(scriptFile);
+				InputSystem::getInstance()->addInputListener(scriptFile);
 			}
-
-			// The file is now read push back to the m_scriptFiles list
-			ScriptFile* scriptFile = new ScriptFile(scriptFileName.substr(0, scriptFileName.length() - 4), scriptFileContent);
-			m_scriptFiles.push_back(scriptFile);
-			InputSystem::getInstance()->addInputListener(scriptFile);
 		}
 
 		parseScriptFiles();

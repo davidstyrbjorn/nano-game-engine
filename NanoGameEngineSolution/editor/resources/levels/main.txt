@@ -18,6 +18,8 @@ sound component
 sound_asset_name sound.wav
 fourway move component
 none
+script component
+none
 
 [ENTITY]
 id square
@@ -33,6 +35,8 @@ sound component
 none
 fourway move component
 none
+script component
+none
 
 [ENTITY]
 id unnamed
@@ -47,6 +51,8 @@ image_asset_name none
 sound component
 none
 fourway move component
+none
+script component
 none
 
 [ENTITIES_END]

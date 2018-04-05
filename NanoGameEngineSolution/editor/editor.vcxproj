@@ -203,6 +203,7 @@
     <ClCompile Include="source\HighlightEntity.cpp" />
     <ClCompile Include="source\LevelParser.cpp" />
     <ClCompile Include="source\LevelSystem.cpp" />
+    <ClCompile Include="source\ScriptComponentEditor.cpp" />
     <ClCompile Include="source\SoundSystem.cpp" />
     <ClCompile Include="source\WorldSystem.cpp" />
     <ClCompile Include="source\EntitySelectWidget.cpp" />
@@ -216,6 +217,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\components\FourwayMoveComponentEditor.h" />
+    <ClInclude Include="include\components\ScriptComponentEditor.h" />
     <ClInclude Include="include\DearImGui\imconfig.h" />
     <ClInclude Include="include\DearImGui\imgui.h" />
     <ClInclude Include="include\DearImGui\imgui_glfw.h" />

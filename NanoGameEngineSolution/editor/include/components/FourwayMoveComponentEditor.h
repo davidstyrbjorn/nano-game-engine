@@ -16,7 +16,7 @@ namespace nano { namespace editor {
 		FourwayMoveComponentEditor();
 
 		// Component base methods
-		void Start() override;
+		virtual void Start() override;
 		virtual void Update() override;
 
 		// Member methods

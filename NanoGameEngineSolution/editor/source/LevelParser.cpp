@@ -12,6 +12,8 @@
 #include<asset\ImageAsset.h>
 
 #include"../include/components/FourwayMoveComponentEditor.h"
+#include"../include/components/ScriptComponentEditor.h"
+
 #include"../include/systems/AssetSystem.h"
 
 #include<fstream>
@@ -150,6 +152,8 @@ namespace nano { namespace editor {
 				int keys[4] = { up, right, down, left };
 				baby->AddComponent(new FourwayMoveComponentEditor(speed, keys));
 			}
+			// Script Component Editor
+			//@
 		}
 
 		nano::CloseInputFile();
@@ -402,6 +406,8 @@ namespace nano { namespace editor {
 					int keys[4] = { up, right, down, left };
 					entityToAdd->AddComponent(new FourwayMoveComponentEditor(speed, keys));
 				}
+				// Script Component Editor
+				// @
 			}
 		}
 
@@ -518,6 +524,15 @@ namespace nano { namespace editor {
 				nano::WriteToFile(downString, true);
 				nano::WriteToFile(leftString, true);
 				nano::WriteToFile(velocityString, true);
+			}
+			else {
+				nano::WriteToFile("none", true);
+			}
+			nano::WriteToFile("script component", true);
+			ScriptComponent* scriptComponent = entity->GetComponent<ScriptComponent>();
+			if (scriptComponent != nullptr) {
+				std::string hndl = "hdnl " + scriptComponent->getScriptHndl();
+				nano::WriteToFile(hndl, true);
 			}
 			else {
 				nano::WriteToFile("none", true);

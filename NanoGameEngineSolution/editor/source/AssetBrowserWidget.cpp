@@ -21,6 +21,13 @@
 
 namespace nano { namespace editor {
 
+	std::string ExePath() {
+		char buffer[MAX_PATH];
+		GetModuleFileName(NULL, buffer, MAX_PATH);
+		size_t pos = std::string(buffer).find_last_of("\\/");
+		return std::string(buffer).substr(0, pos);
+	}
+
 	AssetBrowserWidget::AssetBrowserWidget()
 	{
 
@@ -130,6 +137,7 @@ namespace nano { namespace editor {
 		ofn.nMaxFileTitle = 0;
 		ofn.lpstrInitialDir = NULL;
 		ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
+		std::cout << ExePath() << std::endl;
 		
 		if (GetOpenFileName(&ofn) == TRUE) 
 		{

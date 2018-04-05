@@ -27,6 +27,7 @@ namespace nano {
 		class RendererSystem;
 		class WorldSystem;
 		class FourwayMoveComponentEditor;
+		class ScriptComponent;
 	}
 }
 
@@ -84,6 +85,7 @@ namespace nano { namespace editor {
 		graphics::Renderable *m_renderableComponent;
 		ecs::SoundComponent *m_soundComponent;
 		FourwayMoveComponentEditor *m_fourwayMoveComponent;
+		ScriptComponent* m_scriptComponent;
 
 	public:
 		EntityInspectorWidget();
@@ -98,6 +100,7 @@ namespace nano { namespace editor {
 		void displayRenderableComponentGraphics();
 		void displaySoundComponentGraphics();
 		void displayFourwayMoveComponentGraphics();
+		void displayScriptComponentGraphics();
 
 		void clickedOnNewEntity(ecs::Entity* a_entity);
 
