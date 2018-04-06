@@ -1,3 +1,4 @@
+#include "..\..\engine\engine\include\components\ScriptComponentEngine.h"
 #include"../include/components/ScriptComponentEditor.h"
 
 #include"../include/systems/EditorConfig.h"

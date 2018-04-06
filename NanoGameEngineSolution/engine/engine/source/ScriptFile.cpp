@@ -99,6 +99,11 @@ namespace nano { namespace engine {
 		}
 	}
 
+	void ScriptFile::setTargetEntity(ecs::Entity * a_entity)
+	{
+		m_targetEntity = a_entity;
+	}
+
 	void ScriptFile::onKeyPressed(int a_key)
 	{
 		for (ScriptLogicExpression passiveExpression : m_passiveLogicExpressions) {

@@ -29,6 +29,8 @@ namespace nano { namespace engine {
 		void executeScriptCommands(float a_deltaTime);
 
 	public:
+		void setTargetEntity(ecs::Entity* a_entity);
+
 		void onKeyPressed(int a_key) override;
 		void onMousePressed(int a_key) override;
 		void onMouseRelease(int a_key) override;

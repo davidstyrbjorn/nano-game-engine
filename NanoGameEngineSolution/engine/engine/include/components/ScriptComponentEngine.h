@@ -2,12 +2,16 @@
 
 #include<ecs\Component.h>
 
+#include"../nsl/ScriptFile.h"
+
 namespace nano { namespace engine { 
+
+	class ScriptFile;
 
 	class ScriptComponent : public ecs::Component {
 	public:
 		ScriptComponent(std::string a_hndl);
-		void Start() override;
+		void Init() override;
 		void Update() override;
 
 	private:
