@@ -31,6 +31,7 @@ namespace nano { namespace editor {
 		std::vector<asset::SoundAsset*> &getSoundAssetContainer();
 		asset::ImageAsset* getHighlightAsset();
 
+		void refresh();
 		void newAssetImported(const std::string &a_fileName);
 	};
 

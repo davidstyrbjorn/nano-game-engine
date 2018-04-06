@@ -4,39 +4,6 @@ cam_size 1088, 736
 fps 60
 
 [LEVEL_ENTITIES]
-[ENTITY]
-id triangle
-transform
-pos 2, 147
-size 150, 150
-angle 0
-renderable
-vertex_count 4
-color 1, 1, 1, 1
-image_asset_name cat.png
-sound component
-sound_asset_name sound.wav
-fourway move component
-none
-script component
-none
-
-[ENTITY]
-id square
-transform
-pos -2, -1
-size 689, 150
-angle 0
-renderable
-vertex_count 4
-color 1, 1, 1, 1
-image_asset_name square.png
-sound component
-none
-fourway move component
-none
-script component
-none
 
 [ENTITY]
 id unnamed

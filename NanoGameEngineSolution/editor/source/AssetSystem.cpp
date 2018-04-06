@@ -62,6 +62,37 @@ namespace nano { namespace editor {
 		return m_highlightTextureAsset;
 	}
 
+	void AssetSystem::refresh()
+	{
+		// Load directory content file names using dirent
+		std::vector<std::string> _files;
+		DIR* dirp = opendir("resources\\assets\\");
+		struct dirent * dp;
+		while ((dp = readdir(dirp)) != NULL) {
+			_files.push_back(dp->d_name);
+		}
+		closedir(dirp);
+
+		for (std::string fileName : _files) {
+			bool foundAsset = false;
+			// Look for asset with fileName
+			for (asset::SoundAsset* soundAsset : m_soundAssetContainer) {
+				if (fileName == soundAsset->getFileName()) {
+					foundAsset = true;
+				}
+			}
+			for (asset::ImageAsset* imageAsset : m_imageAssetContainer) {
+				if (fileName == imageAsset->getFileName()) {
+					foundAsset = true;
+				}
+			}
+			// Asset inside asset directory is not serialized on our side!
+			if (!foundAsset) {
+				newAssetImported(fileName);
+			}
+		}
+	}
+
 	void AssetSystem::newAssetImported(const std::string & a_fileName)
 	{
 		std::string suffix = getFileSuffix(a_fileName);

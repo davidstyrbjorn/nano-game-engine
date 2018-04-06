@@ -158,8 +158,6 @@ namespace nano { namespace editor {
 		void Start() override;
 		void Update() override;
 		void Render() override;
-
-		void OpenExplorerWindow();
 	};
 
 	// Utility manipulation widget bottom-left
