@@ -1,0 +1,2 @@
+
+if keyPressed(88): create($movingCat)

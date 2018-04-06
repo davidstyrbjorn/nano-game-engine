@@ -33,5 +33,7 @@ sound component
 sound_asset_name sound.wav
 fourway move component
 none
+script component
+hndl cat_stationary.nsl
 
 [ENTITIES_END]

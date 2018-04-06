@@ -6,7 +6,6 @@
 #include"InputSystem.h"
 #include"RendererSystem.h"
 #include"LevelSystem.h"
-#include"nsl\ScriptingSystem.h"
 #include"EngineConfig.h"
 
 #include<Clock.h>
@@ -38,7 +37,6 @@ private:
 	AssetSystem *m_assetSystem;
 	InputSystem *m_inputSystem;
 	WorldSystem *m_worldSystem;
-	ScriptingSystem* m_scriptingSystem;
 	LevelSystem *m_levelSystem;
 	RendererSystem *m_rendererSystem;
 	// Delta-timer Clock

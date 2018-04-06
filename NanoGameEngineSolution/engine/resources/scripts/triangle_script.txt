@@ -1,3 +1,0 @@
-using_entity = $triangle
-
-move(1, 0, 0.1)

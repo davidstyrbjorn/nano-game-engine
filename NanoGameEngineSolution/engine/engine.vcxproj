@@ -194,7 +194,6 @@
     <ClCompile Include="engine\source\LevelParser.cpp" />
     <ClCompile Include="engine\source\LevelSystem.cpp" />
     <ClCompile Include="engine\source\RendererSystem.cpp" />
-    <ClCompile Include="engine\source\ScriptingSystem.cpp" />
     <ClCompile Include="engine\source\WindowSystem.cpp" />
     <ClCompile Include="engine\source\WorldSystem.cpp" />
     <ClCompile Include="main.cpp" />
@@ -215,7 +214,6 @@
     <ClInclude Include="engine\include\nsl\nsl_structs.h" />
     <ClInclude Include="engine\include\nsl\ScriptFile.h" />
     <ClInclude Include="engine\include\RendererSystem.h" />
-    <ClInclude Include="engine\include\nsl\ScriptingSystem.h" />
     <ClInclude Include="engine\include\SerializerAPI.h" />
     <ClInclude Include="engine\include\WindowSystem.h" />
     <ClInclude Include="engine\include\WorldSystem.h" />

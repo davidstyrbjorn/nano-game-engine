@@ -11,3 +11,5 @@ sound component
 sound_asset_name sound.wav
 fourway move component
 none
+script component
+hndl moving_cat.nsl

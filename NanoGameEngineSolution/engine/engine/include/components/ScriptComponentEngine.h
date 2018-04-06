@@ -11,10 +11,13 @@ namespace nano { namespace engine {
 	class ScriptComponent : public ecs::Component {
 	public:
 		ScriptComponent(std::string a_hndl);
+		~ScriptComponent();
+		
 		void Init() override;
 		void Update() override;
 
 	private:
+		std::string m_hndl;
 		ScriptFile *m_scriptFile;
 	};
 

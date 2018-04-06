@@ -19,7 +19,6 @@ void EngineCore::shutdown()
 	m_worldSystem->shutdown();
 	m_rendererSystem->shutdown();
 	m_levelSystem->shutdown();
-	m_scriptingSystem->shutdown();
 	m_assetSystem->shutdown();
 }
 
@@ -47,9 +46,6 @@ void EngineCore::init()
 	m_levelSystem = LevelSystem::getInstance();
 	m_levelSystem->start();
 
-	m_scriptingSystem = ScriptingSystem::getInstance();
-	m_scriptingSystem->start();
-
 	// Start the main loop
 	mainLoop();
 }
@@ -70,7 +66,6 @@ void EngineCore::mainLoop()
 		// Clear the window for new frame
 		m_windowSystem->getWindow().Clear(math::Vector4(0.1f, 0.1f, 0.1f, 0));
 
-		m_scriptingSystem->update(deltaTime);
 		m_worldSystem->update();
 		m_inputSystem->update();
 

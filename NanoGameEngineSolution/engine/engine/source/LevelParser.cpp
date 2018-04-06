@@ -8,6 +8,7 @@
 #include<ecs\components\TransformComponent.h>
 #include<ecs\components\SoundComponent.h>
 
+#include"../include/components/ScriptComponentEngine.h"
 #include"../include/components/FourwayMoveComponentEngine.h"
 #include"../include/AssetSystem.h"
 
