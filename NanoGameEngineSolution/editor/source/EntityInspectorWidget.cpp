@@ -27,6 +27,8 @@
 
 #include"../include/DearImGui/imgui.h"
 
+#include<StringHelp.h>
+#include<FileHelp.h>
 #include<asset\ImageAsset.h>
 #include<asset\SoundAsset.h>
 #include<InputDefinitions.h>
@@ -586,9 +588,34 @@ namespace nano { namespace editor {
 			ImGui::Text(scriptHndl.c_str());
 
 			if (browse)
-				m_scriptComponent->setScriptHndl();
+				m_showScriptBrowser = true;
 
 			ImGui::Spacing(); ImGui::Separator(); ImGui::Spacing();
+		}
+		if (m_showScriptBrowser) {
+			ImGui::SetNextWindowSize(ImVec2(300, 300));
+			ImGui::Begin("Script Browser", &m_showScriptBrowser, ImGuiWindowFlags_::ImGuiWindowFlags_NoResize | ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse);
+			ImGui::Text("?");
+			if (ImGui::IsItemHovered()) {
+				ImGui::BeginTooltip();
+				ImGui::Text("Scripts located inside resources\\scripts\\ folder!");
+
+				ImGui::EndTooltip();
+			}
+			ImGui::Separator();
+
+			std::vector<std::string> scriptFiles = getDirectoryEntries("resources\\scripts\\");
+			for (std::string script : scriptFiles) {
+				if (script != "." && script != "..") {
+					if (getFileSuffix(script) == "nsl") {
+						if (ImGui::Button(script.c_str())) {
+							m_scriptComponent->setScriptHndl(script);
+						}
+					}
+				}
+			}
+
+			ImGui::End();
 		}
 	}
 
@@ -611,7 +638,7 @@ namespace nano { namespace editor {
 	void EntityInspectorWidget::OnEntityManipulation(std::string a_id, std::string a_id2) 
 	{
 		if (a_id == "entity_clicked") {
-			if (!m_renameEntityWindow && !m_showKeycodeWindow && !m_showImageAssetWindow) {
+			if (!m_renameEntityWindow && !m_showKeycodeWindow && !m_showImageAssetWindow && !m_showScriptBrowser) {
 				// "-1" - clicked on empty space
 				if (a_id2 == "-1") {
 					// Deselect the entity i.e set it to a nullptr
@@ -634,6 +661,12 @@ namespace nano { namespace editor {
 			// Check if the destroyed entity is the entity we inspect
 			if (m_entityToInspect != nullptr) {
 				if (WorldSystem::getInstance()->GetEntityByID(a_id2) == m_entityToInspect) {
+
+					m_renameEntityWindow = false;
+					m_showKeycodeWindow = false;
+					m_showImageAssetWindow = false;
+					m_showScriptBrowser = false;
+
 					highlighEntity.SetNewHighlightedEntity(nullptr);
 					m_entityToInspect = nullptr;
 				}

@@ -153,7 +153,10 @@ namespace nano { namespace editor {
 				baby->AddComponent(new FourwayMoveComponentEditor(speed, keys));
 			}
 			// Script Component Editor
-			//@
+			if (line.substr(0, 4) == "hndl") {
+				std::string scriptHndl = line.substr(5, line.length() - 5);
+				baby->AddComponent(new ScriptComponent(scriptHndl));
+			}
 		}
 
 		nano::CloseInputFile();
@@ -242,6 +245,15 @@ namespace nano { namespace editor {
 			nano::WriteToFile(downString, true);
 			nano::WriteToFile(leftString, true);
 			nano::WriteToFile(velocityString, true);
+		}
+		else {
+			nano::WriteToFile("none", true);
+		}
+		nano::WriteToFile("script component", true);
+		ScriptComponent* scriptComponent = a_entity->GetComponent<ScriptComponent>();
+		if (scriptComponent != nullptr) {
+			std::string hndl = "hndl " + scriptComponent->getScriptHndl();
+			nano::WriteToFile(hndl, true);
 		}
 		else {
 			nano::WriteToFile("none", true);
@@ -407,7 +419,10 @@ namespace nano { namespace editor {
 					entityToAdd->AddComponent(new FourwayMoveComponentEditor(speed, keys));
 				}
 				// Script Component Editor
-				// @
+				if (line.substr(0, 4) == "hndl") {
+					std::string scriptHndl = line.substr(5, line.length() - 5);
+					entityToAdd->AddComponent(new ScriptComponent(scriptHndl));
+				}
 			}
 		}
 
@@ -531,7 +546,7 @@ namespace nano { namespace editor {
 			nano::WriteToFile("script component", true);
 			ScriptComponent* scriptComponent = entity->GetComponent<ScriptComponent>();
 			if (scriptComponent != nullptr) {
-				std::string hndl = "hdnl " + scriptComponent->getScriptHndl();
+				std::string hndl = "hndl " + scriptComponent->getScriptHndl();
 				nano::WriteToFile(hndl, true);
 			}
 			else {

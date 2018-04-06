@@ -4,7 +4,6 @@ cam_size 1088, 736
 fps 60
 
 [LEVEL_ENTITIES]
-
 [ENTITY]
 id unnamed
 transform

@@ -1,37 +1,39 @@
 [LEVEL_CONFIG]
-cam_pos -333, -101
-cam_size 1200, 700
+cam_pos -374, -104
+cam_size 1088, 736
 fps 60
 
 [LEVEL_ENTITIES]
 [ENTITY]
 id unnamed
 transform
-pos 0, 0
-size 100, 100
+pos 155, 5
+size 100, 400
 angle 0
 renderable
-vertex_count 3
-color 1, 1, 1, 1
+vertex_count 4
+color 0.275, 0.655, 0.0863, 1
 image_asset_name none
 sound component
 none
 fourway move component
 none
+script component
+none
 
 [ENTITY]
-id triangle
+id camp
 transform
-pos 0, 100
-size 150, 150
+pos 0, 0
+size 0, 0
 angle 0
 renderable
-vertex_count 4
-color 1, 1, 1, 1
-image_asset_name cat.png
+none
 sound component
-sound_asset_name sound.wav
+none
 fourway move component
 none
+script component
+hndl triangle_script.nsl
 
 [ENTITIES_END]

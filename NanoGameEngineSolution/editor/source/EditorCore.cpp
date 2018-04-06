@@ -66,10 +66,6 @@ namespace nano { namespace editor {
 		m_levelSystem = LevelSystem::getInstance();
 		m_levelSystem->Start();
 
-		ecs::Entity* camp = new ecs::Entity("camp");
-		camp->AddComponent(new ScriptComponent());
-		m_WorldSystem->AddNewEntity(camp);
-
 		// Start the main loop method
 		this->MainLoop();
 	}

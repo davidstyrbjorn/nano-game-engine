@@ -23,72 +23,61 @@ namespace nano { namespace engine {
 
 	void ScriptFile::parseScriptString()
 	{
-		bool gotEntity = false;
-		//addBuiltInVariables(m_scriptVariables);
-
 		for (std::string line : m_scriptStringVector)
 		{
 			if (line != "") {
-				// using_entity
-				if (line.substr(0, 12) == "using_entity" && !gotEntity) {
-					std::string id = line.substr(line.find_first_of('$') + 1, line.length());
-					m_targetEntity = WorldSystem::getInstance()->getEntityByID(id);
-					gotEntity = true;
+				// Parse in this order, check for parser tokens else assume the line is a direct command
+				std::string parserToken;
+				std::string command;
+
+				if (line[0] == '#') {
+					// Comment
 				}
-				else if (gotEntity) {
-					// Parse in this order, check for parser tokens else assume the line is a direct command
-					std::string parserToken;
-					std::string command;
+				else if (doesLineContainParserToken(line, parserToken)) {
+					if (parserToken == "if") {
+						std::string logicExpression;
+						if (doesLineContainLogicExpression(line, logicExpression)) {
+							// Removing any spaces from the line 
+							remove_space<std::string>(line);
 
-					if (line[0] == '#') {
-						// Comment
-					}
-					else if (doesLineContainParserToken(line, parserToken)) {
-						if (parserToken == "if") {
-							std::string logicExpression;
-							if (doesLineContainLogicExpression(line, logicExpression)) {
-								// Removing any spaces from the line 
-								remove_space<std::string>(line);
+							ScriptLogicExpression logicExpr;
+							// Logic expression string
+							logicExpr.logicString = logicExpression; // keyDown etc
 
-								ScriptLogicExpression logicExpr;
-								// Logic expression string
-								logicExpr.logicString = logicExpression; // keyDown etc
+							// Set the arguments from the example keyDown(args)
+							int startArgIndex = line.find("(");
+							int endArgIndex = line.find(")")+1;
+							std::string argTemp = line.substr(startArgIndex, endArgIndex - startArgIndex);
+							logicExpr.args = argTemp;
 
-								// Set the arguments from the example keyDown(args)
-								int startArgIndex = line.find("(");
-								int endArgIndex = line.find(")")+1;
-								std::string argTemp = line.substr(startArgIndex, endArgIndex - startArgIndex);
-								logicExpr.args = argTemp;
-
-								// Command
-								if (doesLineContainCmdExpression(line, logicExpr.command.commandString)) {
-									// Assumed format is command(arg)
-									std::string temp = line.substr(line.find(':')+1, line.length());
-									ScriptCommand cmd = getCommandFromString(temp);
-									logicExpr.command = cmd;
-								}
-								else {
-									std::cout << "Was not able to parse line: " << line << " within file: " << m_hndl << std::endl;
-								}
+							// Command
+							if (doesLineContainCmdExpression(line, logicExpr.command.commandString)) {
+								// Assumed format is command(arg)
+								std::string temp = line.substr(line.find(':')+1, line.length());
+								ScriptCommand cmd = getCommandFromString(temp);
+								logicExpr.command = cmd;
+							}
+							else {
+								std::cout << "Was not able to parse line: " << line << " within file: " << m_hndl << std::endl;
+							}
 							
-								if (isLogicExpressionPassive(logicExpression)) {
-									m_passiveLogicExpressions.push_back(logicExpr);
-								}
-								else {
-									m_logicExpressions.push_back(logicExpr);
-								}
+							if (isLogicExpressionPassive(logicExpression)) {
+								m_passiveLogicExpressions.push_back(logicExpr);
+							}
+							else {
+								m_logicExpressions.push_back(logicExpr);
 							}
 						}
 					}
-					else if(doesLineContainCmdExpression(line, command)){
-						// Direct command!
-						remove_space<std::string>(line);
-						ScriptCommand directCmd = getCommandFromString(line);
-						m_directCommands.push_back(directCmd);	
-					}
-					else {
-						std::cout << "Was not able to parse line: " << line << " within file: " << m_hndl << std::endl;
-					}
+				}
+				else if(doesLineContainCmdExpression(line, command)){
+					// Direct command!
+					remove_space<std::string>(line);
+					ScriptCommand directCmd = getCommandFromString(line);
+					m_directCommands.push_back(directCmd);	
+				}
+				else {
+					std::cout << "Was not able to parse line: " << line << " within file: " << m_hndl << std::endl;
 				}
 			}
 		}

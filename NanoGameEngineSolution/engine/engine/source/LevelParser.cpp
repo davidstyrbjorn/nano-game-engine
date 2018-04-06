@@ -150,6 +150,11 @@ namespace nano { namespace engine {
 				int keys[4] = { up, right, down, left };
 				baby->AddComponent(new FourwayMoveComponentEngine(speed, keys));
 			}
+			// Script Component Editor
+			if (line.substr(0, 4) == "hndl") {
+				std::string scriptHndl = line.substr(5, line.length() - 5);
+				baby->AddComponent(new ScriptComponent(scriptHndl));
+			}
 		}
 
 		nano::CloseInputFile();
@@ -315,6 +320,11 @@ namespace nano { namespace engine {
 					speed = std::stof(line.substr(6, line.length()));
 					int keys[4] = { up, right, down, left };
 					entityToAdd->AddComponent(new FourwayMoveComponentEngine(speed, keys));
+				}
+				// Script Component Editor
+				if (line.substr(0, 4) == "hndl") {
+					std::string scriptHndl = line.substr(5, line.length() - 5);
+					entityToAdd->AddComponent(new ScriptComponent(scriptHndl));
 				}
 			}
 		}

@@ -1,6 +1,8 @@
 #pragma once
 
 #include<string>
+#include<dirent.h>
+#include<vector>
 
 namespace nano {
 
@@ -21,6 +23,19 @@ namespace nano {
 				return true;
 		}
 		return false;
+	}
+
+	static std::vector<std::string> getDirectoryEntries(std::string a_dir) {
+		std::vector<std::string> returnVector;
+
+		DIR* dirp = opendir(a_dir.c_str());
+		struct dirent * dp;
+		while ((dp = readdir(dirp)) != NULL) {
+			returnVector.push_back(dp->d_name);
+		}
+		closedir(dirp);
+
+		return returnVector;
 	}
 
 }

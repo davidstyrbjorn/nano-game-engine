@@ -80,6 +80,7 @@ namespace nano { namespace editor {
 		bool m_renameEntityWindow = false;
 		bool m_showKeycodeWindow = false;
 		bool m_showImageAssetWindow = false; 
+		bool m_showScriptBrowser = false;
 
 		ecs::Component *m_assetComponent;
 		graphics::Renderable *m_renderableComponent;
