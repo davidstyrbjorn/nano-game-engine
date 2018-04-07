@@ -17,6 +17,7 @@ namespace nano { namespace engine {
 		ScriptCommand() {}
 
 		std::string commandString;
+
 		std::string arg;
 		int integerArg[10];
 		float floatArg[10];
@@ -27,20 +28,5 @@ namespace nano { namespace engine {
 		std::string logicString;
 		std::string args;
 	};
-
-	struct ScriptVariable {
-		std::string name;
-		std::string value;
-
-		ScriptVariable() { }
-		ScriptVariable(std::string a_name, std::string a_value) : name(a_name), value(a_value) { }
-	};
-
-	static void addBuiltInVariables(std::vector<ScriptVariable>& a_varList) {
-		a_varList.push_back(ScriptVariable("KEY_A", "65"));
-		a_varList.push_back(ScriptVariable("KEY_D", "68"));
-		a_varList.push_back(ScriptVariable("KEY_W", "87"));
-		a_varList.push_back(ScriptVariable("KEY_S", "83"));
-	}
    
 } }

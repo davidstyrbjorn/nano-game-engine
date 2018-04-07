@@ -10,6 +10,7 @@ namespace nano { namespace opengl {
 	Texture::Texture(void* a_imageData, unsigned int a_width, unsigned int a_height, GLenum a_format)
 	{
 		glGenTextures(1, &m_textureID);
+		glActiveTexture(GL_TEXTURE0);
 		this->Bind();
 		this->SetTextureData(a_imageData, a_width, a_height, a_format);
 		this->Unbind();
@@ -63,7 +64,7 @@ namespace nano { namespace opengl {
 
 	void Texture::Bind()
 	{
-		//glActiveTexture(GL_TEXTURE5);
+		// Bind this texture
 		glBindTexture(GL_TEXTURE_2D, m_textureID);
 	}
 

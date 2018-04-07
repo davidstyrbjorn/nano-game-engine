@@ -36,10 +36,12 @@ namespace nano { namespace engine {
 		// The file is now read so create the script file object!
 		m_scriptFile = new ScriptFile(m_hndl, scriptFileContent);
 		m_scriptFile->setTargetEntity(m_owner);
+		// Add script as listener for input events
 		InputSystem::getInstance()->addInputListener(m_scriptFile);
 
 		// Parse the script file
 		m_scriptFile->parseScriptString();
+		
 	}
 
 	void ScriptComponent::Update()

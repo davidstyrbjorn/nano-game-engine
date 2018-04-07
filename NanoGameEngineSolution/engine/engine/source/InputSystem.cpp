@@ -28,23 +28,23 @@ namespace nano { namespace engine {
 	{
 		for (InputEvent event : m_polledEvents) {
 			if (event.type == INPUT_TYPE::KEY_PRESSED) {
-				for (InputListener *il : m_inputListeners) {
-					il->onKeyPressed(event.key);
+				for (int i = 0; i < m_inputListeners.size(); i++) {
+					m_inputListeners.at(i)->onKeyPressed(event.key);
 				}
 			}
 			else if (event.type == INPUT_TYPE::KEY_RELEASE) {
-				for (InputListener *il : m_inputListeners) {
-					il->onKeyReleased(event.key);
+				for (int i = 0; i < m_inputListeners.size(); i++) {
+					m_inputListeners.at(i)->onKeyReleased(event.key);
 				}
 			}
 			else if (event.type == INPUT_TYPE::MOUSE_PRESSED) {
-				for (InputListener *il : m_inputListeners) {
-					il->onMousePressed(event.key);
+				for (int i = 0; i < m_inputListeners.size(); i++) {
+					m_inputListeners.at(i)->onMousePressed(event.key);
 				}
 			}
 			else if (event.type == INPUT_TYPE::MOUSE_RELEASE) {
-				for (InputListener *il : m_inputListeners) {
-					il->onMouseRelease(event.key);
+				for (int i = 0; i < m_inputListeners.size(); i++) {
+					m_inputListeners.at(i)->onMouseRelease(event.key);
 				}
 			}
 		}

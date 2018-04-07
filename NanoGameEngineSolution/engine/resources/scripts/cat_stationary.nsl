@@ -1,2 +1,2 @@
-
+move(1, 0, 0.1)
 if keyPressed(88): create($movingCat)

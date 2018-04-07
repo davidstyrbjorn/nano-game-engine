@@ -132,7 +132,7 @@ void Shader::SetUniform3f(const char * a_name, const math::Vector3 & a_vec3)
 void Shader::SetUniform4f(const char * a_name, const math::Vector4 & a_vec4)
 {
 	glUniform4f(getUniformLocation(a_name), a_vec4.x, a_vec4.y, a_vec4.z, a_vec4.w);
-}
+} 
 
 void Shader::SetUniformMat4f(const char * a_name, const math::Matrix4x4 & a_matrix)
 {

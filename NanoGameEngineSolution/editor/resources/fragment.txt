@@ -7,6 +7,8 @@ in float textureSlot;
 
 // Fragment uniforms
 uniform sampler2D textureSampler;
+// List of texture samplers
+uniform sampler2D textureSamplerList[];
 
 void main() 
 {
@@ -16,10 +18,7 @@ void main()
 		//gl_FragColor = vec4(textureSampler, textureSampler, textureSampler, 1);
         }
 	else {
+		//gl_FragColor = texture(textureSampler, uv) * vec4(color.rgb, 1);
 		gl_FragColor = texture(textureSampler, uv) * vec4(color.rgb, 1);
-
-		//if(gl_FragColor.a < 0.3){
-		//	discard;
-		//}
 	}
 }
