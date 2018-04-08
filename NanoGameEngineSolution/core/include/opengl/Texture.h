@@ -26,12 +26,10 @@ namespace nano { namespace opengl {
 
 		// Other
 		void SetTextureData(void* a_imageData, unsigned int a_width, unsigned int a_height, GLenum a_format);
-		void SetTextureSlot(unsigned int a_textureSlot);
 
 		// Getters
 		GLuint GetTextureID();
 		math::Vector2& GetTextureSize();
-		unsigned int GetTextureSlot() const;
 	
 		// Bind & Unbind
 		void Bind() override;

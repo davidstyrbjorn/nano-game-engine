@@ -231,9 +231,7 @@ namespace nano { namespace graphics {
 			math::Vector2 pos = texturedRenderable->GetTransformComponent()->position;
 			math::Vector2 size = texturedRenderable->GetTransformComponent()->size;
 			math::Vector4 color = texturedRenderable->GetColor();
-		
-			float editorState = 0.0f;
-		
+				
 			Vertex data[] = {
 				{ math::Vector2(pos.x,pos.y), color, math::Vector2(0, 0) },
 				{ math::Vector2(pos.x, pos.y + size.y), color, math::Vector2(0, 1) },
