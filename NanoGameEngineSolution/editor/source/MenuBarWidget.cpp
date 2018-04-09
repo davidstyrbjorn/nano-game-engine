@@ -93,6 +93,9 @@ namespace nano { namespace editor {
 		static bool m_showCreditsWidget = false;
 		static bool m_showVersionWidget = false;
 		static bool m_showEntityLoadWidget = false;
+		static bool oversaveConfirm = false;
+		static char saveBuffer[128] = "";
+		static char loadBuffer[128] = "";
 		static LevelParser levelParser;
 		static LevelSystem *levelSystem = LevelSystem::getInstance();
 		std::string currentLevelName = EditorConfig::Instance()->getCurrentlyLevelName();
@@ -108,6 +111,8 @@ namespace nano { namespace editor {
 				if (ImGui::Selectable("Save Level As")) {
 					m_showSaveLevelWidget = true;
 					m_showLoadLevelWidget = false;
+					oversaveConfirm = false;
+					strcpy_s(saveBuffer, "");
 				}
 				if (currentLevelName != "none") {
 					std::string temp = "Save Level (" + currentLevelName + ")";
@@ -199,15 +204,21 @@ namespace nano { namespace editor {
 			ImGui::SetNextWindowPos(ImVec2((EditorConfig::Instance()->getWindowSize().x / 2)-(width/2), (EditorConfig::Instance()->getWindowSize().y/2)-(height)));
 			ImGui::Begin("Save Level", &m_showSaveLevelWidget, ImVec2(width, height), 1.0f, ImGuiWindowFlags_::ImGuiWindowFlags_NoResize | ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_::ImGuiWindowFlags_NoMove);
 
-			static char buffer[128] = "";
-			ImGui::InputText("Level Name", buffer, 128);
-			if (ImGui::Button("Save")) {
-				if (doesFileExist("resources\\levels\\" + std::string(buffer) + ".txt")) {
-					std::cout << "send help file exists\n"; // @@@
+			bool enter = ImGui::InputText("Level Name", saveBuffer, 128, ImGuiInputTextFlags_::ImGuiInputTextFlags_EnterReturnsTrue);
+			if (ImGui::Button("Save") || enter) {
+				if (doesFileExist("resources\\levels\\" + std::string(saveBuffer) + ".txt") && !oversaveConfirm) {
+					oversaveConfirm = true;
 				}
-				levelSystem->saveLevel(buffer);
-				// Done with saving
-				m_showSaveLevelWidget = false;
+				else {
+					levelSystem->saveLevel(saveBuffer);
+					// Done with saving
+					m_showSaveLevelWidget = false;
+				}
+			}
+
+			if (oversaveConfirm) {
+				ImGui::Text("Level with name already exists");
+				ImGui::TextColored(ImVec4(1, 0, 0, 1), "(level will be overwritten!!!)");
 			}
 
 			ImGui::End();
@@ -219,10 +230,9 @@ namespace nano { namespace editor {
 			ImGui::SetNextWindowPos(ImVec2((EditorConfig::Instance()->getWindowSize().x / 2) - (width / 2), (EditorConfig::Instance()->getWindowSize().y / 2) - (height)));
 			ImGui::Begin("Load Level", &m_showLoadLevelWidget, ImVec2(width, height), 1.0f, ImGuiWindowFlags_::ImGuiWindowFlags_NoResize | ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_::ImGuiWindowFlags_NoMove);
 
-			static char buffer[128] = "";
-			bool enter = ImGui::InputText("Level Name", buffer, 128, ImGuiInputTextFlags_::ImGuiInputTextFlags_EnterReturnsTrue);
+			bool enter = ImGui::InputText("Level Name", loadBuffer, 128, ImGuiInputTextFlags_::ImGuiInputTextFlags_EnterReturnsTrue);
 			if (ImGui::Button("Load") || enter) {
-				levelSystem->loadLevel(buffer);
+				levelSystem->loadLevel(loadBuffer);
 
 				// Done with loading
 				m_showLoadLevelWidget = false;
@@ -238,7 +248,6 @@ namespace nano { namespace editor {
 					std::string temp = i.substr(0, i.length() - 4);
 					if (ImGui::Selectable(temp.c_str())) {
 						levelSystem->loadLevel(temp); 
-
 						// Done with loading
 						m_showLoadLevelWidget = false;
 					}

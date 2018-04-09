@@ -21,21 +21,4 @@ none
 script component
 none
 
-[ENTITY]
-id sqaure
-transform
-pos -1, 3
-size 154, 163
-angle 0
-renderable
-vertex_count 4
-color 1, 1, 1, 1
-image_asset_name square.png
-sound component
-none
-fourway move component
-none
-script component
-none
-
 [ENTITIES_END]
