@@ -3,6 +3,7 @@
 #include<string>
 #include<dirent.h>
 #include<vector>
+#include<fstream>
 
 namespace nano {
 
@@ -36,6 +37,15 @@ namespace nano {
 		closedir(dirp);
 
 		return returnVector;
+	}
+
+	static bool doesFileExist(std::string a_file) {
+		std::ifstream fileStream(a_file);
+		if (fileStream.is_open()) {
+			fileStream.close();
+			return true;
+		}
+		return false;
 	}
 
 }

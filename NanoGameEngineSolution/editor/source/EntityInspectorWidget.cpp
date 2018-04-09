@@ -58,7 +58,7 @@ namespace nano { namespace editor {
 				if (_event.type == InputEventType::KEY_PRESSED) {
 					// "de"select entity
 					if (_event.key == NANO_KEY_ESCAPE) {
-						//OnEntityClick("-1"); @
+						OnEntityManipulation("entity_clicked", "-1");
 					}
 					// Delete the current entity
 					if (_event.key == NANO_KEY_DELETE) {

@@ -18,6 +18,7 @@
 #include<graphics\Simple_Renderer.h>
 #include<InputDefinitions.h>
 #include<StringHelp.h>
+#include<FileHelp.h>
 
 #include<iostream>
 #include<fstream>
@@ -201,6 +202,9 @@ namespace nano { namespace editor {
 			static char buffer[128] = "";
 			ImGui::InputText("Level Name", buffer, 128);
 			if (ImGui::Button("Save")) {
+				if (doesFileExist("resources\\levels\\" + std::string(buffer) + ".txt")) {
+					std::cout << "send help file exists\n"; // @@@
+				}
 				levelSystem->saveLevel(buffer);
 				// Done with saving
 				m_showSaveLevelWidget = false;

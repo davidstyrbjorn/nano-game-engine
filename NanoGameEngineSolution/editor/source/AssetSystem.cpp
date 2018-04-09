@@ -25,8 +25,18 @@ namespace nano { namespace editor {
 
 	void AssetSystem::Quit()
 	{
-		// TODO@:
 		// Delete every asset pointer here!
+		std::vector<asset::SoundAsset*>::iterator it1;
+		for (it1 = m_soundAssetContainer.begin(); it1 != m_soundAssetContainer.end(); ++it1) {
+			delete *it1;
+		}
+		m_soundAssetContainer.clear();
+		std::vector<asset::ImageAsset*>::iterator it2;
+		for (it2 = m_imageAssetContainer.begin(); it2 != m_imageAssetContainer.end(); ++it2) {
+			delete *it2;
+		}
+		m_imageAssetContainer.clear();
+
 		delete m_highlightTextureAsset;
 		std::cout << "Asset system quit correctly" << std::endl;
 	}
@@ -37,6 +47,7 @@ namespace nano { namespace editor {
 			if (asset->getFileName() == a_hndl)
 				return asset;
 		}
+		return nullptr;
 	}
 
 	std::vector<asset::ImageAsset*> &AssetSystem::getImageAssetContainer()
@@ -50,6 +61,7 @@ namespace nano { namespace editor {
 			if (asset->getFileName() == a_hndl)
 				return asset;
 		}
+		return nullptr;
 	}
 
 	std::vector<asset::SoundAsset*> &AssetSystem::getSoundAssetContainer()

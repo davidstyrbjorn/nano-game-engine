@@ -1,5 +1,5 @@
 [LEVEL_CONFIG]
-cam_pos 0, 0
+cam_pos -374, -104
 cam_size 1088, 736
 fps 60
 

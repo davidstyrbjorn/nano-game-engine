@@ -68,7 +68,7 @@ namespace nano { namespace editor {
 			ImGuiWindowFlags_::ImGuiWindowFlags_NoResize |
 			ImGuiWindowFlags_::ImGuiWindowFlags_NoMove |
 			ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse
-		);
+		);					  	
 
 		if (ImGui::Button("Refresh")) {
 			AssetSystem::getInstance()->refresh();
