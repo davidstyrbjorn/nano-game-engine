@@ -552,6 +552,10 @@ namespace nano { namespace editor {
 	void EntityInspectorWidget::displayFourwayMoveComponentGraphics()
 	{
 		if (ImGui::CollapsingHeader("Fourway Move Component")) {
+			if (rightClickRemoveComponent(m_fourwayMoveComponent, "Fourway Move Component")) {
+				m_fourwayMoveComponent = nullptr;
+			}
+
 			int up, right, down, left;
 			up = m_fourwayMoveComponent->GetKey("up");
 			right = m_fourwayMoveComponent->GetKey("right");
@@ -581,6 +585,25 @@ namespace nano { namespace editor {
 	void EntityInspectorWidget::displayScriptComponentGraphics()
 	{
 		if (ImGui::CollapsingHeader("Script Component")) {
+
+			/*
+			// Right click component name
+			if (ImGui::IsItemHovered()) {
+				if (ImGui::GetIO().MouseClicked[1]) {
+					ImGui::OpenPopup("right_click_component_sound");
+				}
+			}
+			if (ImGui::BeginPopup("right_click_component_sound")) {
+				if (ImGui::Selectable("Destroy")) {
+					m_soundComponent->SetState(ecs::ECSStates::DESTROYED);
+					// Event handler
+					BaseEvent _event(EventTypes::MANIPULATED_COMPONENT, m_entityToInspect->GetID(), "Sound Component", "Destroyed");
+					EditorWidgetSystem::getInstance()->GetEventHandler().AddEvent(_event);
+				}
+				ImGui::EndPopup();
+			}
+			*/
+			rightClickRemoveComponent(m_scriptComponent, "Script Component");
 
 			std::string scriptHndl = m_scriptComponent->getScriptHndl();
 			ImGui::SetNextWindowContentWidth(140);
@@ -617,6 +640,27 @@ namespace nano { namespace editor {
 
 			ImGui::End();
 		}
+	}
+
+	inline bool EntityInspectorWidget::rightClickRemoveComponent(ecs::Component * a_componentToRemove, std::string a_componentName)
+	{
+		std::string temp = "right_click_" + a_componentName;
+		if (ImGui::IsItemHovered()) {
+			if (ImGui::GetIO().MouseClicked[1]) {
+				ImGui::OpenPopup(temp.c_str());
+			}
+		}
+		if (ImGui::BeginPopup(temp.c_str())) {
+			bool destroy = ImGui::Selectable("Destroy");
+			if (destroy) {
+				a_componentToRemove->SetState(ecs::ECSStates::DESTROYED);
+				BaseEvent _event(EventTypes::MANIPULATED_COMPONENT, m_entityToInspect->GetID(), a_componentName, "Destroyed");
+				EditorWidgetSystem::getInstance()->GetEventHandler().AddEvent(_event);
+				return true;
+			}
+			ImGui::EndPopup();
+		}
+		return false;
 	}
 
 	void EntityInspectorWidget::clickedOnNewEntity(ecs::Entity * a_entity)
