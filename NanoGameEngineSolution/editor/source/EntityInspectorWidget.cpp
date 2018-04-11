@@ -194,6 +194,9 @@ namespace nano { namespace editor {
 				if (ImGui::Selectable("Fourway Move Component") && !hasFwmComponent) {
 					m_fourwayMoveComponent = static_cast<FourwayMoveComponentEditor*>(m_entityToInspect->AddComponent(new FourwayMoveComponentEditor()));
 				}
+				if (ImGui::Selectable("Script Component") && !hasScriptComponent) {
+					m_scriptComponent = static_cast<ScriptComponent>(m_entityToInspect->AddComponent(new ScriptComponent()));
+				}
 				ImGui::EndPopup();
 			}
 		}
@@ -432,35 +435,47 @@ namespace nano { namespace editor {
 
 	void EntityInspectorWidget::displayRenderableComponentGraphics()
 	{
-		if (ImGui::CollapsingHeader("Renderable Component")) {
-			// Right click component name
-			if (ImGui::IsItemHovered()) {
-				if (ImGui::GetIO().MouseClicked[1]) {
-					ImGui::OpenPopup("right_click_component_renderable");
-				}
-			}
-			if (ImGui::BeginPopup("right_click_component_renderable")) {
-				if (ImGui::Selectable("Destroy")) {
-					if (m_renderableComponent->GetTexture() != nullptr)
-						m_entityToInspect->GetComponent<ecs::SpriteComponent>()->SetState(ecs::ECSStates::DESTROYED);
-					else if (m_renderableComponent->GetVertexCount() == 3)
-						m_entityToInspect->GetComponent<ecs::TriangleComponent>()->SetState(ecs::ECSStates::DESTROYED);
-					else
-						m_entityToInspect->GetComponent<ecs::RectangleComponent>()->SetState(ecs::ECSStates::DESTROYED);
-					// Event Handler
-					BaseEvent _event(EventTypes::MANIPULATED_COMPONENT, m_entityToInspect->GetID(), "Renderable Component", "Destroyed");
-					EditorWidgetSystem::getInstance()->GetEventHandler().AddEvent(_event);
-				}
-				ImGui::EndPopup();
-			}
+		std::string type;
+		if (m_renderableComponent->GetTexture() != nullptr) {
+			type = "Sprite";
+		}
+		else if (m_renderableComponent->GetVertexCount() == 3) {
+			type = "Triangle";
+		}
+		else if (m_renderableComponent->GetVertexCount() == 4) {
+			type = "Rectangle";
+		}
 
+		if (ImGui::CollapsingHeader(std::string(type + " Component").c_str())) {
 			if (m_renderableComponent->GetTexture() != nullptr) {
-				ImGui::Text("Type: Sprite");
+				if (rightClickRemoveComponent(m_entityToInspect->GetComponent<ecs::SpriteComponent>(), "Renderable Component"))
+				{
+					m_renderableComponent = nullptr;
+					return void();
+				}
 			}
 			else if (m_renderableComponent->GetVertexCount() == 3) {
+				if (rightClickRemoveComponent(m_entityToInspect->GetComponent<ecs::TriangleComponent>(), "Renderable Component"))
+				{
+					m_renderableComponent = nullptr;
+					return void();
+				}
+			}
+			else {
+				if (rightClickRemoveComponent(m_entityToInspect->GetComponent<ecs::RectangleComponent>(), "Renderable Component"))
+				{
+					m_renderableComponent = nullptr;
+					return void();
+				}
+			}
+				
+			if (type == "Sprite") {
+				ImGui::Text("Type: Sprite");
+			}
+			else if (type == "Triangle") {
 				ImGui::Text("Type: Triangle");
 			}
-			else if (m_renderableComponent->GetVertexCount() == 4) {
+			else if (type == "Rectangle") {
 				ImGui::Text("Type: Rectangle");
 			}
 
@@ -489,23 +504,13 @@ namespace nano { namespace editor {
 	void EntityInspectorWidget::displaySoundComponentGraphics()
 	{
 		if (ImGui::CollapsingHeader("Sound Component")) {
+			if (rightClickRemoveComponent(m_soundComponent, "Sound Component"))
+			{
+				m_soundComponent = nullptr;
+				return void();
+			}
+			
 			openal::SoundSource *source = m_soundComponent->GetSource();
-
-			// Right click component name
-			if (ImGui::IsItemHovered()) {
-				if (ImGui::GetIO().MouseClicked[1]) {
-					ImGui::OpenPopup("right_click_component_sound");
-				}
-			}
-			if (ImGui::BeginPopup("right_click_component_sound")) {
-				if (ImGui::Selectable("Destroy")) {
-					m_soundComponent->SetState(ecs::ECSStates::DESTROYED);
-					// Event handler
-					BaseEvent _event(EventTypes::MANIPULATED_COMPONENT, m_entityToInspect->GetID(), "Sound Component", "Destroyed");
-					EditorWidgetSystem::getInstance()->GetEventHandler().AddEvent(_event);
-				}
-				ImGui::EndPopup();
-			}
 
 			// Load sound asset
 			if (ImGui::Button("Load Sound Asset")) {
@@ -551,9 +556,11 @@ namespace nano { namespace editor {
 
 	void EntityInspectorWidget::displayFourwayMoveComponentGraphics()
 	{
-		if (ImGui::CollapsingHeader("Fourway Move Component")) {
-			if (rightClickRemoveComponent(m_fourwayMoveComponent, "Fourway Move Component")) {
+		if (ImGui::CollapsingHeader("Fourway Move Component")) 
+		{
+			if (rightClickRemoveComponent(m_fourwayMoveComponent, "Fourway Move Component")){
 				m_fourwayMoveComponent = nullptr;
+				return void();
 			}
 
 			int up, right, down, left;
@@ -584,26 +591,12 @@ namespace nano { namespace editor {
 
 	void EntityInspectorWidget::displayScriptComponentGraphics()
 	{
-		if (ImGui::CollapsingHeader("Script Component")) {
-
-			/*
-			// Right click component name
-			if (ImGui::IsItemHovered()) {
-				if (ImGui::GetIO().MouseClicked[1]) {
-					ImGui::OpenPopup("right_click_component_sound");
-				}
+		if (ImGui::CollapsingHeader("Script Component")) 
+		{
+			if (rightClickRemoveComponent(m_scriptComponent, "Script Component")) {
+				m_scriptComponent = nullptr;
+				return void();
 			}
-			if (ImGui::BeginPopup("right_click_component_sound")) {
-				if (ImGui::Selectable("Destroy")) {
-					m_soundComponent->SetState(ecs::ECSStates::DESTROYED);
-					// Event handler
-					BaseEvent _event(EventTypes::MANIPULATED_COMPONENT, m_entityToInspect->GetID(), "Sound Component", "Destroyed");
-					EditorWidgetSystem::getInstance()->GetEventHandler().AddEvent(_event);
-				}
-				ImGui::EndPopup();
-			}
-			*/
-			rightClickRemoveComponent(m_scriptComponent, "Script Component");
 
 			std::string scriptHndl = m_scriptComponent->getScriptHndl();
 			ImGui::SetNextWindowContentWidth(140);
@@ -644,6 +637,8 @@ namespace nano { namespace editor {
 
 	inline bool EntityInspectorWidget::rightClickRemoveComponent(ecs::Component * a_componentToRemove, std::string a_componentName)
 	{
+		bool didDestroy = false;
+
 		std::string temp = "right_click_" + a_componentName;
 		if (ImGui::IsItemHovered()) {
 			if (ImGui::GetIO().MouseClicked[1]) {
@@ -656,11 +651,11 @@ namespace nano { namespace editor {
 				a_componentToRemove->SetState(ecs::ECSStates::DESTROYED);
 				BaseEvent _event(EventTypes::MANIPULATED_COMPONENT, m_entityToInspect->GetID(), a_componentName, "Destroyed");
 				EditorWidgetSystem::getInstance()->GetEventHandler().AddEvent(_event);
-				return true;
+				didDestroy = true;
 			}
 			ImGui::EndPopup();
 		}
-		return false;
+		return didDestroy;
 	}
 
 	void EntityInspectorWidget::clickedOnNewEntity(ecs::Entity * a_entity)
