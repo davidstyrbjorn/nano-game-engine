@@ -165,7 +165,7 @@ namespace nano { namespace editor {
 
 	void LevelParser::saveEntityAsAsset(ecs::Entity * a_entity)
 	{
-		std::string fileName = a_entity->GetID() + ".txt";
+		std::string fileName = a_entity->GetID() + ".nse";
 		std::string filePath = "resources\\assets\\" + fileName;
 		if (DoesFileExist("resources\\assets\\" + fileName)) {
 			std::cout << "Entity already exists as saved entity" << std::endl;

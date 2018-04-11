@@ -24,7 +24,6 @@ namespace nano { namespace ecs {
 
 	RectangleComponent::RectangleComponent()
 	{
-
 	}
 
 	RectangleComponent::RectangleComponent(const math::Vector4 & a_color)

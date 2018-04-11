@@ -152,18 +152,15 @@ namespace nano { namespace editor {
 			if (ImGui::Button("Add Component", buttonSize)) {
 				ImGui::OpenPopup("add_component");
 			}
-			if (ImGui::BeginPopup("add_component")) {
-				if (ImGui::Selectable("Sprite Component")) {
-					if (!hasRenderableComponent) {
+			if (ImGui::BeginPopup("add_component")) 
+			{
+				if (!hasRenderableComponent) 
+				{
+					if (ImGui::Selectable("Sprite Component")) {
 						m_entityToInspect->AddComponent(new ecs::SpriteComponent());
 						m_renderableComponent = m_entityToInspect->GetRenderableComponent();
 					}
-					else {
-						// Already have renderable component
-					}
-				}
-				if (ImGui::Selectable("Rectangle Component")) {
-					if (!hasRenderableComponent) {
+					if (ImGui::Selectable("Rectangle Component")) {
 						m_entityToInspect->AddComponent(new ecs::RectangleComponent(m_addComponentColor));
 						m_renderableComponent = m_entityToInspect->GetRenderableComponent();
 						// Make sure it's initially visibile
@@ -171,12 +168,7 @@ namespace nano { namespace editor {
 							m_entityToInspect->m_transform->size = m_addComponentSize;
 						}
 					}
-					else {
-						// Already have renderable component
-					}
-				}
-				if (ImGui::Selectable("Triangle Component")) {
-					if (!hasRenderableComponent) {
+					if (ImGui::Selectable("Triangle Component")) {
 						m_entityToInspect->AddComponent(new ecs::TriangleComponent(m_addComponentColor));
 						m_renderableComponent = m_entityToInspect->GetRenderableComponent();
 						// Make sure it's initially visibile
@@ -184,18 +176,21 @@ namespace nano { namespace editor {
 							m_entityToInspect->m_transform->size = m_addComponentSize;
 						}
 					}
-					else {
-						// Already have renderable component
+				}
+				if (!hasSoundComponent) {
+					if (ImGui::Selectable("Sound Component")) {
+						m_soundComponent = static_cast<ecs::SoundComponent*>(m_entityToInspect->AddComponent(new ecs::SoundComponent()));
 					}
 				}
-				if (ImGui::Selectable("Sound Component") && !hasSoundComponent) {
-					m_soundComponent = static_cast<ecs::SoundComponent*>(m_entityToInspect->AddComponent(new ecs::SoundComponent()));
+				if (!hasFwmComponent) {
+					if (ImGui::Selectable("Fourway Move Component")) {
+						m_fourwayMoveComponent = static_cast<FourwayMoveComponentEditor*>(m_entityToInspect->AddComponent(new FourwayMoveComponentEditor()));
+					}
 				}
-				if (ImGui::Selectable("Fourway Move Component") && !hasFwmComponent) {
-					m_fourwayMoveComponent = static_cast<FourwayMoveComponentEditor*>(m_entityToInspect->AddComponent(new FourwayMoveComponentEditor()));
-				}
-				if (ImGui::Selectable("Script Component") && !hasScriptComponent) {
-					m_scriptComponent = static_cast<ScriptComponent>(m_entityToInspect->AddComponent(new ScriptComponent()));
+				if (!hasScriptComponent) {
+					if (ImGui::Selectable("Script Component")) {
+						m_scriptComponent = static_cast<ScriptComponent*>(m_entityToInspect->AddComponent(new ScriptComponent()));
+					}
 				}
 				ImGui::EndPopup();
 			}

@@ -24,6 +24,9 @@ namespace nano { namespace ecs {
 
 		// Override for the renderer 
 		int GetVertexCount() override { return 3; }
+
+		// Override
+		ECSTickStates GetTickState() const override { return ECSTickStates::NEVER; }
 	};
 
 } }

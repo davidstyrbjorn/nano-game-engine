@@ -42,29 +42,22 @@ Shader::Shader(std::string a_vertexShaderPath, std::string a_fragmentShaderPath)
 	CompileShader();
 }
 
-bool Shader::didCompile(GLuint a_shader)
+bool Shader::didCompile(GLuint a_shader, std::string &a_errorMessage)
 {
 	GLint _didCompile;
 	glGetShaderiv(a_shader, GL_COMPILE_STATUS, &_didCompile);
 	if (_didCompile == GL_FALSE) {
 		GLint maxLength = 0;
 		glGetShaderiv(a_shader, GL_INFO_LOG_LENGTH, &maxLength);
-
 		// The maxLength includes the NULL character
-		std::vector<GLchar> infoLog(maxLength);
+		GLchar infoLog[200];
 		glGetShaderInfoLog(a_shader, maxLength, &maxLength, &infoLog[0]);
-
-		// Print the infoLog which would contain a error in this case
-		for (int i = 0; i < infoLog.size(); i++) {
-			std::cout << infoLog[i];
-		}
+		a_errorMessage = infoLog;
 
 		return false;
 	}
-
 	return true;
 }
-
 
 void Shader::CompileShader()
 {
@@ -76,14 +69,19 @@ void Shader::CompileShader()
 	const char* vertexSource = m_vertexShaderData.c_str();
 	glShaderSource(m_vertexShader, 1, &vertexSource, 0);
 	glCompileShader(m_vertexShader);
-	didCompile(m_vertexShader);
+	std::string vertexCompileMessage = "";
+	if (!didCompile(m_vertexShader, vertexCompileMessage)) {
+		std::cout << vertexCompileMessage << "\n";
+	}
 
 	GLuint m_fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
 	const char* fragmentSource = m_fragmentShaderData.c_str();
 	glShaderSource(m_fragmentShader, 1, &fragmentSource, 0);
 	glCompileShader(m_fragmentShader);
-	didCompile(m_fragmentShader);
-
+	std::string fragmentCompileMessage = "";
+	if (!didCompile(m_fragmentShader, fragmentCompileMessage)) {
+		std::cout << fragmentCompileMessage << "\n";
+	}
 
 	// Create shader program
 	m_shaderProgram = glCreateProgram();

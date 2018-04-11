@@ -1,10 +1,3 @@
-[LEVEL_CONFIG]
-cam_pos -374, -104
-cam_size 1088, 736
-fps 60
-
-[LEVEL_ENTITIES]
-[ENTITY]
 id rect
 transform
 pos 155, 5
@@ -20,5 +13,3 @@ fourway move component
 none
 script component
 hndl none
-
-[ENTITIES_END]

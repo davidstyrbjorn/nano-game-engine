@@ -8,4 +8,10 @@ namespace nano { namespace ecs {
 		DESTROYED = 0x2
 	};
 
+	enum ECSTickStates {
+		FRAME,
+		FIXED,
+		NEVER
+	};
+
 } } 
