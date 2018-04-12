@@ -40,7 +40,7 @@ namespace nano { namespace engine {
 		std::string temp = args.substr(start, end - start);
 		// Use the level parser to get the given entity
 		static LevelParser lp;
-		std::string loc = "resources\\assets\\" + temp + ".txt";
+		std::string loc = "resources\\assets\\" + temp + ".nse";
 		ecs::Entity* babyEntity = lp.getParsedEntityFromFile(loc.c_str());
 		WorldSystem::getInstance()->addEntity(babyEntity);
 	}

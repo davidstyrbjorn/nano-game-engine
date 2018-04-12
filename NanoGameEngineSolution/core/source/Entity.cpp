@@ -65,7 +65,7 @@ namespace nano { namespace ecs {
 	void Entity::Update()
 	{
 		for (Component* _component : m_componentsBag) {
-			if (_component->GetState() == ECSStates::ACTIVE) {
+			if (_component->GetState() == ECSStates::ACTIVE && _component->GetTickState() == ECSTickStates::FRAME) {
 				_component->Update();
 			}
 		}

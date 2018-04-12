@@ -44,14 +44,14 @@ namespace nano { namespace graphics {
 		math::Vector4& GetUniform4f(const char* a_name);
 
 	private:
-		bool didCompile(GLuint a_shader);
+		bool didCompile(GLuint a_shader, std::string &a_errorMessage);
 		GLint getUniformLocation(const char* a_name);
-		// Caching the uniform location to save performance 
-		std::map<const char*, GLint> m_uniformMap;
 
 	private:
 		// OpenGL handle to the shaders program
 		GLuint m_shaderProgram;
+		// Caching the uniform location to save performance 
+		std::map<const char*, GLint> m_uniformMap;
 		
 		// The actual string text representation of the shader file to be compiled
 		std::string m_vertexShaderData;

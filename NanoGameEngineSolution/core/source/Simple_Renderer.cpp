@@ -24,9 +24,7 @@ namespace nano { namespace graphics {
 		// Create shader
 		m_shader = new Shader(a_vertexPath, a_fragmentPath); 
 		m_shader->Bind();
-		m_shader->SetUniform1f("textureSampler", 1); // GL_TEXTURE0
-		float textureSlots[] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17 };
-		m_shader->SetUniform1fv("textureSamplerList", 18, textureSlots);
+		m_shader->SetUniform1f("textureSampler", 0); // GL_TEXTURE0
 
 		m_camera = new OrthographicCamera(a_windowSize);
 		m_shader->SetUniformMat4f("projection_matrix", m_camera->GetProjectionMatrix());

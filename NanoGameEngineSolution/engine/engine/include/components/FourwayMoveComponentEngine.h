@@ -16,8 +16,9 @@ namespace nano { namespace engine {
 
 		// Component base methods
 		void Start() override;
-		virtual void Update() override;
-											
+		void Update() override;
+		ecs::ECSTickStates GetTickState() const override { return ecs::ECSTickStates::FIXED; }
+
 		// Member methods
 		float GetVelocity() { return m_velocity; }
 		void SetVelocity(float a_velocity) { m_velocity = a_velocity; }

@@ -53,12 +53,14 @@ namespace nano { namespace engine {
 							// Command
 							if (doesLineContainCmdExpression(line, logicExpr.command.commandString)) {
 								// Assumed format is command(arg)
-								std::string temp = line.substr(line.find(':')+1, line.length());
+								int commandStart = line.find("then") + 4;
+								std::string temp = line.substr(commandStart, line.length());
 								ScriptCommand cmd = getCommandFromString(temp);
 								logicExpr.command = cmd;
 							}
 							else {
 								std::cout << "Was not able to parse line: " << line << " within file: " << m_hndl << std::endl;
+								return;
 							}
 							
 							if (isLogicExpressionPassive(logicExpression)) {

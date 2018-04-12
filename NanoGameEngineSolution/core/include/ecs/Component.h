@@ -21,7 +21,7 @@ namespace nano { namespace ecs {
 		//////////
 		// \brief Init called after the component has been added to entity
 		//
-		virtual void Init() { } 
+		virtual void Init() { }
 
 		//////////
 		// \brief Start called by entity owner
@@ -31,7 +31,7 @@ namespace nano { namespace ecs {
 		//////////
 		// \brief Update called by entity owner
 		//
-		virtual void Update() { } 
+		virtual void Update() { }
 
 		//////////
 		// \brief Called on new asset load on component
@@ -56,10 +56,15 @@ namespace nano { namespace ecs {
 		// \brief Returns a integer representation of the entities state
 		//
 		int GetState();
+
 		//////////
 		// \brief Sets entities state
 		//
 		void SetState(const int a_state);
+
+		/////////
+		// \brief Returns this components tick state
+		virtual ECSTickStates GetTickState() const { return ECSTickStates::NEVER; }
 	};
 
 } } 

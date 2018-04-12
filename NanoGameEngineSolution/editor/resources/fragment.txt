@@ -7,18 +7,14 @@ in float textureSlot;
 
 // Fragment uniforms
 uniform sampler2D textureSampler;
-// List of texture samplers
-uniform sampler2D textureSamplerList[];
 
 void main() 
 {
-	// For now this just means there is no texture so render it with no texture
+	// For now this just means there is no texture so render it unlit
 	if(uv.x == -1 && uv.y == -1) { 
 		gl_FragColor = vec4(color.rgb, color.a);
-		//gl_FragColor = vec4(textureSampler, textureSampler, textureSampler, 1);
         }
 	else {
-		//gl_FragColor = texture(textureSampler, uv) * vec4(color.rgb, 1);
 		gl_FragColor = texture(textureSampler, uv) * vec4(color.rgb, 1);
 	}
 }
