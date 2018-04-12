@@ -74,7 +74,6 @@ namespace nano { namespace editor {
 		static RendererSystem *renderer = RendererSystem::getInstance();
 		static EditorWidgetSystem *widgetSystem = EditorWidgetSystem::getInstance();
 
-		// @TODO: Check if we're over-saving some already existing level
 		std::string location = "resources\\levels\\" + a_name + ".txt";
 		graphics::OrthographicCamera *c = RendererSystem::getInstance()->GetSimpleRenderer().GetCamera();
 		levelParser.ParseCurrentLevelToFile(location.c_str(), WorldSystem::getInstance()->GetEntityListCopy(), c->GetPosition(), c->GetSize());

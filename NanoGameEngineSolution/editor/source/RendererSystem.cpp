@@ -4,9 +4,6 @@
 
 #include"../include/systems/WorldSystem.h"
 
-#define GLEW_STATIC
-#include<GL\glew.h>
-
 namespace nano { namespace editor { 
 
 	void RendererSystem::Start(const char* a_vertexPath, const char* a_fragmentPath)

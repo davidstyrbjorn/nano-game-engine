@@ -15,7 +15,7 @@
 #include"systems\LevelSystem.h"
 #include"systems\AssetSystem.h"
 
-#define FPS -1
+#define FPS 60
 #define MS 1000/FPS
 
 #define NANO_EDITOR_API __declspec(dllexport)

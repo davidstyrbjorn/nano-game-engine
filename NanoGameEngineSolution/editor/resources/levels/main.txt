@@ -19,10 +19,7 @@ none
 fourway move component
 none
 script component
-<<<<<<< HEAD
 hndl triangle_script.nsl
-=======
 hndl none
->>>>>>> e49ffd4515bbac128afa7184bf37c6b53c5ece05
 
 [ENTITIES_END]

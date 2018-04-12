@@ -68,7 +68,18 @@ namespace nano { namespace editor {
 
 		// Call update on all the entities
 		for (ecs::Entity *entity : m_entityList) {
-			entity->Update();
+			if (entity->GetState() == ecs::ECSStates::ACTIVE) {
+				entity->Update();
+			}
+		}
+	}
+
+	void WorldSystem::FixedUpdate()
+	{
+		for (int i = 0; i < m_entityList.size(); i++) {
+			if (m_entityList[i]->GetState() == ecs::ECSStates::ACTIVE) {
+				m_entityList[i]->FixedUpdate();
+			}
 		}
 	}
 

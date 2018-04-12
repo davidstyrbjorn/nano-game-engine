@@ -33,6 +33,10 @@ namespace nano { namespace ecs {
 		//
 		virtual void Update() { }
 
+		/////////
+		// \brief FixedUpdate called by entity owner
+		virtual void FixedUpdate() { }
+
 		//////////
 		// \brief Called on new asset load on component
 		//

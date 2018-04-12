@@ -67,6 +67,7 @@ namespace nano { namespace ecs {
 		//////////
 		void Start();
 		void Update();
+		void FixedUpdate();
 
 		//////////
 		// Member getters

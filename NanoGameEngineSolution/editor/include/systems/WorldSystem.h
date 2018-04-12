@@ -42,6 +42,7 @@ namespace nano { namespace editor {
 		// EditorSystem base class
 		void Start() override;
 		void Update() override;
+		void FixedUpdate() override;
 		void Quit() override;
 	};
 	

@@ -186,18 +186,12 @@ namespace nano { namespace editor {
 					if (ImGui::Selectable("Fourway Move Component")) {
 						m_fourwayMoveComponent = static_cast<FourwayMoveComponentEditor*>(m_entityToInspect->AddComponent(new FourwayMoveComponentEditor()));
 					}
-				}
-<<<<<<< HEAD
-				if (ImGui::Selectable("Script Component") && !hasScriptComponent) {
-					m_scriptComponent = static_cast<ScriptComponent*>(m_entityToInspect->AddComponent(new ScriptComponent()));
 				}			
-=======
 				if (!hasScriptComponent) {
 					if (ImGui::Selectable("Script Component")) {
 						m_scriptComponent = static_cast<ScriptComponent*>(m_entityToInspect->AddComponent(new ScriptComponent()));
 					}
 				}
->>>>>>> e49ffd4515bbac128afa7184bf37c6b53c5ece05
 				ImGui::EndPopup();
 			}
 		}

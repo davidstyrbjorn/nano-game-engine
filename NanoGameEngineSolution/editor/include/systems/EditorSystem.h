@@ -19,6 +19,9 @@ namespace nano { namespace editor {
 		// Gets called every tick
 		virtual void Update() = 0;
 
+		// Gets called at a fixed tick rate
+		virtual void FixedUpdate() { }
+
 		// Gets called on editor close
 		virtual void Quit() = 0;
 	};

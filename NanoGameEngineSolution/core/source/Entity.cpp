@@ -83,6 +83,18 @@ namespace nano { namespace ecs {
 		}
 	}
 
+	void Entity::FixedUpdate()
+	{
+		// Use fixed-size iteration because component might get removed in Update()
+		for (int i = 0; i < m_componentsBag.size(); i++) {
+			if (m_componentsBag[i] != nullptr) {
+				if (m_componentsBag[i]->GetState() == ECSStates::ACTIVE && m_componentsBag[i]->GetTickState() == ECSTickStates::FIXED) {
+					m_componentsBag[i]->FixedUpdate();
+				}
+			}
+		}
+	}
+
 	std::string Entity::GetID()
 	{
 		return m_id;
