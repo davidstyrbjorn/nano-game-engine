@@ -195,8 +195,8 @@ namespace nano { namespace editor {
 					m_fourwayMoveComponent = static_cast<FourwayMoveComponentEditor*>(m_entityToInspect->AddComponent(new FourwayMoveComponentEditor()));
 				}
 				if (ImGui::Selectable("Script Component") && !hasScriptComponent) {
-					m_scriptComponent = static_cast<ScriptComponent>(m_entityToInspect->AddComponent(new ScriptComponent()));
-				}
+					m_scriptComponent = static_cast<ScriptComponent*>(m_entityToInspect->AddComponent(new ScriptComponent()));
+				}			
 				ImGui::EndPopup();
 			}
 		}

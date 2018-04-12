@@ -19,6 +19,6 @@ none
 fourway move component
 none
 script component
-none
+hndl triangle_script.nsl
 
 [ENTITIES_END]
