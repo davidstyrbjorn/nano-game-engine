@@ -18,6 +18,15 @@ namespace nano { namespace engine {
 		std::cout << "World System quit correctly" << std::endl;
 	}
 
+	void WorldSystem::fixedUpdate()
+	{
+		for (int i = 0; i < m_entityList.size(); i++) {
+			if (m_entityList[i]->GetState() == ecs::ECSStates::ACTIVE) {
+				m_entityList[i]->FixedUpdate();
+			}
+		}
+	}
+
 	void WorldSystem::start()
 	{
 		// Call start on every entity
@@ -32,7 +41,9 @@ namespace nano { namespace engine {
 
 		// Call update on every entity 
 		for (ecs::Entity* entity : m_entityList) {
-			entity->Update();
+			if (entity->GetState() == ecs::ECSStates::ACTIVE) {
+				entity->Update();
+			}
 		}
 	}
 

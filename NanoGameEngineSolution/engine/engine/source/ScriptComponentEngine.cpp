@@ -46,7 +46,11 @@ namespace nano { namespace engine {
 
 	void ScriptComponent::Update()
 	{
-		m_scriptFile->executeScriptCommands(1.0f);
+	}
+
+	void ScriptComponent::FixedUpdate()
+	{
+		m_scriptFile->executeScriptCommands();
 	}
 
 }} 

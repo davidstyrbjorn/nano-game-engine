@@ -26,6 +26,7 @@ namespace nano { namespace engine {
 		void start() override;
 		void update() override;
 		void shutdown() override;
+		void fixedUpdate() override;
 
 		// Entity adding/removing/getter
 		void addEntity(ecs::Entity* a_entity);

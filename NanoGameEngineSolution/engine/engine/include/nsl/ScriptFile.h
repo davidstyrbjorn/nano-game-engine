@@ -26,7 +26,7 @@ namespace nano { namespace engine {
 		~ScriptFile() {}
  
 		void parseScriptString();
-		void executeScriptCommands(float a_deltaTime);
+		void executeScriptCommands();
 
 	public:
 		void setTargetEntity(ecs::Entity* a_entity);

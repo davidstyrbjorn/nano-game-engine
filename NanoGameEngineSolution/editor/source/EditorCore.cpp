@@ -87,7 +87,7 @@ namespace nano { namespace editor {
 		while (m_windowSystem->GetWindow().IsOpen()) 
 		{
 			if (m_fpsClock.GetTicks() >= 1000) {
-				//std::cout << frameCount << std::endl;
+				std::cout << frameCount << std::endl;
 				frameCount = 0;
 				m_fpsClock.Reset();
 			}

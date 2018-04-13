@@ -15,6 +15,7 @@ namespace nano { namespace engine {
 		
 		void Init() override;
 		void Update() override;
+		void FixedUpdate() override;
 		ecs::ECSTickStates GetTickState() const override { return ecs::ECSTickStates::FIXED; }
 
 	private:

@@ -85,7 +85,7 @@ namespace nano { namespace engine {
 		}
 	}
 
-	void ScriptFile::executeScriptCommands(float a_deltaTime)
+	void ScriptFile::executeScriptCommands()
 	{
 		// Go through direct commands
 		for (ScriptCommand cmd : m_directCommands) {

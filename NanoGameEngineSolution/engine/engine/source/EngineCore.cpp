@@ -4,6 +4,8 @@
 #include<math\Vector4.h>
 #include<graphics\Simple_Renderer.h>
 
+#include<thread>
+
 namespace nano { namespace engine {  
 
 EngineCore::~EngineCore()
@@ -57,6 +59,10 @@ void EngineCore::mainLoop()
 	float deltaTime = 1.0f;
 	float frameStartTime;
 
+	Clock fixedUpdateTimer;
+	fixedUpdateTimer.Reset();
+	fixedUpdateTimer.Start();
+
 	// Enter the main loop
 	while (m_windowSystem->getWindow().IsOpen()) 
 	{
@@ -66,23 +72,29 @@ void EngineCore::mainLoop()
 		// Clear the window for new frame
 		m_windowSystem->getWindow().Clear(math::Vector4(0.1f, 0.1f, 0.1f, 0));
 
+		// @TODO: Thread?
+		if (fixedUpdateTimer.GetTicks() == (60 / 1000)) {
+
+		}
+
+		// Regular Update
 		m_worldSystem->update();
 		m_inputSystem->update();
 
-		// Reset the renderer forthis frame
+		// Reset the renderer for this frame
 		m_rendererSystem->getRenderer().Begin();
-
+		// This collects the data to be drawn
 		m_rendererSystem->update();
-
 		// Flush the renderer (draw calls get called here)
 		m_rendererSystem->getRenderer().Flush();
 
+		// Finish the frame
 		m_inputSystem->flushEvents();
 		m_windowSystem->getWindow().Display();
 
 		// Now measure delta time
-		deltaTime = m_deltaTimer.GetTicks() - frameStartTime;
-		m_deltaTimer.Reset();
+		//deltaTime = m_deltaTimer.GetTicks() - frameStartTime;
+		//m_deltaTimer.Reset();
 	}
 
 	shutdown();
