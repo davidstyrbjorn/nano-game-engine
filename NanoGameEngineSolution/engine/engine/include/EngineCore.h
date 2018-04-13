@@ -16,7 +16,7 @@ class EngineCore {
 
 public:
 	// Constructor
-	EngineCore() { }
+	EngineCore();
 
 	// Destructor
 	~EngineCore();
@@ -29,6 +29,7 @@ public:
 
 	// Main engine loop, root of the program
 	void mainLoop();
+	void fixedLoop();
 
 private:
 	EngineConfig *m_engineConfig;

@@ -3,7 +3,7 @@
 int main()
 {
 	nano::engine::EngineCore engine;
-	engine.init();
+	//engine.init();
 
 	std::cin.get();
 	return 0;

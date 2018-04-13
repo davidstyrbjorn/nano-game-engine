@@ -5,8 +5,20 @@
 #include<graphics\Simple_Renderer.h>
 
 #include<thread>
+#include<Windows.h>
 
-namespace nano { namespace engine {  
+namespace nano { namespace engine {
+
+EngineCore::EngineCore()
+{
+	init();
+
+	std::thread th(&EngineCore::mainLoop, this);
+	std::thread th2(&EngineCore::fixedLoop, this);
+
+	th.join();
+	th2.join();
+}
 
 EngineCore::~EngineCore()
 {
@@ -54,28 +66,11 @@ void EngineCore::init()
 
 void EngineCore::mainLoop()
 {
-	// Start delta timer clock
-	m_deltaTimer.Start();
-	float deltaTime = 1.0f;
-	float frameStartTime;
-
-	Clock fixedUpdateTimer;
-	fixedUpdateTimer.Reset();
-	fixedUpdateTimer.Start();
-
 	// Enter the main loop
 	while (m_windowSystem->getWindow().IsOpen()) 
 	{
-		// Set the frame start time
-		frameStartTime = m_deltaTimer.GetTicks();
-
 		// Clear the window for new frame
 		m_windowSystem->getWindow().Clear(math::Vector4(0.1f, 0.1f, 0.1f, 0));
-
-		// @TODO: Thread?
-		if (fixedUpdateTimer.GetTicks() == (60 / 1000)) {
-
-		}
 
 		// Regular Update
 		m_worldSystem->update();
@@ -91,13 +86,16 @@ void EngineCore::mainLoop()
 		// Finish the frame
 		m_inputSystem->flushEvents();
 		m_windowSystem->getWindow().Display();
-
-		// Now measure delta time
-		//deltaTime = m_deltaTimer.GetTicks() - frameStartTime;
-		//m_deltaTimer.Reset();
 	}
 
 	shutdown();
+}
+
+void EngineCore::fixedLoop()
+{				 				
+	while (m_windowSystem->getWindow().IsOpen()) {
+		std::cout << "Fixed Update" << std::endl;
+	}
 }
 
 } }
