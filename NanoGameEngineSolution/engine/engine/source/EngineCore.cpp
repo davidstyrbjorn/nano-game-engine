@@ -7,17 +7,14 @@
 #include<thread>
 #include<Windows.h>
 
+#define FIXED_TICK_RATE 30 // ticks per second in the fixed loop
+#define FIXED_MS 1000/FIXED_TICK_RATE // ms between each tick
+
 namespace nano { namespace engine {
 
 EngineCore::EngineCore()
 {
 	init();
-
-	std::thread th(&EngineCore::mainLoop, this);
-	std::thread th2(&EngineCore::fixedLoop, this);
-
-	th.join();
-	th2.join();
 }
 
 EngineCore::~EngineCore()
@@ -66,15 +63,35 @@ void EngineCore::init()
 
 void EngineCore::mainLoop()
 {
+	Clock fixedLoopTimer;
+	Clock temp;
+	temp.Reset();
+	temp.Start();
+	int count = 0;
+	fixedLoopTimer.Reset();
+	fixedLoopTimer.Start();
+
 	// Enter the main loop
 	while (m_windowSystem->getWindow().IsOpen()) 
 	{
+		if (temp.GetTicks() >= 1000) {
+			std::cout << count << std::endl;
+			count = 0;
+			temp.Reset();
+		}
+
 		// Clear the window for new frame
 		m_windowSystem->getWindow().Clear(math::Vector4(0.1f, 0.1f, 0.1f, 0));
 
 		// Regular Update
 		m_worldSystem->update();
 		m_inputSystem->update();
+		// Fixed Update
+		if (fixedLoopTimer.GetTicks() >= FIXED_MS) {
+			fixedLoop();
+			count++;
+			fixedLoopTimer.Reset();
+		}
 
 		// Reset the renderer for this frame
 		m_rendererSystem->getRenderer().Begin();
@@ -92,10 +109,9 @@ void EngineCore::mainLoop()
 }
 
 void EngineCore::fixedLoop()
-{				 				
-	while (m_windowSystem->getWindow().IsOpen()) {
-		std::cout << "Fixed Update" << std::endl;
-	}
+{
+	// Do everything fixed update-y
+	m_worldSystem->fixedUpdate();
 }
 
 } }
