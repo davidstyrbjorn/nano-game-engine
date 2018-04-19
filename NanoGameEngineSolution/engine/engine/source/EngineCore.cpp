@@ -74,12 +74,6 @@ void EngineCore::mainLoop()
 	// Enter the main loop
 	while (m_windowSystem->getWindow().IsOpen()) 
 	{
-		if (temp.GetTicks() >= 1000) {
-			std::cout << count << std::endl;
-			count = 0;
-			temp.Reset();
-		}
-
 		// Clear the window for new frame
 		m_windowSystem->getWindow().Clear(math::Vector4(0.1f, 0.1f, 0.1f, 0));
 

@@ -197,6 +197,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="include\ecs\components\SoundComponent.cpp" />
+    <ClCompile Include="include\new_ecs\n_Entity.cpp" />
     <ClCompile Include="source\Asset.cpp" />
     <ClCompile Include="source\Camera.cpp" />
     <ClCompile Include="source\Clock.cpp" />
@@ -260,6 +261,8 @@
     <ClInclude Include="include\math\Vector2.h" />
     <ClInclude Include="include\math\Vector3.h" />
     <ClInclude Include="include\math\Vector4.h" />
+    <ClInclude Include="include\new_ecs\n_ComponentTypes.h" />
+    <ClInclude Include="include\new_ecs\n_Entity.h" />
     <ClInclude Include="include\opengl\IndexBuffer.h" />
     <ClInclude Include="include\opengl\NanoOpenGL.h" />
     <ClInclude Include="include\opengl\NanoOpenGLBase.h" />
