@@ -5,7 +5,20 @@
 #include"ECS.h"
 #include"../graphics/Renderable.h"
 
+// Component includes
+#include"components\RectangleComponent.h"
+#include"components\TriangleComponent.h"
+#include"components\SpriteComponent.h"
+#include"components\SoundComponent.h"
+
 namespace nano { namespace ecs {
+
+	enum _ComponentTypes {
+		TRIANGLE_COMPONENT,
+		RECTANGLE_COMPONENT,
+		SPRITE_COMPONENT,
+		SOUND_COMPONENT,
+	};
 
 	class Transform;
 	class Component;
@@ -15,14 +28,16 @@ namespace nano { namespace ecs {
 		std::string m_id;
 		ECSStates m_state = ECSStates::ACTIVE;
 
-		std::vector<Component*> m_componentsBag;
-
-		// Keeping track of the renderable component attatched to entity
-		graphics::Renderable *m_renderableComponent;
+		graphics::Renderable* m_Renderable = nullptr;
+		Component *m_RenderableComponent = nullptr;
+		SoundComponent* m_SoundComponent = nullptr;
+		Transform *m_TranformComponent = nullptr;
 
 	public:
-		// Every entity has a transform component
-		Transform *m_transform;
+		// Getters for components
+		Transform* Transform();
+		graphics::Renderable* Renderable();
+		SoundComponent* SoundComponent();
 
 	public:
 		// Default constrcutor
@@ -30,9 +45,6 @@ namespace nano { namespace ecs {
 
 		// Constructor (string argument)
 		Entity(const std::string &a_id);
-
-		// Constructor (char* argument)
-		Entity(const char* a_id);
 
 		// Destructor
 		~Entity();
@@ -43,24 +55,9 @@ namespace nano { namespace ecs {
 		//////////
 
 		//////////
-		// \brief Pushes back component into components bag/list
+		// \brief Adds component of a_type to entity
 		//
-		Component* AddComponent(Component* a_componentToAdd);
-
-		//////////
-		// \brief Returns the component of type ComponentType if it exists in the components bag/list
-		//
-		template<typename ComponentType>
-		ComponentType* GetComponent() {
-			static std::string _componentName = typeid(ComponentType).name(); // Unique for each version of this methods
-			for (int i = 0; i < m_componentsBag.size(); i++) {
-				if (_componentName == typeid(*m_componentsBag[i]).name()) {
-					return static_cast<ComponentType*>(m_componentsBag[i]);
-				}
-			}
-
-			return nullptr;
-		}
+		Component* AddComponent(_ComponentTypes a_type);
 
 		//////////
 		// Behavioural Methods
@@ -75,14 +72,11 @@ namespace nano { namespace ecs {
 		std::string GetID();
 		std::string GetIDReference();
 		int GetState();
-		graphics::Renderable* GetRenderableComponent();
 
 		//////////
 		// Member setters
 		//////////		
 		void SetID(const std::string &a_id);
 		void SetState(const int a_state);
-		void SetRenderableComponent(graphics::Renderable* a_renderable);
 	};
-	
 } }

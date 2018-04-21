@@ -1,14 +1,11 @@
 #pragma once
 
-#include"../../graphics/Renderable.h"
-#include"../Component.h"
-
-#include"../../math/Vector2.h"
-#include"../../math/Vector4.h"
+#include"../RenderableComponent.h"
 
 namespace nano { namespace ecs { 
 
-	class RectangleComponent : public graphics::Renderable, public Component
+	//class RectangleComponent : public graphics::Renderable, public Component
+	class RectangleComponent : RenderableComponent
 	{
 	public:
 		// Inits the neccesary data
@@ -23,7 +20,7 @@ namespace nano { namespace ecs {
 		RectangleComponent(const math::Vector4& a_color);
 
 		// Override for the renderer 
-		int GetVertexCount() override { return 4; }
+		int getVertexCount() const override { return 4; }
 
 		// Override
 		ECSTickStates GetTickState() const override { return ECSTickStates::NEVER; }
