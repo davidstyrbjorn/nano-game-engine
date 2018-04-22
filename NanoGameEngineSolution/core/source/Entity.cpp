@@ -3,6 +3,13 @@
 #include"../include/ecs/Component.h"
 #include"../include/ecs/components/TransformComponent.h"
 
+#include"../include/ecs/components/RectangleComponent.h"
+#include"../include/ecs/components/TriangleComponent.h"
+#include"../include/ecs/components/SpriteComponent.h"
+#include"../include/ecs/components/SoundComponent.h"
+
+#include"../include/ecs/RenderableComponent.h"
+
 namespace nano { namespace ecs {
 
 	Transform * Entity::Transform()
@@ -70,6 +77,10 @@ namespace nano { namespace ecs {
 
 			return m_RenderableComponent;
 			break;
+		case _ComponentTypes::SOUND_COMPONENT:
+			m_SoundComponent = new ecs::SoundComponent();
+			m_SoundComponent->SetEntityOwner(this);
+			m_SoundComponent->Init();
 		}
 	}
 

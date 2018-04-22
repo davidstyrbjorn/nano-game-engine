@@ -2,6 +2,8 @@
 
 #include"../include/systems/WorldSystem.h"
 
+#include<iostream>
+
 namespace nano { namespace editor {
 
 	void WorldSystem::AddNewEntity(ecs::Entity * a_entityToAdd)

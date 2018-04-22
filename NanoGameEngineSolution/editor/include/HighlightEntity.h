@@ -1,7 +1,7 @@
 #pragma once
 
 #include<ecs\Entity.h>
-#include<graphics\Renderable.h>
+#include<ecs\RenderableComponent.h>
 
 namespace nano { namespace editor { 
 
@@ -9,7 +9,7 @@ namespace nano { namespace editor {
 	private:
 		ecs::Entity* m_entityToHighlight;
 		ecs::Entity* m_thisEntity;
-		graphics::Renderable* m_thisRenderable;
+		ecs::RenderableComponent* m_thisRenderable;
 
 	public:
 		HighlightEntity();
@@ -17,7 +17,7 @@ namespace nano { namespace editor {
 
 		void Update();
 		void SetNewHighlightedEntity(ecs::Entity* a_entity);
-		graphics::Renderable* GetRenderable();
+		ecs::RenderableComponent* GetRenderable();
 
 		bool ShouldHighlight() const;
 	};

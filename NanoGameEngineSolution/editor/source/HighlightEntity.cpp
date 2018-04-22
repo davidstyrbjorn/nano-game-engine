@@ -12,9 +12,9 @@ namespace nano { namespace editor {
 		m_thisEntity = new ecs::Entity("entity");
 		m_thisEntity->Start();
 
-		m_thisEntity->AddComponent(new ecs::SpriteComponent());
-		m_thisEntity->GetComponent<ecs::SpriteComponent>()->LoadAsset((asset::Asset*)AssetSystem::getInstance()->getHighlightAsset());
-		m_thisRenderable = m_thisEntity->GetRenderableComponent();
+		m_thisEntity->AddComponent(ecs::_ComponentTypes::SPRITE_COMPONENT);
+		m_thisEntity->Renderable()->LoadAsset((asset::Asset*)AssetSystem::getInstance()->getHighlightAsset());
+		m_thisRenderable = m_thisEntity->Renderable();
 	}
 
 	HighlightEntity::~HighlightEntity()
@@ -26,8 +26,8 @@ namespace nano { namespace editor {
 	{
 		if (m_entityToHighlight != nullptr) 
 		{
-			m_thisEntity->m_transform->size = m_entityToHighlight->m_transform->size;
-			m_thisEntity->m_transform->position = m_entityToHighlight->m_transform->position;
+			m_thisEntity->Transform()->size = m_entityToHighlight->Transform()->size;
+			m_thisEntity->Transform()->position = m_entityToHighlight->Transform()->position;
 		}
 	}
 
@@ -36,7 +36,7 @@ namespace nano { namespace editor {
 		m_entityToHighlight = a_entity;
 	}
 
-	graphics::Renderable * HighlightEntity::GetRenderable()
+	ecs::RenderableComponent * HighlightEntity::GetRenderable()
 	{
 		return m_thisRenderable;
 	}

@@ -4,13 +4,10 @@
 #include<vector>
 #include"ECS.h"
 
-// Component includes
-#include"components\RectangleComponent.h"
-#include"components\TriangleComponent.h"
-#include"components\SpriteComponent.h"
-#include"components\SoundComponent.h"
-
 namespace nano { namespace ecs {
+
+	class RenderableComponent;
+	class SoundComponent;
 
 	enum _ComponentTypes {
 		TRIANGLE_COMPONENT,

@@ -11,13 +11,8 @@
 
 // FWD
 namespace nano {
-	namespace graphics {
-		class Renderable;
-		//  -> class TriangleComponent;
-		//  -> class RectangleComponent;
-		//  -> class SpriteComponent;
-	}
 	namespace ecs {
+		class RenderableComponent;
 		class Entity;
 		class Component;
 		class SoundComponent;
@@ -83,7 +78,7 @@ namespace nano { namespace editor {
 		bool m_showScriptBrowser = false;
 
 		ecs::Component *m_assetComponent;
-		graphics::Renderable *m_renderableComponent;
+		ecs::RenderableComponent *m_renderableComponent;
 		ecs::SoundComponent *m_soundComponent;
 		FourwayMoveComponentEditor *m_fourwayMoveComponent;
 		ScriptComponent* m_scriptComponent;

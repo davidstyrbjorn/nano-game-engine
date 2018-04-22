@@ -1,7 +1,8 @@
 #include"../include/LevelParser.h"
 
 #include<ecs\Entity.h>
-#include<graphics\Renderable.h>
+//#include<graphics\Renderable.h>
+#include<ecs\RenderableComponent.h>
 #include<ecs\components\SpriteComponent.h>
 #include<ecs\components\TriangleComponent.h>
 #include<ecs\components\RectangleComponent.h>
@@ -66,19 +67,19 @@ namespace nano { namespace editor {
 				int splitIndex = line.find(',');
 				float x = std::stof(line.substr(4, splitIndex));
 				float y = std::stof(line.substr(splitIndex + 1, line.length()));
-				baby->m_transform->position = math::Vector2(x, y);
+				baby->Transform()->position = math::Vector2(x, y);
 			}
 			// Size
 			else if (line.substr(0, 4) == "size") {
 				int splitIndex = line.find(',');
 				float x = std::stof(line.substr(5, splitIndex));
 				float y = std::stof(line.substr(splitIndex + 1, line.length()));
-				baby->m_transform->size = math::Vector2(x, y);
+				baby->Transform()->size = math::Vector2(x, y);
 			}
 			// Angle
 			else if (line.substr(0, 5) == "angle") {
 				float angle = std::stoi(line.substr(6, line.length()));
-				baby->m_transform->angle = angle;
+				baby->Transform()->angle = angle;
 			}
 			// Renderable 
 			// 1. vertex_count
@@ -105,18 +106,18 @@ namespace nano { namespace editor {
 				// Now add component!
 				if (vertex_count == 3) {
 					// Triangle 
-					baby->AddComponent(new ecs::TriangleComponent(color));
+					baby->AddComponent(ecs::_ComponentTypes::TRIANGLE_COMPONENT);
 				}
 				else if (vertex_count == 4) {
 					// Rectangle OR Sprite
 					if (assetName == "none") {
 						// Rectangle
-						baby->AddComponent(new ecs::RectangleComponent(color));
+						baby->AddComponent(ecs::_ComponentTypes::RECTANGLE_COMPONENT);
 					}
 					else {
 						// Sprite
-						baby->AddComponent(new ecs::SpriteComponent());
-						baby->GetComponent<ecs::SpriteComponent>()->LoadAsset(AssetSystem::getInstance()->getImageAssetByHndl(assetName));
+						baby->AddComponent(ecs::_ComponentTypes::SPRITE_COMPONENT);
+						baby->Renderable()->LoadAsset(AssetSystem::getInstance()->getImageAssetByHndl(assetName));
 					}
 				}
 			}
@@ -124,9 +125,9 @@ namespace nano { namespace editor {
 			// 1. Sound Path
 			if (line.substr(0, 16) == "sound_asset_name") {
 				std::string assetName = line.substr(17, line.length());
-				baby->AddComponent(new ecs::SoundComponent());
+				baby->AddComponent(ecs::_ComponentTypes::SOUND_COMPONENT);
 				if (assetName != "none") {
-					baby->GetComponent<ecs::SoundComponent>()->LoadAsset(AssetSystem::getInstance()->getSoundAssetByHndl(assetName));
+					baby->SoundComponent()->LoadAsset(AssetSystem::getInstance()->getSoundAssetByHndl(assetName));
 				}
 			}
 			// FourwayMoveComponentEditor 
@@ -150,12 +151,12 @@ namespace nano { namespace editor {
 			else if (line.substr(0, 5) == "speed") {
 				float speed = std::stof(line.substr(6, line.length()));
 				int keys[4] = { up, right, down, left };
-				baby->AddComponent(new FourwayMoveComponentEditor(speed, keys));
+				//baby->AddComponent(new FourwayMoveComponentEditor(speed, keys)); @@
 			}
 			// Script Component Editor
 			if (line.substr(0, 4) == "hndl") {
 				std::string scriptHndl = line.substr(5, line.length() - 5);
-				baby->AddComponent(new ScriptComponent(scriptHndl));
+				//baby->AddComponent(new ScriptComponent(scriptHndl)); @@
 			}
 		}
 
@@ -181,7 +182,7 @@ namespace nano { namespace editor {
 		// Transform
 		nano::WriteToFile("transform", true);
 		// dereferencing null pointer is a null-problem, we know every entity has a m_transform component on it
-		ecs::Transform transform = *a_entity->m_transform;
+		ecs::Transform transform = *a_entity->Transform(); 
 		std::string posString = "pos " + transform.position.ToString();
 		std::string sizeString = "size " + transform.size.ToString();
 		std::string angleString = "angle " + to_string_with_precision<float>(transform.angle, 3);
@@ -191,18 +192,18 @@ namespace nano { namespace editor {
 
 		// 1. Renderable, sound component, fourwaymove component
 		nano::WriteToFile("renderable", true);
-		graphics::Renderable* renderable = a_entity->GetRenderableComponent();
+		ecs::RenderableComponent* renderable = a_entity->Renderable();
 		if (renderable != nullptr) {
 			// Vertex count
-			std::string vertexCountString = "vertex_count " + std::to_string(renderable->GetVertexCount());
+			std::string vertexCountString = "vertex_count " + std::to_string(renderable->getVertexCount());
 			nano::WriteToFile(vertexCountString.c_str(), true);
 
 			// Color
-			std::string colorString = "color " + renderable->GetColor().ToString();
+			std::string colorString = "color " + renderable->getColor().ToString();
 			nano::WriteToFile(colorString.c_str(), true);
 
 			// Texture path
-			ecs::SpriteComponent *spriteComponent = a_entity->GetComponent<ecs::SpriteComponent>();
+			ecs::SpriteComponent *spriteComponent = dynamic_cast<ecs::SpriteComponent*>(renderable);
 			if (spriteComponent != nullptr) {
 				std::string imagePathString = "image_asset_name " + spriteComponent->getImageAsset()->getFileName();
 				nano::WriteToFile(imagePathString, true);
@@ -216,7 +217,7 @@ namespace nano { namespace editor {
 		}
 
 		nano::WriteToFile("sound component", true);
-		ecs::SoundComponent* soundComponent = a_entity->GetComponent<ecs::SoundComponent>();
+		ecs::SoundComponent* soundComponent = a_entity->SoundComponent();
 		if (soundComponent != nullptr) {
 			if (soundComponent->getSoundAsset() != nullptr) {
 				std::string soundPathString = "sound_asset_name " + std::string(soundComponent->getSoundAsset()->getFileName());
@@ -230,34 +231,35 @@ namespace nano { namespace editor {
 			nano::WriteToFile("none", true);
 		}
 
-		nano::WriteToFile("fourway move component", true);
-		FourwayMoveComponentEditor *fwmComponent = a_entity->GetComponent<FourwayMoveComponentEditor>();
-		if (fwmComponent != nullptr) {
-			std::string upString = "up " + std::to_string(fwmComponent->GetKey("up"));
-			std::string  rightString = "right " + std::to_string(fwmComponent->GetKey("right"));
-			std::string downString = "down " + std::to_string(fwmComponent->GetKey("down"));
-			std::string leftString = "left " + std::to_string(fwmComponent->GetKey("left"));
-			// velocity should be reserved for physics terminology
-			std::string velocityString = "speed " + to_string_with_precision<float>(fwmComponent->GetVelocity(), 3);
-
-			nano::WriteToFile(upString, true);
-			nano::WriteToFile(rightString, true);
-			nano::WriteToFile(downString, true);
-			nano::WriteToFile(leftString, true);
-			nano::WriteToFile(velocityString, true);
-		}
-		else {
-			nano::WriteToFile("none", true);
-		}
-		nano::WriteToFile("script component", true);
-		ScriptComponent* scriptComponent = a_entity->GetComponent<ScriptComponent>();
-		if (scriptComponent != nullptr) {
-			std::string hndl = "hndl " + scriptComponent->getScriptHndl();
-			nano::WriteToFile(hndl, true);
-		}
-		else {
-			nano::WriteToFile("none", true);
-		}
+		// @@
+		//nano::WriteToFile("fourway move component", true);
+		//FourwayMoveComponentEditor *fwmComponent = a_entity->GetComponent<FourwayMoveComponentEditor>();
+		//if (fwmComponent != nullptr) {
+		//	std::string upString = "up " + std::to_string(fwmComponent->GetKey("up"));
+		//	std::string  rightString = "right " + std::to_string(fwmComponent->GetKey("right"));
+		//	std::string downString = "down " + std::to_string(fwmComponent->GetKey("down"));
+		//	std::string leftString = "left " + std::to_string(fwmComponent->GetKey("left"));
+		//	// velocity should be reserved for physics terminology
+		//	std::string velocityString = "speed " + to_string_with_precision<float>(fwmComponent->GetVelocity(), 3);
+		//
+		//	nano::WriteToFile(upString, true);
+		//	nano::WriteToFile(rightString, true);
+		//	nano::WriteToFile(downString, true);
+		//	nano::WriteToFile(leftString, true);
+		//	nano::WriteToFile(velocityString, true);
+		//}
+		//else {
+		//	nano::WriteToFile("none", true);
+		//}
+		//nano::WriteToFile("script component", true);
+		//ScriptComponent* scriptComponent = a_entity->GetComponent<ScriptComponent>();
+		//if (scriptComponent != nullptr) {
+		//	std::string hndl = "hndl " + scriptComponent->getScriptHndl();
+		//	nano::WriteToFile(hndl, true);
+		//}
+		//else {
+		//	nano::WriteToFile("none", true);
+		//}
 
 		nano::CloseOutputFile();
 	}
@@ -332,19 +334,19 @@ namespace nano { namespace editor {
 					int splitIndex = line.find(',');
 					float x = std::stof(line.substr(4, splitIndex));
 					float y = std::stof(line.substr(splitIndex + 1, line.length()));
-					entityToAdd->m_transform->position = math::Vector2(x, y);
+					entityToAdd->Transform()->position = math::Vector2(x, y);
 				}
 				// Size
 				else if (line.substr(0, 4) == "size") {
 					int splitIndex = line.find(',');
 					float x = std::stof(line.substr(5, splitIndex));
 					float y = std::stof(line.substr(splitIndex + 1, line.length()));
-					entityToAdd->m_transform->size = math::Vector2(x, y);
+					entityToAdd->Transform()->size = math::Vector2(x, y);
 				}
 				// Angle
 				else if (line.substr(0, 5) == "angle") {
 					float angle = std::stoi(line.substr(6, line.length()));
-					entityToAdd->m_transform->angle = angle;
+					entityToAdd->Transform()->angle = angle;
 				}
 				// Renderable 
 				// 1. vertex_count
@@ -371,18 +373,18 @@ namespace nano { namespace editor {
 					// Now add component!
 					if (vertex_count == 3) {
 						// Triangle 
-						entityToAdd->AddComponent(new ecs::TriangleComponent(color));
+						entityToAdd->AddComponent(ecs::_ComponentTypes::TRIANGLE_COMPONENT);
 					}
 					else if (vertex_count == 4) {
 						// Rectangle OR Sprite
 						if (assetName == "none") {
 							// Rectangle
-							entityToAdd->AddComponent(new ecs::RectangleComponent(color));
+							entityToAdd->AddComponent(ecs::_ComponentTypes::RECTANGLE_COMPONENT);
 						}
 						else {
 							// Sprite
-							entityToAdd->AddComponent(new ecs::SpriteComponent());
-							entityToAdd->GetComponent<ecs::SpriteComponent>()->LoadAsset(AssetSystem::getInstance()->getImageAssetByHndl(assetName));
+							entityToAdd->AddComponent(ecs::_ComponentTypes::SPRITE_COMPONENT);
+							entityToAdd->Renderable()->LoadAsset(AssetSystem::getInstance()->getImageAssetByHndl(assetName));
 						}
 					}
 				}
@@ -390,9 +392,9 @@ namespace nano { namespace editor {
 				// 1. Sound Path
 				if (line.substr(0, 16) == "sound_asset_name") {
 					std::string assetName = line.substr(17, line.length());
-					entityToAdd->AddComponent(new ecs::SoundComponent());
+					entityToAdd->AddComponent(ecs::_ComponentTypes::SOUND_COMPONENT);
 					if (assetName != "none") {
-						entityToAdd->GetComponent<ecs::SoundComponent>()->LoadAsset(AssetSystem::getInstance()->getSoundAssetByHndl(assetName));
+						entityToAdd->SoundComponent()->LoadAsset(AssetSystem::getInstance()->getSoundAssetByHndl(assetName));
 					}
 				}
 				// FourwayMoveComponentEditor 
@@ -413,16 +415,17 @@ namespace nano { namespace editor {
 					left = std::stoi(line.substr(5, line.length()));
 				}
 				// 5. speed (and done now add component)
-				else if (line.substr(0, 5) == "speed") {
-					speed = std::stof(line.substr(6, line.length()));
-					int keys[4] = { up, right, down, left };
-					entityToAdd->AddComponent(new FourwayMoveComponentEditor(speed, keys));
-				}
-				// Script Component Editor
-				if (line.substr(0, 4) == "hndl") {
-					std::string scriptHndl = line.substr(5, line.length() - 5);
-					entityToAdd->AddComponent(new ScriptComponent(scriptHndl));
-				}
+				// @@
+				//else if (line.substr(0, 5) == "speed") {
+				//	speed = std::stof(line.substr(6, line.length()));
+				//	int keys[4] = { up, right, down, left };
+				//	entityToAdd->AddComponent(new FourwayMoveComponentEditor(speed, keys));
+				//}
+				//// Script Component Editor
+				//if (line.substr(0, 4) == "hndl") {
+				//	std::string scriptHndl = line.substr(5, line.length() - 5);
+				//	entityToAdd->AddComponent(new ScriptComponent(scriptHndl));
+				//}
 			}
 		}
 
@@ -475,7 +478,7 @@ namespace nano { namespace editor {
 			// Transform
 			nano::WriteToFile("transform", true);
 			// dereferencing null pointer is a null-problem, we know every entity has a m_transform component on it
-			ecs::Transform transform = *entity->m_transform;
+			ecs::Transform transform = *entity->Transform();
 			std::string posString = "pos " + transform.position.ToString();
 			std::string sizeString = "size " + transform.size.ToString();
 			std::string angleString = "angle " + to_string_with_precision<float>(transform.angle, 3);
@@ -485,18 +488,18 @@ namespace nano { namespace editor {
 
 			// 1. Renderable, sound component, fourwaymove component
 			nano::WriteToFile("renderable", true);
-			graphics::Renderable* renderable = entity->GetRenderableComponent();
+			ecs::RenderableComponent* renderable = entity->Renderable();
 			if (renderable != nullptr) {
 				// Vertex count
-				std::string vertexCountString = "vertex_count " + std::to_string(renderable->GetVertexCount());
+				std::string vertexCountString = "vertex_count " + std::to_string(renderable->getVertexCount());
 				nano::WriteToFile(vertexCountString.c_str(), true);
 
 				// Color
-				std::string colorString = "color " + renderable->GetColor().ToString();
+				std::string colorString = "color " + renderable->getColor().ToString();
 				nano::WriteToFile(colorString.c_str(), true);
 
 				// Texture path
-				ecs::SpriteComponent *spriteComponent = entity->GetComponent<ecs::SpriteComponent>();
+				ecs::SpriteComponent *spriteComponent = dynamic_cast<ecs::SpriteComponent*>(renderable);
 				if (spriteComponent != nullptr) {
 					std::string imagePathString = "image_asset_name " + spriteComponent->getImageAsset()->getFileName();
 					nano::WriteToFile(imagePathString, true);
@@ -510,7 +513,7 @@ namespace nano { namespace editor {
 			}
 			
 			nano::WriteToFile("sound component", true);
-			ecs::SoundComponent* soundComponent = entity->GetComponent<ecs::SoundComponent>();
+			ecs::SoundComponent* soundComponent = entity->SoundComponent();
 			if (soundComponent != nullptr) {
 				if (soundComponent->getSoundAsset() != nullptr) {
 					std::string soundPathString = "sound_asset_name " + std::string(soundComponent->getSoundAsset()->getFileName());
@@ -524,34 +527,35 @@ namespace nano { namespace editor {
 				nano::WriteToFile("none", true);
 			}
 
-			nano::WriteToFile("fourway move component", true);
-			FourwayMoveComponentEditor *fwmComponent = entity->GetComponent<FourwayMoveComponentEditor>();
-			if (fwmComponent != nullptr) {
-				std::string upString = "up " + std::to_string(fwmComponent->GetKey("up"));
-				std::string  rightString = "right " + std::to_string(fwmComponent->GetKey("right"));
-				std::string downString = "down " + std::to_string(fwmComponent->GetKey("down"));
-				std::string leftString = "left " + std::to_string(fwmComponent->GetKey("left"));
-				// velocity should be reserved for physics terminology
-				std::string velocityString = "speed " + to_string_with_precision<float>(fwmComponent->GetVelocity(), 3);
-
-				nano::WriteToFile(upString, true);
-				nano::WriteToFile(rightString, true);
-				nano::WriteToFile(downString, true);
-				nano::WriteToFile(leftString, true);
-				nano::WriteToFile(velocityString, true);
-			}
-			else {
-				nano::WriteToFile("none", true);
-			}
-			nano::WriteToFile("script component", true);
-			ScriptComponent* scriptComponent = entity->GetComponent<ScriptComponent>();
-			if (scriptComponent != nullptr) {
-				std::string hndl = "hndl " + scriptComponent->getScriptHndl();
-				nano::WriteToFile(hndl, true);
-			}
-			else {
-				nano::WriteToFile("none", true);
-			}
+			// @@
+			//nano::WriteToFile("fourway move component", true);
+			//FourwayMoveComponentEditor *fwmComponent = entity->GetComponent<FourwayMoveComponentEditor>();
+			//if (fwmComponent != nullptr) {
+			//	std::string upString = "up " + std::to_string(fwmComponent->GetKey("up"));
+			//	std::string  rightString = "right " + std::to_string(fwmComponent->GetKey("right"));
+			//	std::string downString = "down " + std::to_string(fwmComponent->GetKey("down"));
+			//	std::string leftString = "left " + std::to_string(fwmComponent->GetKey("left"));
+			//	// velocity should be reserved for physics terminology
+			//	std::string velocityString = "speed " + to_string_with_precision<float>(fwmComponent->GetVelocity(), 3);
+			//
+			//	nano::WriteToFile(upString, true);
+			//	nano::WriteToFile(rightString, true);
+			//	nano::WriteToFile(downString, true);
+			//	nano::WriteToFile(leftString, true);
+			//	nano::WriteToFile(velocityString, true);
+			//}
+			//else {
+			//	nano::WriteToFile("none", true);
+			//}
+			//nano::WriteToFile("script component", true);
+			//ScriptComponent* scriptComponent = entity->GetComponent<ScriptComponent>();
+			//if (scriptComponent != nullptr) {
+			//	std::string hndl = "hndl " + scriptComponent->getScriptHndl();
+			//	nano::WriteToFile(hndl, true);
+			//}
+			//else {
+			//	nano::WriteToFile("none", true);
+			//}
 
 			nano::InsertBlankLine();
 		}
