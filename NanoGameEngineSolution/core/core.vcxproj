@@ -202,6 +202,7 @@
     <ClCompile Include="source\Clock.cpp" />
     <ClCompile Include="source\ImageAsset.cpp" />
     <ClCompile Include="source\Random.cpp" />
+    <ClCompile Include="source\RenderableComponent.cpp" />
     <ClCompile Include="source\SoundAsset.cpp" />
     <ClCompile Include="source\SoundBuffer.cpp" />
     <ClCompile Include="source\SoundContextDevice.cpp" />
@@ -214,7 +215,6 @@
     <ClCompile Include="source\Entity.cpp" />
     <ClCompile Include="source\Matrix4x4.cpp" />
     <ClCompile Include="source\RectangleComponent.cpp" />
-    <ClCompile Include="source\Renderable.cpp" />
     <ClCompile Include="source\Shader.cpp" />
     <Text Include="main.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
@@ -250,7 +250,6 @@
     <ClInclude Include="include\FileHelp.h" />
     <ClInclude Include="include\graphics\Camera.h" />
     <ClInclude Include="include\graphics\GraphicsInclude.h" />
-    <ClInclude Include="include\graphics\Renderable.h" />
     <ClInclude Include="include\graphics\Shader.h" />
     <ClInclude Include="include\graphics\Simple_Renderer.h" />
     <ClInclude Include="include\graphics\Vertex.h" />

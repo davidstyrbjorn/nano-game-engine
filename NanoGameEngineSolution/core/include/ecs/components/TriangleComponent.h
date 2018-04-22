@@ -1,20 +1,17 @@
 #pragma once
 
-#include"../../graphics/Renderable.h"
-#include"../Component.h"
+#include"../RenderableComponent.h"
 
 #include"../../math/Vector2.h"
 #include"../../math/Vector4.h"
 
 namespace nano { namespace ecs {
 
-	class TriangleComponent : public graphics::Renderable, public Component
+	class TriangleComponent : public RenderableComponent
 	{
 	public:
 		// Inits the neccesary data
-		void Start() override;
-		void Init() override;
-		void OnStateChange(ECSStates a_newState) override;
+		void OnStateChange(ECSStates a_newState);
 
 		// Empty constructor
 		TriangleComponent();
@@ -23,10 +20,10 @@ namespace nano { namespace ecs {
 		TriangleComponent(const math::Vector4& a_color);
 
 		// Override for the renderer 
-		int GetVertexCount() override { return 3; }
+		int getVertexCount() const { return 3; }
 
 		// Override
-		ECSTickStates GetTickState() const override { return ECSTickStates::NEVER; }
+		ECSTickStates GetTickState() const { return ECSTickStates::NEVER; }
 	};
 
 } }

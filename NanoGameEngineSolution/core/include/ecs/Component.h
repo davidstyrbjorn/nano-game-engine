@@ -1,7 +1,7 @@
 #pragma once
 
 #include"ECS.h"
-#include"Entity.h"
+//#include"Entity.h"
 
 namespace nano {
 	namespace asset {
@@ -9,6 +9,8 @@ namespace nano {
 } }
 
 namespace nano { namespace ecs { 
+
+	class Entity;
 
 	class Component {
 	protected:

@@ -3,7 +3,6 @@
 #include<string>
 #include<vector>
 #include"ECS.h"
-#include"../graphics/Renderable.h"
 
 // Component includes
 #include"components\RectangleComponent.h"
@@ -28,15 +27,14 @@ namespace nano { namespace ecs {
 		std::string m_id;
 		ECSStates m_state = ECSStates::ACTIVE;
 
-		graphics::Renderable* m_Renderable = nullptr;
-		Component *m_RenderableComponent = nullptr;
+		RenderableComponent *m_RenderableComponent = nullptr;
 		SoundComponent* m_SoundComponent = nullptr;
 		Transform *m_TranformComponent = nullptr;
 
 	public:
 		// Getters for components
 		Transform* Transform();
-		graphics::Renderable* Renderable();
+		RenderableComponent* Renderable();
 		SoundComponent* SoundComponent();
 
 	public:

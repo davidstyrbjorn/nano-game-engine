@@ -1,7 +1,6 @@
 #pragma once
 
-#include"../../graphics/Renderable.h"
-#include"../Component.h"
+#include"../RenderableComponent.h"
 
 #include"../../math/Vector2.h"
 #include"../../math/Vector4.h"
@@ -13,27 +12,26 @@ namespace nano {
 
 namespace nano { namespace ecs {
 
-	class SpriteComponent : public graphics::Renderable, public Component
+	class SpriteComponent : public RenderableComponent
 	{
 	public:
+		void Init();
 		// Inits the neccesary data
-		void Start() override;
-		void Init() override;
 		void OnStateChange(ECSStates a_newState);
 
 		// Empty constructor
 		SpriteComponent();
 
 		// Loads new texture for sprite component
-		bool LoadAsset(asset::Asset* a_imageAsset) override;
+		bool LoadAsset(asset::Asset* a_assetPtr);
 		asset::ImageAsset* getImageAsset();
 		void setTransformSizeToAssetSize();
 
-		// Override for the renderer 
-		int GetVertexCount() override { return 4; }
+		// For the renderer 
+		int getVertexCount() const { return 4; }
 
 		// Override
-		ECSTickStates GetTickState() const override { return ECSTickStates::NEVER; }
+		ECSTickStates GetTickState() const { return ECSTickStates::NEVER; }
 
 	private:
 		asset::ImageAsset* m_imageAsset;

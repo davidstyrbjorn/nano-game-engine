@@ -5,13 +5,11 @@
 namespace nano { namespace ecs { 
 
 	//class RectangleComponent : public graphics::Renderable, public Component
-	class RectangleComponent : RenderableComponent
+	class RectangleComponent : public RenderableComponent
 	{
 	public:
 		// Inits the neccesary data
-		void Start() override;
-		void Init() override;
-		void OnStateChange(ECSStates a_newState) override;
+		void OnStateChange(ECSStates a_newState);
 
 		// Empty constructor
 		RectangleComponent();
@@ -20,10 +18,10 @@ namespace nano { namespace ecs {
 		RectangleComponent(const math::Vector4& a_color);
 
 		// Override for the renderer 
-		int getVertexCount() const override { return 4; }
+		int getVertexCount() const { return 4; }
 
 		// Override
-		ECSTickStates GetTickState() const override { return ECSTickStates::NEVER; }
+		ECSTickStates GetTickState() const { return ECSTickStates::NEVER; }
 	};
 
 } }

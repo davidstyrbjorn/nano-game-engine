@@ -10,6 +10,11 @@ namespace nano { namespace ecs {
 		return m_TranformComponent;
 	}
 
+	RenderableComponent * Entity::Renderable()
+	{
+		return m_RenderableComponent;
+	}
+
 	SoundComponent * Entity::SoundComponent()
 	{
 		return m_SoundComponent;
@@ -35,16 +40,6 @@ namespace nano { namespace ecs {
 
 	Entity::~Entity()
 	{
-		// pointer to m_renderableComponent does not need to be freed
-		// it will be freed afer we're done freeing every component in m_componentsBag!
-		///////////// OLD ///////////////
-		//for (std::vector<Component*>::iterator it = m_componentsBag.begin(); it != m_componentsBag.end(); ++it) {
-		//	delete (*it);
-		//}
-		//m_componentsBag.clear();
-		//
-		//delete m_transform;
-
 		// New
 		delete m_TranformComponent;
 		delete m_RenderableComponent;
@@ -56,14 +51,24 @@ namespace nano { namespace ecs {
 		switch (a_type) {
 		case _ComponentTypes::RECTANGLE_COMPONENT:
 			m_RenderableComponent = new RectangleComponent();
+			m_RenderableComponent->SetEntityOwner(this);
+			m_RenderableComponent->Init();
 			
 			return m_RenderableComponent;
 			break;
 		case _ComponentTypes::TRIANGLE_COMPONENT:
 			m_RenderableComponent = new TriangleComponent();
+			m_RenderableComponent->SetEntityOwner(this);
+			m_RenderableComponent->Init();
+
+			return m_RenderableComponent;
 			break;
 		case _ComponentTypes::SPRITE_COMPONENT:
 			m_RenderableComponent = new SpriteComponent();
+			m_RenderableComponent->SetEntityOwner(this);
+			m_RenderableComponent->Init();
+
+			return m_RenderableComponent;
 			break;
 		}
 	}

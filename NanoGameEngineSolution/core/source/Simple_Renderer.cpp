@@ -1,6 +1,7 @@
 #include"../include/graphics/Simple_Renderer.h"
 
-#include"../include/graphics/Renderable.h"
+#include"../include/ecs/Entity.h"
+#include"../include/ecs/RenderableComponent.h"
 #include"../include/graphics/Shader.h"
 #include"../include/math/Matrix4x4.h"
 #include"../include/graphics/Camera.h"
@@ -124,18 +125,18 @@ namespace nano { namespace graphics {
 		m_quadVBO->SetData(nullptr, QUAD_BUFFER_SIZE + GRID_BUFFER_SIZE, GL_DYNAMIC_DRAW);
 	}
 
-	void SimpleRenderer::Submit(Renderable * a_renderable)
+	void SimpleRenderer::Submit(ecs::RenderableComponent * a_renderable)
 	{
 		assert(a_renderable != nullptr); // nullptr to in-argument!
-		assert(a_renderable->GetVertexCount() != -1 || (m_quadCount + m_triangleCount) < MAX_PRIMITIVES); // Invalid argument or we've passed primitive threshold!
+		assert(a_renderable->getVertexCount() != -1 || (m_quadCount + m_triangleCount) < MAX_PRIMITIVES); // Invalid argument or we've passed primitive threshold!
 		
-		if (a_renderable->GetVertexCount() == 3) {
+		if (a_renderable->getVertexCount() == 3) {
 			// Triangle
 			GLintptr _offset = m_triangleCount * (TRIANGLE_SIZE);
 		
-			math::Vector2 pos = a_renderable->GetTransformComponent()->position;
-			math::Vector2 size = a_renderable->GetTransformComponent()->size;
-			math::Vector4 color = a_renderable->GetColor();
+			math::Vector2 pos = a_renderable->GetEntityOwner().Transform()->position;
+			math::Vector2 size = a_renderable->GetEntityOwner().Transform()->size;
+			math::Vector4 color = a_renderable->getColor();
 		
 			Vertex data[] = {
 				{ math::Vector2(pos.x,pos.y), color, math::Vector2(-1,-1) },
@@ -151,14 +152,14 @@ namespace nano { namespace graphics {
 		
 			m_triangleCount++;
 		}
-		else if (a_renderable->GetVertexCount() == 4) {
-			if (a_renderable->GetTexture() == nullptr) {
+		else if (a_renderable->getVertexCount() == 4) {
+			if (a_renderable->getTexture() == nullptr) {
 				// Quad
 				GLintptr _offset = m_quadCount * (QUAD_SIZE);
 				
-				math::Vector2 pos = a_renderable->GetTransformComponent()->position;
-				math::Vector2 size = a_renderable->GetTransformComponent()->size;
-				math::Vector4 color = a_renderable->GetColor();
+				math::Vector2 pos = a_renderable->GetEntityOwner().Transform()->position;
+				math::Vector2 size = a_renderable->GetEntityOwner().Transform()->size;
+				math::Vector4 color = a_renderable->getColor();
 		
 				Vertex data[] = {
 					{ math::Vector2(pos.x,pos.y), color, math::Vector2(-1,-1) },
@@ -181,7 +182,7 @@ namespace nano { namespace graphics {
 		}
 	}
 
-	void SimpleRenderer::AddTextureToRender(Renderable * a_renderable)
+	void SimpleRenderer::AddTextureToRender(ecs::RenderableComponent* a_renderable)
 	{
 		m_texturesToRender.push_back(a_renderable);
 	}
@@ -224,11 +225,11 @@ namespace nano { namespace graphics {
 		// Render the textures we want to render
 		while (!m_texturesToRender.empty()) 
 		{
-			Renderable* texturedRenderable = m_texturesToRender.front();
+			ecs::RenderableComponent* texturedRenderable = m_texturesToRender.front();
 		
-			math::Vector2 pos = texturedRenderable->GetTransformComponent()->position;
-			math::Vector2 size = texturedRenderable->GetTransformComponent()->size;
-			math::Vector4 color = texturedRenderable->GetColor();
+			math::Vector2 pos = texturedRenderable->GetEntityOwner().Transform()->position;
+			math::Vector2 size = texturedRenderable->GetEntityOwner().Transform()->size;
+			math::Vector4 color = texturedRenderable->getColor();
 				
 			Vertex data[] = {
 				{ math::Vector2(pos.x,pos.y), color, math::Vector2(0, 0) },
@@ -238,7 +239,7 @@ namespace nano { namespace graphics {
 			};
 		
 			// Bind
-			texturedRenderable->GetTexture()->Bind();
+			texturedRenderable->getTexture()->Bind();
 			m_textureVAO->Bind();
 			m_textureVBO->Bind();
 			m_textureIBO->Bind();
@@ -250,7 +251,7 @@ namespace nano { namespace graphics {
 			m_textureVAO->Unbind();
 			m_textureVBO->Unbind();
 			m_textureIBO->Unbind();
-			texturedRenderable->GetTexture()->Unbind();
+			texturedRenderable->getTexture()->Unbind();
 			
 			m_texturesToRender.pop_front();
 		}

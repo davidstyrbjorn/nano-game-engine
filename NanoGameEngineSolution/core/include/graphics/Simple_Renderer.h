@@ -18,9 +18,12 @@
 #define GRID_COUNT 100+2 // This would be the number for 1080x1920 resolution
 #define GRID_BUFFER_SIZE GRID_COUNT * QUAD_SIZE
 
-namespace nano { namespace graphics { 
+namespace nano { 
+namespace ecs {
+	class RenderableComponent;
+}
+namespace graphics { 
 
-	class Renderable;
 	class Shader;
 	class OrthographicCamera;
 
@@ -30,7 +33,7 @@ namespace nano { namespace graphics {
 		// We are going to render textures slow
 		// After the batch of triangles and quads have been rendered 
 		// We go through every texture and instance render them
-		std::deque<Renderable*> m_texturesToRender;
+		std::deque<ecs::RenderableComponent*> m_texturesToRender;
 
 		opengl::VertexBuffer *m_triangleVBO, *m_quadVBO, *m_textureVBO;
 		opengl::VertexArrayObject *m_triangleVAO, *m_quadVAO, *m_textureVAO;
@@ -42,7 +45,7 @@ namespace nano { namespace graphics {
 		OrthographicCamera *m_camera;
 		
 		// Private methods
-		void AddTextureToRender(Renderable* a_renderable);
+		void AddTextureToRender(ecs::RenderableComponent* a_renderable);
 		void PostFlush();
 
 	public:
@@ -65,7 +68,7 @@ namespace nano { namespace graphics {
 		//////////
 		// \brief Pushes back a_renderable to the render list
 		//
-		void Submit(Renderable* a_renderable);
+		void Submit(ecs::RenderableComponent* a_renderable);
 
 		//////////
 		// \brief Goes through and renders each primitive inside a_renderableList
