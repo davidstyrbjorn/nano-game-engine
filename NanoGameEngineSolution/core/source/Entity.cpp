@@ -81,23 +81,59 @@ namespace nano { namespace ecs {
 			m_SoundComponent = new ecs::SoundComponent();
 			m_SoundComponent->SetEntityOwner(this);
 			m_SoundComponent->Init();
+			break;
+		}
+	}
+
+	void Entity::RemoveComponent(_ComponentTypes a_type)
+	{
+		switch (a_type) {
+		case _ComponentTypes::RECTANGLE_COMPONENT || _ComponentTypes::TRIANGLE_COMPONENT || _ComponentTypes::SPRITE_COMPONENT:
+			delete m_RenderableComponent;
+			m_RenderableComponent = nullptr;
+			break;
+		case _ComponentTypes::SOUND_COMPONENT:
+			delete m_SoundComponent;
+			m_SoundComponent = nullptr;
+			break;
 		}
 	}
 
 	void Entity::Start()
 	{
+		// Call start on components
 		if (m_RenderableComponent != nullptr)
 			m_RenderableComponent->Start();
+		if (m_SoundComponent != nullptr)
+			m_SoundComponent->Start();
 	}
 
 	void Entity::Update()
 	{
-		
+		// Call update on components 
+
+		// Renderable Component
+		if (m_RenderableComponent != nullptr) {
+			m_RenderableComponent->Update();
+		}
+		// Sound Component
+		if (m_SoundComponent != nullptr) {
+			m_SoundComponent->Update();
+		}
 	}
 
 	void Entity::FixedUpdate()
 	{
-		
+		// Call fixed update on components
+
+		// Renderable Component
+		if (m_RenderableComponent != nullptr) {
+			m_RenderableComponent->FixedUpdate();
+		}
+		// Sound Component
+		if (m_SoundComponent != nullptr) {
+			m_SoundComponent->FixedUpdate();
+		}
 	}
 
 	std::string Entity::GetID()

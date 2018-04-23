@@ -45,11 +45,6 @@ namespace nano { namespace ecs {
 		virtual bool LoadAsset(asset::Asset* a_assetPtr) { return false; }
 
 		//////////
-		// \brief Gets called on component state change
-		//
-		virtual void OnStateChange(ECSStates a_newState) { }
-
-		//////////
 		// \brief Returns this components owner
 		//
 		Entity& GetEntityOwner();
@@ -67,10 +62,6 @@ namespace nano { namespace ecs {
 		// \brief Sets entities state
 		//
 		void SetState(const int a_state);
-
-		/////////
-		// \brief Returns this components tick state
-		virtual ECSTickStates GetTickState() const { return ECSTickStates::NEVER; }
 	};
 
 } } 

@@ -55,6 +55,11 @@ namespace nano { namespace ecs {
 		Component* AddComponent(_ComponentTypes a_type);
 
 		//////////
+		// \brief Removes component of a_type from entity
+		// 
+		void RemoveComponent(_ComponentTypes a_type);
+
+		//////////
 		// Behavioural Methods
 		//////////
 		void Start();
