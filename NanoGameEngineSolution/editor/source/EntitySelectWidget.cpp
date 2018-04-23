@@ -64,7 +64,7 @@ namespace nano { namespace editor {
 					{
 							bool hitDetect = false;
 							for (ecs::Entity* entity : m_entityManager->GetEntityList()) {
-								if (mousePos.x > entity->m_transform->position.x && mousePos.x < entity->m_transform->position.x + entity->m_transform->size.x && mousePos.y > entity->m_transform->position.y && mousePos.y < entity->m_transform->position.y + entity->m_transform->size.y) {
+								if (mousePos.x > entity->Transform()->position.x && mousePos.x < entity->Transform()->position.x + entity->Transform()->size.x && mousePos.y > entity->Transform()->position.y && mousePos.y < entity->Transform()->position.y + entity->Transform()->size.y) {
 									EditorWidgetSystem::getInstance()->GetEventHandler().AddEvent(BaseEvent(EventTypes::MANIPULATED_ENTITY, "entity_clicked", entity->GetID()));
 									hitDetect = true;
 								}
