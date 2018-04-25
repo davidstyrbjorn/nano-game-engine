@@ -14,15 +14,4 @@ namespace nano { namespace ecs {
 		m_owner = (Entity*)a_entity;
 	}
 
-	int ecs::Component::GetState()
-	{
-		return m_state;
-	}
-
-	void ecs::Component::SetState(const int a_state)
-	{
-		m_state = static_cast<ECSStates>(a_state);
-		OnStateChange(m_state);
-	}
-
 } }

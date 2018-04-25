@@ -25,9 +25,6 @@ namespace nano { namespace ecs {
 
 		// Other
 		void move(math::Vector2 a_direction, float a_speed);
-
-		// Override
-		ECSTickStates GetTickState() const override { return ECSTickStates::NEVER; }
 	};
 
 } }  

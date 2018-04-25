@@ -5,11 +5,6 @@
 
 namespace nano { namespace ecs {
 
-	void TriangleComponent::OnStateChange(ECSStates a_newState)
-	{
-
-	}
-
 	TriangleComponent::TriangleComponent()
 	{
 

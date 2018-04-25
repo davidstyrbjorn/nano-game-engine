@@ -18,7 +18,6 @@ namespace nano { namespace editor {
 		// Component base methods
 		virtual void Start() override;
 		virtual void Update() override;
-		ecs::ECSTickStates GetTickState() const override { return ecs::ECSTickStates::NEVER; }
 
 		// Member methods
 		float GetVelocity() { return m_velocity; }

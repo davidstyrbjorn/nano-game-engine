@@ -122,12 +122,15 @@ namespace nano { namespace editor {
 		{
 			i++; // Incrementer for selectable ID
 
-			if (entity->GetState() != ecs::ECSStates::DESTROYED) 
+			if (!entity->IsDead()) 
 			{
 				ImGui::PushItemWidth(30);
-				bool temp = entity->GetState() == ecs::ECSStates::ACTIVE ? true : false;
+				bool temp = entity->IsActive();
 				ImGui::Checkbox(std::string("##" + entity->GetID()).c_str(), &temp);
-				entity->SetState(temp);
+				if (temp == true)
+					entity->Enable();
+				else
+					entity->Disable();
 				ImGui::SameLine(33);
 
 				std::string selectableID = entity->GetID() + "##" + std::to_string(i);
@@ -156,7 +159,7 @@ namespace nano { namespace editor {
 			if (ImGui::Selectable("Destroy")) 
 			{
 				EditorWidgetSystem::getInstance()->GetEventHandler().AddEvent(BaseEvent(EventTypes::MANIPULATED_ENTITY, "entity_destroyed", m_leftClickedEntity->GetID()));
-				m_leftClickedEntity->SetState(ecs::ECSStates::DESTROYED);
+				m_leftClickedEntity->Kill();
 			}
 			if (ImGui::Selectable("Rename")) {
 				// Making sure we "clicekd" on entity before we rename it

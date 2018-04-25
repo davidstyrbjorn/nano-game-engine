@@ -22,7 +22,7 @@ namespace nano { namespace ecs {
 	class Entity {
 	private:
 		std::string m_id;
-		ECSStates m_state = ECSStates::ACTIVE;
+		bool m_isDead = false, m_isActive = true;
 
 		RenderableComponent *m_RenderableComponent = nullptr;
 		SoundComponent* m_SoundComponent = nullptr;
@@ -71,12 +71,16 @@ namespace nano { namespace ecs {
 		//////////
 		std::string GetID();
 		std::string GetIDReference();
-		int GetState();
+		bool IsDead();
+		bool IsActive();
 
 		//////////
 		// Member setters
 		//////////		
 		void SetID(const std::string &a_id);
-		void SetState(const int a_state);
+		void Kill();
+		void Toggle();
+		void Enable();
+		void Disable();
 	};
 } }

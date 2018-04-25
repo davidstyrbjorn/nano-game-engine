@@ -45,6 +45,7 @@ namespace nano { namespace editor {
 
 	void EntityInspectorWidget::Start()
 	{
+
 	}
 
 	void EntityInspectorWidget::Update()
@@ -65,7 +66,7 @@ namespace nano { namespace editor {
 					// Delete the current entity
 					if (_event.key == NANO_KEY_DELETE) {
 						std::string temp = m_entityToInspect->GetID();
-						m_entityToInspect->SetState(ecs::ECSStates::DESTROYED);
+						m_entityToInspect->Kill();
 						highlighEntity.SetNewHighlightedEntity(nullptr);
 						m_entityToInspect = nullptr;
 						EditorWidgetSystem::getInstance()->GetEventHandler().AddEvent(BaseEvent(EventTypes::MANIPULATED_ENTITY, "entity_destroyed", temp));
@@ -413,14 +414,15 @@ namespace nano { namespace editor {
 			ImGui::EndPopup();
 		}
 		// State
-		std::string stateString;
-		if (m_entityToInspect->GetState() == ecs::ECSStates::ACTIVE) {
-			stateString = "State: Active";
-		}
-		else {
-			stateString = "State: Disabled";
-		}
-		ImGui::Text(stateString.c_str());
+		// @@
+		//std::string stateString;
+		//if (m_entityToInspect->GetState() == ecs::ECSStates::ACTIVE) {
+		//	stateString = "State: Active";
+		//}
+		//else {
+		//	stateString = "State: Disabled";
+		//}
+		//ImGui::Text(stateString.c_str());
 
 		ImGui::Separator(); ImGui::Spacing();
 
@@ -447,26 +449,9 @@ namespace nano { namespace editor {
 		}
 
 		if (ImGui::CollapsingHeader(std::string(type + " Component").c_str())) {
-			if (m_renderableComponent->getTexture() != nullptr) {
-				if (rightClickRemoveComponent(m_entityToInspect->Renderable(), "Renderable Component"))
-				{
-					m_renderableComponent = nullptr;
-					return void();
-				}
-			}
-			else if (m_renderableComponent->getVertexCount() == 3) {
-				if (rightClickRemoveComponent(m_entityToInspect->Renderable(), "Renderable Component"))
-				{
-					m_renderableComponent = nullptr;
-					return void();
-				}
-			}
-			else {
-				if (rightClickRemoveComponent(m_entityToInspect->Renderable(), "Renderable Component"))
-				{
-					m_renderableComponent = nullptr;
-					return void();
-				}
+			if (rightClickRemoveComponent(ecs::_ComponentTypes::RECTANGLE_COMPONENT, "Renderable Component"))
+			{
+				m_renderableComponent = nullptr;
 			}
 				
 			if (type == "Sprite") {
@@ -501,7 +486,7 @@ namespace nano { namespace editor {
 	void EntityInspectorWidget::displaySoundComponentGraphics()
 	{
 		if (ImGui::CollapsingHeader("Sound Component")) {
-			if (rightClickRemoveComponent(m_soundComponent, "Sound Component"))
+			if (rightClickRemoveComponent(ecs::_ComponentTypes::SOUND_COMPONENT, "Sound Component"))
 			{
 				m_soundComponent = nullptr;
 				return void();
@@ -555,10 +540,11 @@ namespace nano { namespace editor {
 	{
 		if (ImGui::CollapsingHeader("Fourway Move Component")) 
 		{
-			if (rightClickRemoveComponent(m_fourwayMoveComponent, "Fourway Move Component")){
-				m_fourwayMoveComponent = nullptr;
-				return void();
-			}
+			// @@
+			//if (rightClickRemoveComponent(m_fourwayMoveComponent, "Fourway Move Component")){
+			//	m_fourwayMoveComponent = nullptr;
+			//	return void();
+			//}
 
 			int up, right, down, left;
 			up = m_fourwayMoveComponent->GetKey("up");
@@ -590,10 +576,11 @@ namespace nano { namespace editor {
 	{
 		if (ImGui::CollapsingHeader("Script Component")) 
 		{
-			if (rightClickRemoveComponent(m_scriptComponent, "Script Component")) {
-				m_scriptComponent = nullptr;
-				return void();
-			}
+			// @@
+			//if (rightClickRemoveComponent(m_scriptComponent, "Script Component")) {
+			//	m_scriptComponent = nullptr;
+			//	return void();
+			//}
 
 			std::string scriptHndl = m_scriptComponent->getScriptHndl();
 			ImGui::SetNextWindowContentWidth(140);
@@ -632,7 +619,7 @@ namespace nano { namespace editor {
 		}
 	}
 
-	inline bool EntityInspectorWidget::rightClickRemoveComponent(ecs::Component * a_componentToRemove, std::string a_componentName)
+	inline bool EntityInspectorWidget::rightClickRemoveComponent(ecs::_ComponentTypes a_type, std::string a_componentName)
 	{
 		bool didDestroy = false;
 
@@ -645,7 +632,7 @@ namespace nano { namespace editor {
 		if (ImGui::BeginPopup(temp.c_str())) {
 			bool destroy = ImGui::Selectable("Destroy");
 			if (destroy) {
-				a_componentToRemove->SetState(ecs::ECSStates::DESTROYED);
+				m_entityToInspect->RemoveComponent(a_type);
 				BaseEvent _event(EventTypes::MANIPULATED_COMPONENT, m_entityToInspect->GetID(), a_componentName, "Destroyed");
 				EditorWidgetSystem::getInstance()->GetEventHandler().AddEvent(_event);
 				didDestroy = true;

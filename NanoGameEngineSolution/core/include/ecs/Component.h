@@ -14,7 +14,6 @@ namespace nano { namespace ecs {
 
 	class Component {
 	protected:
-		ECSStates m_state = ECSStates::ACTIVE;
 		Entity* m_owner;
 
 	public:
@@ -52,16 +51,6 @@ namespace nano { namespace ecs {
 		// \brief Sets this components owner
 		//
 		void SetEntityOwner(const Entity* a_entity);
-
-		//////////
-		// \brief Returns a integer representation of the entities state
-		//
-		int GetState();
-
-		//////////
-		// \brief Sets entities state
-		//
-		void SetState(const int a_state);
 	};
 
 } } 

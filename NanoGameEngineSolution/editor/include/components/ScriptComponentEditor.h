@@ -9,7 +9,6 @@ namespace nano { namespace editor {
 		ScriptComponent(std::string a_hndl = "none");
 		virtual void Start() override;
 		virtual void Update() override;
-		ecs::ECSTickStates GetTickState() const override { return ecs::ECSTickStates::NEVER; }
 
 		void setScriptHndl(const std::string &a_hndl);
 		std::string getScriptHndl();

@@ -15,9 +15,8 @@ namespace nano { namespace ecs {
 	class SpriteComponent : public RenderableComponent
 	{
 	public:
+		// Inits texture and asset data (default: error_texture.png)
 		void Init();
-		// Inits the neccesary data
-		void OnStateChange(ECSStates a_newState);
 
 		// Empty constructor
 		SpriteComponent();
@@ -29,9 +28,6 @@ namespace nano { namespace ecs {
 
 		// For the renderer 
 		int getVertexCount() const { return 4; }
-
-		// Override
-		ECSTickStates GetTickState() const { return ECSTickStates::NEVER; }
 
 	private:
 		asset::ImageAsset* m_imageAsset;

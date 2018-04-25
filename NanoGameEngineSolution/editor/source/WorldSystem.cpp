@@ -15,7 +15,7 @@ namespace nano { namespace editor {
 	{
 		for (ecs::Entity* entity : m_entityList) {
 			if (a_id == entity->GetID()) {
-				if (entity->GetState() != ecs::ECSStates::DESTROYED) {
+				if (entity->IsActive()) {
 					return entity;
 				}
 			}
@@ -70,7 +70,7 @@ namespace nano { namespace editor {
 
 		// Call update on all the entities
 		for (ecs::Entity *entity : m_entityList) {
-			if (entity->GetState() == ecs::ECSStates::ACTIVE) {
+			if (entity->IsActive()) {
 				entity->Update();
 			}
 		}
@@ -79,7 +79,7 @@ namespace nano { namespace editor {
 	void WorldSystem::FixedUpdate()
 	{
 		for (int i = 0; i < m_entityList.size(); i++) {
-			if (m_entityList[i]->GetState() == ecs::ECSStates::ACTIVE) {
+			if (m_entityList[i]->IsActive()) {
 				m_entityList[i]->FixedUpdate();
 			}
 		}
@@ -89,7 +89,7 @@ namespace nano { namespace editor {
 	{
 		std::vector<ecs::Entity*>::iterator it;
 		for (it = m_entityList.begin() ; it != m_entityList.end() ; ) {
-			if ((*it)->GetState() == ecs::ECSStates::DESTROYED) {
+			if ((*it)->IsDead()) {
 				delete *it;
 				it = m_entityList.erase(it);
 			}

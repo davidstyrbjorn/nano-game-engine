@@ -5,11 +5,6 @@
 
 namespace nano { namespace ecs {
 
-	void RectangleComponent::OnStateChange(ECSStates a_newState)
-	{
-		
-	}
-
 	RectangleComponent::RectangleComponent()
 	{
 

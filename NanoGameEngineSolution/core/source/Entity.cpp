@@ -146,9 +146,14 @@ namespace nano { namespace ecs {
 		return m_id;
 	}
 
-	int Entity::GetState()
+	bool Entity::IsDead()
 	{
-		return m_state;
+		return m_isDead;
+	}
+
+	bool Entity::IsActive()
+	{
+		return m_isActive;
 	}
 
 	void Entity::SetID(const std::string & a_id)
@@ -156,9 +161,24 @@ namespace nano { namespace ecs {
 		m_id = a_id;
 	}
 
-	void Entity::SetState(const int a_state)
+	void Entity::Kill()
 	{
-		m_state = static_cast<ECSStates>(a_state);
+		m_isDead = true;
+	}
+
+	void Entity::Toggle()
+	{
+		m_isActive = !m_isActive;
+	}
+
+	void Entity::Enable()
+	{
+		m_isActive = true;
+	}
+
+	void Entity::Disable()
+	{
+		m_isActive = false;
 	}
 
 } } 

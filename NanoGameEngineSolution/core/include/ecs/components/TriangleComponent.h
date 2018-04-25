@@ -10,9 +10,6 @@ namespace nano { namespace ecs {
 	class TriangleComponent : public RenderableComponent
 	{
 	public:
-		// Inits the neccesary data
-		void OnStateChange(ECSStates a_newState);
-
 		// Empty constructor
 		TriangleComponent();
 
@@ -21,9 +18,6 @@ namespace nano { namespace ecs {
 
 		// Override for the renderer 
 		int getVertexCount() const { return 3; }
-
-		// Override
-		ECSTickStates GetTickState() const { return ECSTickStates::NEVER; }
 	};
 
 } }

@@ -100,7 +100,7 @@ namespace nano { namespace editor {
 
 		void clickedOnNewEntity(ecs::Entity* a_entity);
 
-		inline bool rightClickRemoveComponent(ecs::Component* a_componentToRemove, std::string a_componentName);
+		inline bool rightClickRemoveComponent(ecs::_ComponentTypes a_type, std::string a_componentName);
 
 		void OnEntityManipulation(std::string a_id, std::string a_id2);
 	};

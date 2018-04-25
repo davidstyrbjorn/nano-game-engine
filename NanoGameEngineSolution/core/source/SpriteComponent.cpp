@@ -56,9 +56,4 @@ namespace nano { namespace ecs {
 		m_owner->Transform()->size = math::Vector2(x, y);
 	}
 
-	void SpriteComponent::OnStateChange(ECSStates a_newState)
-	{
-
-	}
-
 } }

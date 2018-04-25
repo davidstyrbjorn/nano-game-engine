@@ -32,9 +32,6 @@ namespace nano { namespace ecs {
 
 		// Getters
 		openal::SoundSource *GetSource();
-
-		// Override
-		ECSTickStates GetTickState() const override { return ECSTickStates::NEVER; }
 	};
 
 } }
