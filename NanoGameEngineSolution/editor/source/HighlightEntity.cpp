@@ -3,6 +3,9 @@
 #include<ecs\components\SpriteComponent.h>
 #include<ecs\components\TransformComponent.h>
 
+#include"../include/components/FourwayMoveComponentEditor.h"
+#include"../include/components/ScriptComponentEditor.h"
+
 #include"../include/systems/AssetSystem.h"
 
 namespace nano { namespace editor {  
@@ -12,7 +15,7 @@ namespace nano { namespace editor {
 		m_thisEntity = new ecs::Entity("entity");
 		m_thisEntity->Start();
 
-		m_thisEntity->AddComponent(ecs::_ComponentTypes::SPRITE_COMPONENT);
+		m_thisEntity->AddComponent<ScriptComponent, FourwayMoveComponentEditor>(ecs::_ComponentTypes::SPRITE_COMPONENT);
 		m_thisEntity->Renderable()->LoadAsset((asset::Asset*)AssetSystem::getInstance()->getHighlightAsset());
 		m_thisRenderable = m_thisEntity->Renderable();
 	}

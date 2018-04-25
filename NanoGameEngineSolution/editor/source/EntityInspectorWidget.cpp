@@ -160,11 +160,11 @@ namespace nano { namespace editor {
 				if (!hasRenderableComponent) 
 				{
 					if (ImGui::Selectable("Sprite Component")) {
-						m_entityToInspect->AddComponent(ecs::_ComponentTypes::SPRITE_COMPONENT);
+						m_entityToInspect->AddComponent<ScriptComponent, FourwayMoveComponentEditor>(ecs::_ComponentTypes::SPRITE_COMPONENT);
 						m_renderableComponent = m_entityToInspect->Renderable();
 					}
 					if (ImGui::Selectable("Rectangle Component")) {
-						m_entityToInspect->AddComponent(ecs::_ComponentTypes::RECTANGLE_COMPONENT);
+						m_entityToInspect->AddComponent<ScriptComponent, FourwayMoveComponentEditor>(ecs::_ComponentTypes::RECTANGLE_COMPONENT);
 						m_renderableComponent = m_entityToInspect->Renderable();
 						// Make sure it's initially visibile
 						if (m_entityToInspect->Transform()->size == math::Vector2(0, 0)) {
@@ -172,7 +172,7 @@ namespace nano { namespace editor {
 						}
 					}
 					if (ImGui::Selectable("Triangle Component")) {
-						m_entityToInspect->AddComponent(ecs::_ComponentTypes::TRIANGLE_COMPONENT);
+						m_entityToInspect->AddComponent<ScriptComponent, FourwayMoveComponentEditor>(ecs::_ComponentTypes::TRIANGLE_COMPONENT);
 						m_renderableComponent = m_entityToInspect->Renderable();
 						// Make sure it's initially visibile
 						if (m_entityToInspect->Transform()->size == math::Vector2(0, 0)) {
@@ -182,7 +182,7 @@ namespace nano { namespace editor {
 				}
 				if (!hasSoundComponent) {
 					if (ImGui::Selectable("Sound Component")) {
-						m_entityToInspect->AddComponent(ecs::_ComponentTypes::SOUND_COMPONENT);
+						m_entityToInspect->AddComponent<ScriptComponent, FourwayMoveComponentEditor>(ecs::_ComponentTypes::SOUND_COMPONENT);
 						m_soundComponent = m_entityToInspect->SoundComponent();
 					}
 				}
@@ -195,7 +195,7 @@ namespace nano { namespace editor {
 				if (!hasScriptComponent) {
 					// @@
 					//if (ImGui::Selectable("Script Component")) {
-					//	m_scriptComponent = static_cast<ScriptComponent*>(m_entityToInspect->AddComponent(new ScriptComponent()));
+					//	m_scriptComponent = static_cast<ScriptComponent*>(m_entityToInspect->new ScriptComponent()));
 					//}
 				}
 				ImGui::EndPopup();

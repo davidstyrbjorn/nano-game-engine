@@ -106,17 +106,17 @@ namespace nano { namespace editor {
 				// Now add component!
 				if (vertex_count == 3) {
 					// Triangle 
-					baby->AddComponent(ecs::_ComponentTypes::TRIANGLE_COMPONENT);
+					baby->AddComponent<ScriptComponent, FourwayMoveComponentEditor>(ecs::_ComponentTypes::TRIANGLE_COMPONENT);
 				}
 				else if (vertex_count == 4) {
 					// Rectangle OR Sprite
 					if (assetName == "none") {
 						// Rectangle
-						baby->AddComponent(ecs::_ComponentTypes::RECTANGLE_COMPONENT);
+						baby->AddComponent<ScriptComponent, FourwayMoveComponentEditor>(ecs::_ComponentTypes::RECTANGLE_COMPONENT);
 					}
 					else {
 						// Sprite
-						baby->AddComponent(ecs::_ComponentTypes::SPRITE_COMPONENT);
+						baby->AddComponent<ScriptComponent, FourwayMoveComponentEditor>(ecs::_ComponentTypes::SPRITE_COMPONENT);
 						baby->Renderable()->LoadAsset(AssetSystem::getInstance()->getImageAssetByHndl(assetName));
 					}
 				}
@@ -125,7 +125,7 @@ namespace nano { namespace editor {
 			// 1. Sound Path
 			if (line.substr(0, 16) == "sound_asset_name") {
 				std::string assetName = line.substr(17, line.length());
-				baby->AddComponent(ecs::_ComponentTypes::SOUND_COMPONENT);
+				baby->AddComponent<ScriptComponent, FourwayMoveComponentEditor>(ecs::_ComponentTypes::SOUND_COMPONENT);
 				if (assetName != "none") {
 					baby->SoundComponent()->LoadAsset(AssetSystem::getInstance()->getSoundAssetByHndl(assetName));
 				}
@@ -373,17 +373,17 @@ namespace nano { namespace editor {
 					// Now add component!
 					if (vertex_count == 3) {
 						// Triangle 
-						entityToAdd->AddComponent(ecs::_ComponentTypes::TRIANGLE_COMPONENT);
+						entityToAdd->AddComponent<ScriptComponent, FourwayMoveComponentEditor>(ecs::_ComponentTypes::TRIANGLE_COMPONENT);
 					}
 					else if (vertex_count == 4) {
 						// Rectangle OR Sprite
 						if (assetName == "none") {
 							// Rectangle
-							entityToAdd->AddComponent(ecs::_ComponentTypes::RECTANGLE_COMPONENT);
+							entityToAdd->AddComponent<ScriptComponent, FourwayMoveComponentEditor>(ecs::_ComponentTypes::RECTANGLE_COMPONENT);
 						}
 						else {
 							// Sprite
-							entityToAdd->AddComponent(ecs::_ComponentTypes::SPRITE_COMPONENT);
+							entityToAdd->AddComponent<ScriptComponent, FourwayMoveComponentEditor>(ecs::_ComponentTypes::SPRITE_COMPONENT);
 							entityToAdd->Renderable()->LoadAsset(AssetSystem::getInstance()->getImageAssetByHndl(assetName));
 						}
 					}
@@ -392,7 +392,7 @@ namespace nano { namespace editor {
 				// 1. Sound Path
 				if (line.substr(0, 16) == "sound_asset_name") {
 					std::string assetName = line.substr(17, line.length());
-					entityToAdd->AddComponent(ecs::_ComponentTypes::SOUND_COMPONENT);
+					entityToAdd->AddComponent<ScriptComponent, FourwayMoveComponentEditor>(ecs::_ComponentTypes::SOUND_COMPONENT);
 					if (assetName != "none") {
 						entityToAdd->SoundComponent()->LoadAsset(AssetSystem::getInstance()->getSoundAssetByHndl(assetName));
 					}

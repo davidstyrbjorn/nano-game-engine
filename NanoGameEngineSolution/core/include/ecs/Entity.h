@@ -2,6 +2,8 @@
 
 #include<string>
 #include<vector>
+#include<assert.h>
+
 #include"ECS.h"
 
 namespace nano { namespace ecs {
@@ -14,11 +16,14 @@ namespace nano { namespace ecs {
 		RECTANGLE_COMPONENT,
 		SPRITE_COMPONENT,
 		SOUND_COMPONENT,
+		SCRIPT_COMPONENT,
+		FOURWAY_MOVE_COMPONENT
 	};
 
 	class Transform;
 	class Component;
 
+	//template<typename ScriptComponent_T, typename FourwayMoveComponent_T>
 	class Entity {
 	private:
 		std::string m_id;
@@ -27,6 +32,8 @@ namespace nano { namespace ecs {
 		RenderableComponent *m_RenderableComponent = nullptr;
 		SoundComponent* m_SoundComponent = nullptr;
 		Transform *m_TranformComponent = nullptr;
+		Component *m_ScriptComponent = nullptr;
+		Component* m_FourwayMoveComponent = nullptr;
 
 	public:
 		// Getters for components
@@ -52,7 +59,50 @@ namespace nano { namespace ecs {
 		//////////
 		// \brief Adds component of a_type to entity
 		//
-		Component* AddComponent(_ComponentTypes a_type);
+		template<typename ScriptComponent_T, typename FourwayMoveComponent_T>
+		Component* AddComponent(_ComponentTypes a_type)
+		{
+			assert(std::is_base_of<Component, ScriptComponent_T> && std::is_base_of<Component, FourwayMoveComponent_T>);
+
+			switch (a_type) {
+			case _ComponentTypes::RECTANGLE_COMPONENT:
+				m_RenderableComponent = new RectangleComponent();
+				m_RenderableComponent->SetEntityOwner(this);
+				m_RenderableComponent->Init();
+
+				return m_RenderableComponent;
+				break;
+			case _ComponentTypes::TRIANGLE_COMPONENT:
+				m_RenderableComponent = new TriangleComponent();
+				m_RenderableComponent->SetEntityOwner(this);
+				m_RenderableComponent->Init();
+
+				return m_RenderableComponent;
+				break;
+			case _ComponentTypes::SPRITE_COMPONENT:
+				m_RenderableComponent = new SpriteComponent();
+				m_RenderableComponent->SetEntityOwner(this);
+				m_RenderableComponent->Init();
+
+				return m_RenderableComponent;
+				break;
+			case _ComponentTypes::SOUND_COMPONENT:
+				m_SoundComponent = new ecs::SoundComponent();
+				m_SoundComponent->SetEntityOwner(this);
+				m_SoundComponent->Init();
+				break;
+			case _ComponentTypes::SCRIPT_COMPONENT:
+				m_ScriptComponent = new ScriptComponent_T();
+				m_ScriptComponent->SetEntityOwner(this);
+				m_ScriptComponent->Init();
+				break;
+			case _ComponentTypes::FOURWAY_MOVE_COMPONENT:
+				m_FourwayMoveComponent = new FourwayMoveComponent_T();
+				m_FourwayMoveComponent->SetEntityOwner(this);
+				m_FourwayMoveComponent->Init();
+				break;
+			}
+		}
 
 		//////////
 		// \brief Removes component of a_type from entity

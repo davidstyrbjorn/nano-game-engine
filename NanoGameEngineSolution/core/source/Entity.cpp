@@ -51,8 +51,11 @@ namespace nano { namespace ecs {
 		delete m_TranformComponent;
 		delete m_RenderableComponent;
 		delete m_SoundComponent;
+		delete m_ScriptComponent;
+		delete m_FourwayMoveComponent;
 	}
 
+	/*
 	Component * Entity::AddComponent(_ComponentTypes a_type)
 	{
 		switch (a_type) {
@@ -84,6 +87,7 @@ namespace nano { namespace ecs {
 			break;
 		}
 	}
+	*/
 
 	void Entity::RemoveComponent(_ComponentTypes a_type)
 	{
@@ -120,6 +124,14 @@ namespace nano { namespace ecs {
 		if (m_SoundComponent != nullptr) {
 			m_SoundComponent->Update();
 		}
+		// Script Component
+		if (m_ScriptComponent != nullptr) {
+			m_ScriptComponent->Update();
+		}
+		// FourwayMove Component
+		if (m_FourwayMoveComponent != nullptr) {
+			m_FourwayMoveComponent->Update();
+		}
 	}
 
 	void Entity::FixedUpdate()
@@ -133,6 +145,14 @@ namespace nano { namespace ecs {
 		// Sound Component
 		if (m_SoundComponent != nullptr) {
 			m_SoundComponent->FixedUpdate();
+		}
+		// Script Component
+		if (m_ScriptComponent != nullptr) {
+			m_ScriptComponent->FixedUpdate();
+		}
+		// FourwayMove Component
+		if (m_FourwayMoveComponent != nullptr) {
+			m_FourwayMoveComponent->FixedUpdate();
 		}
 	}
 
