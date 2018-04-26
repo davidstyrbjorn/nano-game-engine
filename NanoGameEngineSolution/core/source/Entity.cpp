@@ -55,40 +55,6 @@ namespace nano { namespace ecs {
 		delete m_FourwayMoveComponent;
 	}
 
-	/*
-	Component * Entity::AddComponent(_ComponentTypes a_type)
-	{
-		switch (a_type) {
-		case _ComponentTypes::RECTANGLE_COMPONENT:
-			m_RenderableComponent = new RectangleComponent();
-			m_RenderableComponent->SetEntityOwner(this);
-			m_RenderableComponent->Init();
-			
-			return m_RenderableComponent;
-			break;
-		case _ComponentTypes::TRIANGLE_COMPONENT:
-			m_RenderableComponent = new TriangleComponent();
-			m_RenderableComponent->SetEntityOwner(this);
-			m_RenderableComponent->Init();
-
-			return m_RenderableComponent;
-			break;
-		case _ComponentTypes::SPRITE_COMPONENT:
-			m_RenderableComponent = new SpriteComponent();
-			m_RenderableComponent->SetEntityOwner(this);
-			m_RenderableComponent->Init();
-
-			return m_RenderableComponent;
-			break;
-		case _ComponentTypes::SOUND_COMPONENT:
-			m_SoundComponent = new ecs::SoundComponent();
-			m_SoundComponent->SetEntityOwner(this);
-			m_SoundComponent->Init();
-			break;
-		}
-	}
-	*/
-
 	void Entity::RemoveComponent(_ComponentTypes a_type)
 	{
 		switch (a_type) {

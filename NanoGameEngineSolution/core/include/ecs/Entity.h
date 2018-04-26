@@ -3,13 +3,15 @@
 #include<string>
 #include<vector>
 #include<assert.h>
+#include<type_traits>
 
-#include"ECS.h"
+#include"Component.h"
+#include"components\RectangleComponent.h"
+#include"components\SpriteComponent.h"
+#include"components\TriangleComponent.h"
+#include"components\SoundComponent.h"
 
 namespace nano { namespace ecs {
-
-	class RenderableComponent;
-	class SoundComponent;
 
 	enum _ComponentTypes {
 		TRIANGLE_COMPONENT,
@@ -21,9 +23,7 @@ namespace nano { namespace ecs {
 	};
 
 	class Transform;
-	class Component;
 
-	//template<typename ScriptComponent_T, typename FourwayMoveComponent_T>
 	class Entity {
 	private:
 		std::string m_id;
@@ -40,6 +40,8 @@ namespace nano { namespace ecs {
 		Transform* Transform();
 		RenderableComponent* Renderable();
 		SoundComponent* SoundComponent();
+		template<typename _T> _T* ScriptComponent() { return static_cast<_T*>(m_ScriptComponent); }
+		template<typename _T> _T* FourwayMoveComponent() { return static_cast<_T*>(m_FourwayMoveComponent); }
 
 	public:
 		// Default constrcutor
@@ -62,7 +64,7 @@ namespace nano { namespace ecs {
 		template<typename ScriptComponent_T, typename FourwayMoveComponent_T>
 		Component* AddComponent(_ComponentTypes a_type)
 		{
-			assert(std::is_base_of<Component, ScriptComponent_T> && std::is_base_of<Component, FourwayMoveComponent_T>);
+			static_assert(std::is_base_of<Component, ScriptComponent_T>::value && std::is_base_of<Component, FourwayMoveComponent_T>::value);
 
 			switch (a_type) {
 			case _ComponentTypes::RECTANGLE_COMPONENT:
@@ -90,16 +92,22 @@ namespace nano { namespace ecs {
 				m_SoundComponent = new ecs::SoundComponent();
 				m_SoundComponent->SetEntityOwner(this);
 				m_SoundComponent->Init();
+
+				return m_SoundComponent;
 				break;
 			case _ComponentTypes::SCRIPT_COMPONENT:
 				m_ScriptComponent = new ScriptComponent_T();
 				m_ScriptComponent->SetEntityOwner(this);
 				m_ScriptComponent->Init();
+
+				return m_ScriptComponent;
 				break;
 			case _ComponentTypes::FOURWAY_MOVE_COMPONENT:
 				m_FourwayMoveComponent = new FourwayMoveComponent_T();
 				m_FourwayMoveComponent->SetEntityOwner(this);
 				m_FourwayMoveComponent->Init();
+
+				return m_FourwayMoveComponent;
 				break;
 			}
 		}

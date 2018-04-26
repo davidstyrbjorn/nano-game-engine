@@ -187,16 +187,14 @@ namespace nano { namespace editor {
 					}
 				}
 				if (!hasFwmComponent) {
-					// @@
-					//if (ImGui::Selectable("Fourway Move Component")) {
-					//	m_fourwayMoveComponent = static_cast<FourwayMoveComponentEditor*>(m_entityToInspect->AddComponent(new FourwayMoveComponentEditor()));
-					//}
+					if (ImGui::Selectable("Fourway Move Component")) {
+						m_fourwayMoveComponent = static_cast<FourwayMoveComponentEditor*>(m_entityToInspect->AddComponent<ScriptComponent, FourwayMoveComponentEditor>(ecs::_ComponentTypes::FOURWAY_MOVE_COMPONENT));
+					}
 				}			
 				if (!hasScriptComponent) {
-					// @@
-					//if (ImGui::Selectable("Script Component")) {
-					//	m_scriptComponent = static_cast<ScriptComponent*>(m_entityToInspect->new ScriptComponent()));
-					//}
+					if (ImGui::Selectable("Script Component")) {
+						m_scriptComponent = static_cast<ScriptComponent*>(m_entityToInspect->AddComponent<ScriptComponent, FourwayMoveComponentEditor>(ecs::_ComponentTypes::SCRIPT_COMPONENT));
+					}
 				}
 				ImGui::EndPopup();
 			}
@@ -654,9 +652,8 @@ namespace nano { namespace editor {
 
 		m_renderableComponent = a_entity->Renderable();
 		m_soundComponent = a_entity->SoundComponent();
-		// @@
-		//m_fourwayMoveComponent = a_entity->GetComponent<FourwayMoveComponentEditor>();
-		//m_scriptComponent = a_entity->GetComponent<ScriptComponent>();
+		m_fourwayMoveComponent = a_entity->FourwayMoveComponent<FourwayMoveComponentEditor>();
+		m_scriptComponent = a_entity->ScriptComponent<ScriptComponent>();
 	}
 
 	void EntityInspectorWidget::OnEntityManipulation(std::string a_id, std::string a_id2) 

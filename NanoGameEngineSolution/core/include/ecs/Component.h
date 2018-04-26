@@ -1,8 +1,5 @@
 #pragma once
 
-#include"ECS.h"
-//#include"Entity.h"
-
 namespace nano {
 	namespace asset {
 		class Asset;
