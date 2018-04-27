@@ -1,10 +1,3 @@
-[LEVEL_CONFIG]
-cam_pos -471, -214
-cam_size 1460, 724
-fps 60
-
-[LEVEL_ENTITIES]
-[ENTITY]
 id cute_rectangle
 transform
 pos 0, 0
@@ -20,5 +13,3 @@ fourway move component
 none
 script component
 none
-
-[ENTITIES_END]

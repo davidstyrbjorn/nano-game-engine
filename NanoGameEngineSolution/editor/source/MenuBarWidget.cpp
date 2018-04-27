@@ -266,7 +266,7 @@ namespace nano { namespace editor {
 			std::vector<std::string> entityFileList;
 			ReadDirectory("resources\\assets\\", entityFileList);
 			for (std::string i : entityFileList) {
-				if (i != "." && i != ".." && getFileSuffix(i) == "txt") {
+				if (i != "." && i != ".." && getFileSuffix(i) == "nse") {
 					std::string temp = i.substr(0, i.length() - 4);
 					if (ImGui::Selectable(temp.c_str())) {
 						std::string loc = "resources\\assets\\" + i;

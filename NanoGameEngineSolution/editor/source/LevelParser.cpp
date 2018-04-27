@@ -120,6 +120,7 @@ namespace nano { namespace editor {
 						baby->Renderable()->LoadAsset(AssetSystem::getInstance()->getImageAssetByHndl(assetName));
 					}
 				}
+				baby->Renderable()->setColor(color);
 			}
 			// Sound Component
 			// 1. Sound Path
@@ -151,12 +152,16 @@ namespace nano { namespace editor {
 			else if (line.substr(0, 5) == "speed") {
 				float speed = std::stof(line.substr(6, line.length()));
 				int keys[4] = { up, right, down, left };
-				//baby->AddComponent(new FourwayMoveComponentEditor(speed, keys)); @@
+				baby->AddComponent<ScriptComponent, FourwayMoveComponentEditor>(ecs::_ComponentTypes::FOURWAY_MOVE_COMPONENT);
+				baby->FourwayMoveComponent<FourwayMoveComponentEditor>()->SetKeys((int*)keys);
+				baby->FourwayMoveComponent<FourwayMoveComponentEditor>()->SetVelocity(speed);
 			}
 			// Script Component Editor
 			if (line.substr(0, 4) == "hndl") {
 				std::string scriptHndl = line.substr(5, line.length() - 5);
-				//baby->AddComponent(new ScriptComponent(scriptHndl)); @@
+				baby->AddComponent<ScriptComponent, FourwayMoveComponentEditor>(ecs::_ComponentTypes::SCRIPT_COMPONENT);
+				if(scriptHndl != "none")
+					baby->ScriptComponent<ScriptComponent>()->setScriptHndl(scriptHndl);
 			}
 		}
 
@@ -231,35 +236,34 @@ namespace nano { namespace editor {
 			nano::WriteToFile("none", true);
 		}
 
-		// @@
-		//nano::WriteToFile("fourway move component", true);
-		//FourwayMoveComponentEditor *fwmComponent = a_entity->GetComponent<FourwayMoveComponentEditor>();
-		//if (fwmComponent != nullptr) {
-		//	std::string upString = "up " + std::to_string(fwmComponent->GetKey("up"));
-		//	std::string  rightString = "right " + std::to_string(fwmComponent->GetKey("right"));
-		//	std::string downString = "down " + std::to_string(fwmComponent->GetKey("down"));
-		//	std::string leftString = "left " + std::to_string(fwmComponent->GetKey("left"));
-		//	// velocity should be reserved for physics terminology
-		//	std::string velocityString = "speed " + to_string_with_precision<float>(fwmComponent->GetVelocity(), 3);
-		//
-		//	nano::WriteToFile(upString, true);
-		//	nano::WriteToFile(rightString, true);
-		//	nano::WriteToFile(downString, true);
-		//	nano::WriteToFile(leftString, true);
-		//	nano::WriteToFile(velocityString, true);
-		//}
-		//else {
-		//	nano::WriteToFile("none", true);
-		//}
-		//nano::WriteToFile("script component", true);
-		//ScriptComponent* scriptComponent = a_entity->GetComponent<ScriptComponent>();
-		//if (scriptComponent != nullptr) {
-		//	std::string hndl = "hndl " + scriptComponent->getScriptHndl();
-		//	nano::WriteToFile(hndl, true);
-		//}
-		//else {
-		//	nano::WriteToFile("none", true);
-		//}
+		nano::WriteToFile("fourway move component", true);
+		FourwayMoveComponentEditor *fwmComponent = a_entity->FourwayMoveComponent<FourwayMoveComponentEditor>();
+		if (fwmComponent != nullptr) {
+			std::string upString = "up " + std::to_string(fwmComponent->GetKey("up"));
+			std::string  rightString = "right " + std::to_string(fwmComponent->GetKey("right"));
+			std::string downString = "down " + std::to_string(fwmComponent->GetKey("down"));
+			std::string leftString = "left " + std::to_string(fwmComponent->GetKey("left"));
+			// velocity should be reserved for physics terminology
+			std::string velocityString = "speed " + to_string_with_precision<float>(fwmComponent->GetVelocity(), 3);
+		
+			nano::WriteToFile(upString, true);
+			nano::WriteToFile(rightString, true);
+			nano::WriteToFile(downString, true);
+			nano::WriteToFile(leftString, true);
+			nano::WriteToFile(velocityString, true);
+		}
+		else {
+			nano::WriteToFile("none", true);
+		}
+		nano::WriteToFile("script component", true);
+		ScriptComponent* scriptComponent = a_entity->ScriptComponent<ScriptComponent>();
+		if (scriptComponent != nullptr) {
+			std::string hndl = "hndl " + scriptComponent->getScriptHndl();
+			nano::WriteToFile(hndl, true);
+		}
+		else {
+			nano::WriteToFile("none", true);
+		}
 
 		nano::CloseOutputFile();
 	}
@@ -415,17 +419,20 @@ namespace nano { namespace editor {
 					left = std::stoi(line.substr(5, line.length()));
 				}
 				// 5. speed (and done now add component)
-				// @@
-				//else if (line.substr(0, 5) == "speed") {
-				//	speed = std::stof(line.substr(6, line.length()));
-				//	int keys[4] = { up, right, down, left };
-				//	entityToAdd->AddComponent(new FourwayMoveComponentEditor(speed, keys));
-				//}
-				//// Script Component Editor
-				//if (line.substr(0, 4) == "hndl") {
-				//	std::string scriptHndl = line.substr(5, line.length() - 5);
-				//	entityToAdd->AddComponent(new ScriptComponent(scriptHndl));
-				//}
+				else if (line.substr(0, 5) == "speed") {
+					speed = std::stof(line.substr(6, line.length()));
+					int keys[4] = { up, right, down, left };
+					entityToAdd->AddComponent<ScriptComponent, FourwayMoveComponentEditor>(ecs::_ComponentTypes::FOURWAY_MOVE_COMPONENT);
+					entityToAdd->FourwayMoveComponent<FourwayMoveComponentEditor>()->SetKeys((int*)keys);
+					entityToAdd->FourwayMoveComponent<FourwayMoveComponentEditor>()->SetVelocity(speed);
+				}
+				// Script Component Editor
+				if (line.substr(0, 4) == "hndl") {
+					std::string scriptHndl = line.substr(5, line.length() - 5);
+					entityToAdd->AddComponent<ScriptComponent, FourwayMoveComponentEditor>(ecs::_ComponentTypes::SCRIPT_COMPONENT);
+					if(scriptHndl != "none")
+						entityToAdd->ScriptComponent<ScriptComponent>()->setScriptHndl(scriptHndl);
+				}
 			}
 		}
 
@@ -527,35 +534,34 @@ namespace nano { namespace editor {
 				nano::WriteToFile("none", true);
 			}
 
-			// @@
-			//nano::WriteToFile("fourway move component", true);
-			//FourwayMoveComponentEditor *fwmComponent = entity->GetComponent<FourwayMoveComponentEditor>();
-			//if (fwmComponent != nullptr) {
-			//	std::string upString = "up " + std::to_string(fwmComponent->GetKey("up"));
-			//	std::string  rightString = "right " + std::to_string(fwmComponent->GetKey("right"));
-			//	std::string downString = "down " + std::to_string(fwmComponent->GetKey("down"));
-			//	std::string leftString = "left " + std::to_string(fwmComponent->GetKey("left"));
-			//	// velocity should be reserved for physics terminology
-			//	std::string velocityString = "speed " + to_string_with_precision<float>(fwmComponent->GetVelocity(), 3);
-			//
-			//	nano::WriteToFile(upString, true);
-			//	nano::WriteToFile(rightString, true);
-			//	nano::WriteToFile(downString, true);
-			//	nano::WriteToFile(leftString, true);
-			//	nano::WriteToFile(velocityString, true);
-			//}
-			//else {
-			//	nano::WriteToFile("none", true);
-			//}
-			//nano::WriteToFile("script component", true);
-			//ScriptComponent* scriptComponent = entity->GetComponent<ScriptComponent>();
-			//if (scriptComponent != nullptr) {
-			//	std::string hndl = "hndl " + scriptComponent->getScriptHndl();
-			//	nano::WriteToFile(hndl, true);
-			//}
-			//else {
-			//	nano::WriteToFile("none", true);
-			//}
+			nano::WriteToFile("fourway move component", true);
+			FourwayMoveComponentEditor *fwmComponent = entity->FourwayMoveComponent<FourwayMoveComponentEditor>();
+			if (fwmComponent != nullptr) {
+				std::string upString = "up " + std::to_string(fwmComponent->GetKey("up"));
+				std::string  rightString = "right " + std::to_string(fwmComponent->GetKey("right"));
+				std::string downString = "down " + std::to_string(fwmComponent->GetKey("down"));
+				std::string leftString = "left " + std::to_string(fwmComponent->GetKey("left"));
+				// velocity should be reserved for physics terminology
+				std::string velocityString = "speed " + to_string_with_precision<float>(fwmComponent->GetVelocity(), 3);
+			
+				nano::WriteToFile(upString, true);
+				nano::WriteToFile(rightString, true);
+				nano::WriteToFile(downString, true);
+				nano::WriteToFile(leftString, true);
+				nano::WriteToFile(velocityString, true);
+			}
+			else {
+				nano::WriteToFile("none", true);
+			}
+			nano::WriteToFile("script component", true);
+			ScriptComponent* scriptComponent = entity->ScriptComponent<ScriptComponent>();
+			if (scriptComponent != nullptr) {
+				std::string hndl = "hndl " + scriptComponent->getScriptHndl();
+				nano::WriteToFile(hndl, true);
+			}
+			else {
+				nano::WriteToFile("none", true);
+			}
 
 			nano::InsertBlankLine();
 		}

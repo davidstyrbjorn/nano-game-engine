@@ -64,7 +64,7 @@ namespace nano { namespace ecs {
 		template<typename ScriptComponent_T, typename FourwayMoveComponent_T>
 		Component* AddComponent(_ComponentTypes a_type)
 		{
-			static_assert(std::is_base_of<Component, ScriptComponent_T>::value && std::is_base_of<Component, FourwayMoveComponent_T>::value);
+			//static_assert(std::is_base_of<Component, ScriptComponent_T>::value && std::is_base_of<Component, FourwayMoveComponent_T>::value);
 
 			switch (a_type) {
 			case _ComponentTypes::RECTANGLE_COMPONENT:
