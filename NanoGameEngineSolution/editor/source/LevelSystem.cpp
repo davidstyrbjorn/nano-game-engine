@@ -32,11 +32,11 @@ namespace nano { namespace editor {
 		static WindowSystem *window = WindowSystem::getInstance();
 		static EditorWidgetSystem *widgetSystem = EditorWidgetSystem::getInstance();
 
-		EditorConfig::Instance()->setCurrentLevelName("none");
-		world->clearEntityList();
-		renderer->GetSimpleRenderer().GetCamera()->SetPosition(math::Vector2(0, 0)); 
-		renderer->GetSimpleRenderer().GetCamera()->SetSize(math::Vector2(1200, 700));
-		window->GetWindow().SetNewWindowSize(math::Vector2(1200, 700));
+		//EditorConfig::Instance()->setCurrentLevelName("none");
+		//world->clearEntityList();
+		//renderer->GetSimpleRenderer().GetCamera()->SetPosition(math::Vector2(0, 0)); 
+		//renderer->GetSimpleRenderer().GetCamera()->SetSize(math::Vector2(1200, 700));
+		//window->GetWindow().SetNewWindowSize(math::Vector2(1200, 700));
 	}
 
 	bool LevelSystem::loadLevel(std::string a_name)
@@ -74,13 +74,13 @@ namespace nano { namespace editor {
 		static RendererSystem *renderer = RendererSystem::getInstance();
 		static EditorWidgetSystem *widgetSystem = EditorWidgetSystem::getInstance();
 
-		std::string location = "resources\\levels\\" + a_name + ".txt";
-		graphics::OrthographicCamera *c = RendererSystem::getInstance()->GetSimpleRenderer().GetCamera();
-		levelParser.ParseCurrentLevelToFile(location.c_str(), WorldSystem::getInstance()->GetEntityListCopy(), c->GetPosition(), c->GetSize());
-
-		EditorConfig::Instance()->setCurrentLevelName(a_name);
-
-		widgetSystem->GetEventHandler().AddEvent(BaseEvent(EventTypes::CONSOLE_MESSAGE, "Managed to save level " + a_name));
+		//std::string location = "resources\\levels\\" + a_name + ".txt";
+		//graphics::OrthographicCamera *c = RendererSystem::getInstance()->GetSimpleRenderer().GetCamera();
+		//levelParser.ParseCurrentLevelToFile(location.c_str(), WorldSystem::getInstance()->GetEntityListCopy(), c->GetPosition(), c->GetSize());
+		//
+		//EditorConfig::Instance()->setCurrentLevelName(a_name);
+		//
+		//widgetSystem->GetEventHandler().AddEvent(BaseEvent(EventTypes::CONSOLE_MESSAGE, "Managed to save level " + a_name));
 	}
 
 } }

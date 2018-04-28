@@ -41,6 +41,7 @@ namespace nano { namespace editor {
 	{
 		m_inputSystem = InputSystem::getInstance();
 		m_renderSystem = RendererSystem::getInstance();
+		m_worldSystem = WorldSystem::getInstance();
 	}
 
 	void EntityInspectorWidget::Start()
@@ -56,46 +57,47 @@ namespace nano { namespace editor {
 
 		math::Vector2 mousePos = m_inputSystem->GetMousePosition() + m_renderSystem->GetSimpleRenderer().GetCamera()->GetPosition();
 		// Dragging input
-		if (m_entityToInspect != nullptr) {
-			for (InputEvent _event : m_inputSystem->GetPolledEvents()) {
-				if (_event.type == InputEventType::KEY_PRESSED) {
-					// "de"select entity
-					if (_event.key == NANO_KEY_ESCAPE) {
-						OnEntityManipulation("entity_clicked", "-1");
-					}
-					// Delete the current entity
-					if (_event.key == NANO_KEY_DELETE) {
-						std::string temp = m_entityToInspect->GetID();
-						m_entityToInspect->Kill();
-						highlighEntity.SetNewHighlightedEntity(nullptr);
-						m_entityToInspect = nullptr;
-						EditorWidgetSystem::getInstance()->GetEventHandler().AddEvent(BaseEvent(EventTypes::MANIPULATED_ENTITY, "entity_destroyed", temp));
-					}
-				}
-				if (_event.type == InputEventType::MOUSE_PRESSED) {
-					if (_event.key == NANO_MOUSE_BUTTON_LEFT) {
-						if (mousePos.x > m_entityToInspect->Transform()->position.x && mousePos.x < m_entityToInspect->Transform()->position.x + m_entityToInspect->Transform()->size.x) {
-							if (mousePos.y > m_entityToInspect->Transform()->position.y && mousePos.y < m_entityToInspect->Transform()->position.y + m_entityToInspect->Transform()->size.y) {
-								m_isDraggingEntity = true;
-								m_dragDeltaPosition = mousePos - m_entityToInspect->Transform()->position;
-							}
-						}
-					}
-				}
-				else if (_event.type == InputEventType::MOUSE_RELEASE) {
-					if (m_isDraggingEntity)
-						m_isDraggingEntity = false;
-				}
-			}
-		}
-		else {
-			m_isDraggingEntity = false;
-		}
+		//  @@
+		//if (m_entityToInspect != nullptr) {
+		//	for (InputEvent _event : m_inputSystem->GetPolledEvents()) {
+		//		if (_event.type == InputEventType::KEY_PRESSED) {
+		//			// "de"select entity
+		//			if (_event.key == NANO_KEY_ESCAPE) {
+		//				OnEntityManipulation("entity_clicked", "-1");
+		//			}
+		//			// Delete the current entity
+		//			if (_event.key == NANO_KEY_DELETE) {
+		//				std::string temp = m_entityToInspect->GetID();
+		//				m_entityToInspect->Kill();
+		//				highlighEntity.SetNewHighlightedEntity(nullptr);
+		//				m_entityToInspect = nullptr;
+		//				EditorWidgetSystem::getInstance()->GetEventHandler().AddEvent(BaseEvent(EventTypes::MANIPULATED_ENTITY, "entity_destroyed", temp));
+		//			}
+		//		}
+		//		if (_event.type == InputEventType::MOUSE_PRESSED) {
+		//			if (_event.key == NANO_MOUSE_BUTTON_LEFT) {
+		//				if (mousePos.x > m_entityToInspect->Transform()->position.x && mousePos.x < m_entityToInspect->Transform()->position.x + m_entityToInspect->Transform()->size.x) {
+		//					if (mousePos.y > m_entityToInspect->Transform()->position.y && mousePos.y < m_entityToInspect->Transform()->position.y + m_entityToInspect->Transform()->size.y) {
+		//						m_isDraggingEntity = true;
+		//						m_dragDeltaPosition = mousePos - m_entityToInspect->Transform()->position;
+		//					}
+		//				}
+		//			}
+		//		}
+		//		else if (_event.type == InputEventType::MOUSE_RELEASE) {
+		//			if (m_isDraggingEntity)
+		//				m_isDraggingEntity = false;
+		//		}
+		//	}
+		//}
+		//else {
+		//	m_isDraggingEntity = false;
+		//}
 
 		// Dragging logic
-		if (m_isDraggingEntity) {
-			m_entityToInspect->Transform()->position = mousePos - m_dragDeltaPosition;
-		}
+		//if (m_isDraggingEntity) {
+		//	m_entityToInspect->Transform()->position = mousePos - m_dragDeltaPosition;
+		//}
 	}
 
 	void EntityInspectorWidget::Render()
@@ -122,8 +124,10 @@ namespace nano { namespace editor {
 			ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse
 		);
 
-		if (m_entityToInspect != nullptr) 
+		if (m_currentEntityIndex != -1) 
 		{
+			ecs::Entity& _entity = m_worldSystem->getEntity(m_currentEntityIndex);
+
 			displayTransformComponentGraphics();
 
 			ImGui::Spacing(); ImGui::Separator(); ImGui::Spacing();
@@ -160,40 +164,40 @@ namespace nano { namespace editor {
 				if (!hasRenderableComponent) 
 				{
 					if (ImGui::Selectable("Sprite Component")) {
-						m_entityToInspect->AddComponent<ScriptComponent, FourwayMoveComponentEditor>(ecs::_ComponentTypes::SPRITE_COMPONENT);
-						m_renderableComponent = m_entityToInspect->Renderable();
+						_entity.AddComponent<ScriptComponent, FourwayMoveComponentEditor>(ecs::_ComponentTypes::SPRITE_COMPONENT);
+						m_renderableComponent = _entity.Renderable();
 					}
 					if (ImGui::Selectable("Rectangle Component")) {
-						m_entityToInspect->AddComponent<ScriptComponent, FourwayMoveComponentEditor>(ecs::_ComponentTypes::RECTANGLE_COMPONENT);
-						m_renderableComponent = m_entityToInspect->Renderable();
+						_entity.AddComponent<ScriptComponent, FourwayMoveComponentEditor>(ecs::_ComponentTypes::RECTANGLE_COMPONENT);
+						m_renderableComponent = _entity.Renderable();
 						// Make sure it's initially visibile
-						if (m_entityToInspect->Transform()->size == math::Vector2(0, 0)) {
-							m_entityToInspect->Transform()->size = m_addComponentSize;
+						if (_entity.Transform()->size == math::Vector2(0, 0)) {
+							_entity.Transform()->size = m_addComponentSize;
 						}
 					}
 					if (ImGui::Selectable("Triangle Component")) {
-						m_entityToInspect->AddComponent<ScriptComponent, FourwayMoveComponentEditor>(ecs::_ComponentTypes::TRIANGLE_COMPONENT);
-						m_renderableComponent = m_entityToInspect->Renderable();
+						_entity.AddComponent<ScriptComponent, FourwayMoveComponentEditor>(ecs::_ComponentTypes::TRIANGLE_COMPONENT);
+						m_renderableComponent = _entity.Renderable();
 						// Make sure it's initially visibile
-						if (m_entityToInspect->Transform()->size == math::Vector2(0, 0)) {
-							m_entityToInspect->Transform()->size = m_addComponentSize;
+						if (_entity.Transform()->size == math::Vector2(0, 0)) {
+							_entity.Transform()->size = m_addComponentSize;
 						}
 					}
 				}
 				if (!hasSoundComponent) {
 					if (ImGui::Selectable("Sound Component")) {
-						m_entityToInspect->AddComponent<ScriptComponent, FourwayMoveComponentEditor>(ecs::_ComponentTypes::SOUND_COMPONENT);
-						m_soundComponent = m_entityToInspect->SoundComponent();
+						_entity.AddComponent<ScriptComponent, FourwayMoveComponentEditor>(ecs::_ComponentTypes::SOUND_COMPONENT);
+						m_soundComponent = _entity.SoundComponent();
 					}
 				}
 				if (!hasFwmComponent) {
 					if (ImGui::Selectable("Fourway Move Component")) {
-						m_fourwayMoveComponent = static_cast<FourwayMoveComponentEditor*>(m_entityToInspect->AddComponent<ScriptComponent, FourwayMoveComponentEditor>(ecs::_ComponentTypes::FOURWAY_MOVE_COMPONENT));
+						m_fourwayMoveComponent = static_cast<FourwayMoveComponentEditor*>(_entity.AddComponent<ScriptComponent, FourwayMoveComponentEditor>(ecs::_ComponentTypes::FOURWAY_MOVE_COMPONENT));
 					}
 				}			
 				if (!hasScriptComponent) {
 					if (ImGui::Selectable("Script Component")) {
-						m_scriptComponent = static_cast<ScriptComponent*>(m_entityToInspect->AddComponent<ScriptComponent, FourwayMoveComponentEditor>(ecs::_ComponentTypes::SCRIPT_COMPONENT));
+						m_scriptComponent = static_cast<ScriptComponent*>(_entity.AddComponent<ScriptComponent, FourwayMoveComponentEditor>(ecs::_ComponentTypes::SCRIPT_COMPONENT));
 					}
 				}
 				ImGui::EndPopup();
@@ -202,52 +206,52 @@ namespace nano { namespace editor {
 
 		ImGui::End();
 
-		if (m_entityToInspect != nullptr && m_renameEntityWindow) 
-		{
-			static ImVec2 windowSize = ImVec2(300, 90);
-			ImGui::Begin("Rename", &m_renameEntityWindow, windowSize, 1.0f, ImGuiWindowFlags_::ImGuiWindowFlags_NoResize | ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse);
+		//if (m_entityToInspect != nullptr && m_renameEntityWindow) 
+		//{
+		//	static ImVec2 windowSize = ImVec2(300, 90);
+		//	ImGui::Begin("Rename", &m_renameEntityWindow, windowSize, 1.0f, ImGuiWindowFlags_::ImGuiWindowFlags_NoResize | ImGuiWindowFlags_::ImGuiWindowFlags_NoCollapse);
+		//
+		//	static char buffer[128] = "";
+		//	if (ImGui::InputText("New Name", buffer, 128, ImGuiInputTextFlags_::ImGuiInputTextFlags_EnterReturnsTrue) || ImGui::Button("Confirm"))
+		//	{
+		//		m_entityToInspect->SetID(buffer);
+		//		m_renameEntityWindow = false;
+		//	}
+		//
+		//	ImGui::End();
+		//}
 
-			static char buffer[128] = "";
-			if (ImGui::InputText("New Name", buffer, 128, ImGuiInputTextFlags_::ImGuiInputTextFlags_EnterReturnsTrue) || ImGui::Button("Confirm"))
-			{
-				m_entityToInspect->SetID(buffer);
-				m_renameEntityWindow = false;
-			}
-
-			ImGui::End();
-		}
-
-		if (m_entityToInspect != nullptr && m_showImageAssetWindow) 
-		{
-			static ImVec2 windowSize = ImVec2(200, 300);
-			ImGui::SetNextWindowSize(windowSize);
-			ImGui::Begin("Assets", &m_showImageAssetWindow, ImGuiWindowFlags_::ImGuiWindowFlags_NoResize);
-
-			// Listing image asset
-			if (ImGui::CollapsingHeader("Image Assets")) {
-				for (asset::Asset* asset : assetSystem->getImageAssetContainer()) {
-					if (ImGui::Selectable(asset->getFileName().c_str())) {
-						if (!m_assetComponent->LoadAsset(asset)) {
-							// Failed to load asset for some reason (clicked on wrong formated asset probably)
-							EditorWidgetSystem::getInstance()->GetEventHandler().AddEvent(BaseEvent(EventTypes::CONSOLE_MESSAGE, "Failed to load image asset!"));
-						}
-					}
-				}
-			}
-			// Listing sound asset
-			if (ImGui::CollapsingHeader("Sound Assets")) {
-				for (asset::Asset* asset : assetSystem->getSoundAssetContainer()) {
-					if (ImGui::Selectable(asset->getFileName().c_str())) {
-						if (!m_assetComponent->LoadAsset(asset)) {
-							// Failed to load asset for some reason (clicked on wrong formated asset probably)
-							EditorWidgetSystem::getInstance()->GetEventHandler().AddEvent(BaseEvent(EventTypes::CONSOLE_MESSAGE, "Failed to load sound asset!"));
-						}
-					}
-				}
-			}
-
-			ImGui::End();
-		}
+		//if (m_entityToInspect != nullptr && m_showImageAssetWindow) 
+		//{
+		//	static ImVec2 windowSize = ImVec2(200, 300);
+		//	ImGui::SetNextWindowSize(windowSize);
+		//	ImGui::Begin("Assets", &m_showImageAssetWindow, ImGuiWindowFlags_::ImGuiWindowFlags_NoResize);
+		//
+		//	// Listing image asset
+		//	if (ImGui::CollapsingHeader("Image Assets")) {
+		//		for (asset::Asset* asset : assetSystem->getImageAssetContainer()) {
+		//			if (ImGui::Selectable(asset->getFileName().c_str())) {
+		//				if (!m_assetComponent->LoadAsset(asset)) {
+		//					// Failed to load asset for some reason (clicked on wrong formated asset probably)
+		//					EditorWidgetSystem::getInstance()->GetEventHandler().AddEvent(BaseEvent(EventTypes::CONSOLE_MESSAGE, "Failed to load image asset!"));
+		//				}
+		//			}
+		//		}
+		//	}
+		//	// Listing sound asset
+		//	if (ImGui::CollapsingHeader("Sound Assets")) {
+		//		for (asset::Asset* asset : assetSystem->getSoundAssetContainer()) {
+		//			if (ImGui::Selectable(asset->getFileName().c_str())) {
+		//				if (!m_assetComponent->LoadAsset(asset)) {
+		//					// Failed to load asset for some reason (clicked on wrong formated asset probably)
+		//					EditorWidgetSystem::getInstance()->GetEventHandler().AddEvent(BaseEvent(EventTypes::CONSOLE_MESSAGE, "Failed to load sound asset!"));
+		//				}
+		//			}
+		//		}
+		//	}
+		//
+		//	ImGui::End();
+		//}
 
 		if (m_showKeycodeWindow)
 		{
@@ -397,8 +401,10 @@ namespace nano { namespace editor {
 
 	void EntityInspectorWidget::displayTransformComponentGraphics()
 	{
+		ecs::Entity& _entity = m_worldSystem->getEntity(m_currentEntityIndex);
+
 		// ID section
-		std::string nameString = "ID: " + m_entityToInspect->GetID();
+		std::string nameString = "ID: " + _entity.GetID();
 		ImGui::Text(nameString.c_str());
 		if (ImGui::IsItemHovered()) {
 			if (ImGui::GetIO().MouseClicked[1]) {
@@ -413,24 +419,16 @@ namespace nano { namespace editor {
 		}
 		// State
 		// @@
-		//std::string stateString;
-		//if (m_entityToInspect->GetState() == ecs::ECSStates::ACTIVE) {
-		//	stateString = "State: Active";
-		//}
-		//else {
-		//	stateString = "State: Disabled";
-		//}
-		//ImGui::Text(stateString.c_str());
 
 		ImGui::Separator(); ImGui::Spacing();
 
 		ImGui::Text("Transform Component");
 		// Position
-		ImGui::DragFloat2("Position", (float*)&m_entityToInspect->Transform()->position, 0.5f, 0, 0, "%.2f");
+		ImGui::DragFloat2("Position", (float*)&_entity.Transform()->position, 0.5f, 0, 0, "%.2f");
 		// Size
-		ImGui::DragFloat2("Size", (float*)&m_entityToInspect->Transform()->size, 0.5f, 0, 0, "%.2f");
+		ImGui::DragFloat2("Size", (float*)&_entity.Transform()->size, 0.5f, 0, 0, "%.2f");
 		// Angle
-		ImGui::SliderAngle("Angle", (float*)&m_entityToInspect->Transform()->angle);
+		ImGui::SliderAngle("Angle", (float*)&_entity.Transform()->angle);
 	}
 
 	void EntityInspectorWidget::displayRenderableComponentGraphics()
@@ -473,7 +471,7 @@ namespace nano { namespace editor {
 				// Display the sprite image
 				ImGui::Image((ImTextureID*)m_renderableComponent->getTexture()->GetTextureID(), ImVec2(150, 150));
 				if (ImGui::Button("Change Image Asset")) {
-					m_assetComponent = m_entityToInspect->Renderable();
+					m_assetComponent = m_worldSystem->getEntity(m_currentEntityIndex).Renderable();
 					m_showImageAssetWindow = true;
 				}
 			}
@@ -630,9 +628,10 @@ namespace nano { namespace editor {
 		if (ImGui::BeginPopup(temp.c_str())) {
 			bool destroy = ImGui::Selectable("Destroy");
 			if (destroy) {
-				m_entityToInspect->RemoveComponent(a_type);
-				BaseEvent _event(EventTypes::MANIPULATED_COMPONENT, m_entityToInspect->GetID(), a_componentName, "Destroyed");
-				EditorWidgetSystem::getInstance()->GetEventHandler().AddEvent(_event);
+				m_worldSystem->getEntity(m_currentEntityIndex).RemoveComponent(a_type);
+				// @@
+				//BaseEvent _event(EventTypes::MANIPULATED_COMPONENT, m_entityToInspect->GetID(), a_componentName, "Destroyed");
+				//EditorWidgetSystem::getInstance()->GetEventHandler().AddEvent(_event);
 				didDestroy = true;
 			}
 			ImGui::EndPopup();
@@ -656,45 +655,53 @@ namespace nano { namespace editor {
 		m_scriptComponent = a_entity->ScriptComponent<ScriptComponent>();
 	}
 
+	void EntityInspectorWidget::clickedOnNewEntity(int a_index)
+	{
+		if (a_index == -1) {
+			m_renderableComponent = nullptr;
+			m_soundComponent = nullptr;
+			m_fourwayMoveComponent = nullptr;
+			m_scriptComponent = nullptr;
+			return void();
+		}
+
+		m_renderableComponent = m_worldSystem->getEntity(a_index).Renderable();
+		m_soundComponent = m_worldSystem->getEntity(a_index).SoundComponent();
+		m_fourwayMoveComponent = m_worldSystem->getEntity(a_index).FourwayMoveComponent<FourwayMoveComponentEditor>();
+		m_scriptComponent = m_worldSystem->getEntity(a_index).ScriptComponent<ScriptComponent>();
+	}
+
 	void EntityInspectorWidget::OnEntityManipulation(std::string a_id, std::string a_id2) 
 	{
 		if (a_id == "entity_clicked") {
 			if (!m_renameEntityWindow && !m_showKeycodeWindow && !m_showImageAssetWindow && !m_showScriptBrowser) {
 				// "-1" - clicked on empty space
-				if (a_id2 == "-1") {
-					// Deselect the entity i.e set it to a nullptr
-					if (m_entityToInspect != nullptr) {
-						highlighEntity.SetNewHighlightedEntity(nullptr);
-						m_entityToInspect = nullptr;
-						clickedOnNewEntity(nullptr);
-					}
-					return;
-				}
-				else {
-					m_entityToInspect = WorldSystem::getInstance()->GetEntityByID(a_id2);
-					highlighEntity.SetNewHighlightedEntity(m_entityToInspect);
-					clickedOnNewEntity(m_entityToInspect);
+				int index = std::stoi(a_id); // a_id should be passed as the index of the entity
+				m_currentEntityIndex = index;
+				if (index != -1) {
+					clickedOnNewEntity(index);
 				}
 			}
 		}
 		
-		if (a_id == "entity_destroyed") {
-			// Check if the destroyed entity is the entity we inspect
-			if (m_entityToInspect != nullptr) {
-				if (WorldSystem::getInstance()->GetEntityByID(a_id2) == m_entityToInspect) {
-
-					m_renameEntityWindow = false;
-					m_showKeycodeWindow = false;
-					m_showImageAssetWindow = false;
-					m_showScriptBrowser = false;
-
-					highlighEntity.SetNewHighlightedEntity(nullptr);
-					m_entityToInspect = nullptr;
-				}
-			}
-		}
-		if (a_id == "entity_rename") {
-			m_renameEntityWindow = true;
-		}
+		// @@
+		//if (a_id == "entity_destroyed") {
+		//	// Check if the destroyed entity is the entity we inspect
+		//	if (m_entityToInspect != nullptr) {
+		//		if (WorldSystem::getInstance()->GetEntityByID(a_id2) == m_entityToInspect) {
+		//
+		//			m_renameEntityWindow = false;
+		//			m_showKeycodeWindow = false;
+		//			m_showImageAssetWindow = false;
+		//			m_showScriptBrowser = false;
+		//
+		//			highlighEntity.SetNewHighlightedEntity(nullptr);
+		//			m_entityToInspect = nullptr;
+		//		}
+		//	}
+		//}
+		//if (a_id == "entity_rename") {
+		//	m_renameEntityWindow = true;
+		//}
 	}
 } }

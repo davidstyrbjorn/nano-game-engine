@@ -15,6 +15,8 @@ namespace nano { namespace editor {
 	*
 	*/
 
+	#define MAX_ENTITIES 500
+
 	class WorldSystem : public EditorSystem<WorldSystem> {
 		friend class EditorSystem<WorldSystem>;
 	private:
@@ -22,22 +24,18 @@ namespace nano { namespace editor {
 		WorldSystem() { }
 
 	private:
-		std::vector<ecs::Entity*> m_entityList;
-
-		// Private methods
-		inline void removeDeadEntities();
+		// New
+		int m_entityCount;
+		ecs::Entity m_entityArray[MAX_ENTITIES];
 
 	public:
-		// Entity handling
-		void AddNewEntity(ecs::Entity* a_entityToAdd);
-		ecs::Entity* GetEntityByID(std::string a_id);
-		std::vector<ecs::Entity*> &GetEntityList();
-		std::vector<ecs::Entity*> GetEntityListCopy();
-		// Outside creation
-		void CreateNewEntity(std::string a_entityName);
-		// Loaded new level
 		void LoadedNewLevel(std::vector<ecs::Entity*> a_entityList); // Called when a new level is loaded
-		void clearEntityList();
+
+		// New
+		int createNewEntity(std::string a_name);
+		void removeEntity(int a_index);
+		ecs::Entity& getEntity(int a_index);
+		std::vector<ecs::Entity> getArray();
 
 		// EditorSystem base class
 		void Start() override;

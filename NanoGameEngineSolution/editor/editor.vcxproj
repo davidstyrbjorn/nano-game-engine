@@ -201,7 +201,11 @@
     <ClCompile Include="source\EntityInspectorWidget.cpp" />
     <ClCompile Include="source\FourwayMoveComponentEditor.cpp" />
     <ClCompile Include="source\HighlightEntity.cpp" />
-    <ClCompile Include="source\LevelParser.cpp" />
+    <ClCompile Include="source\LevelParser.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='build_central|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="source\LevelSystem.cpp" />
     <ClCompile Include="source\ScriptComponentEditor.cpp" />
     <ClCompile Include="source\SoundSystem.cpp" />
@@ -235,7 +239,11 @@
     <ClInclude Include="include\systems\EditorConfig.h" />
     <ClInclude Include="include\systems\EditorSystem.h" />
     <ClInclude Include="include\systems\EditorWidgetSystem.h" />
-    <ClInclude Include="include\LevelParser.h" />
+    <ClInclude Include="include\LevelParser.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='build_central|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="include\systems\LevelSystem.h" />
     <ClInclude Include="include\systems\SoundSystem.h" />
     <ClInclude Include="include\systems\WorldSystem.h" />

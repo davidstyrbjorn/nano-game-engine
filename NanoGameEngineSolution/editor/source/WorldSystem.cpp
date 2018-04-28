@@ -6,107 +6,68 @@
 
 namespace nano { namespace editor {
 
-	void WorldSystem::AddNewEntity(ecs::Entity * a_entityToAdd)
+	ecs::Entity& WorldSystem::getEntity(int a_index)
 	{
-		m_entityList.push_back(a_entityToAdd);
+		return m_entityArray[a_index];
 	}
 
-	ecs::Entity * WorldSystem::GetEntityByID(std::string a_id)
+	std::vector<ecs::Entity> WorldSystem::getArray()
 	{
-		for (ecs::Entity* entity : m_entityList) {
-			if (a_id == entity->GetID()) {
-				if (entity->IsActive()) {
-					return entity;
-				}
-			}
+		return std::vector<ecs::Entity>(std::begin(m_entityArray), std::end(m_entityArray));
+	}
+
+	int WorldSystem::createNewEntity(std::string a_name) 
+	{
+		// Create new entity -> array at the current entity count index
+		int at = m_entityCount;
+
+		m_entityArray[at] = ecs::Entity(a_name);
+		m_entityArray[at].SlotIndex = at;
+
+		m_entityCount++;
+
+		return at;
+	}
+
+	void WorldSystem::removeEntity(int a_index)
+	{
+		// Check if we're removing something besides the head of the array
+		if (a_index < m_entityCount) {
+			int delta = m_entityCount - a_index;
+			// @@ Implement this somehow
 		}
-	}
-
-	std::vector<ecs::Entity*>& WorldSystem::GetEntityList()
-	{
-		return m_entityList;
-	}
-
-	std::vector<ecs::Entity*> WorldSystem::GetEntityListCopy()
-	{
-		std::vector<ecs::Entity*> _list = m_entityList;
-		return _list;
-	}
-
-	void WorldSystem::CreateNewEntity(std::string a_entityName)
-	{
-		ecs::Entity* newEntity = new ecs::Entity(a_entityName);
-		newEntity->Start();
-		AddNewEntity(newEntity);
+		else {
+			m_entityArray[a_index].Kill(); // @@ make sure entity deallocates all allocated memory here!
+			m_entityCount--;
+		}
 	}
 
 	void WorldSystem::LoadedNewLevel(std::vector<ecs::Entity*> a_entityList)
 	{
-		clearEntityList();
 
-		// Set the new entity list 
-		m_entityList = a_entityList;
-	}
-
-	void WorldSystem::clearEntityList()
-	{
-		// Delete every old entity
-		for (std::vector<ecs::Entity*>::iterator _it = m_entityList.begin(); _it != m_entityList.end(); ++_it) {
-			delete (*_it);
-		}
-		m_entityList.clear();
 	}
 
 	void WorldSystem::Start()
 	{
-		for (ecs::Entity* entity : m_entityList) {
-			entity->Start();
-		}
+		m_entityCount = 0;
 	}
 
 	void WorldSystem::Update()
 	{
-		removeDeadEntities();
-
-		// Call update on all the entities
-		for (ecs::Entity *entity : m_entityList) {
-			if (entity->IsActive()) {
-				entity->Update();
-			}
+		for (int i = 0; i < m_entityCount; i++) {
+			m_entityArray[i].Update();
 		}
 	}
 
 	void WorldSystem::FixedUpdate()
 	{
-		for (int i = 0; i < m_entityList.size(); i++) {
-			if (m_entityList[i]->IsActive()) {
-				m_entityList[i]->FixedUpdate();
-			}
-		}
-	}
-
-	inline void WorldSystem::removeDeadEntities()
-	{
-		std::vector<ecs::Entity*>::iterator it;
-		for (it = m_entityList.begin() ; it != m_entityList.end() ; ) {
-			if ((*it)->IsDead()) {
-				delete *it;
-				it = m_entityList.erase(it);
-			}
-			else {
-				++it;
-			}
+		for (int i = 0; i < m_entityCount; i++) {
+			m_entityArray[i].FixedUpdate();
 		}
 	}
 
 	void WorldSystem::Quit()
 	{
-		for (std::vector<ecs::Entity*>::iterator _it = m_entityList.begin(); _it != m_entityList.end(); ++_it) {
-			delete (*_it);
-		}
-		m_entityList.clear();
-
 		std::cout << "Entity Manager system quit correctly" << std::endl;
 	}
-
 } }

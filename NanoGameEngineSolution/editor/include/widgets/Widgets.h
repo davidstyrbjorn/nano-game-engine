@@ -55,12 +55,19 @@ namespace nano { namespace editor {
 		void OnNewConsoleMessage(std::string a_id) override;
 	};
 
+	// ===============================================================================
+	// ===============================================================================
+	// ===============================================================================
+
+
 	// Entity Inspector upper-right
 	class EntityInspectorWidget : EditorWidget, public EventObserver {
 	private:
+		WorldSystem* m_worldSystem;
 		InputSystem* m_inputSystem;
 		RendererSystem *m_renderSystem;
-		ecs::Entity *m_entityToInspect;
+		//ecs::Entity *m_entityToInspect;
+		int m_currentEntityIndex = -1;
 		HighlightEntity highlighEntity;
 
 		// Drag entity
@@ -99,11 +106,16 @@ namespace nano { namespace editor {
 		void displayScriptComponentGraphics();
 
 		void clickedOnNewEntity(ecs::Entity* a_entity);
+		void clickedOnNewEntity(int a_index);
 
 		inline bool rightClickRemoveComponent(ecs::_ComponentTypes a_type, std::string a_componentName);
 
 		void OnEntityManipulation(std::string a_id, std::string a_id2);
 	};
+
+	// ===============================================================================
+	// ===============================================================================
+	// ===============================================================================
 
 	// Entity selection upper-left
 	class EntitySelectWidget : EditorWidget, public EventObserver {
@@ -111,7 +123,8 @@ namespace nano { namespace editor {
 		WorldSystem* m_entityManager;
 		InputSystem* m_inputSystem;
 		RendererSystem *m_renderSystem;
-		ecs::Entity *m_leftClickedEntity;
+		//ecs::Entity *m_leftClickedEntity;
+		int m_leftClickedIndex;
 
 		bool m_isDraggingView = false;
 		math::Vector2 m_dragOrigin;
@@ -128,6 +141,10 @@ namespace nano { namespace editor {
 		void Update() override;
 		void Render() override;
 	};
+
+	// ===============================================================================
+	// ===============================================================================
+	// ===============================================================================
 
 	// Main menu bar "file, invoke, about" upper
 	class MenuBarWidget : EditorWidget {
@@ -157,6 +174,10 @@ namespace nano { namespace editor {
 		void Update() override;
 		void Render() override;
 	};
+
+	// ===============================================================================
+	// ===============================================================================
+	// ===============================================================================
 
 	// Utility manipulation widget bottom-left
 	class UtilityWidget : EditorWidget, public EventObserver {

@@ -149,7 +149,7 @@ namespace nano { namespace editor {
 			if (ImGui::BeginMenu("Entity"))
 			{
 				if (ImGui::Selectable("Create New")) {
-					WorldSystem::getInstance()->CreateNewEntity("unnamed");
+					WorldSystem::getInstance()->createNewEntity("assfucker");
 					// Send this event to the event handler!
 					EditorWidgetSystem::getInstance()->GetEventHandler().AddEvent(BaseEvent(EventTypes::MANIPULATED_ENTITY, "entity_created", "unnamed"));
 				}
@@ -271,7 +271,8 @@ namespace nano { namespace editor {
 					if (ImGui::Selectable(temp.c_str())) {
 						std::string loc = "resources\\assets\\" + i;
 						ecs::Entity* loadedEntity = levelParser.getParsedEntityFromFile(loc.c_str());
-						WorldSystem::getInstance()->AddNewEntity(loadedEntity);
+						// @@
+						//WorldSystem::getInstance()->AddNewEntity(loadedEntity);
 						m_showEntityLoadWidget = false;
 					}
 				}

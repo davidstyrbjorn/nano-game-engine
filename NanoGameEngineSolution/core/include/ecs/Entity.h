@@ -54,6 +54,9 @@ namespace nano { namespace ecs {
 		~Entity();
 
 	public:
+		// Public Members
+		int SlotIndex = 0;
+
 		//////////
 		// Component Methods
 		//////////

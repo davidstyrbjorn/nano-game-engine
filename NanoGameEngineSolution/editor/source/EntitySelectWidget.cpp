@@ -62,17 +62,18 @@ namespace nano { namespace editor {
 					// LMB - Click to inspect entity
 					else if(_event.key == NANO_MOUSE_BUTTON_LEFT) 
 					{
-							bool hitDetect = false;
-							for (ecs::Entity* entity : m_entityManager->GetEntityList()) {
-								if (mousePos.x > entity->Transform()->position.x && mousePos.x < entity->Transform()->position.x + entity->Transform()->size.x && mousePos.y > entity->Transform()->position.y && mousePos.y < entity->Transform()->position.y + entity->Transform()->size.y) {
-									EditorWidgetSystem::getInstance()->GetEventHandler().AddEvent(BaseEvent(EventTypes::MANIPULATED_ENTITY, "entity_clicked", entity->GetID()));
-									hitDetect = true;
-								}
-							}
-							if (!hitDetect) 
-							{
-								EditorWidgetSystem::getInstance()->GetEventHandler().AddEvent(BaseEvent(EventTypes::MANIPULATED_ENTITY, "entity_clicked", "-1"));
-							}
+							// @@
+							//bool hitDetect = false;
+							//for (ecs::Entity* entity : m_entityManager->GetEntityList()) {
+							//	if (mousePos.x > entity->Transform()->position.x && mousePos.x < entity->Transform()->position.x + entity->Transform()->size.x && mousePos.y > entity->Transform()->position.y && mousePos.y < entity->Transform()->position.y + entity->Transform()->size.y) {
+							//		EditorWidgetSystem::getInstance()->GetEventHandler().AddEvent(BaseEvent(EventTypes::MANIPULATED_ENTITY, "entity_clicked", entity->GetID()));
+							//		hitDetect = true;
+							//	}
+							//}
+							//if (!hitDetect) 
+							//{
+							//	EditorWidgetSystem::getInstance()->GetEventHandler().AddEvent(BaseEvent(EventTypes::MANIPULATED_ENTITY, "entity_clicked", "-1"));
+							//}
 						}
 				}
 			}
@@ -115,38 +116,40 @@ namespace nano { namespace editor {
 		ImGui::Separator();
 
 		// Simple column-major list of entities
-		std::vector<ecs::Entity*> _list = m_entityManager->GetEntityList();
+		std::vector<ecs::Entity> _list = m_entityManager->getArray();
 		ImGui::Columns(1, "entity_columns", true);
 		int i = 0;
-		for(ecs::Entity* entity : _list)
+		for(ecs::Entity entity : _list)
 		{
+			int slotIndex = entity.SlotIndex; // Handle to the real array
 			i++; // Incrementer for selectable ID
 
-			if (!entity->IsDead()) 
+			if (!entity.IsDead()) 
 			{
 				ImGui::PushItemWidth(30);
-				bool temp = entity->IsActive();
-				ImGui::Checkbox(std::string("##" + entity->GetID()).c_str(), &temp);
+				bool temp = entity.IsActive();
+				ImGui::Checkbox(std::string("##" + entity.GetID()).c_str(), &temp);
 				if (temp == true)
-					entity->Enable();
+					m_entityManager->getEntity(slotIndex).Enable();
 				else
-					entity->Disable();
+					m_entityManager->getEntity(slotIndex).Disable();
 				ImGui::SameLine(33);
 
-				std::string selectableID = entity->GetID() + "##" + std::to_string(i);
+				std::string selectableID = entity.GetID() + "##" + std::to_string(i);
 				// Check if we clicked on entity, if we did send that event to the event handler
 				if (ImGui::Selectable(selectableID.c_str())) {
 					// Clicked on entity
-					EditorWidgetSystem::getInstance()->GetEventHandler().AddEvent(BaseEvent(EventTypes::MANIPULATED_ENTITY, "entity_clicked", entity->GetID())); // Message the event handler this happend!
+					EditorWidgetSystem::getInstance()->GetEventHandler().AddEvent(BaseEvent(EventTypes::MANIPULATED_ENTITY, "entity_clicked", std::to_string(entity.SlotIndex))); // Message the event handler this happend!
 				}
 
 				// Check if we left click
-				if (ImGui::IsItemHovered()) {
-					if (ImGui::GetIO().MouseClicked[1]) {
-						m_leftClickedEntity = entity;
-						ImGui::OpenPopup("right_click_entity");
-					}
-				}
+				// @@
+				//if (ImGui::IsItemHovered()) {
+				//	if (ImGui::GetIO().MouseClicked[1]) {
+				//		m_leftClickedEntity = entity;
+				//		ImGui::OpenPopup("right_click_entity");
+				//	}
+				//}
 
 				// Done with this entity
 				ImGui::NextColumn();
@@ -156,21 +159,21 @@ namespace nano { namespace editor {
 		if (ImGui::BeginPopup("right_click_entity")) {
 			//ImGui::Spacing();
 
-			if (ImGui::Selectable("Destroy")) 
-			{
-				EditorWidgetSystem::getInstance()->GetEventHandler().AddEvent(BaseEvent(EventTypes::MANIPULATED_ENTITY, "entity_destroyed", m_leftClickedEntity->GetID()));
-				m_leftClickedEntity->Kill();
-			}
-			if (ImGui::Selectable("Rename")) {
-				// Making sure we "clicekd" on entity before we rename it
-				// This to know which entity to rename from the entity insepctor widget functions
-				EditorWidgetSystem::getInstance()->GetEventHandler().AddEvent(BaseEvent(EventTypes::MANIPULATED_ENTITY, "entity_clicked", m_leftClickedEntity->GetID())); // Message the event handler this happend!
-				EditorWidgetSystem::getInstance()->GetEventHandler().AddEvent(BaseEvent(EventTypes::MANIPULATED_ENTITY, "entity_rename", m_leftClickedEntity->GetID()));
-			}
-			if (ImGui::Selectable("Save Entity")) {
-				static LevelParser levelParser;
-				levelParser.saveEntityAsAsset(m_leftClickedEntity);
-			}
+			//if (ImGui::Selectable("Destroy")) 
+			//{
+			//	EditorWidgetSystem::getInstance()->GetEventHandler().AddEvent(BaseEvent(EventTypes::MANIPULATED_ENTITY, "entity_destroyed", m_leftClickedEntity->GetID()));
+			//	m_leftClickedEntity->Kill();
+			//}
+			//if (ImGui::Selectable("Rename")) {
+			//	// Making sure we "clicekd" on entity before we rename it
+			//	// This to know which entity to rename from the entity insepctor widget functions
+			//	EditorWidgetSystem::getInstance()->GetEventHandler().AddEvent(BaseEvent(EventTypes::MANIPULATED_ENTITY, "entity_clicked", m_leftClickedEntity->GetID())); // Message the event handler this happend!
+			//	EditorWidgetSystem::getInstance()->GetEventHandler().AddEvent(BaseEvent(EventTypes::MANIPULATED_ENTITY, "entity_rename", m_leftClickedEntity->GetID()));
+			//}
+			//if (ImGui::Selectable("Save Entity")) {
+			//	static LevelParser levelParser;
+			//	levelParser.saveEntityAsAsset(m_leftClickedEntity);
+			//}
 			
 			ImGui::EndPopup();
 		}

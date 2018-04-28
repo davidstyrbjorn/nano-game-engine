@@ -1,3 +1,4 @@
+#include "..\..\..\editor\include\systems\WorldSystem.h"
 #include"../include/WorldSystem.h"
 
 #include<ecs\Entity.h>

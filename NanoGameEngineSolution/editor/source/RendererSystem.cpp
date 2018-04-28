@@ -20,12 +20,12 @@ namespace nano { namespace editor {
 	void RendererSystem::Update()
 	{
 		// Submit every entity to be rendered from the entity manager system here!
-		std::vector<ecs::Entity*> entityList = m_entityManager->GetEntityListCopy();
-		for (ecs::Entity* entity : entityList) {
-			if (entity->Renderable() != nullptr && entity->IsActive()) {
-				m_renderer->Submit(entity->Renderable());
-			}
-		}
+		//std::vector<ecs::Entity> entityList = m_entityManager->getArray();
+		//for (ecs::Entity entity : entityList) {
+		//	if (entity.Renderable() != nullptr && entity.IsActive()) {
+		//		m_renderer->Submit(entity.Renderable());
+		//	}
+		//}
 	}
 
 	void RendererSystem::Quit()
