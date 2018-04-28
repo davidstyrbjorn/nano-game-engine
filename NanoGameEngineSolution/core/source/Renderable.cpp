@@ -15,6 +15,11 @@ namespace nano { namespace graphics {
 		m_color = a_color;
 	}
 
+	void Renderable::SetRenderOrder(const int a_renderOrder)
+	{
+		m_renderOrder = a_renderOrder;
+	}
+
 	math::Vector4 Renderable::GetColor()
 	{
 		return m_color;
@@ -28,6 +33,11 @@ namespace nano { namespace graphics {
 	opengl::Texture * Renderable::GetTexture()
 	{
 		return m_texture;
+	}
+
+	int Renderable::GetRenderOrder() const
+	{
+		return m_renderOrder;
 	}
 
 	int Renderable::GetVertexCount()

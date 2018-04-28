@@ -59,8 +59,8 @@ namespace nano { namespace editor {
 			AddConsoleMessage("Created entity with ID " + a_id2, math::Vector4(0, 1, 0, 1));
 		}
 		else if (a_id == "entity_clicked") {
-			if (a_id2 == "-1") return; // Empty space
-			AddConsoleMessage("Clicked on entity with ID " + a_id2);
+			//if (a_id2 == "-1") return; // Empty space
+			//AddConsoleMessage("Clicked on entity with ID " + a_id2);
 		}
 		else if (a_id == "entity_destroyed") {
 			AddConsoleMessage("Destroyed entity with ID " + a_id, math::Vector4(1, 0, 0, 1));

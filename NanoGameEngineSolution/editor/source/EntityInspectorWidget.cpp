@@ -216,6 +216,10 @@ namespace nano { namespace editor {
 		if (m_entityToInspect != nullptr && m_showImageAssetWindow) 
 		{
 			static ImVec2 windowSize = ImVec2(200, 300);
+			// Position: extended from inspector(right)
+			float y = (EditorConfig::Instance()->getWindowSize().y / 2) - windowSize.y/2;
+			ImVec2 windowPos = ImVec2(EditorConfig::Instance()->getWindowSize().x - ENTITY_INSPECTOR_WIDTH - windowSize.x, y);
+			ImGui::SetNextWindowPos(windowPos);
 			ImGui::SetNextWindowSize(windowSize);
 			ImGui::Begin("Assets", &m_showImageAssetWindow, ImGuiWindowFlags_::ImGuiWindowFlags_NoResize);
 
@@ -478,6 +482,11 @@ namespace nano { namespace editor {
 			math::Vector4 renderableColor = m_renderableComponent->GetColor();
 			ImGui::ColorEdit4("Color", (float*)&renderableColor);
 			m_renderableComponent->SetColor(renderableColor);
+
+			// Render Order
+			int renderOrder = m_renderableComponent->GetRenderOrder();
+			ImGui::InputInt("Render Order", &renderOrder, 1, 1);
+			m_renderableComponent->SetRenderOrder(renderOrder);
 
 			// Image if there is any
 			if (m_renderableComponent->GetTexture() != nullptr)
