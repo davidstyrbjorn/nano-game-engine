@@ -3,6 +3,8 @@
 #include"EditorSystem.h" // base class
 
 #include<vector>
+#include<array>
+
 #include<ecs\Entity.h>
 
 namespace nano { namespace editor {
@@ -23,10 +25,11 @@ namespace nano { namespace editor {
 		// Private Constructor (singleton)
 		WorldSystem() { }
 
-	private:
+	public:
 		// New
 		int m_entityCount;
-		ecs::Entity m_entityArray[MAX_ENTITIES];
+		//ecs::Entity m_entityArray[MAX_ENTITIES];
+		std::array<ecs::Entity, MAX_ENTITIES> m_entityArray;
 
 	public:
 		void LoadedNewLevel(std::vector<ecs::Entity*> a_entityList); // Called when a new level is loaded
@@ -35,7 +38,7 @@ namespace nano { namespace editor {
 		int createNewEntity(std::string a_name);
 		void removeEntity(int a_index);
 		ecs::Entity& getEntity(int a_index);
-		std::vector<ecs::Entity> getArray();
+		std::array<ecs::Entity, MAX_ENTITIES> &getArray();
 
 		// EditorSystem base class
 		void Start() override;

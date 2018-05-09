@@ -11,9 +11,9 @@ namespace nano { namespace editor {
 		return m_entityArray[a_index];
 	}
 
-	std::vector<ecs::Entity> WorldSystem::getArray()
+	std::array<ecs::Entity, MAX_ENTITIES>& WorldSystem::getArray()
 	{
-		return std::vector<ecs::Entity>(std::begin(m_entityArray), std::end(m_entityArray));
+		return m_entityArray;
 	}
 
 	int WorldSystem::createNewEntity(std::string a_name) 
