@@ -10,6 +10,7 @@
 #include"GL\glew.h"
 
 #include<cassert>
+#include<algorithm>
 
 namespace nano { namespace graphics {
 
@@ -129,56 +130,7 @@ namespace nano { namespace graphics {
 		assert(a_renderable != nullptr); // nullptr to in-argument!
 		assert(a_renderable->GetVertexCount() != -1 || (m_quadCount + m_triangleCount) < MAX_PRIMITIVES); // Invalid argument or we've passed primitive threshold!
 		
-		if (a_renderable->GetVertexCount() == 3) {
-			// Triangle
-			GLintptr _offset = m_triangleCount * (TRIANGLE_SIZE);
-		
-			math::Vector2 pos = a_renderable->GetTransformComponent()->position;
-			math::Vector2 size = a_renderable->GetTransformComponent()->size;
-			math::Vector4 color = a_renderable->GetColor();
-		
-			Vertex data[] = {
-				{ math::Vector2(pos.x,pos.y), color, math::Vector2(-1,-1) },
-				{ math::Vector2(pos.x, pos.y + size.y), color, math::Vector2(-1,-1) },
-				{ pos+size, color, math::Vector2(-1,-1) }
-			};
-		
-			m_triangleVAO->Bind();
-			m_triangleVBO->Bind();
-			m_triangleVBO->SetDatSub(_offset, sizeof(data), (float*)&data);
-			m_triangleVBO->Unbind();
-			m_triangleVAO->Unbind();
-		
-			m_triangleCount++;
-		}
-		else if (a_renderable->GetVertexCount() == 4) {
-			if (a_renderable->GetTexture() == nullptr) {
-				// Quad
-				GLintptr _offset = m_quadCount * (QUAD_SIZE);
-				
-				math::Vector2 pos = a_renderable->GetTransformComponent()->position;
-				math::Vector2 size = a_renderable->GetTransformComponent()->size;
-				math::Vector4 color = a_renderable->GetColor();
-		
-				Vertex data[] = {
-					{ math::Vector2(pos.x,pos.y), color, math::Vector2(-1,-1) },
-					{ math::Vector2(pos.x, pos.y + size.y), color, math::Vector2(-1,-1) },
-					{ pos + size, color, math::Vector2(-1,-1) },
-					{ math::Vector2(pos.x + size.x, pos.y), color, math::Vector2(-1,-1) },
-				};
-		
-				m_quadVAO->Bind();
-				m_quadVBO->Bind();
-				m_quadVBO->SetDatSub(_offset, sizeof(data), (float*)&data);
-				m_quadVBO->Unbind();
-				m_quadVAO->Unbind();
-		
-				m_quadCount++;
-			}
-			else {
-				AddTextureToRender(a_renderable);
-			}
-		}
+		m_primitivesToRender.push_back(a_renderable);
 	}
 
 	void SimpleRenderer::AddTextureToRender(Renderable * a_renderable)
@@ -188,6 +140,61 @@ namespace nano { namespace graphics {
 
 	void SimpleRenderer::Flush()
 	{
+		SortByRenderOrder(); // Sorts m_primitivesToRender
+		for (Renderable* a_renderable : m_primitivesToRender) {
+			if (a_renderable->GetVertexCount() == 3) {
+				// Triangle
+				GLintptr _offset = m_triangleCount * (TRIANGLE_SIZE);
+
+				math::Vector2 pos = a_renderable->GetTransformComponent()->position;
+				math::Vector2 size = a_renderable->GetTransformComponent()->size;
+				math::Vector4 color = a_renderable->GetColor();
+
+				Vertex data[] = {
+					{ math::Vector2(pos.x,pos.y), color, math::Vector2(-1,-1) },
+					{ math::Vector2(pos.x, pos.y + size.y), color, math::Vector2(-1,-1) },
+					{ pos + size, color, math::Vector2(-1,-1) }
+				};
+
+				m_triangleVAO->Bind();
+				m_triangleVBO->Bind();
+				m_triangleVBO->SetDatSub(_offset, sizeof(data), (float*)&data);
+				m_triangleVBO->Unbind();
+				m_triangleVAO->Unbind();
+
+				m_triangleCount++;
+			}
+			else if (a_renderable->GetVertexCount() == 4) {
+				if (a_renderable->GetTexture() == nullptr) {
+					// Quad
+					GLintptr _offset = m_quadCount * (QUAD_SIZE);
+
+					math::Vector2 pos = a_renderable->GetTransformComponent()->position;
+					math::Vector2 size = a_renderable->GetTransformComponent()->size;
+					math::Vector4 color = a_renderable->GetColor();
+
+					Vertex data[] = {
+						{ math::Vector2(pos.x,pos.y), color, math::Vector2(-1,-1) },
+						{ math::Vector2(pos.x, pos.y + size.y), color, math::Vector2(-1,-1) },
+						{ pos + size, color, math::Vector2(-1,-1) },
+						{ math::Vector2(pos.x + size.x, pos.y), color, math::Vector2(-1,-1) },
+					};
+
+					m_quadVAO->Bind();
+					m_quadVBO->Bind();
+					m_quadVBO->SetDatSub(_offset, sizeof(data), (float*)&data);
+					m_quadVBO->Unbind();
+					m_quadVAO->Unbind();
+
+					m_quadCount++;
+				}
+				else {
+					AddTextureToRender(a_renderable);
+				}
+			}
+		}
+		m_primitivesToRender.clear();
+
 		m_shader->Bind();
 		// Update matrices based on camera position & size
 		m_shader->SetUniformMat4f("view_matrix", m_camera->GetViewMatrix());
@@ -254,6 +261,13 @@ namespace nano { namespace graphics {
 			
 			m_texturesToRender.pop_front();
 		}
+	}
+
+	void SimpleRenderer::SortByRenderOrder()
+	{
+		std::sort(m_primitivesToRender.begin(), m_primitivesToRender.end(), 
+			[](const Renderable* _a, const Renderable* _b) -> bool { return _a->GetRenderOrder() > _b->GetRenderOrder(); 
+		});
 	}
 
 	void SimpleRenderer::SubmitGridData()

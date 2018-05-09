@@ -31,6 +31,7 @@ namespace nano { namespace graphics {
 		// After the batch of triangles and quads have been rendered 
 		// We go through every texture and instance render them
 		std::deque<Renderable*> m_texturesToRender;
+		std::deque<Renderable*> m_primitivesToRender;
 
 		opengl::VertexBuffer *m_triangleVBO, *m_quadVBO, *m_textureVBO;
 		opengl::VertexArrayObject *m_triangleVAO, *m_quadVAO, *m_textureVAO;
@@ -44,6 +45,7 @@ namespace nano { namespace graphics {
 		// Private methods
 		void AddTextureToRender(Renderable* a_renderable);
 		void PostFlush();
+		void SortByRenderOrder();
 
 	public:
 		// Default Constructor

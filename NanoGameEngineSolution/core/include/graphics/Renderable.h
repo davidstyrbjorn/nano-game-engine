@@ -21,6 +21,7 @@ namespace nano { namespace graphics {
 		math::Vector4 m_color = math::Vector4(1, 1, 1, 1); // deafault white color
 		ecs::Transform* m_transform;
 		opengl::Texture *m_texture;
+		int m_renderOrder = 0;
 
 	public:
 		// Default constructor
@@ -36,6 +37,11 @@ namespace nano { namespace graphics {
 		//
 		void SetColor(const math::Vector4 a_color);
 
+		///////////
+		// \brief Sets the render order member
+		//
+		void SetRenderOrder(const int a_renderOrder);
+
 		// Getters
 
 		// brief Returns a vector copy of the color
@@ -46,6 +52,8 @@ namespace nano { namespace graphics {
 
 		// brief Returns a pointer to the transform of the renderable
 		opengl::Texture *GetTexture();
+
+		int GetRenderOrder() const;
 
 		///////////
 		// \brief Returns the number of vertices for renderable 

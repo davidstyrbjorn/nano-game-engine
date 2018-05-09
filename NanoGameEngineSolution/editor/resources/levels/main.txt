@@ -20,6 +20,39 @@ fourway move component
 none
 script component
 hndl triangle_script.nsl
-hndl none
+
+[ENTITY]
+id cube
+transform
+pos 205, 222
+size 100, 100
+angle 0
+renderable
+vertex_count 4
+color 1, 0, 1, 1
+image_asset_name none
+sound component
+none
+fourway move component
+none
+script component
+none
+
+[ENTITY]
+id david
+transform
+pos 118, 79
+size 100, 100
+angle 0
+renderable
+vertex_count 3
+color 0.639, 0.165, 0.463, 1
+image_asset_name none
+sound component
+none
+fourway move component
+none
+script component
+none
 
 [ENTITIES_END]
