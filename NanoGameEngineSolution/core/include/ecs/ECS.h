@@ -14,4 +14,13 @@ namespace nano { namespace ecs {
 		NEVER
 	};
 
+	enum ComponentTypes {
+		RECTANGLE_COMPONENT,
+		TRIANGLE_COMPONENT,
+		SPRITE_COMPONENT,
+		SOUND_COMPONENT,
+		FOURWAY_MOVE_COMPONENT,
+		SCRIPT_COMPONENT
+	};
+
 } } 
